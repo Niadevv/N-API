@@ -1,0 +1,10 @@
+1. Dimensions. Is it already doable without a special registry?
+2. More events.
+3. Use ASM to reduce base edits to 0 on Forge-Side.
+4. Gradle setup. - Is this really neccessary?
+5. Make more classes final. /
+6. Reduce base edits to a minimum on the main side.
+7. Make sure everything actually works.
+8. Achievements. /
+9. Mod Dependencies system. May have to change the init system a bit, but I hope not too much. / Mostly done. Will finalise.
+10. An annotation system. / Takes the form of the Libary system.
