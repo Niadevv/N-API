@@ -223,7 +223,6 @@ public class NModLoader
 			
 			currRegister.modInit();
 			//ASM classes are registered in modPreInit or modInit, call them here
-			ASMRegistry.invokeAllTransformers();
 		}
 		
 		System.gc();
@@ -323,6 +322,7 @@ public class NModLoader
 			
 			//TODO Make it so these actually are called at their respective points of initialisation.
 			callAllPreInits();
+			ASMRegistry.invokeAllTransformers();
 			callAllInits();
 			callAllPostInits();
 		}

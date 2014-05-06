@@ -17,11 +17,19 @@ public class StructureRegistry
 	 */
 	public static List<MapGenStructure> mapFDependantStructures = new ArrayList<>();
 	
+	/**
+	 * Adds a stucture that will always generate.
+	 * @param structure
+	 */
 	public static void addNonMapFDependantStructure(MapGenStructure structure)
 	{
 		nonMapFDependantStructures.add(structure);
 	}
 	
+	/**
+	 * Adds a structure that will only generate if Map Features is enabled.
+	 * @param structure
+	 */
 	public static void addMapFDependantStructure(MapGenStructure structure)
 	{
 		mapFDependantStructures.add(structure);
