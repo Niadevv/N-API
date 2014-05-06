@@ -1,0 +1,21 @@
+package co.uk.niadel.api.events.entity;
+
+import net.minecraft.entity.player.EntityPlayer;
+import co.uk.niadel.api.events.EventBase;
+import co.uk.niadel.api.events.IEvent;
+
+public class EventPlayerSpawned extends EventBase implements IEvent
+{
+	EntityPlayer player;
+	
+	public EventPlayerSpawned(EntityPlayer player)
+	{
+		this.player = player;
+	}
+	
+	@Override
+	public void initEvent()
+	{
+		addData(new Object[] {"EventPlayerSpawned", this});
+	}
+}
