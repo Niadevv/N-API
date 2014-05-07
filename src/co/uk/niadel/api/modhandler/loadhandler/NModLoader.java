@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -19,9 +18,14 @@ import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.profiler.Profiler;
+import net.minecraft.util.ReportedException;
+
 import org.apache.commons.io.IOUtils;
+
 import co.uk.niadel.api.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.api.annotations.IAnnotationHandler;
 import co.uk.niadel.api.annotations.MPIAnnotations.Library;
@@ -302,15 +306,7 @@ public class NModLoader
 	public static final void loadModsFromDir() throws ZipException, IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
 	{
 		System.out.println(mcMainDir.toPath().toString());
-		
-		try 
-		{
-			initNAPIRegister(loadRegister("co.uk.niadel.api.modhandler.n_api.ModRegister"));
-		} 
-		catch (InstantiationException e) 
-		{
-			e.printStackTrace();
-		}
+		initNAPIRegister(loadRegister("co.uk.niadel.api.modhandler.n_api.ModRegister"));
 		
 		if (mcModsDir.listFiles() != null)
 		{
@@ -346,7 +342,9 @@ public class NModLoader
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
 		{
-			System.err.println("Issue loading N-API register! Potions WILL NOT WORK!");
+			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API ModRegister");
+			crashReport.makeCategory("Initialise N-API");
+			throw new ReportedException(crashReport);
 		}
 	}
 	
