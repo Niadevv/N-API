@@ -16,7 +16,7 @@ Usage Rights:
 -----------------------------------------------------------
 You may install this Modification Development Interface into a paid Minecraft premium account without restriction.
 
-If you are a modder using N-API, you may extend, implement, or instantiate any object provided by the N-API.
+If you are a modder using N-API, you may extend, implement, or instantiate an object of any class provided by N-API.
 
 
 Modification Rights:
