@@ -8,3 +8,4 @@ A.1.0 - Removed the Reflection stuff for loading mods from NModLoader.java.
 	  - Implemented the ability to add structures to the Minecraft world.
 	  - Started to make it possible to add loot to natural structure chests.
 	  - Added annotation system for external libraries and MPIs.
+	  - Added interface shortcuts for common things with entities. See co.uk.niadel.api.entity.interfaces
