@@ -9,3 +9,5 @@ A.1.0 - Removed the Reflection stuff for loading mods from NModLoader.java.
 	  - Started to make it possible to add loot to natural structure chests.
 	  - Added annotation system for external libraries and MPIs.
 	  - Added interface "shortcuts" for common things with entities, blocks and items.
+	  - Added language translating capabilities.
+	  - Added a base for custom armour.
