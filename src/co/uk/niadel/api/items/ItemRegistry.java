@@ -18,7 +18,7 @@ public final class ItemRegistry
 	static RegistryNamespaced registry = Item.getRegistry();
 	
 	/**
-	 * Registers the item in the standard "minecraft:" namespace.
+	 * Registers the item, specify the namespace in nonNumericId EG. my_mod:some_item.
 	 */
 	public final static void registerItem(int numericId, String nonNumericId, Object object)
 	{
