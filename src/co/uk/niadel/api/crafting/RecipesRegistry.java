@@ -3,13 +3,16 @@ package co.uk.niadel.api.crafting;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import co.uk.niadel.api.reflection.ReflectionManipulateValues;
 import net.minecraft.block.Block;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ReportedException;
 
 /**
  * Where to register your crafting recipes.
@@ -85,9 +88,10 @@ public final class RecipesRegistry extends CraftingManager
 		}
 		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
 		{
-			e.printStackTrace();
+			System.err.println("Error adding the recipes!");
+			CrashReport crashReport = CrashReport.makeCrashReport(e, "Error adding recipes");
+			crashReport.makeCategory("Adding important things necessary for mods to work");
+			throw new ReportedException(crashReport);
 		}
 	}
-	
-	
 }

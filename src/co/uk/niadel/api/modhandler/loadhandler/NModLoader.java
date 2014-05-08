@@ -49,8 +49,7 @@ import co.uk.niadel.api.util.UtilityMethods;
  * NModLoaderOld). It copies some of the old methods, though. I'm suprised at how
  * little code it took this time around. I guess it's quite easy the 100th time.
  * 
- * TODO Remove the need of the ModID.modid file OR get the Gradle setup done
- * and therefore deprecate .zip files. Or I can just do both.
+ * TODO Remove the need of the ModID.modid file.
  * 
  * TODO Make the code cleaner. It's spaghetti code for Notch's sake.
  * 
@@ -343,7 +342,7 @@ public class NModLoader
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
 		{
 			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API ModRegister");
-			crashReport.makeCategory("Initialise N-API");
+			crashReport.makeCategory("Initialising N-API");
 			throw new ReportedException(crashReport);
 		}
 	}

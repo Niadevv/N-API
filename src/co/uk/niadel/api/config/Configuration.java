@@ -22,6 +22,10 @@ public final class Configuration
 {
 	public static File mcDataDir = NModLoader.mcMainDir;
 	public static File modsConfigs = new File(mcDataDir.toPath() + "configurations" + File.separator);
+	
+	/**
+	 * This file, the config.
+	 */
 	public File theConfig;
 	
 	/**
@@ -29,14 +33,19 @@ public final class Configuration
 	 */
 	private Map<String, String> data = new HashMap<>();
 	
-	
+	/**
+	 * Creates the new config with the pre-added data.
+	 * @param configName
+	 * @param data
+	 * @throws IOException
+	 */
 	public Configuration(String configName, String[] data) throws IOException
 	{
 		File theConfigFile = generateNewConfig(configName);
 		addData(data);
 	}
 	
-	/**s
+	/**
 	 * Generates a new config file.
 	 * @param configName
 	 * @return
@@ -75,7 +84,7 @@ public final class Configuration
 	}
 	
 	/**
-	 * Updates data to the new data.
+	 * Updates data in the config.
 	 * @param config
 	 * @throws FileNotFoundException
 	 */
@@ -116,7 +125,7 @@ public final class Configuration
 		}
 		catch (FileNotFoundException e)
 		{
-			System.out.println("Please create the config before attempting to get data from it.");
+			System.err.println("Please create the config before attempting to get data from it.");
 		}
 		
 		return data.get(configValue);
@@ -145,7 +154,7 @@ public final class Configuration
 		}
 		catch (FileNotFoundException e)
 		{
-			System.out.println("[CONFIGERROR] The config MUST be created BEFORE adding any data.");
+			System.err.println("[CONFIGERROR] The config MUST be created BEFORE adding any data.");
 		}
 	}
 	

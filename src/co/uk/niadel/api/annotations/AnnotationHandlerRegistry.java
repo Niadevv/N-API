@@ -11,8 +11,15 @@ import java.util.Set;
  */
 public class AnnotationHandlerRegistry
 {
+	/**
+	 * A Set that contains the Annotation Handlers.
+	 */
 	public static Set<IAnnotationHandler> annotationHandlers = new HashSet<>();
 	
+	/**
+	 * Adds an annotation handler to annotationHandlers.
+	 * @param handler
+	 */
 	public static final void addAnnotationHandler(IAnnotationHandler handler)
 	{
 		annotationHandlers.add(handler);
