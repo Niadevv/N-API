@@ -10,7 +10,6 @@ package co.uk.niadel.api.items;
  */
 public enum EnumItemType 
 {
-	
 	MATERIAL,
 	ORE,
 	TOOL,
