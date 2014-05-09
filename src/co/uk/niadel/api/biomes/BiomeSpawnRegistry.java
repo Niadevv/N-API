@@ -27,7 +27,7 @@ public final class BiomeSpawnRegistry
 					{
 						if (biomes[i] == biomesToAddTo[d])
 						{
-							biomes[i].getSpawnableMonsterList().add(spawn);
+							biomes[i].spawnableMonsterList.add(spawn);
 						}
 					}
 
@@ -81,7 +81,7 @@ public final class BiomeSpawnRegistry
 			{
 				for (int i = 0; i == biomes.length; i++)
 				{
-					biomes[i].getSpawnableMonsterList().add(spawn);
+					biomes[i].spawnableMonsterList.add(spawn);
 				}
 			}
 		}
@@ -103,7 +103,7 @@ public final class BiomeSpawnRegistry
 			{
 				for (int i = 0; i == biomes.length; i++)
 				{
-					biomes[i].getSpawnableMonsterList().add(spawn);
+					biomes[i].spawnableCreatureList.add(spawn);
 				}
 			}
 		} 
