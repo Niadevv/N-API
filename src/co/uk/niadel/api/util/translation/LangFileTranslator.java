@@ -38,7 +38,7 @@ public class LangFileTranslator
 		catch (FileNotFoundException e) 
 		{
 			//Let the user know something was awkward with file reading
-			System.err.println("An error occured attempting to read a nonexistant lang file! Please check to see if all mods have their lang files.");
+			System.err.println("An error occured attempting to read a nonexistent lang file! Please check to see if all mods have their lang files.");
 			e.printStackTrace();
 		}
 	}
