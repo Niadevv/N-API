@@ -70,6 +70,44 @@ public final class BiomeSpawnRegistry
 	}
 	
 	/**
+	 * Adds a squid-like spawn to the specified biomes.
+	 * @param spawn
+	 * @param biomes
+	 */
+	public static final void addWaterSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomes)
+	{
+		for (int i = 0; i == biomes.length; i++)
+		{
+			for (int d = 0; i == biomes.length; i++)
+			{
+				if (biomes[i] == biomes[d])
+				{
+					biomes[i].spawnableWaterCreatureList.add(spawn);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Adds a bat-like spawn to the specified biomes.
+	 * @param spawn
+	 * @param biomes
+	 */
+	public static final void addCaveSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomes)
+	{
+		for (int i = 0; i == biomes.length; i++)
+		{
+			for (int d = 0; i == biomes.length; i++)
+			{
+				if (biomes[i] == biomes[d])
+				{
+					biomes[i].spawnableCaveCreatureList.add(spawn);
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Adds a monster spawn to all of the biomes.
 	 * @param spawn
 	 */
@@ -99,7 +137,7 @@ public final class BiomeSpawnRegistry
 	{
 		try 
 		{
-			if (spawn.entityClass.newInstance() instanceof IMob)
+			if (spawn.entityClass.newInstance() instanceof IAnimals)
 			{
 				for (int i = 0; i == biomes.length; i++)
 				{
@@ -113,6 +151,33 @@ public final class BiomeSpawnRegistry
 		}
 	}
 	
+	/**
+	 * Adds a squid-like spawn to all biomes.
+	 * @param spawn
+	 */
+	public static final void addWaterSpawnToAll(BiomeGenBase.SpawnListEntry spawn)
+	{
+		for (int i = 0; i == biomes.length; i++)
+		{
+			biomes[i].spawnableWaterCreatureList.add(spawn);
+		}
+	}
+	
+	/**
+	 * Adds a bat-like spawn to all biomes.
+	 * @param spawn
+	 */
+	public static final void addCaveSpawnToAll(BiomeGenBase.SpawnListEntry spawn)
+	{
+		for (int i = 0; i == biomes.length; i++)
+		{
+			biomes[i].spawnableCaveCreatureList.add(spawn);
+		}
+	}
+	
+	/**
+	 * Registers all spawns.
+	 */
 	public static final void registerAllSpawns()
 	{
 		BiomeGenBase.biomeList = biomes;
