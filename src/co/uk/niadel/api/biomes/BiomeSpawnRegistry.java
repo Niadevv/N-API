@@ -57,7 +57,7 @@ public final class BiomeSpawnRegistry
 					{
 						if (biomes[i] == biomesToAddTo[d])
 						{
-							biomes[i].getSpawnableCreatureList().add(spawn);
+							biomes[i].spawnableCreatureList.add(spawn);
 						}
 					}
 				}
