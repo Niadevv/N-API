@@ -33,6 +33,8 @@ import co.uk.niadel.api.asm.ASMRegistry;
 import co.uk.niadel.api.crafting.RecipesRegistry;
 import co.uk.niadel.api.events.EventsList;
 import co.uk.niadel.api.events.apievents.EventLoadMod;
+import co.uk.niadel.api.exceptions.ModDependencyNotFoundException;
+import co.uk.niadel.api.exceptions.OutdatedLibraryException;
 import co.uk.niadel.api.modhandler.IModRegister;
 import co.uk.niadel.api.rendermanager.RenderRegistry;
 import co.uk.niadel.api.util.UtilityMethods;
@@ -109,7 +111,16 @@ public class NModLoader
 			}
 			
 			//TODO Make it so these actually are called at their respective points of initialisation.
-			callAllPreInits();
+			try
+			{
+				callAllPreInits();
+			}
+			catch (OutdatedLibraryException | ModDependencyNotFoundException e)
+			{
+				//The exceptions deal with this, no need to do special stuff.
+				;
+			}
+			
 			ASMRegistry.invokeAllTransformers();
 			callAllInits();
 			callAllPostInits();
@@ -273,8 +284,10 @@ public class NModLoader
 	/**
 	 * By far the most complicated method, this checks dependencies and libraries before
 	 * calling a mod's modPreInit method.
+	 * @throws OutdatedLibraryException 
+	 * @throws ModDependencyNotFoundException 
 	 */
-	public static final void callAllPreInits()
+	public static final void callAllPreInits() throws OutdatedLibraryException, ModDependencyNotFoundException
 	{
 		//What iterates the classes in mods.
 		Iterator<String> modsIterator = mods.keySet().iterator();
@@ -322,7 +335,7 @@ public class NModLoader
 				if (!mods.containsValue(currDependency))
 				{
 					//Signify to the user that a mod dependency is not found.
-					throw new RuntimeException("A mod dependency has not been found!");
+					throw new ModDependencyNotFoundException(currRegister.modId);
 				}
 				
 				if (libraryVersionIterator != null && libraryIterator != null)
@@ -355,7 +368,7 @@ public class NModLoader
 							else
 							{
 								//Let the user know that a library is outdated.
-								throw new RuntimeException("An installed library is outdated! Please update mod library " + currLib.modId + "!");
+								throw new OutdatedLibraryException(currLib.modId);
 							}
 						}
 					}
