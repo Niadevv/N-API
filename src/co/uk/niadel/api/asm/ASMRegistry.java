@@ -8,6 +8,10 @@ public class ASMRegistry
 {
 	public static List<IASMTransformer> asmTransformers = new ArrayList<>();
 	
+	/**
+	 * Adds an ASM transformer to the registry.
+	 * @param transformer
+	 */
 	public static final void addTransformer(IASMTransformer transformer)
 	{
 		asmTransformers.add(transformer);

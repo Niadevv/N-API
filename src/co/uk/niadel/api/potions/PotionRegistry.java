@@ -27,7 +27,7 @@ public class PotionRegistry
 	 * @param potionName
 	 * @param modPotion
 	 */
-	public final static void registerPotion(String potionName, Potion modPotion)
+	public static final void registerPotion(String potionName, Potion modPotion)
 	{
 		modPotions.put(potionName, modPotion);
 	}
@@ -37,7 +37,7 @@ public class PotionRegistry
 	 * @param potion
 	 * @return
 	 */
-	public final Potion getPotion(String potion)
+	public static final Potion getPotion(String potion)
 	{
 		return modPotions.get(potion);
 	}
