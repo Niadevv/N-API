@@ -1,6 +1,3 @@
-//Commented out until I know what to do with this.
-
-/*
 package co.uk.niadel.api.forgewrapper;
 
 import org.objectweb.asm.ClassReader;
@@ -9,7 +6,7 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
-public class ASMPatcher implements IClassTransformer
+public class ASMPatcher implements IClassTransformer, Opcodes
 {	
 	public byte[] transform(String currClassName, String newClassName, byte[] bytes)
 	{
@@ -24,16 +21,16 @@ public class ASMPatcher implements IClassTransformer
 	{
 		ClassNode cn = new ClassNode();
 		ClassReader cr = new ClassReader(bytes);
-		ClassWriter cw = new ClassWriter(cr, Opcodes.ASM4);
+		ClassWriter cw = new ClassWriter(cr, ASM4);
 		cr.accept(cn, 0);
 		
 		switch (currClassName)
 		{
 			case "abn":
 				cw.newField("abn", "instance", "public Labn;");
-				FieldVisitor fv = cw.visitField(Opcodes.ACC_PUBLIC, "instance", "public Labn", null, null);
+				FieldVisitor fv = cw.visitField(ACC_PUBLIC, "instance", "public Labn", null, null);
+				cw.visitMethod(ACC_PUBLIC, "<init>", "public Labn", null, null);
 				
 		}
 	}
 }
-*/

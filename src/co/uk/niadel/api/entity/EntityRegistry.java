@@ -15,21 +15,11 @@ public final class EntityRegistry extends EntityList
 	 * @param entityId
 	 * @param numericId
 	 */
-	public static final void addMapping(Class<? extends Entity> theClass, String entityId, int numericId)
+	public static final void registerEntity(Class<? extends Entity> theClass, String entityId, int numericId)
     {
 		addMapping(theClass, entityId, numericId);
     }
-
-    /**
-     * Adds a entity mapping with egg info. 
-     * {@inheritDoc}
-     */
-    public static final void addMapping(Class<? extends Entity> entityClass, String stringId, int numericId, int eggBackgroundColour, int eggSpotColour)
-    {	
-    	addMapping(entityClass, stringId, numericId);
-        entityEggs.put(Integer.valueOf(numericId), new EntityList.EntityEggInfo(numericId, eggBackgroundColour, eggSpotColour));
-    }
-    
+	
     /**
      * Simplifies mob registration.
      * 
@@ -39,19 +29,8 @@ public final class EntityRegistry extends EntityList
      * @param eggBackgroundColour
      * @param eggSpotColour
      */
-    public static final void registerEntityToList(Class<? extends Entity> entityClass, String stringMobId, int numericMobId, int eggBackgroundColour, int eggSpotColour)
+    public static final void registerEntityWithSpawnEgg(Class<? extends Entity> entityClass, String stringMobId, int numericMobId, int eggBackgroundColour, int eggSpotColour)
     {
 		addMapping(entityClass, stringMobId, numericMobId, eggBackgroundColour, eggSpotColour);
 	}
-    
-    /**
-     * Registers without a mob egg.
-     * @param entityClass
-     * @param stringMobId
-     * @param numericMobId
-     */
-    public static final void registerEntityToList(Class<? extends Entity> entityClass, String stringMobId, int numericMobId)
-    {
-    	addMapping(entityClass, stringMobId, numericMobId);
-    }
 }

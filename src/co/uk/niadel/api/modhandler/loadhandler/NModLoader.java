@@ -131,10 +131,12 @@ public class NModLoader
 			register.preModInit();
 			register.modInit();
 			register.postModInit();
+			//Add the N-API register to the libraries list - That's probably the closest to what N-API is.
 			modLibraries.add(register);
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
 		{
+			//Crash the game - Failure to load the N-API register can break a LOT of stuff.
 			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API ModRegister");
 			crashReport.makeCategory("Initialising N-API");
 			throw new ReportedException(crashReport);
@@ -333,7 +335,7 @@ public class NModLoader
 					if (currLibraryVersion == "")
 					{
 						//Tell the user that a library doesn't have a version.
-						throw new RuntimeException("The library " + currLib.modId + " does NOT have a version! Contact the library's creator to fix this!");
+						throw new RuntimeException("The library " + currLib.modId + " does NOT have a version! Contact the library's creator to fix this and then ask them why they aren't adding a version to their mod, especially if it's a library -_-!");
 					}
 					
 					//The version of the requested minimum library version.
@@ -422,14 +424,4 @@ public class NModLoader
 		
 		System.gc();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

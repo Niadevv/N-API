@@ -31,6 +31,7 @@ public class EventsForgeHandling
 		EventsList.fireEvent(new EventEntityDeath(event.entity), "EventEntityDeath");
 	}
 	
+	@SubscribeEvent
 	public void onEntitySpawned(LivingSpawnEvent event)
 	{
 		EventsList.fireEvent(new EventEntitySpawned(event.entity), "EntityJoinWorldEvent");
