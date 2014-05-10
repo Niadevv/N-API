@@ -7,11 +7,20 @@ package co.uk.niadel.api.measuresmpi;
  */
 public class Measure
 {
+	/**
+	 * The value of this measure.
+	 */
 	private long value;
+	
+	/**
+	 * This value's name.
+	 */
 	private String name;
+	
+	/**
+	 * The maximum value this can be before the next highest Measure is incremented.
+	 */
 	public long cutOffPointMax;
-	public Measure nextMeasure;
-	public Measure lastMeasure;
 	
 	public Measure(long value, String name, long cutOffPointMax)
 	{

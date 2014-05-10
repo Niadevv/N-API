@@ -25,7 +25,7 @@ public class ModFluidMeasure extends ModMeasureBase
 	{
 		super(measures);
 		
-		if (type == EnumLiquidTypes.OIL | type == EnumLiquidTypes.FUEL)
+		if (type == EnumLiquidTypes.OIL || type == EnumLiquidTypes.FUEL || type == EnumLiquidTypes.ENERGY_PROVIDER)
 		{
 			this.isEnergyProducer = true;
 		}

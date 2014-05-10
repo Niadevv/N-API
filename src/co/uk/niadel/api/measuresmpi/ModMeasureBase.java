@@ -1,14 +1,27 @@
 package co.uk.niadel.api.measuresmpi;
 
-public class ModMeasureBase 
+/**
+ * The base for groups of measures.
+ * @author Niadel
+ *
+ */
+public abstract class ModMeasureBase 
 {
-	public Measure[] measures;
+	/**
+	 * This groups array of Measure objects.
+	 */
+	private Measure[] measures;
 	
 	public ModMeasureBase(Measure[] measures)
 	{
 		this.measures = measures;
 	}
 	
+	/**
+	 * Returns the requested measure.
+	 * @param name
+	 * @return The requested measure.
+	 */
 	public Measure getMeasure(String name)
 	{
 		for (Measure measure : measures)
@@ -23,12 +36,40 @@ public class ModMeasureBase
 	}
 	
 	/**
-	 * Increments the value off the smallest Measure in measures then updates all of the measures.
+	 * Returns this objects Measure array.
+	 * @return this.measures
+	 */
+	public Measure[] getMeasures()
+	{
+		return this.measures;
+	}
+	
+	/**
+	 * Sets this measure's Measure array.
+	 * @param newMeasures
+	 */
+	public void setMeasures(Measure[] newMeasures)
+	{
+		this.measures = newMeasures;
+	}
+	
+	/**
+	 * Increments the value of the smallest Measure in measures then updates all of the measures.
 	 * @param valueToIncrementBy
 	 */
 	public void incrementMeasure(long valueToIncrementBy)
 	{
 		measures[0].addToValue(valueToIncrementBy);
+		updateMeasures();
+	}
+	
+	/**
+	 * Subtracts the value of the smallest Measure in measures then updates all of the Measure objects.
+	 * @param valueToDecrementBy
+	 */
+	public void decrementMeasure(long valueToDecrementBy)
+	{
+		measures[0].subtractFromValue(valueToDecrementBy);
 		updateMeasures();
 	}
 	
@@ -43,6 +84,12 @@ public class ModMeasureBase
 			{
 				measures[i + 1].addToValue(1);
 				measures[i].subtractFromValue(measures[i].cutOffPointMax);
+			}
+			
+			if (measures[i].getValue() <= 0)
+			{
+				measures[i - 1].setValue(measures[i - 1].cutOffPointMax - 1);
+				measures[i].setValue(0);
 			}
 		}
 	}
