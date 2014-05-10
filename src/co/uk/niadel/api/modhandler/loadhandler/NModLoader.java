@@ -18,14 +18,11 @@ import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.ReportedException;
-
 import org.apache.commons.io.IOUtils;
-
 import co.uk.niadel.api.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.api.annotations.IAnnotationHandler;
 import co.uk.niadel.api.annotations.MPIAnnotations.Library;
@@ -46,12 +43,10 @@ import co.uk.niadel.api.util.UtilityMethods;
  * same stuff. Flexibility may be improved in a later version of N-API.
  * 
  * The complete rewrite of the old NModLoader (Which I left for historical reasons as
- * NModLoaderOld). It copies some of the old methods, though. I'm suprised at how
+ * NModLoaderOld). It copies some of the old methods, though. I'm surprised at how
  * little code it took this time around. I guess it's quite easy the 100th time.
  * 
  * TODO Remove the need of the ModID.modid file.
- * 
- * TODO Make the code cleaner. It's spaghetti code for Notch's sake.
  * 
  * This is very System.gc() intensive to keep resources used at a minimum.
  * 
@@ -86,23 +81,191 @@ public class NModLoader
 	 */
 	public static File actModsDir = new File(mcModsDir + "act_mods" + File.separator);
 
-	
 	/**
-	 * Used to call the ModRegister methods but now only passes a class.
-	 * @param register
-	 * @return registerClass
+	 * The entry point for the loader.
+	 * 
+	 * @throws ZipException
+	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 * @throws NoSuchMethodException
 	 * @throws SecurityException
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
+	 * @throws NoSuchFieldException
 	 * @throws InstantiationException 
 	 */
-	public static final Class<? extends IModRegister> loadRegister(String register) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException
+	public static final void loadModsFromDir() throws ZipException, IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
 	{
-		Class registerClass = Class.forName(register);
-		return registerClass;
+		System.out.println(mcMainDir.toPath().toString());
+		initNAPIRegister((Class<? extends IModRegister>) Class.forName("co.uk.niadel.api.modhandler.n_api.ModRegister"));
+		
+		if (mcModsDir.listFiles() != null)
+		{
+			for (File currFile : mcModsDir.listFiles())
+			{
+				File nextLoad = extractFromZip(new ZipFile(currFile));
+				loadClasses(nextLoad);
+			}
+			
+			//TODO Make it so these actually are called at their respective points of initialisation.
+			callAllPreInits();
+			ASMRegistry.invokeAllTransformers();
+			callAllInits();
+			callAllPostInits();
+		}
+		
+		System.gc();
+	}
+	
+	/**
+	 * Only ever used to load the N-API ModRegister, so the regular checks are ignored. Don't ever call this outside of
+	 * the loader even though you have the ability to with the Reflection stuff.
+	 * @param theClass
+	 */
+	private static final void initNAPIRegister(Class<? extends IModRegister> theClass)
+	{
+		try
+		{
+			IModRegister register = theClass.newInstance();
+			register.preModInit();
+			register.modInit();
+			register.postModInit();
+			modLibraries.add(register);
+		}
+		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
+		{
+			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API ModRegister");
+			crashReport.makeCategory("Initialising N-API");
+			throw new ReportedException(crashReport);
+		}
+	}
+	
+	/**
+	 * Extracts the file for loading later on. Returns the file where the
+	 * extracted files are moved for convenience in loading.
+	 * 
+	 * @param zip
+	 * @return outputDir
+	 * @throws IOException
+	 */
+	public static final File extractFromZip(ZipFile zip) throws IOException
+	{
+		File actModsDirectory = new File(mcModsDir + "act_mods" + File.separator);
+		Enumeration<? extends ZipEntry> modsDirIter = zip.entries();
+		actModsDirectory.mkdirs();
+		File outputDir = new File(actModsDirectory + zip.getName().replace(".zip", "").replace(".jar", "") + File.separator);
+		
+		while (modsDirIter.hasMoreElements())
+		{
+			ZipEntry currClass = modsDirIter.nextElement();
+			InputStream zipInputStream = zip.getInputStream(currClass);
+			OutputStream output = new FileOutputStream(outputDir);
+			
+			//Probably the only instance in the entirety of N-API that an external library is used that isn't necessary for
+			//key mod functionality.
+			IOUtils.copy(zipInputStream, output);
+		}
+		
+		System.gc();
+		return outputDir;
+	}
+	
+	/**
+	 * Loads the classes in the directory.
+	 * @param dir
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchFieldException
+	 * @throws InstantiationException 
+	 */
+	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
+	{
+		if (dir.isDirectory())
+		{
+			for (File currFile : dir.listFiles())
+			{
+				String binaryName = getModId(dir);
+				
+				Class<? extends IModRegister> modRegisterClass = (Class<? extends IModRegister>) Class.forName(binaryName);
+				IModRegister modRegister = modRegisterClass.newInstance();
+				EventsList.fireEvent(new EventLoadMod(binaryName), "EventLoadMod");
+				Annotation[] registerAnnotations = modRegisterClass.getAnnotations();
+				
+				if (registerAnnotations != null)
+				{
+					//Makes it easier to add future annotations.
+					for (Annotation annotation : registerAnnotations)
+					{
+						//If the class has the @Library annotation, add it to the modLibraries list.
+						if (annotation.annotationType() == Library.class)
+						{
+							//Add it to the libraries list instead of the mods list.
+							modLibraries.add(modRegister);
+						}
+						else if (annotation.annotationType() == UnstableMod.class)
+						{
+							//Tell the user that the mod is unstable and could break stuff drastically
+							System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
+							//Put it in the regular mods thing.
+							mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
+						}
+						else if (annotation.annotationType() == UnstableLibrary.class)
+						{
+							//Tell the user that the library is unstable and mods using it could break
+							System.out.println("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
+							modLibraries.add(modRegister);
+						}
+						
+						//Gets all annotation handlers to handle the current annotation.
+						for (IAnnotationHandler currHandler : AnnotationHandlerRegistry.getAnnotationHandlers())
+						{
+							currHandler.handleAnnotation(annotation, modRegister);
+						}
+					}
+				}
+				else
+				{
+					mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
+				}
+			}
+		}
+		else
+		{
+			throw new IllegalArgumentException("The dir passed must be a directory to allow for the files to be loaded!");
+		}
+		
+		System.gc();
+	}
+	
+	/**
+	 * Gets the mod id from the file ModID.modid in a file.
+	 * @param dirToCheck
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public static final String getModId(File dirToCheck) throws FileNotFoundException
+	{
+		String binaryName = null;
+		
+		for (File currFile : dirToCheck.listFiles())
+		{
+			//If the file is called ModID.modid, get the first line and assign binaryName to that value.
+			if (currFile.getName().contains("ModID.modid"))
+			{
+				Scanner scanner = new Scanner(currFile);
+				binaryName = scanner.nextLine();
+				scanner.close();
+			}
+		}
+		
+		System.gc();
+		return binaryName;
 	}
 	
 	/**
@@ -126,9 +289,9 @@ public class NModLoader
 			currRegister.addRequiredMods();
 			currRegister.addRequiredLibraries();
 			
-			Iterator dependenciesIterator = currRegister.dependencies.iterator();
+			Iterator<String> dependenciesIterator = currRegister.dependencies.iterator();
 			Iterator libraryIterator = currRegister.libraryDependencies.entrySet().iterator();
-			Iterator libraryVersionIterator = currRegister.libraryDependencies.keySet().iterator();
+			Iterator<String> libraryVersionIterator = currRegister.libraryDependencies.keySet().iterator();
 			
 			//Iterates the dependencies of the mod
 			while (dependenciesIterator.hasNext())
@@ -149,7 +312,7 @@ public class NModLoader
 					}
 					else if (e instanceof InstantiationException)
 					{
-						//Tell the user (angrily) to tell the author angrily that they should not be making their register an interface.
+						//Tell the user (angrily) to tell the author that they should not be making their register an interface.
 						throw new RuntimeException("Please tell the author of the mod " + currRegister.modId + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
 					}
 				}
@@ -184,7 +347,7 @@ public class NModLoader
 						{
 							if (currLibVersion[i] >= currNumber)
 							{
-								//One version is ok, check the next one.
+								//One of the versions are ok, check the next one.
 								continue;
 							}
 							else
@@ -260,187 +423,13 @@ public class NModLoader
 		System.gc();
 	}
 	
-	/**
-	 * Extracts the file for loading later on. Returns the file where the
-	 * extracted files are moved for convenience in loading.
-	 * 
-	 * @param zip
-	 * @return outputDir
-	 * @throws IOException
-	 */
-	public static final File extractFromZip(ZipFile zip) throws IOException
-	{
-		File actModsDirectory = new File(mcModsDir + "act_mods" + File.separator);
-		Enumeration<? extends ZipEntry> modsDirIter = zip.entries();
-		actModsDirectory.mkdirs();
-		File outputDir = new File(actModsDirectory + zip.getName().replace(".zip", "").replace(".jar", "") + File.separator);
-		
-		while (modsDirIter.hasMoreElements())
-		{
-			ZipEntry currClass = modsDirIter.nextElement();
-			InputStream zipInputStream = zip.getInputStream(currClass);
-			OutputStream output = new FileOutputStream(outputDir);
-			
-			IOUtils.copy(zipInputStream, output);
-		}
-		
-		System.gc();
-		return outputDir;
-	}
 	
-	/**
-	 * The entry point for the loader.
-	 * 
-	 * @throws ZipException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchFieldException
-	 * @throws InstantiationException 
-	 */
-	public static final void loadModsFromDir() throws ZipException, IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
-	{
-		System.out.println(mcMainDir.toPath().toString());
-		initNAPIRegister(loadRegister("co.uk.niadel.api.modhandler.n_api.ModRegister"));
-		
-		if (mcModsDir.listFiles() != null)
-		{
-			for (File currFile : mcModsDir.listFiles())
-			{
-				File nextLoad = extractFromZip(new ZipFile(currFile));
-				loadClasses(nextLoad);
-			}
-			
-			//TODO Make it so these actually are called at their respective points of initialisation.
-			callAllPreInits();
-			ASMRegistry.invokeAllTransformers();
-			callAllInits();
-			callAllPostInits();
-		}
-		
-		System.gc();
-	}
 	
-	/**
-	 * Only ever used to load the N-API ModRegister, so the regular checks are ignored.
-	 * @param theClass
-	 */
-	private static final void initNAPIRegister(Class<? extends IModRegister> theClass)
-	{
-		try
-		{
-			IModRegister register = theClass.newInstance();
-			register.preModInit();
-			register.modInit();
-			register.postModInit();
-			modLibraries.add(register);
-		}
-		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
-		{
-			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API ModRegister");
-			crashReport.makeCategory("Initialising N-API");
-			throw new ReportedException(crashReport);
-		}
-	}
 	
-	/**
-	 * Loads the classes in the directory.
-	 * @param dir
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchFieldException
-	 * @throws InstantiationException 
-	 */
-	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
-	{
-		if (dir.isDirectory())
-		{
-			for (File currFile : dir.listFiles())
-			{
-				String binaryName = getModId(dir);
-				
-				Class<? extends IModRegister> modRegisterClass = loadRegister(binaryName);
-				IModRegister modRegister = modRegisterClass.newInstance();
-				EventsList.fireEvent(new EventLoadMod(binaryName), "EventLoadMod");
-				Annotation[] registerAnnotations = modRegisterClass.getAnnotations();
-				
-				if (registerAnnotations != null)
-				{
-					//Makes it easier to add future annotations.
-					for (Annotation annotation : registerAnnotations)
-					{
-						//If the class has the @Library annotation, add it to the modLibraries list.
-						if (annotation.annotationType() == Library.class)
-						{
-							//Add it to the libraries list instead of the mods list.
-							modLibraries.add(modRegister);
-						}
-						else if (annotation.annotationType() == UnstableMod.class)
-						{
-							//Tell the user that the mod is unstable and could break stuff drastically
-							System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
-							//Put it in the regular mods thing.
-							mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
-						}
-						else if (annotation.annotationType() == UnstableLibrary.class)
-						{
-							//Tell the user that the library is unstable and mods using it could break
-							System.out.println("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
-							modLibraries.add(modRegister);
-						}
-						
-						//Gets all annotation handlers to handle the current annotation.
-						for (IAnnotationHandler currHandler : AnnotationHandlerRegistry.getAnnotationHandlers())
-						{
-							currHandler.handleAnnotation(annotation, modRegister);
-						}
-					}
-				}
-				else
-				{
-					mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
-				}
-			}
-		}
-		else
-		{
-			throw new IllegalArgumentException("The dir passed must be a directory to allow for the files to be loaded!");
-		}
-		
-		System.gc();
-	}
 	
-	/**
-	 * Gets the mod id from the file ModID.modid in a file.
-	 * @param dirToCheck
-	 * @return
-	 * @throws FileNotFoundException
-	 */
-	public static final String getModId(File dirToCheck) throws FileNotFoundException
-	{
-		String binaryName = null;
-		
-		for (File currFile : dirToCheck.listFiles())
-		{
-			//If the file is called ModID.modid, 
-			if (currFile.getName().contains("ModID.modid"))
-			{
-				Scanner scanner = new Scanner(currFile);
-				binaryName = scanner.nextLine();
-				scanner.close();
-			}
-		}
-		
-		System.gc();
-		return binaryName;
-	}
+	
+	
+	
+	
+	
 }
