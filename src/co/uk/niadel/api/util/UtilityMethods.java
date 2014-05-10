@@ -1,6 +1,7 @@
 package co.uk.niadel.api.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;

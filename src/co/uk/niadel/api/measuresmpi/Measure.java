@@ -69,8 +69,8 @@ public final class Measure
 	}
 	
 	/**
-	 * Returns value.
-	 * @return
+	 * Returns this Measure's value.
+	 * @return This measures value.
 	 */
 	public final long getValue()
 	{
