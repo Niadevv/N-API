@@ -1,4 +1,4 @@
-package co.uk.niadel.api.reflection;
+package co.uk.niadel.api.util.reflection;
 
 import java.lang.reflect.*;
 

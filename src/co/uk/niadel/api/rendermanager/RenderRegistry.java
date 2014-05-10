@@ -2,7 +2,7 @@ package co.uk.niadel.api.rendermanager;
 
 import java.util.HashMap;
 import java.util.Map;
-import co.uk.niadel.api.reflection.ReflectionManipulateValues;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 

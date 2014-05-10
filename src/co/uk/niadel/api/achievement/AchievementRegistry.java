@@ -3,7 +3,7 @@ package co.uk.niadel.api.achievement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import co.uk.niadel.api.reflection.ReflectionCallMethods;
+import co.uk.niadel.api.util.reflection.ReflectionCallMethods;
 import net.minecraft.stats.Achievement;
 
 public final class AchievementRegistry

@@ -4,7 +4,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerBiome;
 import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
-import co.uk.niadel.api.reflection.ReflectionManipulateValues;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
 @TestFeature(firstAppearance = "1.0")
 /**

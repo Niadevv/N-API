@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import co.uk.niadel.api.annotations.MPIAnnotations.RecommendedMethod;
-import co.uk.niadel.api.reflection.ReflectionManipulateValues;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
 /**
  * Yes, Americans, armour is spelled with a U over here. We're English (as in, England English).

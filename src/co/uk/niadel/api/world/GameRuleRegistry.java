@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
-import co.uk.niadel.api.reflection.ReflectionManipulateValues;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
 /**
  * Where gamerules are registered.

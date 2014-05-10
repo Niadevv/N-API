@@ -3,8 +3,7 @@ package co.uk.niadel.api.crafting;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import co.uk.niadel.api.reflection.ReflectionManipulateValues;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.item.crafting.CraftingManager;

@@ -1,6 +1,6 @@
 package co.uk.niadel.api.biomes;
 
-import co.uk.niadel.api.reflection.ReflectionManipulateValues;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.world.biome.BiomeGenBase;
