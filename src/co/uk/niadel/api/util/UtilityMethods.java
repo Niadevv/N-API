@@ -1,7 +1,9 @@
 package co.uk.niadel.api.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
@@ -15,6 +17,19 @@ import net.minecraft.world.World;
  */
 public final class UtilityMethods
 {
+	/**
+	 * A UtilityMethods object, because I'm nice.
+	 */
+	public static UtilityMethods instance = new UtilityMethods();
+	
+	/**
+	 * Constructor to provide access to the 2 important byte manipulation things due to some weird error.
+	 */
+	public UtilityMethods()
+	{
+		
+	}
+	
 	/**
 	 * Removes all blocks in a vertical column above the block specified by the coords 
 	 * that are of the Block specified.
@@ -89,7 +104,9 @@ public final class UtilityMethods
 	}
 	
 	/**
-	 * Method used by NModLoader in the Library sub-system of the Mods Dependencies system.
+	 * Method used by NModLoader in the Library sub-system of the Mods Dependencies system. Assumes N-API/Minecraft version
+	 * convention of majorrelease.update.smallupdate.hotfix. For example, Minecraft 1.7.2 is the second small update
+	 * of the seventh update of the first major release.
 	 * @param version
 	 * @return arrayToReturn
 	 */
@@ -130,5 +147,98 @@ public final class UtilityMethods
 		}
 		
 		return arrayToReturn;
+	}
+	
+	/**
+	 * Converts a class to a byte array. Incredibly useful if you want to use ASM as I don't actually know how to recursively
+	 * pass byte[]s of vanilla classes without a metric poop ton of code.
+	 * @param objectToConvert
+	 * @return
+	 */
+	public static byte[] toByteArray(Object objectToConvert)
+	{
+		byte[] bytesToReturn = new byte[] {};
+		ByteArrayOutputStream byteOutputStream = null;
+		ObjectOutputStream objOutputStream = null;
+		
+		try
+		{
+			byteOutputStream = new ByteArrayOutputStream();
+			objOutputStream = new ObjectOutputStream(byteOutputStream);
+			objOutputStream.writeObject(objectToConvert);
+			objOutputStream.flush();
+			bytesToReturn = byteOutputStream.toByteArray();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				objOutputStream.close();
+				byteOutputStream.close();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return bytesToReturn;
+	}
+	
+	/**
+	 * Converts a byte array to an object.
+	 * @param bytesToConvert
+	 * @return
+	 */
+	public Object byteArrayToObject(byte[] bytesToConvert)
+	{
+		Class<?> tempClass = null;
+		try
+		{
+			DummyClassLoader loader = new DummyClassLoader();
+			tempClass = loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
+			return tempClass.newInstance();
+		}
+		catch (InstantiationException | IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return tempClass;
+	}
+	
+	/**
+	 * Converts a byte array to a class.
+	 * @param bytesToConvert
+	 * @return
+	 */
+	public Class<?> byteArrayToClass(byte[] bytesToConvert)
+	{
+		Class<?> tempClass = null;
+		DummyClassLoader loader = new DummyClassLoader();
+		tempClass = loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
+		return tempClass;
+	}
+	
+	/**
+	 * Just a dummy loader for byteArrayToObject and byteArrayToClass.
+	 * @author Niadel
+	 *
+	 */
+	public class DummyClassLoader extends ClassLoader
+	{
+		public DummyClassLoader()
+		{
+			super();
+		}
+		
+		public Class<?> dummyDefineClass(String name, byte[] bytes, int offset, int length)
+		{
+			return super.defineClass(name, bytes, offset, length);
+		}
 	}
 }

@@ -1,9 +1,10 @@
 package co.uk.niadel.api.util.temp;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import java.util.Random;
-
+import java.util.Set;
 import co.uk.niadel.api.exceptions.FreeIdNotFoundException;
 
 /**
@@ -15,9 +16,19 @@ import co.uk.niadel.api.exceptions.FreeIdNotFoundException;
  */
 public final class SafeIDAquirer 
 {
-	private static Set occupiedBlockIDs;
-	private static Set occupiedItemIDs;
+	/**
+	 * The Block IDs that are occupied.
+	 */
+	private static Set<Integer> occupiedBlockIDs;
 	
+	/**
+	 * The Item IDs that are occupied.
+	 */
+	private static Set<Integer> occupiedItemIDs;
+	
+	/**
+	 * This class's random instance.
+	 */
 	private static final Random random = new Random();
 	
 	/**
@@ -29,12 +40,11 @@ public final class SafeIDAquirer
 	 * @return triedId
 	 * @throws FreeIdNotFoundException 
 	 */
-	@SuppressWarnings("null")
 	public static int getFreeBlockID(int minId, int maxId) throws FreeIdNotFoundException
 	{
 		int triedId = random.nextInt(maxId - minId);
 		boolean hasIDBeenFound = false;
-		Collection<Integer> possibleIds = null;
+		List<Integer> possibleIds = new ArrayList<>();
 		
 		for (int i = minId; i == maxId; i++)
 		{
@@ -60,12 +70,11 @@ public final class SafeIDAquirer
 		throw new FreeIdNotFoundException();
 	}
 	
-	@SuppressWarnings("null")
 	public static int getFreeItemID(int minId, int maxId) throws FreeIdNotFoundException
 	{
 		int triedId = random.nextInt(maxId - minId);
 		boolean hasIDBeenFound = false;
-		Collection<Integer> possibleIds = null;
+		List<Integer> possibleIds = new ArrayList<>();
 		
 		for (int i = minId; i == maxId; i++)
 		{

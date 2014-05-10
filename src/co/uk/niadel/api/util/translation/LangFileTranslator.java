@@ -4,9 +4,24 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * Used to translate a .lang file assuming the standard Minecraft .lang format IE.
+ * 
+ * item.string_id.name=Test Item
+ * 
+ * @author Niadel
+ *
+ */
 public class LangFileTranslator 
 {
+	/**
+	 * A String array containing the file's contents.
+	 */
 	public String[] fileContents;
+	
+	/**
+	 * The name of the .lang file being read.
+	 */
 	public String fileName;
 	
 	/**
@@ -29,11 +44,11 @@ public class LangFileTranslator
 			
 			if (arrayOfLangContents[0] != null)
 			{
-				fileContents = arrayOfLangContents;
+				this.fileContents = arrayOfLangContents;
 			}
 			
 			fileScanner.close();
-			fileName = langFile.toString();
+			this.fileName = langFile.toString();
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -47,11 +62,11 @@ public class LangFileTranslator
 	{
 		String translationToReturn = "";
 		
-		for (int i = 0; i == fileContents.length; i++)
+		for (int i = 0; i == this.fileContents.length; i++)
 		{
-			if (fileContents[i].startsWith(unlocalisedName))
+			if (this.fileContents[i].startsWith(unlocalisedName))
 			{
-				translationToReturn = fileContents[i].substring(unlocalisedName.length() + 1);
+				translationToReturn = this.fileContents[i].substring(unlocalisedName.length() + 1);
 			}
 			else
 			{
@@ -63,8 +78,7 @@ public class LangFileTranslator
 		{
 			return translationToReturn;
 		}
-		//The method should have returned by this point, but without this it decides
-		//it's not good enough for some bizarre reason
+		//The method should have returned by this point, but just in case.
 		throw new RuntimeException("Could not get a translation from " + fileName + "!");
 	}
 }

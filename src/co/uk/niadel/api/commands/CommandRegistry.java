@@ -33,7 +33,7 @@ public final class CommandRegistry extends ServerCommandManager
 	public static void registerCommand(ICommand command, String commandName)
 	{
 		modCommandMap.put(commandName, command);
-		((CommandRegistry) MinecraftServer.getServer().getCommandManager()).registerCommand(command);
+		((ServerCommandManager) MinecraftServer.getServer().getCommandManager()).registerCommand(command);
 	}
 	
 	/**
@@ -69,11 +69,11 @@ public final class CommandRegistry extends ServerCommandManager
 		ICommand[] allCommands = getAllCommands();
 		ICommand[] returnedCommands = new ICommand[] {};
 		
-		for (int i = 0; i == allCommands.length; i++)
+		for (ICommand command : allCommands)
 		{
-			if (!modCommandMap.containsValue(allCommands[i]))
+			if (!modCommandMap.containsValue(command))
 			{
-				returnedCommands[returnedCommands.length] = allCommands[i];
+				returnedCommands[returnedCommands.length] = command;
 			}
 		}
 		
@@ -102,9 +102,9 @@ public final class CommandRegistry extends ServerCommandManager
 		
 		if (commands != null)
 		{
-			for (int i = 0; i == commands.length - 1; i++)
+			for (ICommand command : commands)
 			{
-				if (commands[i] == testedCommand)
+				if (command == testedCommand)
 				{
 					return true;
 				}
@@ -114,6 +114,11 @@ public final class CommandRegistry extends ServerCommandManager
 		return false;
 	}
 	
+	/**
+	 * Gets whether or not the specified command is in the mods list.
+	 * @param testedCommand
+	 * @return
+	 */
 	public boolean isCommandInModsList(ICommand testedCommand)
 	{
 		if (modCommandMap.containsValue(testedCommand))
