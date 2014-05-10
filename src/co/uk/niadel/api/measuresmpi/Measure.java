@@ -5,7 +5,7 @@ package co.uk.niadel.api.measuresmpi;
  * @author Niadel
  *
  */
-public class Measure
+public final class Measure
 {
 	/**
 	 * The value of this measure.
@@ -25,6 +25,18 @@ public class Measure
 	public Measure(long value, String name, long cutOffPointMax)
 	{
 		this.value = value;
+		this.name = name;
+		this.cutOffPointMax = cutOffPointMax;
+	}
+	
+	/**
+	 * Initialise the Measure at 0.
+	 * @param name
+	 * @param cutOffPointMax
+	 */
+	public Measure(String name, long cutOffPointMax)
+	{
+		this.value = 0;
 		this.name = name;
 		this.cutOffPointMax = cutOffPointMax;
 	}

@@ -8,7 +8,7 @@ import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
  * The base class for liquids like those seen in BuildCraft
  * @author Niadel
  */
-public class ModFluidMeasure extends ModMeasureBase
+public abstract class ModFluidMeasure extends ModMeasureBase
 {
 	/**
 	 * True if the liquid can be used to produce energy in some form.
@@ -31,6 +31,10 @@ public class ModFluidMeasure extends ModMeasureBase
 		}
 	}
 	
+	/**
+	 * Sets whetehr or not this is an energy producer.
+	 * @param newValue
+	 */
 	public final void setIsEnergyProducer(boolean newValue)
 	{
 		this.isEnergyProducer = newValue;

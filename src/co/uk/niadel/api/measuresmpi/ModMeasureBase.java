@@ -10,7 +10,7 @@ public abstract class ModMeasureBase
 	/**
 	 * This groups array of Measure objects.
 	 */
-	private Measure[] measures;
+	protected Measure[] measures;
 	
 	public ModMeasureBase(Measure[] measures)
 	{
