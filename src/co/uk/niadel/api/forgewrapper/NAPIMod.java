@@ -23,7 +23,7 @@ public class NAPIMod
 		{
 			NModLoader.loadModsFromDir();
 		}
-		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | IOException e)
+		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | IOException e) //Oh sweet lawd the amount of exceptions :3
 		{
 			System.err.println("ERROR LOADING N-API FORGE WRAPPER AND N-API MODS!");
 			e.printStackTrace();

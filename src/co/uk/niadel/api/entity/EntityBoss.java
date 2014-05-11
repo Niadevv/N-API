@@ -12,8 +12,15 @@ import net.minecraft.world.World;
  */
 public class EntityBoss extends EntityMob implements IBossDisplayData
 {
-	Entity projectileEntity;
-	Entity targetedEntity;
+	/**
+	 * The entity that is being launched. Maybe it could be a Creeper XD.
+	 */
+	protected Entity projectileEntity;
+	
+	/**
+	 * The entity being targeted.
+	 */
+	protected Entity targetedEntity;
 	
 	public EntityBoss(World world)
 	{
@@ -24,14 +31,14 @@ public class EntityBoss extends EntityMob implements IBossDisplayData
 	 * A utility method that attacks a mob with a projectile. Is customisable, just pass a target, a projectile Object, like
 	 * a wither skull or an arrow, and the offset from the entity.
 	 */
-	public final void attackEnemyFromRange(Entity target, Entity projectile, double xOffset, double yOffset, double zOffset)
+	public final void attackEnemyFromRange(Entity target, double xOffset, double yOffset, double zOffset)
 	{
 		this.targetedEntity = target;
-		Entity projectileEntity = projectile;
+		Entity projectileEntity = this.projectileEntity;
 		
-		double projectilePosX = this.posX;
-		double projectilePosY = this.posY;
-		double projectilePosZ = this.posZ;
+		double projectilePosX = this.posX + xOffset;
+		double projectilePosY = this.posY + yOffset;
+		double projectilePosZ = this.posZ + zOffset;
 		double projectileMotionX = this.targetedEntity.posX - this.posX;
 		double projectileMotionY = (this.targetedEntity.boundingBox.maxY - this.targetedEntity.boundingBox.minY) + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
 		double projectileMotionZ = this.targetedEntity.posZ - this.posZ;
@@ -52,12 +59,18 @@ public class EntityBoss extends EntityMob implements IBossDisplayData
 		this.projectileEntity = theProjectile;
 	}
 	
+	/**
+	 * Sets the target of this entity.
+	 */
 	@Override
 	public final void setTarget(Entity target)
 	{
 		this.targetedEntity = target;
 	}
 	
+	/**
+	 * Override of onLivingUpdate.
+	 */
 	@Override
 	public void onLivingUpdate()
 	{

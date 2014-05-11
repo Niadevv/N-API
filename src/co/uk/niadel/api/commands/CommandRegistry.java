@@ -3,10 +3,10 @@ package co.uk.niadel.api.commands;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
+import co.uk.niadel.api.annotations.MPIAnnotations.RecommendedMethod;
 
 /**
  * Used to add commands.
@@ -80,6 +80,7 @@ public final class CommandRegistry extends ServerCommandManager
 		return returnedCommands;
 	}
 	
+	@RecommendedMethod
 	/**
 	 * Gets commands from mods as a Map. This is the more recommended method as you can
 	 * do more with maps.

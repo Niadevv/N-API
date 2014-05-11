@@ -9,21 +9,11 @@ import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.api.items.EnumItemType;
 
 /**
- * Where you register blocks. You can also extend this, but you don't have to.
+ * Where you register blocks.
  * @author Niadel
  */
 public final class BlockRegistry extends Block
 {
-	private int numericId;
-	private String nonNumericId;
-	public String namespace;
-	
-	/**
-	 * The type of item this block is. Used mainly to improve mods like Tinker's Construct.
-	 */
-	public EnumItemType itemType;
-	private EnumBlockTypes type;
-	
 	/**
 	 * Used to prevent a ClassCastException.
 	 */

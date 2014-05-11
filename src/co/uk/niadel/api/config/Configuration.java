@@ -108,7 +108,7 @@ public final class Configuration
 		
 		//Will only be thrown if the config file doesn't exist and therefore
 		//needs to be created.
-		throw new FileNotFoundException("Config File not found!");
+		throw new FileNotFoundException("[CONFIGERROR] Config File not found!");
 	}
 	
 	/**
@@ -125,7 +125,7 @@ public final class Configuration
 		}
 		catch (FileNotFoundException e)
 		{
-			System.err.println("Please create the config before attempting to get data from it.");
+			System.err.println("[CONFIGERROR] Please create the config before attempting to get data from it.");
 		}
 		
 		return data.get(configValue);
@@ -183,7 +183,7 @@ public final class Configuration
 		}
 		else
 		{
-			throw new RuntimeException("The arrays valueNames and defaultValues passed to addDataLines MUST be the same length!");
+			throw new RuntimeException("[CONFIGERROR] The arrays valueNames and defaultValues passed to addDataLines MUST be the same length!");
 		}
 	}
 }

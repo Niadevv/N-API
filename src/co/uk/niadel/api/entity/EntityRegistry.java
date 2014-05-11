@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 
 /**
- * Where to register mobs.
+ * Where to register mobs. This makes entities summonable with /summon and (if you want) gives them spawn eggs.
  * @author Niadel
  */
 public final class EntityRegistry extends EntityList
@@ -21,7 +21,7 @@ public final class EntityRegistry extends EntityList
     }
 	
     /**
-     * Simplifies mob registration.
+     * Registers an entity with an associated spawn egg.
      * 
      * @param entityClass
      * @param stringMobId

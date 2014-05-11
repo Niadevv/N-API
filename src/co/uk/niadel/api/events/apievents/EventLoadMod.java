@@ -4,7 +4,7 @@ import co.uk.niadel.api.events.EventBase;
 import co.uk.niadel.api.events.IEvent;
 
 /**
- * Fired when a mod is loaded.
+ * Fired when a mod is loaded. No real point to this however. It was one of the original events to be created.
  * @author Niadel
  *
  */

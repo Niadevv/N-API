@@ -20,11 +20,28 @@ import net.minecraft.util.ReportedException;
  */
 public final class RecipesRegistry extends CraftingManager
 {
-	static CraftingManager modRecipeList = CraftingManager.getInstance();
-	static FurnaceRecipes recipes = FurnaceRecipes.smelting();
+	/**
+	 * Only exists for the purpose of one method.
+	 */
+	private static RecipesRegistry instance = new RecipesRegistry(); 
 	
 	/**
-	 * Adds a furnace recipe, item version.
+	 * The list of crafting recipes from mods.
+	 */
+	public static CraftingManager modRecipeList = CraftingManager.getInstance();
+	
+	/**
+	 * The vanilla crafting recipes.
+	 */
+	public static FurnaceRecipes recipes = FurnaceRecipes.smelting();
+	
+	/**
+	 * Dummy constructor only used for one method.
+	 */
+	private RecipesRegistry() {}
+	
+	/**
+	 * Adds a furnace recipe, item version. Wrapper for an obfuscated method name.
 	 * @param inputItem
 	 * @param outputItem
 	 * @param xpGiven
@@ -35,7 +52,7 @@ public final class RecipesRegistry extends CraftingManager
 	}
 	
 	/**
-	 * Adds a furnace recipe, block version.
+	 * Adds a furnace recipe, block version. Wrapper for an obfuscated method name.
 	 * @param inputItem
 	 * @param outputItem
 	 * @param xpGiven
@@ -56,24 +73,33 @@ public final class RecipesRegistry extends CraftingManager
 	}
 	
 	/**
-	 * Adds a shapeless recipe.
+	 * Adds a shapeless recipe. This used to be protected for some reason O_o.
 	 * @param outputItem
 	 * @param arrayOfRecipeObjects
 	 */
-	protected static void addModShapelessRecipe(ItemStack outputItem, Object[] arrayOfRecipeObjects)
+	public static void addModShapelessRecipe(ItemStack outputItem, Object[] arrayOfRecipeObjects)
 	{
 		modRecipeList.addShapelessRecipe(outputItem, arrayOfRecipeObjects);
 	}
 	
 	/**
-	 * Unfortunately, can only be called in subclasses. Will be fixed at a later date.
+	 * Private as this can only otherwise be called by subclasses, and that's no fun.
 	 * @param craftingRecipeObject
 	 */
-	public final void addNewModRecipes(CraftingManager craftingRecipeObject)
+	private final void addNewModRecipesPrivate(CraftingManager craftingRecipeObject)
 	{
 		//Mojang! Y U NO USE GENERICS?! You can and SHOULD use them.
 		List recipes = getRecipes();
 		recipes.add(craftingRecipeObject);
+	}
+	
+	/**
+	 * The above method, just static.
+	 * @param craftingRecipeObject
+	 */
+	public static final void addNewModRecipes(CraftingManager craftingRecipeObject)
+	{
+		instance.addNewModRecipesPrivate(craftingRecipeObject);
 	}
 	
 	/**
@@ -87,7 +113,7 @@ public final class RecipesRegistry extends CraftingManager
 		}
 		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
 		{
-			System.err.println("Error adding the recipes!");
+			System.err.println("Error adding recipes!");
 			CrashReport crashReport = CrashReport.makeCrashReport(e, "Error adding recipes");
 			crashReport.makeCategory("Adding important things necessary for mods to work");
 			throw new ReportedException(crashReport);
