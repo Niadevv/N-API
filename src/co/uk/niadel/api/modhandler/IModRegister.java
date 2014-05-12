@@ -33,6 +33,11 @@ public interface IModRegister
 	public static final String version = "";
 	
 	/**
+	 * Where you register transformers. This is called BEFORE everything else, in Bootstrap.
+	 */
+	public void registerTransformers();
+	
+	/**
 	 * Called before modInit(). Register events and event handlers here.
 	 */
 	public void preModInit();

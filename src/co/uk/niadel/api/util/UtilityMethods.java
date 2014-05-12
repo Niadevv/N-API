@@ -25,10 +25,7 @@ public final class UtilityMethods
 	/**
 	 * Constructor to provide access to the 2 important byte manipulation things due to some weird error.
 	 */
-	public UtilityMethods()
-	{
-		
-	}
+	public UtilityMethods() {}
 	
 	/**
 	 * Removes all blocks in a vertical column above the block specified by the coords 
@@ -194,7 +191,7 @@ public final class UtilityMethods
 	 * @param bytesToConvert
 	 * @return
 	 */
-	public Object byteArrayToObject(byte[] bytesToConvert)
+	private Object byteArrayToObjectPrivate(byte[] bytesToConvert)
 	{
 		Class<?> tempClass = null;
 		try
@@ -212,11 +209,21 @@ public final class UtilityMethods
 	}
 	
 	/**
+	 * Converts a byte array to an object.
+	 * @param bytesToConvert
+	 * @return
+	 */
+	public static final Object byteArrayToObject(byte[] bytesToConvert)
+	{
+		return instance.byteArrayToObjectPrivate(bytesToConvert);
+	}
+	
+	/**
 	 * Converts a byte array to a class.
 	 * @param bytesToConvert
 	 * @return
 	 */
-	public Class<?> byteArrayToClass(byte[] bytesToConvert)
+	private Class<?> byteArrayToClassPrivate(byte[] bytesToConvert)
 	{
 		Class<?> tempClass = null;
 		DummyClassLoader loader = new DummyClassLoader();
@@ -224,12 +231,17 @@ public final class UtilityMethods
 		return tempClass;
 	}
 	
+	public static final Class<?> byteArrayToClass(byte[] bytesToConvert)
+	{
+		return instance.byteArrayToClassPrivate(bytesToConvert);
+	}
+	
 	/**
 	 * Just a dummy loader for byteArrayToObject and byteArrayToClass.
 	 * @author Niadel
 	 *
 	 */
-	public class DummyClassLoader extends ClassLoader
+	private class DummyClassLoader extends ClassLoader
 	{
 		public DummyClassLoader()
 		{

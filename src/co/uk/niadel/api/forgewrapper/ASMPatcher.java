@@ -12,12 +12,13 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 	{
 		switch (currClassName)
 		{
-			case "abn":
-				patchClassObfed(currClassName, newClassName, bytes);
+			//Classes are deobfuscated by Forge at runtime. This should (if CPW got it right) work.
+			case "net.minecraft.item.Item":
+				patchClass(currClassName, newClassName, bytes);
 		}
 	}
 	
-	public byte[] patchClassObfed(String currClassName, String newClassName, byte[] bytes)
+	public byte[] patchClass(String currClassName, String newClassName, byte[] bytes)
 	{
 		ClassNode cn = new ClassNode();
 		ClassReader cr = new ClassReader(bytes);
@@ -26,10 +27,10 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 		
 		switch (currClassName)
 		{
-			case "abn":
+			case "net.minecraft.item.Item":
 				cw.newField("abn", "instance", "public Labn;");
 				FieldVisitor fv = cw.visitField(ACC_PUBLIC, "instance", "public Labn", null, null);
-				cw.visitMethod(ACC_PUBLIC, "<init>", "public Labn", null, null);
+				fv.visitEnd();
 				
 		}
 	}

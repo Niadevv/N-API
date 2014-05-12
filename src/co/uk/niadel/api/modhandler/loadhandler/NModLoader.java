@@ -129,6 +129,11 @@ public class NModLoader
 		System.gc();
 	}
 	
+	public static final void registerTransformers()
+	{
+		
+	}
+	
 	/**
 	 * Only ever used to load the N-API ModRegister, so the regular checks are ignored. Don't ever call this outside of
 	 * the loader even though you have the ability to with the Reflection stuff.
@@ -204,48 +209,7 @@ public class NModLoader
 			for (File currFile : dir.listFiles())
 			{
 				String binaryName = getModId(dir);
-				
-				Class<? extends IModRegister> modRegisterClass = (Class<? extends IModRegister>) Class.forName(binaryName);
-				IModRegister modRegister = modRegisterClass.newInstance();
-				EventsList.fireEvent(new EventLoadMod(binaryName), "EventLoadMod");
-				Annotation[] registerAnnotations = modRegisterClass.getAnnotations();
-				
-				if (registerAnnotations != null)
-				{
-					//Makes it easier to add future annotations.
-					for (Annotation annotation : registerAnnotations)
-					{
-						//If the class has the @Library annotation, add it to the modLibraries list.
-						if (annotation.annotationType() == Library.class)
-						{
-							//Add it to the libraries list instead of the mods list.
-							modLibraries.add(modRegister);
-						}
-						else if (annotation.annotationType() == UnstableMod.class)
-						{
-							//Tell the user that the mod is unstable and could break stuff drastically
-							System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
-							//Put it in the regular mods thing.
-							mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
-						}
-						else if (annotation.annotationType() == UnstableLibrary.class)
-						{
-							//Tell the user that the library is unstable and mods using it could break
-							System.out.println("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
-							modLibraries.add(modRegister);
-						}
-						
-						//Gets all annotation handlers to handle the current annotation.
-						for (IAnnotationHandler currHandler : AnnotationHandlerRegistry.getAnnotationHandlers())
-						{
-							currHandler.handleAnnotation(annotation, modRegister);
-						}
-					}
-				}
-				else
-				{
-					mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
-				}
+				processAnnotations(binaryName);
 			}
 		}
 		else
@@ -254,6 +218,57 @@ public class NModLoader
 		}
 		
 		System.gc();
+	}
+	
+	/**
+	 * Processes annotations.
+	 * @param binaryName
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	public static final void processAnnotations(String binaryName) throws ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		Class<? extends IModRegister> modRegisterClass = (Class<? extends IModRegister>) Class.forName(binaryName);
+		IModRegister modRegister = modRegisterClass.newInstance();
+		Annotation[] registerAnnotations = modRegisterClass.getAnnotations();
+
+		if (registerAnnotations != null)
+		{
+			//Makes it easier to add future annotations.
+			for (Annotation annotation : registerAnnotations)
+			{
+				//If the class has the @Library annotation, add it to the modLibraries list.
+				if (annotation.annotationType() == Library.class)
+				{
+					//Add it to the libraries list instead of the mods list.
+					modLibraries.add(modRegister);
+				}
+				else if (annotation.annotationType() == UnstableMod.class)
+				{
+					//Tell the user that the mod is unstable and could break stuff drastically
+					System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
+					//Put it in the regular mods thing.
+					mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
+				}
+				else if (annotation.annotationType() == UnstableLibrary.class)
+				{
+					//Tell the user that the library is unstable and mods using it could break
+					System.out.println("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
+					modLibraries.add(modRegister);
+				}
+
+				//Gets all annotation handlers to handle the current annotation.
+				for (IAnnotationHandler currHandler : AnnotationHandlerRegistry.getAnnotationHandlers())
+				{
+					currHandler.handleAnnotation(annotation, modRegister);
+				}
+			}
+		}
+		else
+		{
+			mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
+		}
 	}
 	
 	/**
