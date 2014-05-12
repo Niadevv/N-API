@@ -52,4 +52,10 @@ public class ModRegister implements IModRegister
 	{
 		
 	}
+
+	@Override
+	public void registerTransformers()
+	{
+		
+	}
 }

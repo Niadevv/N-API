@@ -12,7 +12,7 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 	{
 		switch (currClassName)
 		{
-			//Classes are deobfuscated by Forge at runtime. This should (if CPW got it right) work.
+			//Classes are deobfuscated by FML at runtime. This should (if CPW got it right) work.
 			case "net.minecraft.item.Item":
 				patchClass(currClassName, newClassName, bytes);
 		}

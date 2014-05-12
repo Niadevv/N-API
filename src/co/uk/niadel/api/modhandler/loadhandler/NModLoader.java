@@ -129,9 +129,35 @@ public class NModLoader
 		System.gc();
 	}
 	
+	public static final void invokeRegisterMethods()
+	{
+		try
+		{
+			callAllPreInits();
+		}
+		catch (OutdatedLibraryException | ModDependencyNotFoundException e)
+		{
+			//The exceptions deal with this, no need to do special stuff.
+			;
+		}
+		
+		callAllInits();
+		callAllPostInits();
+	}
+	
 	public static final void registerTransformers()
 	{
+		//What iterates the classes in mods.
+		Iterator<String> modsIterator = mods.keySet().iterator();
+		//Iterates the IModRegister objects. Lawd darnit, why don't generics work here?!
+		Iterator modsObjectIterator = mods.entrySet().iterator();
 		
+		while (modsIterator.hasNext())
+		{
+			String currClass = (String) modsIterator.next();
+			IModRegister currRegister = (IModRegister) modsObjectIterator.next();
+			currRegister.registerTransformers();
+		}
 	}
 	
 	/**
