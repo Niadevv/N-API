@@ -109,21 +109,6 @@ public class NModLoader
 				File nextLoad = extractFromZip(new ZipFile(currFile));
 				loadClasses(nextLoad);
 			}
-			
-			//TODO Make it so these actually are called at their respective points of initialisation.
-			try
-			{
-				callAllPreInits();
-			}
-			catch (OutdatedLibraryException | ModDependencyNotFoundException e)
-			{
-				//The exceptions deal with this, no need to do special stuff.
-				;
-			}
-			
-			ASMRegistry.invokeAllTransformers();
-			callAllInits();
-			callAllPostInits();
 		}
 		
 		System.gc();
