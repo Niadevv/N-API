@@ -85,6 +85,11 @@ public class NModLoader
 	 * Where the decompressed class files are copied to.
 	 */
 	public static File actModsDir = new File(mcModsDir + "act_mods" + File.separator);
+	
+	/**
+	 * The version of N-API.
+	 */
+	protected static String nAPIVersion;
 
 	/**
 	 * The entry point for the loader.
@@ -170,6 +175,7 @@ public class NModLoader
 			register.preModInit();
 			register.modInit();
 			register.postModInit();
+			nAPIVersion = register.version;
 			//Add the N-API register to the libraries list - That's probably the closest to what N-API is.
 			modLibraries.add(register);
 		}
