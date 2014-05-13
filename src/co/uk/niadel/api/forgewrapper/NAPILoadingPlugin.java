@@ -4,6 +4,11 @@ import java.util.Map;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.*;
 
+/**
+ * Used for loading special stuff for Forge.
+ * @author Niadel
+ *
+ */
 @Name(value = "N-API Forge Wrapper ASM Transformers and Access Transformers")
 @MCVersion(value = "1.7.2")
 public class NAPILoadingPlugin implements IFMLLoadingPlugin
@@ -17,7 +22,7 @@ public class NAPILoadingPlugin implements IFMLLoadingPlugin
 	@Override
 	public String getModContainerClass()
 	{
-		return null;
+		return "co.uk.niadel.api.forgewrapper.NAPIMod";
 	}
 
 	@Override

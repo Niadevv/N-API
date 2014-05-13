@@ -44,9 +44,12 @@ import co.uk.niadel.api.util.UtilityMethods;
  * This isn't actually as flexible as the Forge mod loader, but it does most of the
  * same stuff. Flexibility may be improved in a later version of N-API.
  * 
- * The complete rewrite of the old NModLoader (Which I left for historical reasons as
- * NModLoaderOld). It copies some of the old methods, though. I'm surprised at how
- * little code it took this time around. I guess it's quite easy the 100th time.
+ * The loader does the following:
+ * <p> 1. Scan the mods directory for zips and jar files.
+ * <p> 2. Extract the zip contents and put them in act_mods for actual loading.
+ * <p> 3. Read ModID.modid and load the class with that name.
+ * <p> 4. Do this for all mods, putting them into a Map keyed by a String and entried by the actual class object.
+ * <p> 5. Loop through all of the objects in the Map containing the mods and call their registerTransformers() method.
  * 
  * TODO Remove the need of the ModID.modid file.
  * 
@@ -114,6 +117,9 @@ public class NModLoader
 		System.gc();
 	}
 	
+	/**
+	 * Calls all register's preModInit, modInit, and postModInit methods.
+	 */
 	public static final void invokeRegisterMethods()
 	{
 		try
@@ -130,18 +136,24 @@ public class NModLoader
 		callAllPostInits();
 	}
 	
+	/**
+	 * Calls all mod register's registerTransformers() method.
+	 */
 	public static final void registerTransformers()
 	{
-		//What iterates the classes in mods.
-		Iterator<String> modsIterator = mods.keySet().iterator();
-		//Iterates the IModRegister objects. Lawd darnit, why don't generics work here?!
 		Iterator modsObjectIterator = mods.entrySet().iterator();
+		Iterator<IModRegister> modsLibraryIterator = modLibraries.iterator();
 		
-		while (modsIterator.hasNext())
+		while (modsObjectIterator.hasNext())
 		{
-			String currClass = (String) modsIterator.next();
 			IModRegister currRegister = (IModRegister) modsObjectIterator.next();
 			currRegister.registerTransformers();
+		}
+		
+		while (modsLibraryIterator.hasNext())
+		{
+			//Generics for the win!
+			modsLibraryIterator.next().registerTransformers();
 		}
 	}
 	
@@ -232,7 +244,7 @@ public class NModLoader
 	}
 	
 	/**
-	 * Processes annotations.
+	 * Processes annotations, doing special things depending on annotations.
 	 * @param binaryName
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
@@ -354,7 +366,7 @@ public class NModLoader
 					else if (e instanceof InstantiationException)
 					{
 						//Tell the user (angrily) to tell the author that they should not be making their register an interface.
-						throw new RuntimeException("Please tell the author of the mod " + currRegister.modId + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
+						throw new RuntimeException("Please ask the author of the mod " + currRegister.modId + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
 					}
 				}
 					
@@ -367,7 +379,7 @@ public class NModLoader
 				if (libraryVersionIterator != null && libraryIterator != null)
 				{
 					//The current library version.
-					String currLibraryVersion = (String) libraryVersionIterator.next();
+					String currLibraryVersion = libraryVersionIterator.next();
 					//The current library
 					IModRegister currLib = (IModRegister) libraryIterator.next();
 					
@@ -398,6 +410,8 @@ public class NModLoader
 							}
 						}
 					}
+					
+					currLib.preModInit();
 				}
 			}
 			
@@ -408,6 +422,9 @@ public class NModLoader
 		System.gc();
 	}
 	
+	/**
+	 * Calls all register's modInit method.
+	 */
 	public static final void callAllInits()
 	{
 		Iterator<String> modsIterator = mods.keySet().iterator();
@@ -435,6 +452,9 @@ public class NModLoader
 		System.gc();
 	}
 	
+	/**
+	 * Calls all register's postModInit methods.
+	 */
 	public static final void callAllPostInits()
 	{
 		Iterator<String> modsIterator = mods.keySet().iterator();

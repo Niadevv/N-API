@@ -11,6 +11,11 @@ import co.uk.niadel.api.events.entity.EventEntityStruckByLightning;
 import co.uk.niadel.api.events.server.EventServerChat;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * Used so I don't have to ASM the main few events in.
+ * @author Niadel
+ *
+ */
 public class EventsForgeHandling
 {
 	@SubscribeEvent
