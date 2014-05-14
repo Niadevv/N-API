@@ -17,7 +17,7 @@ public class ModRegister implements IModRegister
 {	
 	public static String modId = "NIADEL_n_api";
 	
-	public static String version = "1.0";
+	public static final String VERSION = "1.7.2_1.0";
 	
 	@Override
 	public void preModInit()

@@ -24,13 +24,13 @@ public interface IModRegister
 	/**
 	 * A mod's unique identifier.
 	 */
-	public static final String modId = "";
+	public static String modId = "";
 	
 	/**
 	 * The mod's version. You more or less have to specify this, or at the very least it is 
 	 * very recommended.
 	 */
-	public static final String version = "";
+	public static String version = "";
 	
 	/**
 	 * Where you register transformers. This is called BEFORE everything else, in Bootstrap.
