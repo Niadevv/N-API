@@ -21,7 +21,7 @@ public final class ReflectionCallMethods
 		method.invoke(theClass, args);
 	}
 	
-	public final static void callMethod(Class<?> classToCallMethod, String methodName, Object ... args) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	public final static <X> void callMethod(Class<? extends X> classToCallMethod, String methodName, Object ... args) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		Method method = classToCallMethod.getDeclaredMethod(methodName, new Class[] {});
 		method.setAccessible(true);

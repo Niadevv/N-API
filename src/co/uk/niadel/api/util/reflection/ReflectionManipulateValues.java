@@ -16,17 +16,40 @@ public final class ReflectionManipulateValues
 	 * NOTE: variableClassObject has to be created with new.
 	 * @param objectClass
 	 * @param variableName
-	 * @param newValue
-	 * @throws SecurityException 
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @param newValue 
 	 */
-	public final static void setValue(Class<?> objectClass, Object variableClassObject, String variableName, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public final static <X> void setValue(Class<? extends X> objectClass, Object variableClassObject, String variableName, Object newValue) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
 	{
-		Field value = objectClass.getDeclaredField(variableName);
-		value.setAccessible(true);
-		value.set(variableClassObject, newValue);
+		try 
+		{
+			Field value = objectClass.getDeclaredField(variableName);
+			value.setAccessible(true);
+			value.set(variableClassObject, newValue);
+		}
+		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * The simpler version of the above method.
+	 * @param objectClass
+	 * @param variableName
+	 * @param newValue
+	 */
+	public final static <X> void setValue(Class<? extends X> objectClass, String variableName, Object newValue)
+	{
+		try
+		{
+			Field value = objectClass.getDeclaredField(variableName);
+			value.setAccessible(true);
+			value.set(objectClass.newInstance(), newValue);
+		}
+		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -35,16 +58,22 @@ public final class ReflectionManipulateValues
 	 * @param variableClassObject
 	 * @param variableName
 	 * @return
-	 * @throws NoSuchFieldException
-	 * @throws SecurityException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
 	 */
-	public final static Object getValue(Class<?> objectClass, Object variableClassObject, String variableName) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public final static <X, Y> Y getValue(Class<? extends X> objectClass, Object variableClassObject, String variableName)
 	{
-		Field value = objectClass.getDeclaredField(variableName);
-		value.setAccessible(true);
-		Object variable = value.get(variableClassObject);
+		Y variable = null;
+		
+		try
+		{
+			Field value = objectClass.getDeclaredField(variableName);
+			value.setAccessible(true);
+			variable = (Y) value.get(variableClassObject);
+		}
+		catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e)
+		{
+			e.printStackTrace();
+		}
+		
 		return variable;
 	}
 }

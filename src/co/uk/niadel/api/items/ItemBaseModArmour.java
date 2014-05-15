@@ -43,7 +43,7 @@ public class ItemBaseModArmour extends ItemArmor
 		{
 			this.overlayIcon = (IIcon) ReflectionManipulateValues.getValue(ItemArmor.class, super.instance, "overlayIcon");
 		}
-		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1)
+		catch (SecurityException | IllegalArgumentException e1)
 		{
 			e1.printStackTrace();
 		}
