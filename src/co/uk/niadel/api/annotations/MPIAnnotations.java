@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * Useful for mods with MPIs of their own but still mainly use
- * N-API. Most of these are documentation Annotations. Only 3 are currently used at runtime.
+ * N-API. Most of these are documentation Annotations. Only a handful are currently used at runtime.
  * 
  * @author Niadel
  */
@@ -86,5 +86,16 @@ public final class MPIAnnotations
 	{
 		String specialMessage() default "This library is likely to change frequently and mods based on this "
 				+ "library may break!";
+	}
+	
+	/**
+	 * Somewhat analagous to Forge's @Mod annotation, only optional.
+	 * @author Niadel
+	 *
+	 */
+	public @interface ModRegister
+	{
+		String version();
+		String modId();
 	}
 }

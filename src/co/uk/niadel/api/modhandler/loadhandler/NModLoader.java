@@ -26,6 +26,7 @@ import org.apache.commons.io.IOUtils;
 import co.uk.niadel.api.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.api.annotations.IAnnotationHandler;
 import co.uk.niadel.api.annotations.MPIAnnotations.Library;
+import co.uk.niadel.api.annotations.MPIAnnotations.ModRegister;
 import co.uk.niadel.api.annotations.MPIAnnotations.UnstableLibrary;
 import co.uk.niadel.api.annotations.MPIAnnotations.UnstableMod;
 import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
@@ -38,6 +39,7 @@ import co.uk.niadel.api.exceptions.OutdatedLibraryException;
 import co.uk.niadel.api.modhandler.IModRegister;
 import co.uk.niadel.api.rendermanager.RenderRegistry;
 import co.uk.niadel.api.util.UtilityMethods;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
 @TestFeature(stable = false, firstAppearance = "1.0")
 /**
@@ -285,6 +287,13 @@ public class NModLoader
 					//Tell the user that the library is unstable and mods using it could break
 					System.out.println("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
 					modLibraries.add(modRegister);
+				}
+				else if (annotation.annotationType() == ModRegister.class)
+				{
+					//Set values of the register with Reflection because for some reason interface values are final by default.
+					//Huh, you learn something new every day. Unless you're dead :3
+					ReflectionManipulateValues.setValue(annotation.getClass(), "version", ((ModRegister) annotation).version());
+					ReflectionManipulateValues.setValue(annotation.getClass(), "modId", ((ModRegister) annotation).modId());
 				}
 
 				//Gets all annotation handlers to handle the current annotation.
