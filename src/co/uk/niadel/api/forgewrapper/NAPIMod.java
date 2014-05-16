@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.zip.ZipException;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
+import co.uk.niadel.api.asm.ASMRegistry;
 import co.uk.niadel.api.modhandler.loadhandler.NModLoader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -24,6 +25,8 @@ public class NAPIMod
 		try
 		{
 			NModLoader.loadModsFromDir();
+			ASMRegistry.invokeAllTransformers();
+			NModLoader.invokeRegisterMethods();
 		}
 		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | IOException e) //Oh sweet lawd the amount of exceptions :3
 		{

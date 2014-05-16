@@ -335,8 +335,7 @@ public class NModLoader
 	}
 	
 	/**
-	 * By far the most complicated method, this checks dependencies and libraries before
-	 * calling a mod's modPreInit method.
+	 * This checks dependencies and libraries before calling a mod's modPreInit method.
 	 * @throws OutdatedLibraryException 
 	 * @throws ModDependencyNotFoundException 
 	 */
@@ -458,6 +457,7 @@ public class NModLoader
 					break;
 				}
 			}
+			
 			IModRegister currRegister = (IModRegister) modRegisterIterator.next();
 			
 			currRegister.modInit();
@@ -489,6 +489,7 @@ public class NModLoader
 				}
 				e.printStackTrace();
 			}
+			
 			IModRegister currRegister = (IModRegister) modRegisterIterator.next();
 			
 			currRegister.postModInit();
