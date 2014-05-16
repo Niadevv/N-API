@@ -19,7 +19,7 @@ public final class BlockRegistry extends Block
 	 */
 	public static RegistryNamespaced registry = getRegistry();
 	
-	public BlockRegistry(Material material)
+	private BlockRegistry(Material material)
 	{
 		super(material);
 	}

@@ -3,6 +3,7 @@ package co.uk.niadel.api.config;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +21,10 @@ import co.uk.niadel.api.modhandler.loadhandler.NModLoader;
  */
 public final class Configuration 
 {
-	public static File mcDataDir = NModLoader.mcMainDir;
-	public static File modsConfigs = new File(mcDataDir.toPath() + "configurations" + File.separator);
+	/**
+	 * The mods config directory.
+	 */
+	public static File modsConfigs = new File(NModLoader.mcMainDir.toPath() + "configurations" + File.separator);
 	
 	/**
 	 * This file, the config.
@@ -73,11 +76,11 @@ public final class Configuration
 	 */
 	public final void addData(String[] data) throws FileNotFoundException
 	{
-		PrintWriter configWriter = new PrintWriter(this.theConfig);
+		PrintStream configWriter = new PrintStream(this.theConfig);
 		
 		for (int i = 0; i == data.length; i++)
 		{
-			configWriter.write(data[i]);
+			configWriter.println(data[i]);
 		}
 		
 		configWriter.close();

@@ -29,7 +29,7 @@ public class ItemBaseModArmour extends ItemArmor
 	public IIcon overlayIcon;
 	public IIcon emptySlotIcon;
 	
-	public ItemBaseModArmour(ArmorMaterial armourMaterial, int renderIndex, int armourType)
+	private ItemBaseModArmour(ArmorMaterial armourMaterial, int renderIndex, int armourType)
 	{
 		super(armourMaterial, renderIndex, armourType);
 	}
@@ -62,6 +62,16 @@ public class ItemBaseModArmour extends ItemArmor
 		this.modMaterial = material;
 	}
 	
+	/**
+	 * Gets the real armour's mod material.
+	 * @return
+	 */
+	public ModArmourMaterial getArmourMaterial()
+	{
+		return modMaterial;
+	}
+	
+	//ALL FOLLOWING METHODS ARE OVERRIDED TO USE THE ModArmourMaterial SYSTEM. YOU NEED NOT BOTHER WITH THESE.
 	public boolean requiresMultipleRenderPasses()
     {
         return this.modMaterial == ModArmourMaterial.clothArmour;

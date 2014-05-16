@@ -4,9 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 /**
@@ -96,7 +99,7 @@ public final class UtilityMethods
 		}
 		else
 		{
-			MinecraftServer.getServer().addChatMessage(new ChatComponentText(message));
+			MinecraftServer.getServer().addChatMessage(new ChatComponentTranslation(message));
 		}
 	}
 	
@@ -152,7 +155,7 @@ public final class UtilityMethods
 	 * @param objectToConvert
 	 * @return
 	 */
-	public static byte[] toByteArray(Object objectToConvert)
+	public static <X> byte[] toByteArray(X objectToConvert)
 	{
 		byte[] bytesToReturn = new byte[] {};
 		ByteArrayOutputStream byteOutputStream = null;
@@ -165,22 +168,12 @@ public final class UtilityMethods
 			objOutputStream.writeObject(objectToConvert);
 			objOutputStream.flush();
 			bytesToReturn = byteOutputStream.toByteArray();
+			objOutputStream.close();
+			byteOutputStream.close();
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				objOutputStream.close();
-				byteOutputStream.close();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
 		}
 		
 		return bytesToReturn;
@@ -191,21 +184,21 @@ public final class UtilityMethods
 	 * @param bytesToConvert
 	 * @return
 	 */
-	private Object byteArrayToObjectPrivate(byte[] bytesToConvert)
+	private <X> X byteArrayToObjectPrivate(byte[] bytesToConvert)
 	{
-		Class<?> tempClass = null;
+		X returnedObj = null;
 		try
 		{
 			DummyClassLoader loader = new DummyClassLoader();
-			tempClass = loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
-			return tempClass.newInstance();
+			Class<? extends X> tempClass = (Class<? extends X>) loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
+			return (X) tempClass.newInstance();
 		}
 		catch (InstantiationException | IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
 		
-		return tempClass;
+		return returnedObj;
 	}
 	
 	/**
@@ -213,9 +206,22 @@ public final class UtilityMethods
 	 * @param bytesToConvert
 	 * @return
 	 */
-	public static final Object byteArrayToObject(byte[] bytesToConvert)
+	public static final <X> X byteArrayToObject(byte[] bytesToConvert)
 	{
 		return instance.byteArrayToObjectPrivate(bytesToConvert);
+	}
+	
+	/**
+	 * Converts a byte array to a class. Is private due to non-staticness.
+	 * @param bytesToConvert
+	 * @return
+	 */
+	private <X> Class<? extends X> byteArrayToClassPrivate(byte[] bytesToConvert)
+	{
+		Class<? extends X> tempClass = null;
+		DummyClassLoader loader = new DummyClassLoader();
+		tempClass = (Class<? extends X>) loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
+		return tempClass;
 	}
 	
 	/**
@@ -223,17 +229,14 @@ public final class UtilityMethods
 	 * @param bytesToConvert
 	 * @return
 	 */
-	private Class<?> byteArrayToClassPrivate(byte[] bytesToConvert)
-	{
-		Class<?> tempClass = null;
-		DummyClassLoader loader = new DummyClassLoader();
-		tempClass = loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
-		return tempClass;
-	}
-	
-	public static final Class<?> byteArrayToClass(byte[] bytesToConvert)
+	public static final <X> Class<? extends X> byteArrayToClass(byte[] bytesToConvert)
 	{
 		return instance.byteArrayToClassPrivate(bytesToConvert);
+	}
+	
+	public static final void playSound(ISound sound)
+	{
+		Minecraft.getMinecraft().getSoundHandler().playSound(sound);
 	}
 	
 	/**

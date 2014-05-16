@@ -11,7 +11,7 @@ import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
  * and can easily distinguish between vanilla and modded. Also largely eliminates ID conflicts
  * if you use a similar naming convention to that of the modId for your mod
  * with a few minor changes (YOUR_NAME + mod_name:your_potion). You can still extend
- * Potion here, and even extend other potions as long as they extend Potion.
+ * Potion here, and even extend other potions as long as they in turn extend Potion.
  * @author Niadel
  */
 public class PotionRegistry

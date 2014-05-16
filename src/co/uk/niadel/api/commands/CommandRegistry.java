@@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import co.uk.niadel.api.annotations.MPIAnnotations.RecommendedMethod;
 
 /**
- * Used to add commands.
+ * Used to add commands. I don't think Forge does this, or if it does, it's incredibly hard to find.
  * @author Niadel
  *
  */

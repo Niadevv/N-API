@@ -58,6 +58,12 @@ public class LangFileTranslator
 		}
 	}
 	
+	/**
+	 * Gets a translation from the lang file contents.
+	 * 
+	 * @param unlocalisedName The unlocalised name for the translation, like block.amazingBlock.name.
+	 * @return The localised name, if using above example is used, this is "Amazing Block".
+	 */
 	public String getTranslation(String unlocalisedName)
 	{
 		String translationToReturn = "";

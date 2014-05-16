@@ -30,6 +30,9 @@ public final class RenderRegistry
 		renderMap.put(entityClass, currRender);
 	}
 	
+	/**
+	 * Adds all of the renders.
+	 */
 	public static final void addAllRenders()
 	{
 		try

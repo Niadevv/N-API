@@ -3,7 +3,7 @@ package co.uk.niadel.api.block;
 
 /**
  * Contains a list of all types of possible block materials for mods. You still have
- * to have a vanilla one though, this is for added interaction.
+ * to have a vanilla one though, this is an old thing from before release to public.
  * @author Niadel
  *
  */

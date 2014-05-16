@@ -29,7 +29,11 @@ public class LootModifier
 	 */
 	public static List<WeightedRandomChestContent> modChestContentDungeon = new ArrayList<>();
 	
-	
+	/**
+	 * Adds a loot spawn to chests.
+	 * @param content
+	 * @param lootLoc
+	 */
 	public static void addLootSpawn(WeightedRandomChestContent content, EnumLootLocation lootLoc)
 	{
 		switch (lootLoc.locId)
@@ -45,6 +49,11 @@ public class LootModifier
 		}
 	}
 	
+	/**
+	 * Adds loot spawns to multiple locations.
+	 * @param content
+	 * @param lootLocs
+	 */
 	public static void addLootSpawns(WeightedRandomChestContent content, EnumLootLocation... lootLocs)
 	{
 		for (EnumLootLocation lootLoc : lootLocs)

@@ -10,11 +10,11 @@ import java.lang.annotation.*;
  */
 public final class VersionMarkingAnnotations
 {
-	@Retention(value = RetentionPolicy.SOURCE)
-	@Documented
 	/**
 	 * Marks a feature as an test feature.
 	 */
+	@Retention(value = RetentionPolicy.SOURCE)
+	@Documented
 	public @interface TestFeature
 	{
 		boolean stable() default false;
@@ -25,38 +25,38 @@ public final class VersionMarkingAnnotations
 		String firstAppearance();
 	}
 	
-	@Retention(value = RetentionPolicy.SOURCE)
-	@Documented
 	/**
 	 * Records a feature's first appearance in a stable release version.
 	 * @author Niadel
 	 *
 	 */
+	@Retention(value = RetentionPolicy.SOURCE)
+	@Documented
 	public @interface FirstStableRelease
 	{
 		String firstStableRelease();
 	}
 	
-	@Retention(value = RetentionPolicy.SOURCE)
-	@Documented
 	/**
 	 * Marks a feature as not being added quite yet.
 	 * @author Niadel
 	 *
 	 */
+	@Retention(value = RetentionPolicy.SOURCE)
+	@Documented
 	public @interface NYI
 	{
 		String firstPresence();
 		String plannedCompletion() default "Soon!";
 	}
 	
-	@Retention(value = RetentionPolicy.SOURCE)
-	@Documented
 	/**
 	 * Marks a feature as being not finished.
 	 * @author Niadel
 	 *
 	 */
+	@Retention(value = RetentionPolicy.SOURCE)
+	@Documented
 	public @interface NotCompleted
 	{
 		String firstPresence();
