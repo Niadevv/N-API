@@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import co.uk.niadel.api.annotations.MPIAnnotations.RecommendedMethod;
 
 /**
- * Used to add commands. I don't think Forge does this, or if it does, it's incredibly hard to find.
+ * Used to add commands. I don't think Forge does this at all, so plus for N-API :D.
  * @author Niadel
  *
  */
@@ -80,7 +80,6 @@ public final class CommandRegistry extends ServerCommandManager
 		return returnedCommands;
 	}
 	
-	@RecommendedMethod
 	/**
 	 * Gets commands from mods as a Map. This is the more recommended method as you can
 	 * do more with maps.
@@ -93,7 +92,7 @@ public final class CommandRegistry extends ServerCommandManager
 	}
 	
 	/**
-	 * Checks to see if a command is in the list.
+	 * Checks to see if a command is in the whole list.
 	 * @param testedCommand
 	 * @return
 	 */

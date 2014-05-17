@@ -89,10 +89,12 @@ public final class MPIAnnotations
 	}
 	
 	/**
-	 * Somewhat analagous to Forge's @Mod annotation, only optional.
+	 * Somewhat analagous to Forge's @Mod annotation, only optional, and is just a shortcut rather than the fixed way
+	 * of defining annotations.
 	 * @author Niadel
 	 *
 	 */
+	@Retention(value = RetentionPolicy.RUNTIME)
 	public @interface ModRegister
 	{
 		String version();

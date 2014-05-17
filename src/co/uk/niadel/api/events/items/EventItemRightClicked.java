@@ -6,6 +6,11 @@ import net.minecraft.world.World;
 import co.uk.niadel.api.events.EventBase;
 import co.uk.niadel.api.events.IEvent;
 
+/**
+ * Fired when you right click an item as the name suggests.
+ * @author Niadel
+ *
+ */
 public class EventItemRightClicked extends EventBase implements IEvent
 {
 	public ItemStack clickedItem;

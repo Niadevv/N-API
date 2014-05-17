@@ -35,6 +35,17 @@ public final class BlockRegistry extends Block
 	 */
 	public static void addBlock(int numericId, String nonNumericId, Block block)
 	{
+		registry.addObject(numericId + 2267, nonNumericId, block);
+	}
+	
+	/**
+	 * Adds a block without the numeric id being incremented by 2267. Can break lots of stuff.
+	 * @param numericId
+	 * @param nonNumericId
+	 * @param block
+	 */
+	public static void addBlockDangerously(int numericId, String nonNumericId, Block block)
+	{
 		registry.addObject(numericId, nonNumericId, block);
 	}
 }

@@ -6,12 +6,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * All registers must implement this or else your mod will not load.
+ * All registers must implement this or else your mod will not load and stuff will break.
  * @author Niadel
  *
  */
 public interface IModRegister
 {
+	/**
+	 * Non-Library dependencies. This is for mods that are extensions of another, like Thaumic Tinkerer is an extension
+	 * of Thaumcraft.
+	 */
 	public Set<String> dependencies = new HashSet<>();
 	
 	/**
@@ -22,13 +26,13 @@ public interface IModRegister
 	public Map<String, String> libraryDependencies = new HashMap<>();
 	
 	/**
-	 * A mod's unique identifier.
+	 * A mod's unique identifier. This is added to satisfy eclipse.
 	 */
 	public String modId = "";
 	
 	/**
 	 * The mod's version. You more or less have to specify this, or at the very least it is 
-	 * very recommended.
+	 * very recommended. This is added to satisfy eclipse.
 	 */
 	public String version = "";
 	

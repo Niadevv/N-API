@@ -8,6 +8,7 @@ import co.uk.niadel.api.events.EventsList;
 import co.uk.niadel.api.events.entity.EventEntityDeath;
 import co.uk.niadel.api.events.entity.EventEntitySpawned;
 import co.uk.niadel.api.events.entity.EventEntityStruckByLightning;
+import co.uk.niadel.api.events.server.EventPlayerChat;
 import co.uk.niadel.api.events.server.EventServerChat;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -21,7 +22,7 @@ public class EventsForgeHandling
 	@SubscribeEvent
 	public void onServerChat(ServerChatEvent event)
 	{
-		EventsList.fireEvent(new EventServerChat(event.message), "EventServerChatEvent");
+		EventsList.fireEvent(new EventPlayerChat(event.player, event.message), "EventServerChatEvent");
 	}
 	
 	@SubscribeEvent

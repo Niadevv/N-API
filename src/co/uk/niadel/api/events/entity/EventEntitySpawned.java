@@ -1,10 +1,10 @@
 package co.uk.niadel.api.events.entity;
 
 import net.minecraft.entity.Entity;
-import co.uk.niadel.api.events.EventBase;
+import co.uk.niadel.api.events.EventCancellable;
 import co.uk.niadel.api.events.IEvent;
 
-public class EventEntitySpawned extends EventBase implements IEvent
+public class EventEntitySpawned extends EventCancellable implements IEvent
 {
 	Entity entity;
 	
