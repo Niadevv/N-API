@@ -20,11 +20,6 @@ public class Event
 	public List<Object[]> data = new ArrayList<>();
 	
 	/**
-	 * The event's name, eg. "EventOnPlayerDamaged".
-	 */
-	public String eventName;
-	
-	/**
 	 * Registers the event to the list of Events in EventsList.
 	 */
 	public final void fireEvent()
@@ -46,33 +41,14 @@ public class Event
 	}
 	
 	/**
-	 * Sets the Event's name.
-	 * @param name
-	 */
-	public final void setName(String name)
-	{
-		this.eventName = name;
-	}
-	
-	/**
 	 * Constructs a new Event
 	 * @param data The default List of Object[]s to use.
 	 * @param name
 	 */
-	public Event(List<Object[]> data, String name)
+	public Event(List<Object[]> data)
 	{
 		this.data = data;
-		this.eventName = name;
 		fireEvent();
-	}
-	
-	/**
-	 * Returns the Event's name.
-	 * @return
-	 */
-	public String getEventName()
-	{
-		return this.eventName;
 	}
 	
 	/**

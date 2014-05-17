@@ -18,10 +18,4 @@ public class EventAllPlayersAwoken extends EventBase implements IEvent
 	{
 		this.awokenPlayers = players;
 	}
-
-	@Override
-	public void initEvent() 
-	{
-		addData(new Object[] {"EventAllPlayersAwoken", this, this.awokenPlayers});
-	}
 }

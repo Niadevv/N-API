@@ -19,10 +19,4 @@ public class EventPlayerChat extends EventCancellable implements IEvent
 		this.player = player;
 		this.text = text;
 	}
-	
-	@Override
-	public void initEvent() 
-	{
-		addData(new Object[] {"EventPlayerChat", this, this.player, this.text});
-	}
 }

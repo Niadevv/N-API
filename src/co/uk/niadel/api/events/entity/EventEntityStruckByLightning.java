@@ -15,10 +15,4 @@ public class EventEntityStruckByLightning extends EventBase implements IEvent
 		this.lightningBolt = lightning;
 		this.victimEntity = victim;
 	}
-	
-	@Override
-	public void initEvent()
-	{
-		addData(new Object[] {"EventEntityStruckByLightning", this, this.lightningBolt, this.victimEntity});
-	}
 }

@@ -16,10 +16,4 @@ public class EventLoadMod extends EventBase implements IEvent
 	{
 		this.modId = binaryName;
 	}
-
-	@Override
-	public void initEvent()
-	{
-		addData(new Object[] {"EventLoadMod" + this.modId, this});
-	}
 }

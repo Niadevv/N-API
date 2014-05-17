@@ -16,10 +16,4 @@ public class EventWorldTicked extends EventBase implements IEvent
 	{
 		this.world = world;
 	}
-
-	@Override
-	public void initEvent() 
-	{
-		addData(new Object[] {"EventWorldTicked", this, this.world});
-	}
 }

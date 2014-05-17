@@ -12,10 +12,4 @@ public class EventEntitySpawned extends EventCancellable implements IEvent
 	{
 		this.entity = entity;
 	}
-
-	@Override
-	public void initEvent()
-	{
-		addData(new Object[] {"EventEntitySpawned", this, this.entity});
-	}
 }

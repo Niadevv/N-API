@@ -23,10 +23,4 @@ public class EventItemRightClicked extends EventBase implements IEvent
 		this.world = world;
 		this.player = player;
 	}
-	
-	@Override
-	public void initEvent()
-	{
-		addData(new Object[] {"EventItemRightClicked", this, this.clickedItem, this.world, this.player});
-	}
 }

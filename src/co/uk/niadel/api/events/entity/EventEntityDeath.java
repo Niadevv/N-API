@@ -12,11 +12,4 @@ public class EventEntityDeath extends EventBase implements IEvent
 	{
 		this.entity = entity;
 	}
-
-	@Override
-	public void initEvent() 
-	{
-		addData(new Object[] {"EventEntityDeath", this});
-	}
-	
 }

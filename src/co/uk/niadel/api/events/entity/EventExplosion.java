@@ -18,10 +18,4 @@ public class EventExplosion extends EventBase implements IEvent
 		this.y = explosionY;
 		this.z = explosionZ;
 	}
-	
-	@Override
-	public void initEvent()
-	{
-		addData(new Object[] {"EventExplosion", this, this.exploder, this.x, this.y, this.z});
-	}
 }

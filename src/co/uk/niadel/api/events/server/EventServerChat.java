@@ -14,10 +14,4 @@ public class EventServerChat extends EventBase implements IEvent
 	{
 		this.message = message;
 	}
-	
-	@Override
-	public void initEvent()
-	{
-		addData(new Object[] {"EventServerChat", this, this.message});
-	}
 }

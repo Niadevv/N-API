@@ -9,7 +9,7 @@ import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
 
 @TestFeature(stable = false, firstAppearance = "1.0")
 /**
- * List of events. You can register an event in your ModRegister class. TBH, the Events
+ * List of events. You can fire an event whenever something special happens. TBH, the Events
  * system is a tad, how would you say, <i>convoluted</i> at the moment, but this will likely change in later versions.
  * @author Niadel
  *
@@ -19,7 +19,7 @@ public final class EventsList
 	/**
 	 * List of all of the event handlers, indexed by a mod's ModID
 	 */
-	public static Map<String, IEventHandler> eventHandlers = new HashMap<>();
+	public static List<IEventHandler> eventHandlers = new ArrayList<>();
 	
 	
 	/**
@@ -28,9 +28,9 @@ public final class EventsList
 	 * @param modName
 	 * @param eventHandler
 	 */
-	public final static void registerEventHandler(String modName, IEventHandler eventHandler)
+	public static final void registerEventHandler(String modName, IEventHandler eventHandler)
 	{
-		eventHandlers.put(modName, eventHandler);
+		eventHandlers.add(eventHandler);
 	}
 	
 	/**
@@ -38,21 +38,20 @@ public final class EventsList
 	 * create a class like the Events class that contains the events you used and registered
 	 * with)!
 	 * 
+	 * TODO Get rid of the name param entirely.
+	 * 
 	 * @param event
 	 * @param name
 	 * @return firedEvent
 	 */
-	public final static Event fireEvent(IEvent event, String name)
+	public static final Event fireEvent(IEvent event, String name)
 	{
 		Event firedEvent = null;
 		
-	
 		//Takes the data of event and transfers the data to a new Event object.
 		List<Object[]> dataList = new ArrayList<>();
 		dataList.add(event.data);
-		firedEvent = new Event(dataList, name);
-		
-		Iterator handlerIterator = eventHandlers.entrySet().iterator();
+		firedEvent = new Event(dataList);
 		
 		//Calls all event handlers' handleEvent methods as an event has been fired and the handlers
 		//May need to handle it in order to do special stuff for their mod.
@@ -65,9 +64,9 @@ public final class EventsList
 	 * Only really used to deal with cancellable events.
 	 * @param event
 	 */
-	public final static IEvent callAllHandlers(IEvent event)
+	public static final IEvent callAllHandlers(IEvent event)
 	{
-		Iterator handlerIterator = eventHandlers.entrySet().iterator();
+		Iterator handlerIterator = eventHandlers.iterator();
 		
 		while (handlerIterator.hasNext())
 		{
@@ -83,7 +82,7 @@ public final class EventsList
 	 * @param event
 	 * @return
 	 */
-	public final static String getName(IEvent event)
+	public static final String getName(IEvent event)
 	{
 		return (String) event.data[0];
 	}
