@@ -8,7 +8,7 @@ import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
  * @author Niadel
  *
  */
-public abstract class ModEnergyMeasure extends ModMeasureBase 
+public class ModEnergyMeasure extends ModMeasureBase 
 {
 	public ModEnergyMeasure(Measure[] measure)
 	{
