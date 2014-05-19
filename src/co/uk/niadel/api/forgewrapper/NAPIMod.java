@@ -2,15 +2,13 @@ package co.uk.niadel.api.forgewrapper;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.zip.ZipException;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.util.ReportedException;
 import net.minecraftforge.common.MinecraftForge;
 import co.uk.niadel.api.asm.ASMRegistry;
 import co.uk.niadel.api.forgewrapper.eventhandling.EventHandlerFML;
 import co.uk.niadel.api.forgewrapper.eventhandling.EventHandlerForge;
 import co.uk.niadel.api.modhandler.loadhandler.NModLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -38,10 +36,9 @@ public class NAPIMod
 		}
 		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | IOException e) //Oh sweet lawd the amount of exceptions :3
 		{
-			//Crash the game - If N-API fails to load in the Forge environment, stuff is broken.
-			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API Forge Wrapper @Mod Class");
-			crashReport.makeCategory("Initialising N-API");
-			throw new ReportedException(crashReport);
+			//Let the user know stuff is broken.
+			FMLLog.severe("SERIOUS ISSUE OCCURED LOADING N-API FORGE WRAPPER! EXCEPTION IS BELOW:");
+			e.printStackTrace();
 		}
 	}
 }
