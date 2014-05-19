@@ -17,7 +17,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  * @author Niadel
  *
  */
-public class EventsForgeHandling
+public class EventHandlerForge
 {
 	@SubscribeEvent
 	public void onServerChat(ServerChatEvent event)

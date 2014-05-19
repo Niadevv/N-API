@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.zip.ZipException;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
+import net.minecraftforge.common.MinecraftForge;
 import co.uk.niadel.api.asm.ASMRegistry;
 import co.uk.niadel.api.modhandler.loadhandler.NModLoader;
 import cpw.mods.fml.common.Mod;
@@ -24,6 +25,7 @@ public class NAPIMod
 	{
 		try
 		{
+			MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
 			NModLoader.loadModsFromDir();
 			ASMRegistry.invokeAllTransformers();
 			NModLoader.invokeRegisterMethods();
