@@ -8,7 +8,6 @@ import java.lang.reflect.*;
  */
 public final class ReflectionManipulateValues 
 {
-	
 	/**
 	 * If you want to set the value to a primitive type, use the wrapper class provided 
 	 * in java.lang, eg. new Integer(1337);

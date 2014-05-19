@@ -12,13 +12,7 @@ public final class AchievementRegistry
 	
 	public static void registerAchievement(Achievement theAchievement, Class<? extends Achievement> achievementClass)
 	{
-		try
-		{
-			ReflectionCallMethods.callMethod(achievementClass, "registerStat", new Object[] {theAchievement, achievementClass});
-		}
-		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-		{
-			e.printStackTrace();
-		}
+		// Reflection stuff for protected method. Use what you were given, eh?
+		ReflectionCallMethods.callMethod(achievementClass, "registerStat", new Object[] {theAchievement, achievementClass});
 	}
 }

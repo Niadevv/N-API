@@ -13,18 +13,44 @@ import java.lang.reflect.*;
  */
 public final class ReflectionCallMethods
 {
-	public final static void callMethod(String className, String methodName, Object ... args) throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException 
+	/**
+	 * Creates a class from a string and calls the method specified by methodName.
+	 * @param className
+	 * @param methodName
+	 * @param args
+	 */
+	public final static void callMethod(String className, String methodName, Object ... args) 
 	{
-		Class<?> theClass = Class.forName(className);
-		Method method = theClass.getDeclaredMethod("methodName", new Class[] {});
-		method.setAccessible(true);
-		method.invoke(theClass, args);
+		try
+		{
+			Class<?> theClass = Class.forName(className);
+			Method method = theClass.getDeclaredMethod("methodName", new Class[] {});
+			method.setAccessible(true);
+			method.invoke(theClass, args);
+		}
+		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
-	public final static <X> void callMethod(Class<? extends X> classToCallMethod, String methodName, Object ... args) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	/**
+	 * Calls a method with a provided class.
+	 * @param classToCallMethod
+	 * @param methodName
+	 * @param args
+	 */
+	public final static <X> void callMethod(Class<? extends X> classToCallMethod, String methodName, Object ... args)
 	{
-		Method method = classToCallMethod.getDeclaredMethod(methodName, new Class[] {});
-		method.setAccessible(true);
-		method.invoke(classToCallMethod, args);
+		try
+		{
+			Method method = classToCallMethod.getDeclaredMethod(methodName, new Class[] {});
+			method.setAccessible(true);
+			method.invoke(classToCallMethod, args);
+		}
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
