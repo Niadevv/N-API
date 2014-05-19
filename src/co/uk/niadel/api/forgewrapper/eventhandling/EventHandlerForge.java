@@ -1,4 +1,4 @@
-package co.uk.niadel.api.forgewrapper;
+package co.uk.niadel.api.forgewrapper.eventhandling;
 
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;

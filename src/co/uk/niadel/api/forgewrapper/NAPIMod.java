@@ -7,7 +7,10 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
 import net.minecraftforge.common.MinecraftForge;
 import co.uk.niadel.api.asm.ASMRegistry;
+import co.uk.niadel.api.forgewrapper.eventhandling.EventHandlerFML;
+import co.uk.niadel.api.forgewrapper.eventhandling.EventHandlerForge;
 import co.uk.niadel.api.modhandler.loadhandler.NModLoader;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -25,7 +28,10 @@ public class NAPIMod
 	{
 		try
 		{
+			//Register the event handlers.
 			MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
+			FMLCommonHandler.instance().bus().register(new EventHandlerFML());
+			//Begin loading N-API mods.
 			NModLoader.loadModsFromDir();
 			ASMRegistry.invokeAllTransformers();
 			NModLoader.invokeRegisterMethods();
