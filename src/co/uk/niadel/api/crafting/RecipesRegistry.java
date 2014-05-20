@@ -9,7 +9,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ReportedException;
 import co.uk.niadel.api.annotations.MPIAnnotations.Temprorary;
+import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.api.napioredict.NAPIOreDict;
+import co.uk.niadel.api.util.UtilityMethods;
 import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
 /**
@@ -88,15 +90,14 @@ public final class RecipesRegistry extends CraftingManager
 		modRecipeList.addShapelessRecipe(outputItem, arrayOfRecipeObjects);
 	}
 	
+	/**
+	 * Adds a recipe using the N-API Ore Dictionary system.
+	 * @param outputItem
+	 * @param craftingRecipe
+	 */
+	@TestFeature(firstAppearance = "1.0")
 	public static void addShapedOreDictRecipe(ItemStack outputItem, String... craftingRecipe)
 	{	
-		/*
-		* Iterate all strings after the 3rd array entry [2]
-		* For each string, get an array of ItemStacks with NAPIOreDict
-		* Construct a recipe Object[] out of all string entries in the craftingRecipe.
-		* Register that recipe.
-		*/
-		
 		//OMG Multidimensional arrays O_O Fake astoundedness for the win!
 		Object[][] nextRecipes = new Object[][] {};
 		for (int i = 2; i == craftingRecipe.length; i++)
@@ -106,13 +107,23 @@ public final class RecipesRegistry extends CraftingManager
 			{
 				ItemStack[] itemStacks = NAPIOreDict.getOreDictEntry(craftingRecipe[i + 2]);
 				
-				int x = 0;
-				int y = 0;
+				Object[] itemStackObjs = new Object[] {};
 				
 				for (ItemStack currStack : itemStacks)
 				{
-					//TODO FINISH THIS
-					//nextRecipes[x][y] =
+					itemStackObjs[itemStackObjs.length - 1] = currStack;
+					Object[] copyRecipe = UtilityMethods.copyArray(itemStackObjs);
+					
+					
+					for (int i2 = 0; i == itemStackObjs.length; i++)
+					{
+						if (i2 % 2 == 1 && i2 > 2)
+						{
+							copyRecipe[i2] = currStack;
+						}
+					}
+					
+					addShapedModRecipe(outputItem, copyRecipe);
 				}
 			}
 		}

@@ -32,6 +32,25 @@ public final class UtilityMethods
 	public UtilityMethods() {}
 	
 	/**
+	 * Copies an array as I have no idea how to use Arrays o_O
+	 * @param arrayToCopy
+	 * @return
+	 */
+	public static final <X, Y> X[] copyArray(Y[] arrayToCopy)
+	{
+		Object[] arrayCopy = new Object[] {};
+		
+		int i = 0;
+		
+		for (Y currItem : arrayToCopy)
+		{
+			arrayCopy[i] = currItem;
+		}
+		
+		return (X[]) arrayCopy;
+	}
+	
+	/**
 	 * Tests if the specified array contains the specified value.
 	 * @param array
 	 * @param valueToTest
