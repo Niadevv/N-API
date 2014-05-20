@@ -34,6 +34,7 @@ import co.uk.niadel.api.asm.ASMRegistry;
 import co.uk.niadel.api.crafting.RecipesRegistry;
 import co.uk.niadel.api.events.EventsList;
 import co.uk.niadel.api.events.apievents.EventLoadMod;
+import co.uk.niadel.api.exceptions.MCreatorDetectedException;
 import co.uk.niadel.api.exceptions.ModDependencyNotFoundException;
 import co.uk.niadel.api.exceptions.OutdatedLibraryException;
 import co.uk.niadel.api.modhandler.IModRegister;
@@ -106,8 +107,9 @@ public class NModLoader
 	 * @throws InvocationTargetException
 	 * @throws NoSuchFieldException
 	 * @throws InstantiationException 
+	 * @throws MCreatorDetectedException 
 	 */
-	public static final void loadModsFromDir() throws ZipException, IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
+	public static final void loadModsFromDir() throws ZipException, IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException, MCreatorDetectedException
 	{
 		System.out.println(mcMainDir.toPath().toString());
 		initNAPIRegister((Class<? extends IModRegister>) Class.forName("co.uk.niadel.api.modhandler.n_api.ModRegister"));
@@ -232,15 +234,26 @@ public class NModLoader
 	 * @throws InvocationTargetException
 	 * @throws NoSuchFieldException
 	 * @throws InstantiationException 
+	 * @throws MCreatorDetectedException 
 	 */
-	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
+	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException, MCreatorDetectedException
 	{
 		if (dir.isDirectory())
 		{
 			for (File currFile : dir.listFiles())
 			{
 				String binaryName = getModId(dir);
-				processAnnotations(binaryName);
+				//If the binary name isn't MCreator. I WILL NEVER, EVER SUPPORT MOD MAKING PROGRAMS, AND WILL DO EVERYTHING IN MY
+				//POWER TO MAKE SURE THAT THEY DO NOT WORK WITH NAPI!
+				if (!binaryName.toLowerCase().contains("mcreator"))
+				{
+					processAnnotations(binaryName);
+				}
+				else
+				{
+					System.out.println("DO NOT EVER USE MCREATOR! YOUR MOD WILL NOT LOAD AS MCREATOR CREATED CLASSES HAVE BEEN DETECTED! GO LEARN JAVA AND MAKE THE MOD YOURSELF YOU LAZY MODDER WANNABE!");
+					throw new MCreatorDetectedException(binaryName);
+				}
 			}
 		}
 		else

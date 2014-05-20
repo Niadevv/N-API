@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import net.minecraftforge.common.MinecraftForge;
 import co.uk.niadel.api.asm.ASMRegistry;
+import co.uk.niadel.api.exceptions.MCreatorDetectedException;
 import co.uk.niadel.api.forgewrapper.eventhandling.EventHandlerFML;
 import co.uk.niadel.api.forgewrapper.eventhandling.EventHandlerForge;
 import co.uk.niadel.api.modhandler.loadhandler.NModLoader;
@@ -34,11 +35,18 @@ public class NAPIMod
 			ASMRegistry.invokeAllTransformers();
 			NModLoader.invokeRegisterMethods();
 		}
-		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | IOException e) //Oh sweet lawd the amount of exceptions :3
+		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | IOException | MCreatorDetectedException e) //Oh sweet lawd the amount of exceptions :3
 		{
-			//Let the user know stuff is broken.
-			FMLLog.severe("SERIOUS ISSUE OCCURED LOADING N-API FORGE WRAPPER! EXCEPTION IS BELOW:");
-			e.printStackTrace();
+			if (!(e instanceof MCreatorDetectedException))
+			{
+				//Let the user know stuff is broken.
+				FMLLog.severe("SERIOUS ISSUE OCCURED LOADING N-API FORGE WRAPPER! EXCEPTION IS BELOW:");
+				e.printStackTrace();
+			}
+			else
+			{
+				FMLLog.severe("MCREATOR DETECTED! NOT CONTINUING LOAD!");
+			}
 		}
 	}
 }

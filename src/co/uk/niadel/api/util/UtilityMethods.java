@@ -3,6 +3,7 @@ package co.uk.niadel.api.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -29,6 +30,24 @@ public final class UtilityMethods
 	 * Constructor to provide access to the 2 important byte manipulation things due to some weird error.
 	 */
 	public UtilityMethods() {}
+	
+	/**
+	 * Tests if the specified array contains the specified value.
+	 * @param array
+	 * @param valueToTest
+	 * @return Whether array contains valueToTest.
+	 */
+	public static final <X> boolean doesArrayContainValue(X[] array, X valueToTest)
+	{
+		if (Arrays.asList(array).contains(valueToTest))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	/**
 	 * Removes all blocks in a vertical column above the block specified by the coords 
