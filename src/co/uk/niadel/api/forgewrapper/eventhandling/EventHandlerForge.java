@@ -15,7 +15,7 @@ import co.uk.niadel.api.events.server.EventPlayerChat;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * Used so I don't have to ASM the main few events in.
+ * Used so I don't have to ASM as many events in.
  * @author Niadel
  *
  */
@@ -36,13 +36,27 @@ public class EventHandlerForge
 	@SubscribeEvent
 	public void onEntityDeath(LivingDeathEvent event)
 	{
-		EventsList.fireEvent(new EventEntityDeath(event.entity), "EventEntityDeath");
+		EventCancellable deathEvent = new EventEntityDeath(event.entity);
+		
+		EventsList.fireEvent(deathEvent, "EventEntityDeath");
+		
+		if (deathEvent.isCancelled())
+		{
+			event.setCanceled(true);
+		}
 	}
 	
 	@SubscribeEvent
 	public void onEntitySpawned(LivingSpawnEvent event)
 	{
-		EventsList.fireEvent(new EventEntitySpawned(event.entity), "EntityJoinWorldEvent");
+		EventCancellable eventEntitySpawn = new EventEntitySpawned(event.entity);
+		
+		EventsList.fireEvent(eventEntitySpawn, "EntityJoinWorldEvent");
+		
+		if (eventEntitySpawn.isCancelled())
+		{
+			event.setCanceled(true);
+		}
 	}
 	
 	@SubscribeEvent

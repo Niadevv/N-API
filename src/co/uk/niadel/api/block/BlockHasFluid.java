@@ -7,7 +7,7 @@ import co.uk.niadel.api.measuresmpi.Measure;
 import co.uk.niadel.api.measuresmpi.ModFluidMeasure;
 
 /**
- * Base for blocks that have a liquid value, using the Measures MPI.
+ * Base for blocks that have a liquid value, using the Measures MPI. Can be used for Fluid Tanks.
  * @author Niadel
  *
  */

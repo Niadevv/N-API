@@ -3,6 +3,7 @@ package co.uk.niadel.api.modhandler.n_api;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.api.annotations.MPIAnnotations.Library;
 import co.uk.niadel.api.modhandler.IModRegister;
+import co.uk.niadel.api.napioredict.NAPIOreDict;
 import co.uk.niadel.api.potions.PotionRegistry;
 
 @Library(version = "1.0")
@@ -26,6 +27,8 @@ public class ModRegister implements IModRegister
 		{
 			PotionRegistry.registerPotion(Potion.potionTypes[i].getName(), Potion.potionTypes[i]);
 		}
+		
+		NAPIOreDict.addDefaultEntries();
 	}
 
 	@Override

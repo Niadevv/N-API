@@ -176,14 +176,13 @@ public class NModLoader
 		try
 		{
 			IModRegister register = theClass.newInstance();
+			processAnnotations(theClass.toString().replace("class ", ""));
 			register.preModInit();
 			register.modInit();
 			register.postModInit();
 			nAPIVersion = register.version;
-			//Add the N-API register to the libraries list - That's probably the closest to what N-API is.
-			modLibraries.add(register);
 		}
-		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
+		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException | ClassNotFoundException e)
 		{
 			//Crash the game - Failure to load the N-API register can break a LOT of stuff.
 			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API ModRegister");

@@ -1,5 +1,6 @@
 package co.uk.niadel.api.forgewrapper;
 
+import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -10,11 +11,22 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 {	
 	public byte[] transform(String currClassName, String newClassName, byte[] bytes)
 	{
+		byte[] patchedBytes = null;
+		
 		switch (currClassName)
 		{
 			//Classes are deobfuscated by FML at runtime. This should (if CPW got it right) work.
 			case "net.minecraft.item.Item":
-				patchClass(currClassName, newClassName, bytes);
+				patchedBytes = patchClass(currClassName, newClassName, bytes);
+		}
+		
+		if (patchedBytes != null)
+		{
+			return patchedBytes;
+		}
+		else
+		{
+			return bytes;
 		}
 	}
 	
@@ -25,6 +37,8 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 		ClassWriter cw = new ClassWriter(cr, ASM4);
 		cr.accept(cn, 0);
 		
+		byte[] patchedBytes = null;
+		
 		switch (currClassName)
 		{
 			case "net.minecraft.item.Item":
@@ -33,5 +47,7 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 				fv.visitEnd();
 				
 		}
+		
+		return bytes;
 	}
 }
