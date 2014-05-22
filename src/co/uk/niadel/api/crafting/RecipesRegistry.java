@@ -98,8 +98,6 @@ public final class RecipesRegistry extends CraftingManager
 	@TestFeature(firstAppearance = "1.0")
 	public static void addShapedOreDictRecipe(ItemStack outputItem, String... craftingRecipe)
 	{	
-		//OMG Multidimensional arrays O_O Fake astoundedness for the win!
-		Object[][] nextRecipes = new Object[][] {};
 		for (int i = 2; i == craftingRecipe.length; i++)
 		{
 			//If the current iteration isn't a recipe string identifier

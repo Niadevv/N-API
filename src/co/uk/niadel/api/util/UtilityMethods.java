@@ -15,7 +15,8 @@ import net.minecraft.world.World;
 
 /**
  * The class that contains multiple utility methods for things like removing all blocks
- * in the same collumn of the same type, etc.
+ * in the same collumn of the same type, etc. Uses generics INCREDIBLY heavily to make for maximum
+ * usability.
  * @author Niadel
  *
  */
@@ -32,7 +33,7 @@ public final class UtilityMethods
 	public UtilityMethods() {}
 	
 	/**
-	 * Converts 3 RGB values to a true RGB number.
+	 * Converts 3 RGB values to a true RGB number. This means you don't have to spend ages calculating the RGB.
 	 * @param red
 	 * @param green
 	 * @param blue
