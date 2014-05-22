@@ -9,7 +9,8 @@ import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 @TestFeature(firstAppearance = "1.0")
 /**
  * A system for registering biomes. I'm unsure of if Forge allows you to add biomes to certain
- * temperature groups, but, hey. Gradle's dependency downloading system is broken.
+ * temperature groups, but, hey. This system is a more "brute force" method of adding biomes
+ * as it uses Reflection to force the biomes in.
  * @author Niadel
  */
 public final class BiomeRegistry 

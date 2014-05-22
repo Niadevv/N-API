@@ -27,12 +27,24 @@ public final class UtilityMethods
 	public static UtilityMethods instance = new UtilityMethods();
 	
 	/**
-	 * Constructor to provide access to the 2 important byte manipulation things due to some weird error.
+	 * Constructor to provide access to the 2 important byte manipulation things due to some weird foshizzles.
 	 */
 	public UtilityMethods() {}
 	
 	/**
-	 * Copies an array as I have no idea how to use Arrays o_O
+	 * Converts 3 RGB values to a true RGB number.
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @return
+	 */
+	public static final int convertToRGBColour(int red, int green, int blue)
+	{
+		return ((red << 16) + (green << 8) + blue);
+	}
+	
+	/**
+	 * Copies an array as I have no idea how to use the Java util class Arrays o_O
 	 * @param arrayToCopy
 	 * @return
 	 */
@@ -272,6 +284,10 @@ public final class UtilityMethods
 		return instance.byteArrayToClassPrivate(bytesToConvert);
 	}
 	
+	/**
+	 * Plays a sound.
+	 * @param sound
+	 */
 	public static final void playSound(ISound sound)
 	{
 		Minecraft.getMinecraft().getSoundHandler().playSound(sound);
