@@ -41,7 +41,7 @@ public class ItemBaseModArmour extends ItemArmor
 		
 		try
 		{
-			this.overlayIcon = (IIcon) ReflectionManipulateValues.getValue(ItemArmor.class, super.instance, "overlayIcon");
+			this.overlayIcon = (IIcon) ReflectionManipulateValues.getValue(ItemArmor.class, /* Remember that instance thing in Item? This is what that was for */super.instance, "overlayIcon");
 		}
 		catch (SecurityException | IllegalArgumentException e1)
 		{
@@ -71,7 +71,7 @@ public class ItemBaseModArmour extends ItemArmor
 		return modMaterial;
 	}
 	
-	//ALL FOLLOWING METHODS ARE OVERRIDED TO USE THE ModArmourMaterial SYSTEM. YOU NEED NOT BOTHER WITH THESE.
+	//ALL FOLLOWING METHODS ARE OVERRIDEN TO USE THE ModArmourMaterial SYSTEM. YOU NEED NOT BOTHER WITH THESE.
 	public boolean requiresMultipleRenderPasses()
     {
         return this.modMaterial == ModArmourMaterial.clothArmour;
@@ -100,39 +100,39 @@ public class ItemBaseModArmour extends ItemArmor
         }
         else
         {
-            NBTTagCompound var2 = par1ItemStack.getTagCompound();
+            NBTTagCompound itemStackCompoundTag = par1ItemStack.getTagCompound();
 
-            if (var2 == null)
+            if (itemStackCompoundTag == null)
             {
                 return 10511680;
             }
             else
             {
-                NBTTagCompound var3 = var2.getCompoundTag("display");
-                return var3 == null ? 10511680 : (var3.func_150297_b("color", 3) ? var3.getInteger("color") : 10511680);
+                NBTTagCompound displayTag = itemStackCompoundTag.getCompoundTag("display");
+                return displayTag == null ? 10511680 : (displayTag.func_150297_b("color", 3) ? displayTag.getInteger("color") : 10511680);
             }
         }
     }
     
-    public void removeColor(ItemStack par1ItemStack)
+    public void removeColor(ItemStack itemStack)
     {
         if (this.modMaterial == ModArmourMaterial.clothArmour)
         {
-            NBTTagCompound var2 = par1ItemStack.getTagCompound();
+            NBTTagCompound itemStackCompoundTag = itemStack.getTagCompound();
 
-            if (var2 != null)
+            if (itemStackCompoundTag != null)
             {
-                NBTTagCompound var3 = var2.getCompoundTag("display");
+                NBTTagCompound displayTag = itemStackCompoundTag.getCompoundTag("display");
 
-                if (var3.hasKey("color"))
+                if (displayTag.hasKey("color"))
                 {
-                    var3.removeTag("color");
+                    displayTag.removeTag("color");
                 }
             }
         }
     }
     
-    public void func_82813_b(ItemStack par1ItemStack, int par2)
+    public void func_82813_b(ItemStack par1ItemStack, int colourNumber)
     {
         if (this.modMaterial != ModArmourMaterial.clothArmour)
         {
@@ -140,22 +140,22 @@ public class ItemBaseModArmour extends ItemArmor
         }
         else
         {
-            NBTTagCompound var3 = par1ItemStack.getTagCompound();
+            NBTTagCompound itemStackCompoundTag = par1ItemStack.getTagCompound();
 
-            if (var3 == null)
+            if (itemStackCompoundTag == null)
             {
-                var3 = new NBTTagCompound();
-                par1ItemStack.setTagCompound(var3);
+            	itemStackCompoundTag = new NBTTagCompound();
+                par1ItemStack.setTagCompound(itemStackCompoundTag);
             }
 
-            NBTTagCompound var4 = var3.getCompoundTag("display");
+            NBTTagCompound displayTag = itemStackCompoundTag.getCompoundTag("display");
 
-            if (!var3.func_150297_b("display", 10))
+            if (!itemStackCompoundTag.func_150297_b("display", 10))
             {
-                var3.setTag("display", var4);
+            	itemStackCompoundTag.setTag("display", displayTag);
             }
 
-            var4.setInteger("color", par2);
+            displayTag.setInteger("color", colourNumber);
         }
     }
     

@@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import co.uk.niadel.api.annotations.MPIAnnotations.RecommendedMethod;
 
 /**
- * Used to add commands. I don't think Forge does this at all, so plus for N-API :D.
+ * Used to add commands. I don't think Forge does this at all, so plus for N-API :D. PFFT WHO NEEDS BUKKIT?
  * @author Niadel
  *
  */
