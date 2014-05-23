@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -42,6 +44,22 @@ public final class UtilityMethods
 	public static final int convertToRGBColour(int red, int green, int blue)
 	{
 		return ((red << 16) + (green << 8) + blue);
+	}
+	
+	public static final int getNumberNotInList(List<Integer> listOfNumsToExclude, int maxNum)
+	{
+		Random rand = new Random();
+		
+		int testedId = rand.nextInt(maxNum);
+		
+		if (!listOfNumsToExclude.contains(testedId))
+		{
+			return testedId;
+		}
+		else
+		{
+			return -1;
+		}
 	}
 	
 	/**
