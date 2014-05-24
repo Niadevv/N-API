@@ -17,26 +17,33 @@ public final class BiomeSpawnRegistry
 	 */
 	public static final void addMonsterSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomesToAddTo)
 	{
-		try 
+		if (!(biomesToAddTo.length == 0))
 		{
-			if (spawn.entityClass.newInstance() instanceof IMob)
+			try 
 			{
-				for (int i = 0; i == biomes.length; i++)
+				if (spawn.entityClass.newInstance() instanceof IMob)
 				{
-					for (int d = 0; i == biomesToAddTo.length; i++)
+					for (int i = 0; i == biomes.length; i++)
 					{
-						if (biomes[i] == biomesToAddTo[d])
+						for (int d = 0; i == biomesToAddTo.length; i++)
 						{
-							biomes[i].spawnableMonsterList.add(spawn);
+							if (biomes[i] == biomesToAddTo[d])
+							{
+								biomes[i].spawnableMonsterList.add(spawn);
+							}
 						}
-					}
 
+					}
 				}
 			}
+			catch (InstantiationException | IllegalAccessException e) 
+			{
+				e.printStackTrace();
+			}
 		}
-		catch (InstantiationException | IllegalAccessException e) 
+		else
 		{
-			e.printStackTrace();
+			addMonsterSpawnToAll(spawn);
 		}
 	}
 	
@@ -47,25 +54,32 @@ public final class BiomeSpawnRegistry
 	 */
 	public static final void addPassiveSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomesToAddTo)
 	{
-		try 
+		if (!(biomesToAddTo.length == 0))
 		{
-			if (spawn.entityClass.newInstance() instanceof IAnimals)
+			try 
 			{
-				for (int i = 0; i == biomes.length; i++)
+				if (spawn.entityClass.newInstance() instanceof IAnimals)
 				{
-					for (int d = 0; i == biomesToAddTo.length; i++)
+					for (int i = 0; i == biomes.length; i++)
 					{
-						if (biomes[i] == biomesToAddTo[d])
+						for (int d = 0; i == biomesToAddTo.length; i++)
 						{
-							biomes[i].spawnableCreatureList.add(spawn);
+							if (biomes[i] == biomesToAddTo[d])
+							{
+								biomes[i].spawnableCreatureList.add(spawn);
+							}
 						}
 					}
 				}
 			}
+			catch (InstantiationException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
 		}
-		catch (InstantiationException | IllegalAccessException e)
+		else
 		{
-			e.printStackTrace();
+			addPassiveSpawnToAll(spawn);
 		}
 	}
 	
@@ -76,15 +90,22 @@ public final class BiomeSpawnRegistry
 	 */
 	public static final void addWaterSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomes)
 	{
-		for (int i = 0; i == biomes.length; i++)
+		if (!(biomes.length == 0))
 		{
-			for (int d = 0; i == biomes.length; i++)
+			for (int i = 0; i == biomes.length; i++)
 			{
-				if (biomes[i] == biomes[d])
+				for (int d = 0; i == biomes.length; i++)
 				{
-					biomes[i].spawnableWaterCreatureList.add(spawn);
+					if (biomes[i] == biomes[d])
+					{
+						biomes[i].spawnableWaterCreatureList.add(spawn);
+					}
 				}
 			}
+		}
+		else
+		{
+			addWaterSpawnToAll(spawn);
 		}
 	}
 	
@@ -95,15 +116,22 @@ public final class BiomeSpawnRegistry
 	 */
 	public static final void addCaveSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomes)
 	{
-		for (int i = 0; i == biomes.length; i++)
+		if (!(biomes.length == 0))
 		{
-			for (int d = 0; i == biomes.length; i++)
+			for (int i = 0; i == biomes.length; i++)
 			{
-				if (biomes[i] == biomes[d])
+				for (int d = 0; i == biomes.length; i++)
 				{
-					biomes[i].spawnableCaveCreatureList.add(spawn);
+					if (biomes[i] == biomes[d])
+					{
+						biomes[i].spawnableCaveCreatureList.add(spawn);
+					}
 				}
 			}
+		}
+		else
+		{
+			addCaveSpawnToAll(spawn);
 		}
 	}
 	

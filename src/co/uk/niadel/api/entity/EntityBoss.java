@@ -16,12 +16,7 @@ public class EntityBoss extends EntityMob implements IBossDisplayData
 	 * The entity that is being launched. Maybe it could be a Creeper XD.
 	 */
 	protected Entity projectileEntity;
-	
-	/**
-	 * The entity being targeted.
-	 */
-	protected Entity targetedEntity;
-	
+		
 	public EntityBoss(World world)
 	{
 		super(world);
@@ -31,17 +26,17 @@ public class EntityBoss extends EntityMob implements IBossDisplayData
 	 * A utility method that attacks a mob with a projectile. Is customisable, just pass a target, a projectile Object, like
 	 * a wither skull or an arrow, and the offset from the entity.
 	 */
-	public final void attackEnemyFromRange(Entity target, double xOffset, double yOffset, double zOffset)
+	public void attackEnemyFromRange(Entity target, double xOffset, double yOffset, double zOffset)
 	{
-		this.targetedEntity = target;
+		Entity targetedEntity = target;
 		Entity projectileEntity = this.projectileEntity;
 		
 		double projectilePosX = this.posX + xOffset;
 		double projectilePosY = this.posY + yOffset;
 		double projectilePosZ = this.posZ + zOffset;
-		double projectileMotionX = this.targetedEntity.posX - this.posX;
-		double projectileMotionY = (this.targetedEntity.boundingBox.maxY - this.targetedEntity.boundingBox.minY) + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
-		double projectileMotionZ = this.targetedEntity.posZ - this.posZ;
+		double projectileMotionX = targetedEntity.posX - this.posX;
+		double projectileMotionY = (targetedEntity.boundingBox.maxY - targetedEntity.boundingBox.minY) + (double)(targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
+		double projectileMotionZ = targetedEntity.posZ - this.posZ;
 		this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(projectileMotionX, projectileMotionZ)) * 180.0F / (float)Math.PI;
 		
 		projectileEntity.motionX = projectileMotionX;
@@ -54,18 +49,9 @@ public class EntityBoss extends EntityMob implements IBossDisplayData
 	/**
 	 * Sets the projectile the entity should use.
 	 */
-	public final void setProjectile(Entity theProjectile)
+	public void setProjectile(Entity theProjectile)
 	{
 		this.projectileEntity = theProjectile;
-	}
-	
-	/**
-	 * Sets the target of this entity.
-	 */
-	@Override
-	public final void setTarget(Entity target)
-	{
-		this.targetedEntity = target;
 	}
 	
 	/**

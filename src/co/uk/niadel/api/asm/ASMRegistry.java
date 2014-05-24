@@ -6,6 +6,9 @@ import java.util.List;
 
 public class ASMRegistry 
 {
+	/**
+	 * The list of ASM transformers registered.
+	 */
 	public static List<IASMTransformer> asmTransformers = new ArrayList<>();
 	
 	/**
