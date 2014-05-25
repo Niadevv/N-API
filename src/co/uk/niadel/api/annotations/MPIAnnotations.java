@@ -22,6 +22,18 @@ public final class MPIAnnotations
 	}
 	
 	/**
+	 * Marks a method as being dangerous to use. Usually used if a method can break compatibility between mods.
+	 * @author Niadel
+	 */
+	@Retention(value = RetentionPolicy.SOURCE)
+	@Documented
+	public @interface Dangerous
+	{
+		public String danger() default "HIGH";
+		public String reason() default "None";
+	}
+	
+	/**
 	 * Tells readers that you still want to add something.
 	 * @author Niadel
 	 */
@@ -78,7 +90,6 @@ public final class MPIAnnotations
 	/**
 	 * Like @UnstableMod, but only for Libraries.
 	 * @author Niadel
-	 *
 	 */
 	@Retention(value = RetentionPolicy.RUNTIME)
 	@Documented
@@ -90,7 +101,7 @@ public final class MPIAnnotations
 	
 	/**
 	 * Somewhat analagous to Forge's @Mod annotation, only optional, and is just a shortcut rather than the fixed way
-	 * of defining annotations.
+	 * of defining ModRegisters.
 	 * @author Niadel
 	 *
 	 */

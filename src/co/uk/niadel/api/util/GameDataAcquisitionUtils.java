@@ -9,7 +9,7 @@ import net.minecraft.world.World;
  * @author Niadel
  *
  */
-public class GameDataAquisitionUtils
+public class GameDataAcquisitionUtils
 {
 	/**
 	 * Whether or not the client is Forge. False by default. Only set by NAPIMod in the Forge wrapper.

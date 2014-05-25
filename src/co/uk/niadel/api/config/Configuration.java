@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.api.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.api.util.NAPILogHelper;
 
 @TestFeature(stable = false, firstAppearance = "1.0")
 /**
@@ -42,10 +43,29 @@ public final class Configuration
 	 * @param data
 	 * @throws IOException
 	 */
-	public Configuration(String configName, String[] data) throws IOException
+	public Configuration(String configName, String[] data)
 	{
-		File theConfigFile = generateNewConfig(configName);
-		addData(data);
+		try
+		{
+			File theConfigFile = generateNewConfig(configName);
+			addData(data);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public Configuration(String configName)
+	{
+		try
+		{
+			File theConfigFile = generateNewConfig(configName);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -129,6 +149,8 @@ public final class Configuration
 		catch (FileNotFoundException e)
 		{
 			System.err.println("[CONFIGERROR] Please create the config before attempting to get data from it.");
+			NAPILogHelper.logError("Someone forgot to create a config .-.");
+			NAPILogHelper.logError(e);
 		}
 		
 		return data.get(configValue);
@@ -158,6 +180,8 @@ public final class Configuration
 		catch (FileNotFoundException e)
 		{
 			System.err.println("[CONFIGERROR] The config MUST be created BEFORE adding any data.");
+			NAPILogHelper.logError("Someone forgot to create a config .-.");
+			NAPILogHelper.logError(e);
 		}
 	}
 	

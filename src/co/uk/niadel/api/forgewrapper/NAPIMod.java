@@ -8,7 +8,7 @@ import co.uk.niadel.api.exceptions.MCreatorDetectedException;
 import co.uk.niadel.api.forgewrapper.eventhandling.EventHandlerFML;
 import co.uk.niadel.api.forgewrapper.eventhandling.EventHandlerForge;
 import co.uk.niadel.api.modhandler.loadhandler.NModLoader;
-import co.uk.niadel.api.util.GameDataAquisitionUtils;
+import co.uk.niadel.api.util.GameDataAcquisitionUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -29,7 +29,7 @@ public class NAPIMod
 		try
 		{
 			//Tell the game data that the game is a Forge environment.
-			GameDataAquisitionUtils.isForge = true;
+			GameDataAcquisitionUtils.isForge = true;
 			//Register the event handlers.
 			MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
 			FMLCommonHandler.instance().bus().register(new EventHandlerFML());

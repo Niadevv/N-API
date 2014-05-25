@@ -2,13 +2,15 @@ package co.uk.niadel.api.modhandler.n_api;
 
 import net.minecraft.potion.Potion;
 import co.uk.niadel.api.annotations.MPIAnnotations.Library;
+import co.uk.niadel.api.config.Configuration;
 import co.uk.niadel.api.modhandler.IModRegister;
 import co.uk.niadel.api.napioredict.NAPIOreDict;
 import co.uk.niadel.api.potions.PotionRegistry;
+import co.uk.niadel.api.util.NAPILogHelper;
 
 @Library(version = "1.0")
 /**
- * An example ModRegister. As N-API is a Library, it has an @Library annotation even though
+ * The N-API register. As N-API is a Library, it has an @Library annotation even though
  * it's never tested for documentation purposes as N-API's register is loaded separately to
  * reduce load time.
  * 
@@ -16,9 +18,11 @@ import co.uk.niadel.api.potions.PotionRegistry;
  */
 public class ModRegister implements IModRegister
 {	
-	public static String modId = "NIADEL_n_api";
+	public static final String MODID = "NIADEL_n_api";
 	
 	public static final String VERSION = "1.7.2_1.0";
+	
+	public static Configuration config = new Configuration(MODID + VERSION + ".cfg");
 	
 	@Override
 	public void preModInit()
@@ -29,6 +33,7 @@ public class ModRegister implements IModRegister
 		}
 		
 		NAPIOreDict.addDefaultEntries();
+		NAPILogHelper.init();
 	}
 
 	@Override

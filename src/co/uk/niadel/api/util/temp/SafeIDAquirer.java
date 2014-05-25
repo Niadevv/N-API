@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import co.uk.niadel.api.annotations.MPIAnnotations.Temprorary;
 import co.uk.niadel.api.exceptions.FreeIdNotFoundException;
 
 /**
@@ -14,6 +15,7 @@ import co.uk.niadel.api.exceptions.FreeIdNotFoundException;
  * 
  * @author Niadel
  */
+@Temprorary(versionToBeRemoved = "Minecraft 1.8")
 public final class SafeIDAquirer 
 {
 	/**
