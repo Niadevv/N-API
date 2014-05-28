@@ -4,6 +4,8 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -13,12 +15,7 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 	{
 		byte[] patchedBytes = null;
 		
-		switch (currClassName)
-		{
-			//Classes are deobfuscated by FML at runtime. This should (if CPW got it right) work.
-			case "net.minecraft.item.Item":
-				patchedBytes = patchClass(currClassName, newClassName, bytes);
-		}
+		patchedBytes = patchClass(currClassName, newClassName, bytes);
 		
 		if (patchedBytes != null)
 		{
@@ -45,7 +42,16 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 				cw.newField("abn", "instance", "public Labn;");
 				FieldVisitor fv = cw.visitField(ACC_PUBLIC, "instance", "public Labn", null, null);
 				fv.visitEnd();
-				
+			
+			case "net.minecraft.client.renderer.entity.RenderItem":
+				MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "renderGameOverlay", "(FZII)V", null, null);
+				mv.visitCode();
+				Label l261 = new Label();
+				mv.visitLabel(l261);
+				mv.visitLineNumber(498, l261);
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/api/client/GUIHUDRegistry", "callAllRenderers", "(Lnet/minecraft/client/gui/GuiIngame;)V", false);
+
 		}
 		
 		return bytes;
