@@ -28,13 +28,19 @@ public interface IModRegister
 	/**
 	 * A mod's unique identifier. This is added to satisfy eclipse.
 	 */
-	public String modId = "";
+	public String MODID = "";
 	
 	/**
 	 * The mod's version. You more or less have to specify this, or at the very least it is 
 	 * very recommended. This is added to satisfy eclipse.
 	 */
-	public String version = "";
+	public String VERSION = "";
+	
+	public boolean isUsingAnnotation = false;
+	
+	public String getVersion();
+	
+	public String getModId();
 	
 	/**
 	 * Where you register transformers. This is called BEFORE everything else, in Bootstrap.

@@ -66,4 +66,16 @@ public class ModRegister implements IModRegister
 	{
 		
 	}
+
+	@Override
+	public String getVersion()
+	{
+		return VERSION;
+	}
+
+	@Override
+	public String getModId()
+	{
+		return MODID;
+	}
 }

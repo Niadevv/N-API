@@ -65,7 +65,7 @@ import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
  */
 public class NModLoader extends URLClassLoader
 {
-	static NModLoader instance = new NModLoader(new URL[0]);
+	private static NModLoader instance = new NModLoader(new URL[0]);
 	
 	/**
 	 * Dummy Constructor u.u
@@ -76,6 +76,9 @@ public class NModLoader extends URLClassLoader
 		super(arg0);
 	}
 
+	/**
+	 * The minecraft object.
+	 */
 	public static Minecraft theMinecraft = Minecraft.getMinecraft();
 	public static Profiler mcProfiler = Minecraft.mcProfiler;
 	public static Map<String, String> mods = new HashMap<>();
@@ -216,7 +219,7 @@ public class NModLoader extends URLClassLoader
 			register.preModInit();
 			register.modInit();
 			register.postModInit();
-			nAPIVersion = register.version;
+			nAPIVersion = register.getVersion();
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException | ClassNotFoundException e)
 		{
@@ -340,8 +343,9 @@ public class NModLoader extends URLClassLoader
 				{
 					//Set values of the register with Reflection because for some reason interface values are final by default.
 					//Huh, you learn something new every day. Unless you're dead :3
-					ReflectionManipulateValues.setValue(annotation.getClass(), "version", ((ModRegister) annotation).version());
-					ReflectionManipulateValues.setValue(annotation.getClass(), "modId", ((ModRegister) annotation).modId());
+					ReflectionManipulateValues.setValue(annotation.getClass(), "VERSION", ((ModRegister) annotation).version());
+					ReflectionManipulateValues.setValue(annotation.getClass(), "MODID", ((ModRegister) annotation).modId());
+					ReflectionManipulateValues.setValue(annotation.getClass(), "isUsingAnnotation", true);
 				}
 
 				//Gets all annotation handlers to handle the current annotation.
@@ -355,6 +359,8 @@ public class NModLoader extends URLClassLoader
 		{
 			mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
 		}
+		
+		System.gc();
 	}
 	
 	/**
@@ -428,14 +434,14 @@ public class NModLoader extends URLClassLoader
 					else if (e instanceof InstantiationException)
 					{
 						//Tell the user (angrily) to tell the author that they should not be making their register an interface.
-						throw new RuntimeException("Please ask the author of the mod " + currRegister.modId + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
+						throw new RuntimeException("Please ask the author of the mod " + currRegister.getModId() + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
 					}
 				}
 					
 				if (!mods.containsValue(currDependency))
 				{
 					//Signify to the user that a mod dependency is not found.
-					throw new ModDependencyNotFoundException(currRegister.modId);
+					throw new ModDependencyNotFoundException(currRegister.getModId());
 				}
 				
 				if (libraryVersionIterator != null && libraryIterator != null)
@@ -448,13 +454,13 @@ public class NModLoader extends URLClassLoader
 					if (currLibraryVersion == "")
 					{
 						//Tell the user that a library doesn't have a version.
-						throw new RuntimeException("The library " + currLib.modId + " does NOT have a version! Contact the library's creator to fix this and then ask them why they aren't adding a version to their mod, especially if it's a library -_-!");
+						throw new RuntimeException("The library " + currLib.getModId() + " does NOT have a version! Contact the library's creator to fix this and then ask them why they aren't adding a version to their mod, especially if it's a library -_-!");
 					}
 					
 					//The version of the requested minimum library version.
 					int[] currVersion = UtilityMethods.parseVersionNumber(currLibraryVersion);
 					//The actual library version.
-					int[] currLibVersion = UtilityMethods.parseVersionNumber(currLib.version);
+					int[] currLibVersion = UtilityMethods.parseVersionNumber(currLib.getVersion());
 					
 					for (int currNumber : currVersion)
 					{
@@ -468,7 +474,7 @@ public class NModLoader extends URLClassLoader
 							else
 							{
 								//Let the user know that a library is outdated.
-								throw new OutdatedLibraryException(currLib.modId);
+								throw new OutdatedLibraryException(currLib.getModId());
 							}
 						}
 					}
