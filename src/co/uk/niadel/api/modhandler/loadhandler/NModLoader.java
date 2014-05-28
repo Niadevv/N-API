@@ -138,22 +138,29 @@ public class NModLoader extends URLClassLoader
 	 * @throws InstantiationException 
 	 * @throws MCreatorDetectedException 
 	 */
-	public static final void loadModsFromDir() throws ZipException, IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException, MCreatorDetectedException
+	public static final void loadModsFromDir()
 	{
-		System.out.println(mcMainDir.toPath().toString());
-		initNAPIRegister((Class<? extends IModRegister>) Class.forName("co.uk.niadel.api.modhandler.n_api.ModRegister"));
-		
-		if (mcModsDir.listFiles() != null)
+		try
 		{
-			for (File currFile : mcModsDir.listFiles())
+			System.out.println(mcMainDir.toPath().toString());
+			initNAPIRegister((Class<? extends IModRegister>) Class.forName("co.uk.niadel.api.modhandler.n_api.ModRegister"));
+
+			if (mcModsDir.listFiles() != null)
 			{
-				File nextLoad = extractFromZip(new ZipFile(currFile));
-				loadUrl(nextLoad.toURI().toURL());
-				loadClasses(nextLoad);
+				for (File currFile : mcModsDir.listFiles())
+				{
+					File nextLoad = extractFromZip(new ZipFile(currFile));
+					loadUrl(nextLoad.toURI().toURL());
+					loadClasses(nextLoad);
+				}
 			}
+
+			System.gc();
 		}
-		
-		System.gc();
+		catch (IOException | ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | MCreatorDetectedException e)
+		{
+			e.printStackTrace(NAPILogHelper.logStream);
+		}
 	}
 	
 	/**

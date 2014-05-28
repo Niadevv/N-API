@@ -26,30 +26,14 @@ public class NAPIMod
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		try
-		{
-			//Tell the game data that the game is a Forge environment.
-			GameDataAcquisitionUtils.isForge = true;
-			//Register the event handlers.
-			MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
-			FMLCommonHandler.instance().bus().register(new EventHandlerFML());
-			//Begin loading N-API mods.
-			NModLoader.loadModsFromDir();
-			ASMRegistry.invokeAllTransformers();
-			NModLoader.invokeRegisterMethods();
-		}
-		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | IOException | MCreatorDetectedException e) //Oh sweet lawd the amount of exceptions :3
-		{
-			if (!(e instanceof MCreatorDetectedException))
-			{
-				//Let the user know stuff is broken.
-				FMLLog.severe("SERIOUS ISSUE OCCURED LOADING N-API FORGE WRAPPER! EXCEPTION IS BELOW:");
-				e.printStackTrace();
-			}
-			else
-			{
-				FMLLog.severe("MCREATOR DETECTED! NOT CONTINUING LOAD!");
-			}
-		}
+		//Tell the game data that the game is a Forge environment.
+		GameDataAcquisitionUtils.isForge = true;
+		//Register the event handlers.
+		MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
+		FMLCommonHandler.instance().bus().register(new EventHandlerFML());
+		//Begin loading N-API mods.
+		NModLoader.loadModsFromDir();
+		ASMRegistry.invokeAllTransformers();
+		NModLoader.invokeRegisterMethods();
 	}
 }
