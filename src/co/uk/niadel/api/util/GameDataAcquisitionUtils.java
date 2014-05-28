@@ -45,7 +45,7 @@ public class GameDataAcquisitionUtils
 	}
 	
 	/**
-	 * Returns whether or not the side is primarily dominated by Forge and the Forge Wrapper is active.
+	 * Returns whether or not the client is primarily dominated by Forge and the Forge Wrapper is active.
 	 * @return
 	 */
 	public static final boolean isForgeDominated()
@@ -54,7 +54,7 @@ public class GameDataAcquisitionUtils
 	}
 	
 	/**
-	 * Returns whether or not the side is primarily dominated by N-API.
+	 * Returns whether or not the client is primarily dominated by N-API.
 	 * @return
 	 */
 	public static final boolean isNAPIDominated()

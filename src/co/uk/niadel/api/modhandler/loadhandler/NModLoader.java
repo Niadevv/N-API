@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -30,15 +32,13 @@ import co.uk.niadel.api.annotations.MPIAnnotations.ModRegister;
 import co.uk.niadel.api.annotations.MPIAnnotations.UnstableLibrary;
 import co.uk.niadel.api.annotations.MPIAnnotations.UnstableMod;
 import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
-import co.uk.niadel.api.asm.ASMRegistry;
 import co.uk.niadel.api.crafting.RecipesRegistry;
-import co.uk.niadel.api.events.EventsList;
-import co.uk.niadel.api.events.apievents.EventLoadMod;
 import co.uk.niadel.api.exceptions.MCreatorDetectedException;
 import co.uk.niadel.api.exceptions.ModDependencyNotFoundException;
 import co.uk.niadel.api.exceptions.OutdatedLibraryException;
 import co.uk.niadel.api.modhandler.IModRegister;
 import co.uk.niadel.api.rendermanager.RenderRegistry;
+import co.uk.niadel.api.util.NAPILogHelper;
 import co.uk.niadel.api.util.UtilityMethods;
 import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
@@ -63,8 +63,19 @@ import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
  * @author Niadel
  *
  */
-public class NModLoader 
+public class NModLoader extends URLClassLoader
 {
+	static NModLoader instance = new NModLoader(new URL[0]);
+	
+	/**
+	 * Dummy Constructor u.u
+	 * @param arg0
+	 */
+	public NModLoader(URL[] arg0)
+	{
+		super(arg0);
+	}
+
 	public static Minecraft theMinecraft = Minecraft.getMinecraft();
 	public static Profiler mcProfiler = Minecraft.mcProfiler;
 	public static Map<String, String> mods = new HashMap<>();
@@ -95,6 +106,24 @@ public class NModLoader
 	protected static String nAPIVersion;
 
 	/**
+	 * Loads a URL into the class path.
+	 * @param url
+	 */
+	public static final void loadUrl(URL url)
+	{
+		instance.addURL(url);
+	}
+	
+	/**
+	 * Adds a URL into the class path.
+	 * @param url
+	 */
+	public final void addUrl(URL url)
+	{
+		super.addURL(url);
+	}
+	
+	/**
 	 * The entry point for the loader.
 	 * 
 	 * @throws ZipException
@@ -119,6 +148,7 @@ public class NModLoader
 			for (File currFile : mcModsDir.listFiles())
 			{
 				File nextLoad = extractFromZip(new ZipFile(currFile));
+				loadUrl(nextLoad.toURI().toURL());
 				loadClasses(nextLoad);
 			}
 		}
@@ -137,8 +167,7 @@ public class NModLoader
 		}
 		catch (OutdatedLibraryException | ModDependencyNotFoundException e)
 		{
-			//The exceptions deal with this, no need to do special stuff.
-			;
+			e.printStackTrace(NAPILogHelper.logStream);
 		}
 		
 		callAllInits();
@@ -242,7 +271,7 @@ public class NModLoader
 			for (File currFile : dir.listFiles())
 			{
 				String binaryName = getModId(dir);
-				//If the binary name isn't MCreator. I WILL NEVER, EVER SUPPORT MOD MAKING PROGRAMS, AND WILL DO EVERYTHING IN MY
+				//If the binary name isn't MCreator, process the annotations. I WILL NEVER, EVER SUPPORT MOD MAKING PROGRAMS, AND WILL DO EVERYTHING IN MY
 				//POWER TO MAKE SURE THAT THEY DO NOT WORK WITH NAPI!
 				if (!binaryName.toLowerCase().contains("mcreator"))
 				{
