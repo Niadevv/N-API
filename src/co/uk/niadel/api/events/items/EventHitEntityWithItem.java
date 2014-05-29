@@ -8,7 +8,7 @@ import co.uk.niadel.api.events.IEvent;
 
 /**
  * Fired when an entity hits another with an item like a Sword. This allows for entities to only take damage from one type of item.
- * @author Daniel1
+ * @author Niadel
  *
  */
 public class EventHitEntityWithItem extends EventCancellable implements IEvent

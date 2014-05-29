@@ -45,6 +45,15 @@ public final class MPIAnnotations
 	}
 	
 	/**
+	 * Marks an annotation as being internal and not to use.
+	 * @author Niadel
+	 *
+	 */
+	@Retention(value = RetentionPolicy.SOURCE)
+	@Documented
+	public @interface Internal {}
+	
+	/**
 	 * Marks a feature as not being permanent.
 	 * @author Niadel
 	 *
@@ -56,8 +65,10 @@ public final class MPIAnnotations
 		String versionToBeRemoved() default "Soon!";
 	}
 	
-	//BELOW: SPECIAL ANNOTATIONS
-	//These are used to add extra functionality to ModRegisters.
+//#############################################################################################################################
+//BELOW: SPECIAL ANNOTATIONS
+//These are used to add extra functionality to ModRegisters.
+//#############################################################################################################################
 	
 	/**
 	 * Marks a mod as being a library. Only used if the mod is a library that doesn't change
