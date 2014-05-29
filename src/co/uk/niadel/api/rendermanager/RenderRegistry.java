@@ -25,10 +25,10 @@ public final class RenderRegistry
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static final void addRender(Class entityClass, Render currRender) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public static final void addRender(Class entityClass, Render render) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
 	{
 		Map<Class<?>, Render> renderMap = (HashMap<Class<?>, Render>) ReflectionManipulateValues.getValue(RenderManager.class, renderManager, "entityRenderMap");
-		renderMap.put(entityClass, currRender);
+		renderMap.put(entityClass, render);
 	}
 	
 	/**

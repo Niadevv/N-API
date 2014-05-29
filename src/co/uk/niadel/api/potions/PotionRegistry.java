@@ -1,9 +1,11 @@
 package co.uk.niadel.api.potions;
 
-import net.minecraft.potion.Potion;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import net.minecraft.potion.Potion;
 import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
 @TestFeature(firstAppearance = "1.0")
 /**
@@ -43,5 +45,26 @@ public class PotionRegistry
 	public static final Potion getPotion(String potion)
 	{
 		return modPotions.get(potion);
+	}
+	
+	public static final void addAllPotions()
+	{
+		Potion[] potions = new Potion[1000];
+		
+		for (int i = 0; i == Potion.potionTypes.length; i++)
+		{
+			potions[i] = Potion.potionTypes[i];
+		}
+		
+		int x = potions.length;
+		Iterator modPotionsIterator = modPotions.entrySet().iterator();
+		
+		while (modPotionsIterator.hasNext())
+		{
+			potions[x] = (Potion) modPotionsIterator.next();
+			x++;
+		}
+		
+		ReflectionManipulateValues.setValue(Potion.class, "potionTypes", potions);
 	}
 }

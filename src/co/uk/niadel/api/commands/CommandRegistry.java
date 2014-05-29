@@ -9,7 +9,8 @@ import net.minecraft.server.MinecraftServer;
 import co.uk.niadel.api.annotations.MPIAnnotations.RecommendedMethod;
 
 /**
- * Used to add commands. I don't think Forge does this at all, so plus for N-API :D. PFFT WHO NEEDS BUKKIT?
+ * Used to add commands. I don't think Forge does this at all, so plus for N-API :D. If it does, though, it's incredibly well hidden,
+ * even for Forge.
  * @author Niadel
  *
  */
@@ -86,6 +87,7 @@ public final class CommandRegistry extends ServerCommandManager
 	 * 
 	 * @return modCommandMap
 	 */
+	@RecommendedMethod
 	public static Map<String, ICommand> getModCommandsMap()
 	{
 		return modCommandMap;
@@ -110,7 +112,8 @@ public final class CommandRegistry extends ServerCommandManager
 				}
 			}
 		}
-		// Only returns as false if the command is not in the list.
+		
+		//Should be put in an else block, but that causes an error for some stupid reason.
 		return false;
 	}
 	
@@ -125,7 +128,9 @@ public final class CommandRegistry extends ServerCommandManager
 		{
 			return true;
 		}
-		// Only returns false if the command has not been found.
-		return false;
+		else
+		{
+			return false;
+		}
 	}
 }
