@@ -5,8 +5,10 @@ import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import co.uk.niadel.api.events.EventCancellable;
 import co.uk.niadel.api.events.EventsList;
+import co.uk.niadel.api.events.blocks.EventBlockDestroyedWithItem;
 import co.uk.niadel.api.events.entity.EventEntityDeath;
 import co.uk.niadel.api.events.entity.EventEntitySpawned;
 import co.uk.niadel.api.events.entity.EventEntityStruckByLightning;
@@ -21,6 +23,16 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  */
 public class EventHandlerForge
 {
+	/**
+	 * Was meant to be cancellable, but Forge's BlockBreakEvent doesn't allow cancelling u.u.
+	 * @param event
+	 */
+	@SubscribeEvent
+	public void onBlockBreak(BlockEvent.BreakEvent event)
+	{
+		EventsList.fireEvent(new EventBlockDestroyedWithItem(event.getPlayer().getCurrentEquippedItem(), event.world, event.block,event.x, event.y, event.z, event.getPlayer()), "EventBlockDestroyedWithItem");
+	}
+	
 	@SubscribeEvent
 	public void onServerChat(ServerChatEvent event)
 	{
