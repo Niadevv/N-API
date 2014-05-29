@@ -3,7 +3,7 @@ package co.uk.niadel.api.gen.layers;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
+import co.uk.niadel.api.annotations.MPIAnnotations.Internal;
 import net.minecraft.world.gen.layer.GenLayer;
 
 /**
@@ -27,14 +27,24 @@ public abstract class GenLayerRegistry extends GenLayer
 		super(par1);
 	}
 	
+	/**
+	 * Registers a gen layer.
+	 * @param modId
+	 * @param modGenLayer
+	 */
 	public static final void registerGenLayer(String modId, GenLayer modGenLayer)
 	{
 		modLayers.put(modId, modGenLayer);
 	}
 	
-	public static final GenLayer[] iterateLayers()
+	/**
+	 * Iterates through all layers and calls their layerInit method.
+	 * @return
+	 */
+	@Internal
+	public static final IGenLayer[] iterateLayers()
 	{
-		GenLayerRegistry[] layers = new GenLayerRegistry[] {};
+		IGenLayer[] layers = new IGenLayer[] {};
 		
 		if (!modLayers.isEmpty())
 		{
@@ -44,7 +54,7 @@ public abstract class GenLayerRegistry extends GenLayer
 			while (layerIterator.hasNext())
 			{
 				i += 1;
-				GenLayerRegistry currLayer = (GenLayerRegistry) layerIterator.next();
+				IGenLayer currLayer = (IGenLayer) layerIterator.next();
 				layers[i] = currLayer;
 				currLayer.layerInit();
 			}
@@ -52,9 +62,4 @@ public abstract class GenLayerRegistry extends GenLayer
 		
 		return layers;
 	}
-	
-	/**
-	 * This is where to perform special stuff for your layer, like modInit() for mods.
-	 */
-	public abstract void layerInit();
 }

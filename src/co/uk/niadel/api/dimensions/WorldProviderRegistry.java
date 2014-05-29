@@ -43,6 +43,11 @@ public class WorldProviderRegistry
 		return providerMap.get(id);
 	}
 	
+	/**
+	 * Gets whether or not the provider with the specified id exists.
+	 * @param id
+	 * @return
+	 */
 	public static final boolean doesProviderExist(int id)
 	{
 		if (getProvider(id) != null)

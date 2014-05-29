@@ -29,7 +29,10 @@ public class PotionRegistry
 	 */
 	public static final void registerPotion(String potionName, Potion modPotion)
 	{
-		modPotions.put(potionName, modPotion);
+		if (getPotion(potionName) == null)
+		{
+			modPotions.put(potionName, modPotion);
+		}
 	}
 	
 	/**

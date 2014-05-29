@@ -53,6 +53,14 @@ public final class MPIAnnotations
 	@Documented
 	public @interface Internal {}
 	
+	@Retention(value = RetentionPolicy.SOURCE)
+	@Target(value = ElementType.METHOD)
+	@Documented
+	public @interface ShouldSuperInSubclasses
+	{
+		String priority() default "High";
+	}
+	
 	/**
 	 * Marks a feature as not being permanent.
 	 * @author Niadel

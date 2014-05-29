@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ReportedException;
+import co.uk.niadel.api.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.api.annotations.MPIAnnotations.Temprorary;
 import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.api.napioredict.NAPIOreDict;
@@ -46,6 +47,7 @@ public final class RecipesRegistry extends CraftingManager
 	/**
 	 * Dummy constructor only used for one method.
 	 */
+	@Internal
 	private RecipesRegistry() {}
 	
 	/**
@@ -131,6 +133,7 @@ public final class RecipesRegistry extends CraftingManager
 	 * Private as this can only otherwise be called by subclasses, and that's no fun. This adds multiple recipes.
 	 * @param craftingRecipeObject
 	 */
+	@Internal
 	private final void addNewModRecipesPrivate(CraftingManager craftingRecipeObject)
 	{
 		//Mojang! Y U NO USE GENERICS?! You can and SHOULD use them.
@@ -150,6 +153,7 @@ public final class RecipesRegistry extends CraftingManager
 	/**
 	 * Adds all recipes. Only called in NModLoader.
 	 */
+	@Internal
 	public static final void addAllRecipes()
 	{
 		try

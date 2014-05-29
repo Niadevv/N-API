@@ -3,6 +3,7 @@ package co.uk.niadel.api.asm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import co.uk.niadel.api.annotations.MPIAnnotations.Internal;
 
 public class ASMRegistry 
 {
@@ -23,6 +24,7 @@ public class ASMRegistry
 	/**
 	 * Calls all register transformers' manipulateBytecodes method.
 	 */
+	@Internal
 	public static final void invokeAllTransformers()
 	{
 		Iterator<IASMTransformer> asmIterator = asmTransformers.iterator();

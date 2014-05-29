@@ -71,7 +71,10 @@ public class ItemBaseModArmour extends ItemArmor
 		return modMaterial;
 	}
 	
-	//ALL FOLLOWING METHODS ARE OVERRIDEN TO USE THE ModArmourMaterial SYSTEM. YOU NEED NOT BOTHER WITH THESE.
+//###########################################################################################################	
+//ALL FOLLOWING METHODS ARE OVERRIDEN TO USE THE ModArmourMaterial SYSTEM. YOU NEED NOT BOTHER WITH THESE.
+//###########################################################################################################
+	
 	public boolean requiresMultipleRenderPasses()
     {
         return this.modMaterial == ModArmourMaterial.clothArmour;

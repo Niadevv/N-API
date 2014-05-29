@@ -17,7 +17,7 @@ import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
 public final class EventsList 
 {
 	/**
-	 * List of all of the event handlers, indexed by a mod's ModID
+	 * List of all of the event handlers.
 	 */
 	public static List<IEventHandler> eventHandlers = new ArrayList<>();
 	

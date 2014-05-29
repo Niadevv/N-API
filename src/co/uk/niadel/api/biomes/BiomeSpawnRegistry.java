@@ -1,9 +1,9 @@
 package co.uk.niadel.api.biomes;
 
-import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.world.biome.BiomeGenBase;
+import co.uk.niadel.api.annotations.MPIAnnotations.Internal;
 
 public final class BiomeSpawnRegistry 
 {
@@ -206,6 +206,7 @@ public final class BiomeSpawnRegistry
 	/**
 	 * Registers all spawns.
 	 */
+	@Internal
 	public static final void registerAllSpawns()
 	{
 		BiomeGenBase.biomeList = biomes;

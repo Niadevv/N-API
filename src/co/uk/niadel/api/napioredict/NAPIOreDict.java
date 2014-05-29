@@ -42,11 +42,17 @@ public class NAPIOreDict
 		}
 	}
 	
+	/**
+	 * Gets an oredict entry by it's string id.
+	 * @param entryName
+	 * @return
+	 */
 	public static final ItemStack[] getOreDictEntry(String entryName)
 	{
 		if (entryName.toLowerCase().contains("aluminum") || entryName.toLowerCase().contains("colored"))
 		{
-			System.out.println("WARNING! YOU ARE USING AMERICAN SPELLING! THE STANDARD OREDICT ENTRIES ARE IN ENGLISH SPELLING!");
+			System.out.println("WARNING! YOU ARE USING AMERICAN SPELLING! THE STANDARD OREDICT ENTRIES ARE IN ENGLISH SPELLING!"
+					+ "IF THE AMERICAN SPELLING IS INTENDED AND YOU ARE GETTING ONE FROM A GROUP IN AMERICAN SPELLING, IGNORE THIS!");
 		}
 		
 		return oreDictEntries.get(entryName);

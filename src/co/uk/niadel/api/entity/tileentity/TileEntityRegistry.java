@@ -14,16 +14,26 @@ public final class TileEntityRegistry extends TileEntity
 	/**
 	 * A Map that contains tile entity IDs from mods.
 	 */
-	public static Map<Class<? extends TileEntity>, String> modTileEntitiesMap = new HashMap<>();
+	public static Map<String, Class<? extends TileEntity>> modTileEntitiesMap = new HashMap<>();
 	
 	/**
 	 * Registers a tile entities to the vanilla registry.
 	 * @param classToRegister
 	 * @param id
 	 */
-	public final static void registerTileEntity(Class<? extends TileEntity> classToRegister, String id)
+	public static final void registerTileEntity(Class<? extends TileEntity> classToRegister, String id)
 	{
-		modTileEntitiesMap.put(classToRegister, id);
+		modTileEntitiesMap.put(id, classToRegister);
 		func_145826_a(classToRegister, id);
+	}
+	
+	/**
+	 * Gets an entity class by it's String id.
+	 * @param id
+	 * @return
+	 */
+	public static final Class<? extends TileEntity> getClassById(String id)
+	{
+		return modTileEntitiesMap.get(id);
 	}
 }

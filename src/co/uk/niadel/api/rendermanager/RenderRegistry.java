@@ -2,9 +2,10 @@ package co.uk.niadel.api.rendermanager;
 
 import java.util.HashMap;
 import java.util.Map;
-import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import co.uk.niadel.api.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
 /**
  * Where to add renders.
@@ -33,6 +34,7 @@ public final class RenderRegistry
 	/**
 	 * Adds all of the renders.
 	 */
+	@Internal
 	public static final void addAllRenders()
 	{
 		try

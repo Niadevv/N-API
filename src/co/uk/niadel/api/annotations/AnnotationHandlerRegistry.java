@@ -2,6 +2,7 @@ package co.uk.niadel.api.annotations;
 
 import java.util.HashSet;
 import java.util.Set;
+import co.uk.niadel.api.annotations.MPIAnnotations.Internal;
 
 /**
  * Where you add annotations that are used by N-API MPIs or libraries to add Annotation
@@ -29,6 +30,7 @@ public class AnnotationHandlerRegistry
 	 * Returns the annotation handlers in a Set.
 	 * @return
 	 */
+	@Internal
 	public static final Set<IAnnotationHandler> getAnnotationHandlers()
 	{
 		return annotationHandlers;

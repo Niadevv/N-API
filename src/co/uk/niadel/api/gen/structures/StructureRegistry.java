@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.MapGenStructure;
+import co.uk.niadel.api.annotations.MPIAnnotations.Internal;
 
 public class StructureRegistry
 {
@@ -58,6 +58,7 @@ public class StructureRegistry
 	 * @param par2
 	 * @param blocks
 	 */
+	@Internal
 	public static void generateAllMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)
 	{
 		Iterator<MapGenStructure> structureIterator = mapFDependantStructures.iterator();
@@ -76,6 +77,7 @@ public class StructureRegistry
 	 * @param par2
 	 * @param blocks
 	 */
+	@Internal
 	public static void generateAllNonMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)
 	{
 		//Oh my Notch, I love Generics in Iterators, I should have used it lots more. In fact,

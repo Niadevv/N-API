@@ -1,8 +1,8 @@
 package co.uk.niadel.api.biomes;
 
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerBiome;
+import co.uk.niadel.api.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.api.util.reflection.ReflectionManipulateValues;
 
@@ -63,6 +63,7 @@ public final class BiomeRegistry
 		}
 	}
 	
+	@Internal
 	public static final void registerAllBiomes(GenLayerBiome biomeGenLayer)
 	{
 		try 

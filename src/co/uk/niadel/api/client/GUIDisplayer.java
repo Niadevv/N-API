@@ -4,9 +4,22 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
 import net.minecraft.tileentity.TileEntity;
+import co.uk.niadel.api.annotations.MPIAnnotations.ShouldSuperInSubclasses;
 
 public abstract class GUIDisplayer
 {
+	/**
+	 * Does the actual displaying of the GUI.
+	 * @param guiId
+	 * @param player
+	 * @param tileEntity
+	 * @param name
+	 * @param isLocalised
+	 * @param inventorySlotSize
+	 * @param container
+	 * @param otherInfo
+	 */
+	@ShouldSuperInSubclasses
 	public static void displayGUI(String guiId, EntityPlayerMP player, TileEntity tileEntity, String name, boolean isLocalised, int inventorySlotSize, Container container, Object... otherInfo)
 	{
 		player.getNextWindowId();
