@@ -13,10 +13,7 @@ import java.util.List;
  */
 public abstract class EventBase implements IEvent 
 {
-	/**
-	 * A list of all of the events added. Used to get the last event fired.
-	 */
-	public static Event[] events = new Event[] {};
+	public static IEvent[] events = new IEvent[] {};
 	
 	/**
 	 * The data to add when the event is fired.
@@ -24,26 +21,11 @@ public abstract class EventBase implements IEvent
 	public List<Object[]> data = new ArrayList<>();
 	
 	/**
-	 * Adds the event after clearing the events list if it contains more
-	 * than 100 events.
-	 * @param eventToAdd
-	 */
-	public static final void addEvent(Event eventToAdd)
-	{
-		if (events.length > 100)
-		{
-			clearEvents();
-		}
-		
-		events[events.length - 1] = eventToAdd;
-	}
-	
-	/**
 	 * Gets the last executed event.
 	 * @param event
 	 * @return
 	 */
-	public static final Event currentEvent(Event event)
+	public static final IEvent currentEvent(IEvent event)
 	{
 		return events[events.length - 1];
 	}
@@ -57,25 +39,5 @@ public abstract class EventBase implements IEvent
 		{
 			events[i] = null;
 		}
-	}
-	
-	/**
-	 * Gets this event's data.
-	 * @return
-	 */
-	public final List<Object[]> getData()
-	{
-		return this.data;
-	}
-	
-	/**
-	 * Appends more data.
-	 * @param data
-	 * @return
-	 */
-	public final IEvent addData(Object[] data)
-	{
-		this.data.add(data);
-		return this;
 	}
 }

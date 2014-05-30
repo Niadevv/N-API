@@ -27,7 +27,7 @@ public class EventHitEntityWithItem extends EventCancellable implements IEvent
 	 * Gets the item from the ItemStack (Eg. if the ItemStack is that of a sword, this will return an ItemSword object).
 	 * @return The Item Object mentioned above.
 	 */
-	public Item getItemType()
+	public Item getItem()
 	{
 		return this.item.getItem();
 	}
