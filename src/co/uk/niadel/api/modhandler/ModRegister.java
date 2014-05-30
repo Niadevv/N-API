@@ -31,8 +31,6 @@ public class ModRegister implements IModRegister
 			PotionRegistry.registerPotion(Potion.potionTypes[i].getName(), Potion.potionTypes[i]);
 		}
 		
-		//Does the work of adding the potions to the Potion array. You know, just in case.
-		PotionRegistry.addAllPotions();
 		NAPIOreDict.addDefaultEntries();
 		NAPILogHelper.init();
 	}

@@ -31,4 +31,10 @@ public class EventHitEntityWithItem extends EventCancellable implements IEvent
 	{
 		return this.item.getItem();
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventHitEntityWithItem";
+	}
 }

@@ -12,4 +12,10 @@ public class EventPlayerSpawned extends EventBase implements IEvent
 	{
 		this.player = player;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventPlayerSpawned";
+	}
 }

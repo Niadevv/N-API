@@ -15,4 +15,10 @@ public class EventEntityStruckByLightning extends EventBase implements IEvent
 		this.lightningBolt = lightning;
 		this.victimEntity = victim;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventEntityStruckByLightning";
+	}
 }

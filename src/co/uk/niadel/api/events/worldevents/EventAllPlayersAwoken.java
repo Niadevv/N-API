@@ -21,4 +21,10 @@ public class EventAllPlayersAwoken extends EventBase implements IEvent
 	{
 		this.awokenPlayers = players;
 	}
+	
+	@Override
+	public String getName()
+	{
+		return "EventAllPlayersAwoken";
+	}
 }

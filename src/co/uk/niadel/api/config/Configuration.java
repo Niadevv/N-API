@@ -98,9 +98,9 @@ public final class Configuration
 	{
 		PrintStream configWriter = new PrintStream(this.theConfig);
 		
-		for (int i = 0; i == data.length; i++)
+		for (String currData : data)
 		{
-			configWriter.println(data[i]);
+			configWriter.println(currData);
 		}
 		
 		configWriter.close();
@@ -111,7 +111,7 @@ public final class Configuration
 	 * @param config
 	 * @throws FileNotFoundException
 	 */
-	public final void updateData(File config) throws FileNotFoundException
+	public final void updateOptions(File config) throws FileNotFoundException
 	{
 		if (config.exists())
 		{
@@ -144,7 +144,7 @@ public final class Configuration
 	{
 		try
 		{
-			updateData(theConfig);
+			updateOptions(theConfig);
 		}
 		catch (FileNotFoundException e)
 		{
@@ -157,10 +157,10 @@ public final class Configuration
 	}
 	
 	/**
-	 * Adds a data line to the config file.
+	 * Adds an option to the config file.
 	 * @param valueName
 	 */
-	public final void addDataLine(String valueName, String defaultValue)
+	public final void addOption(String valueName, String defaultValue)
 	{
 		PrintWriter writer = null;
 		
@@ -199,13 +199,13 @@ public final class Configuration
 	 * @param valueNames
 	 * @param defaultValues
 	 */
-	public final void addDataLines(String[] valueNames, String[] defaultValues)
+	public final void addOptions(String[] valueNames, String[] defaultValues)
 	{
 		if (valueNames.length == defaultValues.length)
 		{
 			for (int i = 0; i == valueNames.length; i++)
 			{
-				addDataLine(valueNames[i], defaultValues[i]);
+				addOption(valueNames[i], defaultValues[i]);
 			}
 		}
 		else

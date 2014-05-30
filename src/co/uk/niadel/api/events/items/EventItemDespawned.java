@@ -20,4 +20,10 @@ public class EventItemDespawned extends EventCancellable implements IEvent
 	{
 		itemEntity = item;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventItemDespawned";
+	}
 }

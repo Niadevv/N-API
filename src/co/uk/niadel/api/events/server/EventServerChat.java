@@ -14,4 +14,10 @@ public class EventServerChat extends EventBase implements IEvent
 	{
 		this.message = message;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventServerChat";
+	}
 }

@@ -16,9 +16,10 @@ public class EventBonusChestAdded extends EventBase implements IEvent
 	{
 		this.chest = chest;
 	}
-	
-	public void initEvent()
+
+	@Override
+	public String getName()
 	{
-		addData(new Object[] {"EventBonusChestAdded", this, this.chest});
+		return "EventBonusChestAdded";
 	}
 }

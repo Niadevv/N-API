@@ -23,4 +23,10 @@ public class EventItemRightClicked extends EventBase implements IEvent
 		this.world = world;
 		this.player = player;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventItemRightClicked";
+	}
 }

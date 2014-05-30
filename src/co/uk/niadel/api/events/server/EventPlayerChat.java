@@ -19,4 +19,10 @@ public class EventPlayerChat extends EventCancellable implements IEvent
 		this.player = player;
 		this.text = text;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventPlayerChat";
+	}
 }

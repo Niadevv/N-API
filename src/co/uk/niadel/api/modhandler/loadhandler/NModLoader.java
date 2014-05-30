@@ -37,6 +37,7 @@ import co.uk.niadel.api.exceptions.MCreatorDetectedException;
 import co.uk.niadel.api.exceptions.ModDependencyNotFoundException;
 import co.uk.niadel.api.exceptions.OutdatedLibraryException;
 import co.uk.niadel.api.modhandler.IModRegister;
+import co.uk.niadel.api.potions.PotionRegistry;
 import co.uk.niadel.api.rendermanager.RenderRegistry;
 import co.uk.niadel.api.util.NAPILogHelper;
 import co.uk.niadel.api.util.UtilityMethods;
@@ -371,7 +372,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final String getModId(File dirToCheck) throws FileNotFoundException
 	{
-		String binaryName = null;
+		String binaryName = "";
 		
 		for (File currFile : dirToCheck.listFiles())
 		{
@@ -385,7 +386,15 @@ public class NModLoader extends URLClassLoader
 		}
 		
 		System.gc();
-		return binaryName;
+		
+		if (binaryName != "")
+		{
+			return binaryName;
+		}
+		else
+		{
+			throw new IllegalArgumentException("There is no ModID.modid file in the directory " + dirToCheck.getPath());
+		}
 	}
 	
 	/**
@@ -550,6 +559,9 @@ public class NModLoader extends URLClassLoader
 			RecipesRegistry.addAllRecipes();
 			RenderRegistry.addAllRenders();
 		}
+		
+		//Does the work of adding the potions to the Potion.potionTypes array. You know, just in case.
+		PotionRegistry.addAllPotions();
 		
 		System.gc();
 	}

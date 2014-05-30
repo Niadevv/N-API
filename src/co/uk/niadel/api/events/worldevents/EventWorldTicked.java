@@ -16,4 +16,10 @@ public class EventWorldTicked extends EventBase implements IEvent
 	{
 		this.world = world;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventWorldTicked";
+	}
 }

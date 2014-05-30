@@ -18,4 +18,10 @@ public class EventExplosion extends EventBase implements IEvent
 		this.y = explosionY;
 		this.z = explosionZ;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventExplosion";
+	}
 }

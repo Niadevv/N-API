@@ -17,4 +17,10 @@ public class EventLoadMod extends EventBase implements IEvent
 	{
 		this.modId = binaryName;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventLoadMod";
+	}
 }

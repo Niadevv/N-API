@@ -25,4 +25,10 @@ public class EventBlockDestroyedWithItem extends EventBase implements IEvent
 		this.blockZ = blockZ;
 		this.destroyer = destroyer;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventBlockDestroyedWithItem";
+	}
 }

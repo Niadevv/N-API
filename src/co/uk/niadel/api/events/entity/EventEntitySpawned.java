@@ -12,4 +12,10 @@ public class EventEntitySpawned extends EventCancellable implements IEvent
 	{
 		this.entity = entity;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "EventEntitySpawned";
+	}
 }
