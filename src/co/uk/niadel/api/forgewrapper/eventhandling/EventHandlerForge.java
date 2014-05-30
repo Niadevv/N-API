@@ -8,6 +8,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import co.uk.niadel.api.events.EventCancellable;
 import co.uk.niadel.api.events.EventsList;
+import co.uk.niadel.api.events.IEvent;
 import co.uk.niadel.api.events.blocks.EventBlockDestroyedWithItem;
 import co.uk.niadel.api.events.entity.EventEntityDeath;
 import co.uk.niadel.api.events.entity.EventEntitySpawned;
@@ -30,19 +31,19 @@ public class EventHandlerForge
 	@SubscribeEvent
 	public void onBlockBreak(BlockEvent.BreakEvent event)
 	{
-		EventsList.fireEvent(new EventBlockDestroyedWithItem(event.getPlayer().getCurrentEquippedItem(), event.world, event.block,event.x, event.y, event.z, event.getPlayer()), "EventBlockDestroyedWithItem");
+		EventsList.fireEvent(new EventBlockDestroyedWithItem(event.getPlayer().getCurrentEquippedItem(), event.world, event.block,event.x, event.y, event.z, event.getPlayer()));
 	}
 	
 	@SubscribeEvent
 	public void onServerChat(ServerChatEvent event)
 	{
-		EventsList.fireEvent(new EventPlayerChat(event.player, event.message), "EventServerChatEvent");
+		EventsList.fireEvent(new EventPlayerChat(event.player, event.message));
 	}
 	
 	@SubscribeEvent
 	public void onEntityStruckByLightning(EntityStruckByLightningEvent event)
 	{
-		EventsList.fireEvent(new EventEntityStruckByLightning(event.lightning, event.entity), "EventEntityStruckByLightningEvent");
+		EventsList.fireEvent(new EventEntityStruckByLightning(event.lightning, event.entity));
 	}
 	
 	@SubscribeEvent
@@ -50,7 +51,7 @@ public class EventHandlerForge
 	{
 		EventCancellable deathEvent = new EventEntityDeath(event.entity);
 		
-		EventsList.fireEvent(deathEvent, "EventEntityDeath");
+		EventsList.fireEvent(deathEvent);
 		
 		if (deathEvent.isCancelled())
 		{
@@ -63,7 +64,7 @@ public class EventHandlerForge
 	{
 		EventCancellable eventEntitySpawn = new EventEntitySpawned(event.entity);
 		
-		EventsList.fireEvent(eventEntitySpawn, "EntityJoinWorldEvent");
+		EventsList.fireEvent(eventEntitySpawn);
 		
 		if (eventEntitySpawn.isCancelled())
 		{
@@ -75,7 +76,7 @@ public class EventHandlerForge
 	public void onItemDespawned(ItemExpireEvent event)
 	{
 		EventCancellable despawnEvent = new EventItemDespawned(event.entityItem);
-		EventsList.fireEvent(despawnEvent, "EventItemDespawned");
+		EventsList.fireEvent(despawnEvent);
 		
 		if (despawnEvent.isCancelled())
 		{

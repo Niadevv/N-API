@@ -12,11 +12,6 @@ import co.uk.niadel.api.annotations.VersionMarkingAnnotations.TestFeature;
 public interface IEvent 
 {
 	/**
-	 * The event's data, currently not used.
-	 */
-	Object[] data = null;
-	
-	/**
 	 * Gets the event's name.
 	 * @return
 	 */

@@ -4,10 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import co.uk.niadel.api.events.EventBase;
 import co.uk.niadel.api.events.IEvent;
 
-public class EventBlockDestroyedWithItem extends EventBase implements IEvent
+public class EventBlockDestroyedWithItem implements IEvent
 {
 	public ItemStack itemDestroying;
 	public World world;

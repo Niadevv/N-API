@@ -1,6 +1,5 @@
 package co.uk.niadel.api.events.apievents;
 
-import co.uk.niadel.api.events.EventBase;
 import co.uk.niadel.api.events.IEvent;
 
 /**
@@ -9,7 +8,7 @@ import co.uk.niadel.api.events.IEvent;
  * @author Niadel
  *
  */
-public class EventLoadMod extends EventBase implements IEvent
+public class EventLoadMod implements IEvent
 {
 	public String modId;
 	

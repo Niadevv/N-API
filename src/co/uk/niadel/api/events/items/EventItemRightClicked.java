@@ -3,7 +3,6 @@ package co.uk.niadel.api.events.items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import co.uk.niadel.api.events.EventBase;
 import co.uk.niadel.api.events.IEvent;
 
 /**
@@ -11,7 +10,7 @@ import co.uk.niadel.api.events.IEvent;
  * @author Niadel
  *
  */
-public class EventItemRightClicked extends EventBase implements IEvent
+public class EventItemRightClicked implements IEvent
 {
 	public ItemStack clickedItem;
 	public World world;

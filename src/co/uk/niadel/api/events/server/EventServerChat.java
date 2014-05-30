@@ -1,9 +1,8 @@
 package co.uk.niadel.api.events.server;
 
-import co.uk.niadel.api.events.EventBase;
 import co.uk.niadel.api.events.IEvent;
 
-public class EventServerChat extends EventBase implements IEvent
+public class EventServerChat implements IEvent
 {
 	/**
 	 * The message sent by chat.

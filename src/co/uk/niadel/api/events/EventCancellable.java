@@ -5,7 +5,7 @@ package co.uk.niadel.api.events;
  * @author Niadel
  *
  */
-public abstract class EventCancellable extends EventBase
+public abstract class EventCancellable implements IEvent
 {
 	public boolean cancelled = false;
 	

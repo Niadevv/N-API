@@ -47,7 +47,8 @@ public final class EventsList
 	}
 	
 	/**
-	 * This is temprorary until I can be bothered to remove the string parameter from this entirely.
+	 * This is temprorary until I can be bothered to remove the string parameter from all of the edited base class
+	 * calls entirely.
 	 * @param event
 	 * @param name
 	 */
