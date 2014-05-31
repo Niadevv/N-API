@@ -1,10 +1,7 @@
 package co.uk.niadel.mpi.forgewrapper;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import net.minecraftforge.common.MinecraftForge;
 import co.uk.niadel.mpi.asm.ASMRegistry;
-import co.uk.niadel.mpi.exceptions.MCreatorDetectedException;
 import co.uk.niadel.mpi.forgewrapper.eventhandling.EventHandlerFML;
 import co.uk.niadel.mpi.forgewrapper.eventhandling.EventHandlerForge;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;

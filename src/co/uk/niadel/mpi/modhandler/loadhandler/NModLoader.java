@@ -33,7 +33,6 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.UnstableLibrary;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.UnstableMod;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.crafting.RecipesRegistry;
-import co.uk.niadel.mpi.exceptions.MCreatorDetectedException;
 import co.uk.niadel.mpi.exceptions.ModDependencyNotFoundException;
 import co.uk.niadel.mpi.exceptions.OutdatedLibraryException;
 import co.uk.niadel.mpi.modhandler.IModRegister;
@@ -161,7 +160,7 @@ public class NModLoader extends URLClassLoader
 
 			System.gc();
 		}
-		catch (IOException | ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException | MCreatorDetectedException e)
+		catch (IOException | ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException e)
 		{
 			e.printStackTrace(NAPILogHelper.logStream);
 		}
@@ -275,24 +274,21 @@ public class NModLoader extends URLClassLoader
 	 * @throws InstantiationException 
 	 * @throws MCreatorDetectedException 
 	 */
-	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException, MCreatorDetectedException
+	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
 	{
 		if (dir.isDirectory())
 		{
 			for (File currFile : dir.listFiles())
 			{
 				String binaryName = getModId(dir);
-				//If the binary name isn't MCreator, process the annotations. I WILL NEVER, EVER SUPPORT MOD MAKING PROGRAMS, AND WILL DO EVERYTHING IN MY
-				//POWER TO MAKE SURE THAT THEY DO NOT WORK WITH NAPI!
-				if (!binaryName.toLowerCase().contains("mcreator"))
+				
+				if (binaryName.contains("mod_"))
 				{
-					processAnnotations(binaryName);
+					System.out.println("Um... Why are you prefixing your mod class with mod_? This is not ModLoader, and underscores and names beginning with a lowercase latter is horrible naming practice."
+							+ "I'll let the mod load, but rename your class. Now. Go on, do it, NOW!");
 				}
-				else
-				{
-					System.out.println("DO NOT EVER USE MCREATOR! YOUR MOD WILL NOT LOAD AS MCREATOR CREATED CLASSES HAVE BEEN DETECTED! GO LEARN JAVA AND MAKE THE MOD YOURSELF!");
-					throw new MCreatorDetectedException(binaryName);
-				}
+				
+				processAnnotations(binaryName);
 			}
 		}
 		else
