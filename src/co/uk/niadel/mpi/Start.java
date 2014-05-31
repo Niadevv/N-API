@@ -6,6 +6,11 @@ import java.util.Arrays;
 
 import net.minecraft.client.main.Main;
 
+/**
+ * MCP Start thing, not mine at all. At a later date I may edit this to allow for Eclipse launching.
+ * @author Niadel
+ *
+ */
 public class Start
 {
     public static void main(String[] args)
