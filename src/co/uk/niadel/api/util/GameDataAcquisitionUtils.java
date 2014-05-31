@@ -17,7 +17,8 @@ public class GameDataAcquisitionUtils
 	public static boolean isForge = false;
 	
 	/**
-	 * Gets the World object.
+	 * Gets the World object. Note, I've heard the world gotten from Minecraft.getMinecraft() is client side
+	 * only, so this may be potentially useless. It's best to avoid using this when possible.
 	 * @return
 	 */
 	public static final World getWorld()
@@ -26,13 +27,18 @@ public class GameDataAcquisitionUtils
 	}
 	
 	/**
-	 * Gets whether or not the world is on the client (rendering) side. If this breaks Forge side, blame Lex for apparently renaming
-	 * isClient to isRemote, which is incredibly stupid and makes no sense. Or was it CPW who renamed it?
+	 * Gets whether or not the passed world is on the client (rendering) side. If this breaks Forge side, blame Lex for apparently 
+	 * renaming isClient to isRemote, which is incredibly stupid and makes no sense. Or was it CPW who renamed it?
 	 * @return
 	 */
+	public static final boolean isWorldClientSide(World world)
+	{
+		return world.isClient;	
+	}
+	
 	public static final boolean isWorldClientSide()
 	{
-		return getWorld().isClient;	
+		return getWorld().isClient;
 	}
 	
 	/**
@@ -42,6 +48,11 @@ public class GameDataAcquisitionUtils
 	public static final boolean isWorldServerSide()
 	{
 		return !isWorldClientSide();
+	}
+	
+	public static final boolean isWorldServerSide(World world)
+	{
+		return !isWorldClientSide(world);
 	}
 	
 	/**

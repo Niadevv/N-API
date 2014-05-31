@@ -17,6 +17,7 @@ public class BlockPortalBase extends Block
 	public BlockPortalBase(Material material, String dimensionIdString)
 	{
 		super(material);
+		
 		setFreeDimensionId(dimensionIdString);
 	}
 	
@@ -43,11 +44,18 @@ public class BlockPortalBase extends Block
 		return this;
 	}
 	
+	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
 	{
 		if (entity.ridingEntity == null && entity.riddenByEntity == null && !world.isClient)
 		{
 			entity.travelToDimension(this.dimensionToTravelTo);
 		}
+	}
+	
+	@Override
+	public boolean canCollideCheck(int metadata, boolean clickedWhileHoldingBoat)
+	{
+		return false;
 	}
 }
