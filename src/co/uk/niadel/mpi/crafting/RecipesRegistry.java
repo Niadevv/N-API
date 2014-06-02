@@ -105,7 +105,7 @@ public final class RecipesRegistry extends CraftingManager
 			//If the current iteration isn't a recipe string identifier
 			if (i % 2 == 1)
 			{
-				ItemStack[] itemStacks = NAPIOreDict.getOreDictEntry(craftingRecipe[i + 2]);
+				ItemStack[] itemStacks = NAPIOreDict.getOreDictEntryItem(craftingRecipe[i + 2]);
 				
 				Object[] itemStackObjs = new Object[] {};
 				

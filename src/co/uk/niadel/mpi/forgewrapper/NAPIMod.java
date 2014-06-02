@@ -4,10 +4,10 @@ import net.minecraftforge.common.MinecraftForge;
 import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.forgewrapper.eventhandling.EventHandlerFML;
 import co.uk.niadel.mpi.forgewrapper.eventhandling.EventHandlerForge;
+import co.uk.niadel.mpi.forgewrapper.oredict.OreDictConverter;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.mpi.util.GameDataAcquisitionUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -32,5 +32,6 @@ public class NAPIMod
 		NModLoader.loadModsFromDir();
 		ASMRegistry.invokeAllTransformers();
 		NModLoader.invokeRegisterMethods();
+		OreDictConverter.addAllNAPIOreDictEntries();
 	}
 }

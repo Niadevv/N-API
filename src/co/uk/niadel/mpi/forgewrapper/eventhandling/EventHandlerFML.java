@@ -15,6 +15,6 @@ public class EventHandlerFML
 	@SubscribeEvent
 	public void onWorldTick(WorldTickEvent event)
 	{
-		EventsList.fireEvent(new EventWorldTicked(event.world), "EventWorldTicked");
+		EventsList.fireEvent(new EventWorldTicked(event.world));
 	}
 }

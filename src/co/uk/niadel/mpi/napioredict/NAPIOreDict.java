@@ -5,6 +5,8 @@ import java.util.Map;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import co.uk.niadel.mpi.measuresmpi.ModFluidMeasure;
+import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.UtilityMethods;
 
 /**
@@ -15,14 +17,15 @@ import co.uk.niadel.mpi.util.UtilityMethods;
  */
 public class NAPIOreDict
 {
-	static Map<String, ItemStack[]> oreDictEntries = new HashMap<>();
+	public static Map<String, ItemStack[]> oreDictEntries = new HashMap<>();
+	public static Map<String, ModFluidMeasure[]> oreDictFluidEntries = new HashMap<>();
 	
 	/**
 	 * Adds an entry to the oredict registry.
 	 * @param entryName
 	 * @param itemEntries
 	 */
-	public static void addOreDictEntry(String entryName, ItemStack[] itemEntries)
+	public static final void addOreDictEntry(String entryName, ItemStack[] itemEntries)
 	{
 		//If there's already an entry for this particular entry name, add the itemEntries to the end of the already existing ItemStack[]
 		//In that entry.
@@ -43,23 +46,67 @@ public class NAPIOreDict
 	}
 	
 	/**
+	 * Adds a fluid measure to the OreDict.
+	 * @param entryName
+	 * @param entries
+	 */
+	public static final void addOreDictEntry(String entryName, ModFluidMeasure[] entries)
+	{
+		if (oreDictFluidEntries.get(entryName) != null && !UtilityMethods.doesArrayContainValue(oreDictFluidEntries.get(entryName), entries))
+		{
+			int x = 0;
+			
+			for (int i = oreDictFluidEntries.get(entryName).length; i == oreDictFluidEntries.get(entryName).length + entries.length; i++)
+			{
+				oreDictFluidEntries.get(entryName)[i] = entries[x];
+				x++;
+			}
+		}
+		else
+		{
+			oreDictFluidEntries.put(entryName, entries);
+		}
+	}
+	
+	/**
 	 * Gets an oredict entry by it's string id.
 	 * @param entryName
 	 * @return
 	 */
-	public static final ItemStack[] getOreDictEntry(String entryName)
+	public static final ItemStack[] getOreDictEntryItem(String entryName)
 	{
-		if (entryName.toLowerCase().contains("aluminum") || entryName.toLowerCase().contains("colored"))
+		if ((entryName.toLowerCase().contains("aluminum") || entryName.toLowerCase().contains("colored") || entryName.toLowerCase().contains("sulfur")) && oreDictEntries.get(entryName) == null)
 		{
-			System.out.println("WARNING! YOU ARE USING AMERICAN SPELLING! THE STANDARD OREDICT ENTRIES ARE IN ENGLISH SPELLING!"
-					+ "IF THE AMERICAN SPELLING IS INTENDED AND YOU ARE GETTING ONE FROM A GROUP IN AMERICAN SPELLING, IGNORE THIS!");
+			System.out.println("NOTE: The Oredict value with the name " + entryName + " is null! As this is American spelling, I recommend that you try and use English spelling.");
+			NAPILogHelper.logWarn("Someone tried to get an oredict entry that was null and used American spelling! Value is " + entryName + ".");
+		}
+		else if (oreDictEntries.get(entryName) == null)
+		{
+			System.out.println("The specified Oredict entry " + entryName + " is null! Using this value could cause a Null Pointer Exception.");
+			NAPILogHelper.logWarn("Someone got a null OreDict entry. Entry Name is " + entryName + ".");
 		}
 		
 		return oreDictEntries.get(entryName);
 	}
 	
 	/**
-	 * Add the vanilla entries to the ore dict.
+	 * Gets a fluid ore dictionary entry.
+	 * @param entryName
+	 * @return
+	 */
+	public static final ModFluidMeasure[] getOreDictEntryFluid(String entryName)
+	{
+		if (oreDictFluidEntries.get(entryName) == null)
+		{
+			System.out.println("The specified Oredict Fluid entry " + entryName + " is null! Using this value could cause a Null Pointer Exception, which nobody likes.");
+			NAPILogHelper.logWarn("Someone got a null OreDict fluid entry. Entry Name is " + entryName + ".");
+		}
+		
+		return oreDictFluidEntries.get(entryName);
+	}
+	
+	/**
+	 * Adds the vanilla entries and standard mod entries to the ore dict.
 	 */
 	public static final void addDefaultEntries()
 	{
@@ -69,6 +116,8 @@ public class NAPIOreDict
 		addOreDictEntry("woodPlanks", new ItemStack[] {new ItemStack(Blocks.leaves, 1, 0), new ItemStack(Blocks.leaves, 1, 1), new ItemStack(Blocks.leaves, 1, 2), new ItemStack(Blocks.leaves, 1, 3), new ItemStack(Blocks.leaves2, 1, 0), new ItemStack(Blocks.leaves2, 1, 1)});
 		addOreDictEntry("woodStairs", new ItemStack[] {new ItemStack(Blocks.oak_stairs, 1, 0), new ItemStack(Blocks.spruce_stairs, 1), new ItemStack(Blocks.birch_stairs, 1), new ItemStack(Blocks.jungle_stairs, 1)});
 		addOreDictEntry("woodSlabs", new ItemStack[] {new ItemStack(Blocks.wooden_slab, 1, 0), new ItemStack(Blocks.wooden_slab, 1, 1), new ItemStack(Blocks.wooden_slab, 1, 2), new ItemStack(Blocks.wooden_slab, 1, 3)});
+		//Dear lord, 13 records?!
+		addOreDictEntry("records", new ItemStack[] {new ItemStack(Items.record_11), new ItemStack(Items.record_13), new ItemStack(Items.record_blocks), new ItemStack(Items.record_cat), new ItemStack(Items.record_chirp), new ItemStack(Items.record_far), new ItemStack(Items.record_mall), new ItemStack(Items.record_mellohi), new ItemStack(Items.record_stal), new ItemStack(Items.record_strad), new ItemStack(Items.record_wait), new ItemStack(Items.record_ward)});
 		
 		//Adds all of the 16 colour entries.
 		for (int i = 0; i == 15; i++)
@@ -79,10 +128,28 @@ public class NAPIOreDict
 			addOreDictEntry("colouredGlassPanes", new ItemStack[] {new ItemStack(Blocks.stained_glass_pane, 1, i)});
 		}
 		
+		//Standard fluid entries, all empty
+		addOreDictEntry("water", new ModFluidMeasure[] {});
+		addOreDictEntry("lava", new ModFluidMeasure[] {});
+		addOreDictEntry("oil", new ModFluidMeasure[] {});
+		addOreDictEntry("fuel", new ModFluidMeasure[] {});
+		//A standard measurement of liquid I've seen in mods.
+		addOreDictEntry("mB", new ModFluidMeasure[] {});
+		
 		//Standard mod ore entries, all empty.
 		addOreDictEntry("copperOre", new ItemStack[] {});
 		addOreDictEntry("aluminiumOre", new ItemStack[] {});
 		addOreDictEntry("silverOre", new ItemStack[] {});
 		addOreDictEntry("uraniumOre", new ItemStack[] {});
+		addOreDictEntry("leadOre", new ItemStack[] {});
+		
+		//Standard mod item entries.
+		addOreDictEntry("sulphur", new ItemStack[] {});
+		addOreDictEntry("steelIngot", new ItemStack[] {});
+		addOreDictEntry("aluminiumIngot", new ItemStack[] {});
+		addOreDictEntry("silverIngot", new ItemStack[] {});
+		addOreDictEntry("ruby", new ItemStack[] {});
+		addOreDictEntry("sapphire", new ItemStack[] {});
+		addOreDictEntry("bullet", new ItemStack[] {});
 	}
 }

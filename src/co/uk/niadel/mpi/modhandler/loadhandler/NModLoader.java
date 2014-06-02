@@ -284,7 +284,7 @@ public class NModLoader extends URLClassLoader
 				
 				if (binaryName.contains("mod_"))
 				{
-					System.out.println("Um... Why are you prefixing your mod class with mod_? This is not ModLoader, and underscores and names beginning with a lowercase latter is horrible naming practice."
+					System.out.println("Um... Why are you prefixing your mod class with mod_? This is not ModLoader, and underscores and names beginning with a lowercase letter in a class name is horrible naming practice."
 							+ "I'll let the mod load, but rename your class. Now. Go on, do it, NOW!");
 				}
 				

@@ -1,7 +1,9 @@
 package co.uk.niadel.mpi.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialPortal;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Dangerous;
@@ -13,11 +15,12 @@ public class BlockPortalBase extends Block
 	 * The dimension id this portal will send you to.
 	 */
 	public int dimensionToTravelTo;
+	//So I'm not seen using code that doesn't follow naming conventions.
+	public static Material portal = Material.Portal;
 	
-	public BlockPortalBase(Material material, String dimensionIdString)
+	public BlockPortalBase(String dimensionIdString)
 	{
-		super(material);
-		
+		super(BlockPortalBase.portal);
 		setFreeDimensionId(dimensionIdString);
 	}
 	
@@ -26,7 +29,7 @@ public class BlockPortalBase extends Block
 	 * @param dimensionIdString The String id, used in the N-API config.
 	 * @return This object for use in constructing.
 	 */
-	public Block setFreeDimensionId(String dimensionIdString)
+	protected Block setFreeDimensionId(String dimensionIdString)
 	{
 		this.dimensionToTravelTo = DimensionIdRegistry.registerId(dimensionIdString);
 		return this;
@@ -38,7 +41,7 @@ public class BlockPortalBase extends Block
 	 * @return
 	 */
 	@Dangerous(reason = "Compatability breaking.")
-	public Block setDimesionId(int id)
+	protected Block setDimesionId(int id)
 	{
 		this.dimensionToTravelTo = id;
 		return this;

@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MapColor;
 
 /**
- * Base for all materials from mods.
+ * Registers Materials. Not actually necessary, but it's a good idea to register it anyways.
  * @author Niadel
  */
 public final class MaterialRegistry extends Material

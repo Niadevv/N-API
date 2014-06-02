@@ -6,7 +6,8 @@ import co.uk.niadel.mpi.measuresmpi.Measure;
 import co.uk.niadel.mpi.measuresmpi.ModEnergyMeasure;
 
 /**
- * A block that has some measure of energy, like an energy battery or something.
+ * A block that has some measure of energy, like an energy battery or something. This is a reference for other mod blocks that
+ * use the Measures MPI.
  * @author Niadel
  *
  */
