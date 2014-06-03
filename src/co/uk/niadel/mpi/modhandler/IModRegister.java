@@ -26,35 +26,17 @@ public interface IModRegister
 	public Map<String, String> libraryDependencies = new HashMap<>();
 	
 	/**
-	 * A mod's unique identifier. This is added to satisfy eclipse.
+	 * Whether or not this Mod is using @ModRegister to define it's variables.
 	 */
-	public String MODID = "";
-	
-	/**
-	 * The mod's version. You more or less have to specify this, or at the very least it is 
-	 * very recommended. This is added to satisfy eclipse.
-	 */
-	public String VERSION = "";
-	
 	public boolean isUsingAnnotation = false;
 	
-	public String getVersion();
-	
-	public String getModId();
-	
 	/**
-	 * Where you register transformers. This is called BEFORE everything else, in Bootstrap.
-	 */
-	public void registerTransformers();
-	
-	/**
-	 * Called before modInit(). Register events and event handlers here.
+	 * Called before modInit(). Register event handlers, blocks and here.
 	 */
 	public void preModInit();
 	
 	/**
-	 * Called when the register is initialised. Register any blocks and items here and call
-	 * important methods here.
+	 * Called when the register is initialised. Call important methods here.
 	 */
 	public void modInit();
 	
@@ -63,6 +45,23 @@ public interface IModRegister
 	 */
 	public void postModInit();
 	
+	/**
+	 * Returns the version of the mod.
+	 * @return See above.
+	 */
+	public String getVersion();
+	
+	/**
+	 * Returns the mod id of this mod.
+	 * @return See above.
+	 */
+	public String getModId();
+	
+	/**
+	 * Where you register transformers. This is called BEFORE everything else, in Bootstrap. DO NOT USE TO REGISTER BLOCKS!
+	 */
+	public void registerTransformers();
+
 	/**
 	 * Where you add modids to the Set dependencies. 
 	 */

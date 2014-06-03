@@ -23,7 +23,7 @@ public class NAPIMod
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		//Tell the game data that the game is a Forge environment.
+		//Tell N-API that the game is a Forge environment.
 		GameDataAcquisitionUtils.isForge = true;
 		//Register the event handlers.
 		MinecraftForge.EVENT_BUS.register(new EventHandlerForge());

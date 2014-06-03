@@ -1,4 +1,4 @@
-package co.uk.niadel.mpi.events.worldevents;
+package co.uk.niadel.mpi.events.world;
 
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;

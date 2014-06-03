@@ -1,4 +1,4 @@
-package co.uk.niadel.mpi.events.worldevents;
+package co.uk.niadel.mpi.events.world;
 
 import net.minecraft.world.gen.feature.WorldGeneratorBonusChest;
 import co.uk.niadel.mpi.events.IEvent;

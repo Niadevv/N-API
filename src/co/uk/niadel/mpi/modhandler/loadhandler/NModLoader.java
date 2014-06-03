@@ -58,8 +58,6 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  * 
  * This is very System.gc() intensive to keep resources used at a minimum.
  * 
- * TO JAVA GARBAGE COLLECTOR:
- * I highly recommend you run after every method TBH :P
  * @author Niadel
  *
  */
@@ -71,9 +69,9 @@ public class NModLoader extends URLClassLoader
 	 * Dummy Constructor u.u
 	 * @param arg0
 	 */
-	public NModLoader(URL[] arg0)
+	public NModLoader(URL[] urls)
 	{
-		super(arg0);
+		super(urls);
 	}
 
 	/**
@@ -81,12 +79,12 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static Minecraft theMinecraft = Minecraft.getMinecraft();
 	public static Profiler mcProfiler = Minecraft.mcProfiler;
-	public static Map<String, String> mods = new HashMap<>();
+	public static List<String> mods = new ArrayList<>();
 	
 	/**
 	 * A list of library classes, or classes marked with the @Library annotation.
 	 */
-	public static List<IModRegister> modLibraries = new ArrayList();
+	public static List<IModRegister> modLibraries = new ArrayList<>();
 	
 	/**
 	 * The main Minecraft directory.
@@ -99,15 +97,54 @@ public class NModLoader extends URLClassLoader
 	public static File mcModsDir = new File(theMinecraft.mcDataDir + File.separator + "mods" + File.separator);
 	
 	/**
-	 * Where the decompressed class files are copied to.
+	 * Where the decompressed class files are copied to for later loading.
 	 */
 	public static File actModsDir = new File(mcModsDir + "act_mods" + File.separator);
+	
+	/**
+	 * Keyed by the mod's modId, valued by the binary name.
+	 */
+	public static Map<String, String> modIds = new HashMap<>();
 	
 	/**
 	 * The version of N-API.
 	 */
 	protected static String nAPIVersion;
 
+	/**
+	 * Looks for whether or not the mod with the specified modId exists.
+	 * @param modId
+	 * @return Whether the mod exists.
+	 */
+	public static final boolean doesModExist(String modId)
+	{
+		if (modIds.containsKey(modId))
+		{
+			return mods.contains(modIds.get(modId));
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * Looks for whether or not the library with the specified modId exists.
+	 * @param modId
+	 * @return Whether the library exists.
+	 */
+	public static final boolean doesLibraryExist(String modId)
+	{
+		if (modIds.containsKey(modId))
+		{
+			return modLibraries.contains(modId);
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	/**
 	 * Loads a URL into the class path.
 	 * @param url
@@ -189,7 +226,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void registerTransformers()
 	{
-		Iterator modsObjectIterator = mods.entrySet().iterator();
+		Iterator modsObjectIterator = mods.iterator();
 		Iterator<IModRegister> modsLibraryIterator = modLibraries.iterator();
 		
 		while (modsObjectIterator.hasNext())
@@ -280,7 +317,7 @@ public class NModLoader extends URLClassLoader
 		{
 			for (File currFile : dir.listFiles())
 			{
-				String binaryName = getModId(dir);
+				String binaryName = getModBinaryName(dir);
 				
 				if (binaryName.contains("mod_"))
 				{
@@ -311,6 +348,8 @@ public class NModLoader extends URLClassLoader
 		Class<? extends IModRegister> modRegisterClass = (Class<? extends IModRegister>) Class.forName(binaryName);
 		IModRegister modRegister = modRegisterClass.newInstance();
 		Annotation[] registerAnnotations = modRegisterClass.getAnnotations();
+		
+		modIds.put(modRegister.getModId(), binaryName);
 
 		if (registerAnnotations != null)
 		{
@@ -328,7 +367,7 @@ public class NModLoader extends URLClassLoader
 					//Tell the user that the mod is unstable and could break stuff drastically
 					System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
 					//Put it in the regular mods thing.
-					mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
+					mods.add(modRegister.toString().replace("class ", ""));
 				}
 				else if (annotation.annotationType() == UnstableLibrary.class)
 				{
@@ -354,7 +393,7 @@ public class NModLoader extends URLClassLoader
 		}
 		else
 		{
-			mods.put(modRegister.toString().replace("class ", ""), modRegister.toString().replace("class ", ""));
+			mods.add(modRegister.toString().replace("class ", ""));
 		}
 		
 		System.gc();
@@ -366,7 +405,7 @@ public class NModLoader extends URLClassLoader
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public static final String getModId(File dirToCheck) throws FileNotFoundException
+	public static final String getModBinaryName(File dirToCheck) throws FileNotFoundException
 	{
 		String binaryName = "";
 		
@@ -400,96 +439,100 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllPreInits() throws OutdatedLibraryException, ModDependencyNotFoundException
 	{
-		//What iterates the classes in mods.
-		Iterator<String> modsIterator = mods.keySet().iterator();
-		//Iterates the IModRegister objects. Lawd darnit, why don't generics work here?!
-		Iterator modsObjectIterator = mods.entrySet().iterator();
-		
-		while (modsIterator.hasNext())
+		try
 		{
-			//The current class being iterated.
-			String currClass = (String) modsIterator.next();
-			
-			//The current IModRegister object.
-			IModRegister currRegister = (IModRegister) modsObjectIterator.next();
-			currRegister.addRequiredMods();
-			currRegister.addRequiredLibraries();
-			
-			Iterator<String> dependenciesIterator = currRegister.dependencies.iterator();
-			Iterator libraryIterator = currRegister.libraryDependencies.entrySet().iterator();
-			Iterator<String> libraryVersionIterator = currRegister.libraryDependencies.keySet().iterator();
-			
-			//Iterates the dependencies of the mod
-			while (dependenciesIterator.hasNext())
+			//What iterates the classes in mods.
+			Iterator<String> modsIterator = mods.iterator();
+
+			while (modsIterator.hasNext())
 			{
-				//An independent dependency.
-				IModRegister currDependency = null;
-				
-				try
+				//The current class being iterated.
+				String currClass = (String) modsIterator.next();
+
+				IModRegister currRegister = (IModRegister) Class.forName(modsIterator.next()).newInstance();
+				currRegister.addRequiredMods();
+				currRegister.addRequiredLibraries();
+
+				Iterator<String> dependenciesIterator = currRegister.dependencies.iterator();
+				Iterator libraryIterator = currRegister.libraryDependencies.entrySet().iterator();
+				Iterator<String> libraryVersionIterator = currRegister.libraryDependencies.keySet().iterator();
+
+				//Iterates the dependencies of the mod
+				while (dependenciesIterator.hasNext())
 				{
-					currDependency = (IModRegister) (Class.forName((String) dependenciesIterator.next())).newInstance();
-				}
-				catch (NullPointerException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
-				{
-					//If there are no dependencies, stop this run of the dependency system. The only time NullPointerExceptions are actually useful -_-.
-					if (e instanceof NullPointerException)
+					//An independent dependency.
+					IModRegister currDependency = null;
+
+					try
 					{
-						break;
+						currDependency = (IModRegister) (Class.forName((String) dependenciesIterator.next())).newInstance();
 					}
-					else if (e instanceof InstantiationException)
+					catch (NullPointerException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
 					{
-						//Tell the user (angrily) to tell the author that they should not be making their register an interface.
-						throw new RuntimeException("Please ask the author of the mod " + currRegister.getModId() + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
-					}
-				}
-					
-				if (!mods.containsValue(currDependency))
-				{
-					//Signify to the user that a mod dependency is not found.
-					throw new ModDependencyNotFoundException(currRegister.getModId());
-				}
-				
-				if (libraryVersionIterator != null && libraryIterator != null)
-				{
-					//The current library version.
-					String currLibraryVersion = libraryVersionIterator.next();
-					//The current library
-					IModRegister currLib = (IModRegister) libraryIterator.next();
-					
-					if (currLibraryVersion == "")
-					{
-						//Tell the user that a library doesn't have a version.
-						throw new RuntimeException("The library " + currLib.getModId() + " does NOT have a version! Contact the library's creator to fix this and then ask them why they aren't adding a version to their mod, especially if it's a library -_-!");
-					}
-					
-					//The version of the requested minimum library version.
-					int[] currVersion = UtilityMethods.parseVersionNumber(currLibraryVersion);
-					//The actual library version.
-					int[] currLibVersion = UtilityMethods.parseVersionNumber(currLib.getVersion());
-					
-					for (int currNumber : currVersion)
-					{
-						for (int i = 0; i == currLibVersion.length; i++)
+						//If there are no dependencies, stop this run of the dependency system. The only time NullPointerExceptions are actually useful -_-.
+						if (e instanceof NullPointerException)
 						{
-							if (currLibVersion[i] >= currNumber)
-							{
-								//One of the versions are ok, check the next one.
-								continue;
-							}
-							else
-							{
-								//Let the user know that a library is outdated.
-								throw new OutdatedLibraryException(currLib.getModId());
-							}
+							break;
+						}
+						else if (e instanceof InstantiationException)
+						{
+							//Tell the user (angrily) to tell the author that they should not be making their register an interface.
+							throw new RuntimeException("Please ask the author of the mod " + currRegister.getModId() + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
 						}
 					}
-					
-					currLib.preModInit();
+
+					if (!mods.contains(currDependency))
+					{
+						//Signify to the user that a mod dependency is not found.
+						throw new ModDependencyNotFoundException(currRegister.getModId());
+					}
+
+					if (libraryVersionIterator != null && libraryIterator != null)
+					{
+						//The current library version.
+						String currLibraryVersion = libraryVersionIterator.next();
+						//The current library
+						IModRegister currLib = (IModRegister) libraryIterator.next();
+
+						if (currLibraryVersion == "")
+						{
+							//Tell the user that a library doesn't have a version.
+							throw new RuntimeException("The library " + currLib.getModId() + " does NOT have a version! Contact the library's creator to fix this and then ask them why they aren't adding a version to their mod, especially if it's a library -_-!");
+						}
+
+						//The version of the requested minimum library version.
+						int[] currVersion = UtilityMethods.parseVersionNumber(currLibraryVersion);
+						//The actual library version.
+						int[] currLibVersion = UtilityMethods.parseVersionNumber(currLib.getVersion());
+
+						for (int currNumber : currVersion)
+						{
+							for (int i = 0; i == currLibVersion.length; i++)
+							{
+								if (currLibVersion[i] >= currNumber)
+								{
+									//One of the versions are ok, check the next one.
+									continue;
+								}
+								else
+								{
+									//Let the user know that a library is outdated.
+									throw new OutdatedLibraryException(currLib.getModId());
+								}
+							}
+						}
+
+						currLib.preModInit();
+					}
 				}
+
+				//Gets the register to do it's preModInit stuff.
+				currRegister.preModInit();
 			}
-			
-			//Gets the register to do it's preModInit stuff.
-			currRegister.preModInit();
+		}
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1)
+		{
+			NAPILogHelper.logError(e1);
 		}
 		
 		System.gc();
@@ -500,27 +543,33 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllInits()
 	{
-		Iterator<String> modsIterator = mods.keySet().iterator();
-		Iterator modRegisterIterator = mods.entrySet().iterator();
-		
-		while (modsIterator.hasNext())
+		try
 		{
-			try
+			Iterator<String> modsIterator = mods.iterator();
+
+			while (modsIterator.hasNext())
 			{
-				Class<? extends IModRegister> currClass = (Class<? extends IModRegister>) Class.forName(modsIterator.next());
-			}
-			catch (ClassNotFoundException | NullPointerException e)
-			{
-				if (e instanceof NullPointerException)
+				try
 				{
-					break;
+					Class<? extends IModRegister> currClass = (Class<? extends IModRegister>) Class.forName(modsIterator.next());
 				}
+				catch (ClassNotFoundException | NullPointerException e)
+				{
+					if (e instanceof NullPointerException)
+					{
+						break;
+					}
+				}
+
+				IModRegister currRegister = (IModRegister) Class.forName(modsIterator.next()).newInstance();
+
+				currRegister.modInit();
+				//ASM classes are registered in modPreInit or modInit, call them here
 			}
-			
-			IModRegister currRegister = (IModRegister) modRegisterIterator.next();
-			
-			currRegister.modInit();
-			//ASM classes are registered in modPreInit or modInit, call them here
+		}
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1)
+		{
+			NAPILogHelper.logError(e1);
 		}
 		
 		System.gc();
@@ -531,29 +580,35 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllPostInits()
 	{
-		Iterator<String> modsIterator = mods.keySet().iterator();
-		Iterator modRegisterIterator = mods.entrySet().iterator();
-		
-		while (modsIterator.hasNext())
+		try
 		{
-			try
+			Iterator<String> modsIterator = mods.iterator();
+
+			while (modsIterator.hasNext())
 			{
-				Class<? extends IModRegister> currClass = (Class<? extends IModRegister>) Class.forName(modsIterator.next());
-			}
-			catch (ClassNotFoundException | NullPointerException e)
-			{
-				if (e instanceof NullPointerException)
+				try
 				{
-					break;
+					Class<? extends IModRegister> currClass = (Class<? extends IModRegister>) Class.forName(modsIterator.next());
 				}
-				e.printStackTrace();
+				catch (ClassNotFoundException | NullPointerException e)
+				{
+					if (e instanceof NullPointerException)
+					{
+						break;
+					}
+					e.printStackTrace();
+				}
+
+				IModRegister currRegister = (IModRegister) Class.forName(modsIterator.next()).newInstance();
+
+				currRegister.postModInit();
+				RecipesRegistry.addAllRecipes();
+				RenderRegistry.addAllRenders();
 			}
-			
-			IModRegister currRegister = (IModRegister) modRegisterIterator.next();
-			
-			currRegister.postModInit();
-			RecipesRegistry.addAllRecipes();
-			RenderRegistry.addAllRenders();
+		}
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1)
+		{
+			NAPILogHelper.logError(e1);
 		}
 		
 		//Does the work of adding the potions to the Potion.potionTypes array. You know, just in case.

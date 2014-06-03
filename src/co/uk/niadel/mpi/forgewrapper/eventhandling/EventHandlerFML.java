@@ -1,7 +1,7 @@
 package co.uk.niadel.mpi.forgewrapper.eventhandling;
 
 import co.uk.niadel.mpi.events.EventsList;
-import co.uk.niadel.mpi.events.worldevents.EventWorldTicked;
+import co.uk.niadel.mpi.events.world.EventWorldTicked;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
