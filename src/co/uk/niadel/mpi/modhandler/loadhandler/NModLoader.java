@@ -97,7 +97,7 @@ public class NModLoader extends URLClassLoader
 	public static File mcModsDir = new File(theMinecraft.mcDataDir + File.separator + "mods" + File.separator);
 	
 	/**
-	 * Where the decompressed class files are copied to for later loading.
+	 * Where the decompressed mod zip files are copied to for later loading.
 	 */
 	public static File actModsDir = new File(mcModsDir + "act_mods" + File.separator);
 	
@@ -323,6 +323,7 @@ public class NModLoader extends URLClassLoader
 				{
 					System.out.println("Um... Why are you prefixing your mod class with mod_? This is not ModLoader, and underscores and names beginning with a lowercase letter in a class name is horrible naming practice."
 							+ "I'll let the mod load, but rename your class. Now. Go on, do it, NOW!");
+					NAPILogHelper.logWarn("The class with the binary name of " + binaryName + " has horrible naming practice. They should rename their class immediately!");
 				}
 				
 				processAnnotations(binaryName);
@@ -602,7 +603,6 @@ public class NModLoader extends URLClassLoader
 				IModRegister currRegister = (IModRegister) Class.forName(modsIterator.next()).newInstance();
 
 				currRegister.postModInit();
-				RecipesRegistry.addAllRecipes();
 				RenderRegistry.addAllRenders();
 			}
 		}

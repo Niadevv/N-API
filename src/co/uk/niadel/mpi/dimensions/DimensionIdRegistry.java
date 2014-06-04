@@ -26,6 +26,11 @@ public class DimensionIdRegistry
 		return freeNumber;
 	}
 	
+	/**
+	 * Registers a set integer to the ids map. 
+	 * @param id
+	 * @return
+	 */
 	@Dangerous(reason = "Compatability breaking.")
 	public static final int registerIdForced(int id)
 	{

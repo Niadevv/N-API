@@ -9,9 +9,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ReportedException;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.Temprorary;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
+import co.uk.niadel.mpi.util.DoubleMap;
 import co.uk.niadel.mpi.util.UtilityMethods;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
@@ -23,26 +23,24 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 public final class RecipesRegistry extends CraftingManager
 {
 	/**
-	 * This is used so you don't have to add a different recipe for each damage value. NOTE: This is temprorary and will be
-	 * removed in 1.8 as metadatas will be vanishing in 1.8 :D.
-	 */
-	@Temprorary(versionToBeRemoved = "Minecraft Version 1.8")
-	public static final short DAMAGE_WILDCARD_VALUE = Short.MAX_VALUE;
-	
-	/**
 	 * Only exists for the purpose of one method.
 	 */
 	private static RecipesRegistry instance = new RecipesRegistry(); 
 	
 	/**
-	 * The list of crafting recipes from mods.
+	 * The crafting recipe registry instance.
 	 */
-	public static CraftingManager modRecipeList = CraftingManager.getInstance();
+	public static CraftingManager craftingRecipes = CraftingManager.getInstance();
 	
 	/**
-	 * The vanilla crafting recipes.
+	 * The vanilla smelting recipes instance.
 	 */
-	public static FurnaceRecipes recipes = FurnaceRecipes.smelting();
+	public static FurnaceRecipes furnaceRecipes = FurnaceRecipes.smelting();
+	
+	/**
+	 * Mod Crafting Recipes, stored in a DoubleMap.
+	 */
+	public static DoubleMap<ItemStack, Object[]> modRecipes = new DoubleMap<>();
 	
 	/**
 	 * Dummy constructor only used for one method.
@@ -58,7 +56,7 @@ public final class RecipesRegistry extends CraftingManager
 	 */
 	public static final void addFurnaceRecipe(Item inputItem, ItemStack outputItem, float xpGiven)
 	{
-		recipes.func_151396_a(inputItem, outputItem, xpGiven);
+		furnaceRecipes.func_151396_a(inputItem, outputItem, xpGiven);
 	}
 	
 	/**
@@ -69,7 +67,7 @@ public final class RecipesRegistry extends CraftingManager
 	 */
 	public static final void addFurnaceRecipe(Block inputItem, ItemStack outputItem, float xpGiven)
 	{
-		recipes.func_151393_a(inputItem, outputItem, xpGiven);
+		furnaceRecipes.func_151393_a(inputItem, outputItem, xpGiven);
 	}
 	
 	/**
@@ -79,7 +77,7 @@ public final class RecipesRegistry extends CraftingManager
 	 */
 	public static final void addShapedModRecipe(ItemStack outputItem, Object... craftingShapeAndIngredients)
 	{
-		modRecipeList.addRecipe(outputItem, craftingShapeAndIngredients);
+		craftingRecipes.addRecipe(outputItem, craftingShapeAndIngredients);
 	}
 	
 	/**
@@ -89,7 +87,7 @@ public final class RecipesRegistry extends CraftingManager
 	 */
 	public static void addShapelessModRecipe(ItemStack outputItem, Object... arrayOfRecipeObjects)
 	{
-		modRecipeList.addShapelessRecipe(outputItem, arrayOfRecipeObjects);
+		craftingRecipes.addShapelessRecipe(outputItem, arrayOfRecipeObjects);
 	}
 	
 	/**
@@ -151,21 +149,32 @@ public final class RecipesRegistry extends CraftingManager
 	}
 	
 	/**
-	 * Adds all recipes. Only called in NModLoader.
+	 * Gets a recipe array from the ItemStack that results from the recipe.
+	 * @param resultingItem
+	 * @return
 	 */
-	@Internal
-	public static final void addAllRecipes()
+	public static final Object[] getRecipe(ItemStack resultingItem)
 	{
-		try
-		{
-			ReflectionManipulateValues.setValue(CraftingManager.class, new CraftingManager(), "instance", modRecipeList);
-		}
-		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
-		{
-			System.err.println("Error adding recipes!");
-			CrashReport crashReport = CrashReport.makeCrashReport(e, "Error adding recipes");
-			crashReport.makeCategory("Adding important things necessary for mods to work");
-			throw new ReportedException(crashReport);
-		}
+		return modRecipes.get(resultingItem);
+	}
+	
+	/**
+	 * Gets the result of the specified recipe.
+	 * @param recipe
+	 * @return
+	 */
+	private static final ItemStack getRecipeResultPrivate(Object[] recipe)
+	{
+		return modRecipes.get(recipe);
+	}
+	
+	/**
+	 * Gets the result of the specified recipe.
+	 * @param recipe
+	 * @return
+	 */
+	public static final ItemStack getRecipeResult(Object... recipe)
+	{
+		return getRecipeResultPrivate(recipe);
 	}
 }

@@ -11,7 +11,9 @@ import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
 
 
 /**
- * Base for things like pipes from buildcraft or wires from Thermal Expansion
+ * Base for things like pipes from buildcraft or wires from Thermal Expansion.
+ * 
+ * TODO: Make this not depend on Tile Entities.
  * @author Niadel
  *
  */
