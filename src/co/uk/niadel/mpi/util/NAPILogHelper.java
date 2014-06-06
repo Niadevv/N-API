@@ -103,4 +103,14 @@ public class NAPILogHelper
 		
 		logger.log(Level.WARN, warning);
 	}
+	
+	public static final void logDebug(String debugMessage)
+	{
+		if (logStreamInitialised)
+		{
+			logStream.println("[DEBUG] " + debugMessage + " [DEBUG]");
+		}
+		
+		logger.log(Level.DEBUG, debugMessage);
+	}
 }

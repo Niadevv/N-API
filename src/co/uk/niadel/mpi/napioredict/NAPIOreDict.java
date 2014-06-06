@@ -11,7 +11,8 @@ import co.uk.niadel.mpi.util.UtilityMethods;
 
 /**
  * The N-API port of Forge's Ore Dictionary. I say port, just rewrote to work with N-API. And Ore dictionary
- * was a bad name, it's not just used for ores (at least, not here).
+ * was a bad name, it's not just used for ores (at least, not here). It was just created because there were
+ * so many mods adding the same ores, meaning you'd need 2 different steel types for 2 mods.
  * @author Niadel
  *
  */
@@ -151,5 +152,6 @@ public class NAPIOreDict
 		addOreDictEntry("ruby", new ItemStack[] {});
 		addOreDictEntry("sapphire", new ItemStack[] {});
 		addOreDictEntry("bullet", new ItemStack[] {});
+		addOreDictEntry("circuit", new ItemStack[] {});
 	}
 }

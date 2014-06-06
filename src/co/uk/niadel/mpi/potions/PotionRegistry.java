@@ -47,8 +47,12 @@ public class PotionRegistry
 		return modPotions.get(potion);
 	}
 	
+	/**
+	 * Adds all potions to the Potion.potionTypes array.
+	 */
 	public static final void addAllPotions()
 	{
+		//Is 1000 as there's no real other way to go about this, and 1000 is plenty big, right?
 		Potion[] potions = new Potion[1000];
 		
 		for (int i = 0; i == Potion.potionTypes.length; i++)

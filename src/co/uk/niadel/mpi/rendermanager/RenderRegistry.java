@@ -8,7 +8,7 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
 /**
- * Where to add renders.
+ * Where to add entity renders.
  * @author Niadel
  *
  */
@@ -25,9 +25,9 @@ public final class RenderRegistry
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static final void addRender(Class entityClass, Render render) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public static final void addRender(Class<? extends Render> entityClass, Render render) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
 	{
-		Map<Class<?>, Render> renderMap = (HashMap<Class<?>, Render>) ReflectionManipulateValues.getValue(RenderManager.class, renderManager, "entityRenderMap");
+		Map<Class<? extends Render>, Render> renderMap = (HashMap<Class<? extends Render>, Render>) ReflectionManipulateValues.getValue(RenderManager.class, renderManager, "entityRenderMap");
 		renderMap.put(entityClass, render);
 	}
 	

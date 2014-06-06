@@ -1,5 +1,5 @@
-1. Dimensions. Is it already doable without a special registry?
-2. More events.
+1. Dimensions. Is it already doable without a special registry? /
+2. More events. / Still may add more.
 3. Use ASM to reduce base edits to 0 on Forge-Side.
 4. Gradle setup. - Is this really neccessary?
 5. Make more classes final. /
@@ -9,4 +9,5 @@
 9. Mod Dependencies system. May have to change the init system a bit, but I hope not too much. / Mostly done. Will finalise.
 10. An annotation system. / Takes the form of the Libary system.
 11. Forge wrapper included in default N-API installation. May require changing a LOT of stuff.
-12. Language localisation abilities, may be the 2nd most advanced part of N-API.
+12. Language localisation abilities, may be the 2nd most advanced part of N-API. /
+13. Finish Forge Wrapper ASM stuff.

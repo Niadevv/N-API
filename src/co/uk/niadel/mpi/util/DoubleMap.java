@@ -2,7 +2,6 @@ package co.uk.niadel.mpi.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import co.uk.niadel.mpi.util.DoubleMap.Entry;
 
 /**
  * Improved version of Map, allowing you to get the key by the value. Used by RecipesRegistry.
@@ -14,12 +13,12 @@ import co.uk.niadel.mpi.util.DoubleMap.Entry;
 public class DoubleMap<K, V>
 {
 	/**
-	 * The one with the key first.
+	 * The Map with the key first.
 	 */
 	public Map<Entry, Entry> map1 = new HashMap<>();
 	
 	/**
-	 * The one with the value first.
+	 * The Map with the value first.
 	 */
 	public Map<Entry, Entry> map2 = new HashMap<>();
 	
