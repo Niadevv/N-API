@@ -10,7 +10,7 @@ import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 
 /**
  * Is in charge of logging things. It should log to both an output file and to the Development Console.
- * @author Daniel1
+ * @author Niadel
  *
  */
 public class NAPILogHelper

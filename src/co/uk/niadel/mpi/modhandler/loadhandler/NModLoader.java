@@ -69,16 +69,20 @@ public class NModLoader extends URLClassLoader
 	 * Dummy Constructor u.u
 	 * @param arg0
 	 */
-	public NModLoader(URL[] urls)
+	private NModLoader(URL[] urls)
 	{
 		super(urls);
 	}
 
 	/**
-	 * The minecraft object.
+	 * The Minecraft object.
 	 */
 	public static Minecraft theMinecraft = Minecraft.getMinecraft();
 	public static Profiler mcProfiler = Minecraft.mcProfiler;
+	
+	/**
+	 * List of modids that have been found and are scheduled to be loaded/have been loaded.
+	 */
 	public static List<String> mods = new ArrayList<>();
 	
 	/**
@@ -99,7 +103,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Where the decompressed mod zip files are copied to for later loading.
 	 */
-	public static File actModsDir = new File(mcModsDir + "act_mods" + File.separator);
+	public static File actModsDir = new File(mcModsDir + File.separator + "act_mods" + File.separator);
 	
 	/**
 	 * Keyed by the mod's modId, valued by the binary name.
@@ -175,15 +179,25 @@ public class NModLoader extends URLClassLoader
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
 	 * @throws NoSuchFieldException
-	 * @throws InstantiationException 
-	 * @throws MCreatorDetectedException 
+	 * @throws InstantiationException
 	 */
 	public static final void loadModsFromDir()
 	{
 		try
 		{
-			System.out.println(mcMainDir.toPath().toString());
-			initNAPIRegister((Class<? extends IModRegister>) Class.forName("co.uk.niadel.api.modhandler.n_api.ModRegister"));
+			if (!mcModsDir.exists())
+			{
+				mcModsDir.mkdir();
+				NAPILogHelper.log("Created mods folder! This user has not used mods folder mods before.");
+			}
+			
+			if (!actModsDir.exists())
+			{
+				actModsDir.mkdirs();
+				NAPILogHelper.logWarn("Please note it will take longer to load N-API with lots of mods as they need to be prepared for loading first! If you only have one mod, ignore this!");
+			}
+			
+			initNAPIRegister((Class<? extends IModRegister>) Class.forName("co.uk.niadel.mpi.modhandler.ModRegister"));
 
 			if (mcModsDir.listFiles() != null)
 			{
@@ -277,10 +291,8 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final File extractFromZip(ZipFile zip) throws IOException
 	{
-		File actModsDirectory = new File(mcModsDir + "act_mods" + File.separator);
 		Enumeration<? extends ZipEntry> modsDirIter = zip.entries();
-		actModsDirectory.mkdirs();
-		File outputDir = new File(actModsDirectory + zip.getName().replace(".zip", "").replace(".jar", "") + File.separator);
+		File outputDir = new File(actModsDir.toPath() + zip.getName().replace(".zip", "").replace(".jar", "") + File.separator);
 		
 		while (modsDirIter.hasMoreElements())
 		{
@@ -406,30 +418,38 @@ public class NModLoader extends URLClassLoader
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public static final String getModBinaryName(File dirToCheck) throws FileNotFoundException
+	public static final String getModBinaryName(File dirToCheck)
 	{
-		String binaryName = "";
-		
-		for (File currFile : dirToCheck.listFiles())
+		try
 		{
-			//If the file is called ModID.modid, get the first line and assign binaryName to that value.
-			if (currFile.getName().contains("ModID.modid"))
+			String binaryName = "";
+
+			for (File currFile : dirToCheck.listFiles())
 			{
-				Scanner scanner = new Scanner(currFile);
-				binaryName = scanner.nextLine();
-				scanner.close();
+				//If the file is called ModID.modid, get the first line and assign binaryName to that value.
+				if (currFile.getName().contains("ModID.modid"))
+				{
+					Scanner scanner = new Scanner(currFile);
+					binaryName = scanner.nextLine();
+					scanner.close();
+				}
+			}
+
+			System.gc();
+
+			if (binaryName != "")
+			{
+				return binaryName;
+			}
+			else
+			{
+				throw new IllegalArgumentException("There is no ModID.modid file in the directory " + dirToCheck.getPath());
 			}
 		}
-		
-		System.gc();
-		
-		if (binaryName != "")
+		catch (FileNotFoundException e)
 		{
-			return binaryName;
-		}
-		else
-		{
-			throw new IllegalArgumentException("There is no ModID.modid file in the directory " + dirToCheck.getPath());
+			NAPILogHelper.logError(e);
+			return "";
 		}
 	}
 	
@@ -478,14 +498,15 @@ public class NModLoader extends URLClassLoader
 						else if (e instanceof InstantiationException)
 						{
 							//Tell the user (angrily) to tell the author that they should not be making their register an interface.
-							throw new RuntimeException("Please ask the author of the mod " + currRegister.getModId() + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
+							NAPILogHelper.logError("Please ask the author of the mod " + currRegister.getModId() + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
 						}
 					}
 
 					if (!mods.contains(currDependency))
 					{
 						//Signify to the user that a mod dependency is not found.
-						throw new ModDependencyNotFoundException(currRegister.getModId());
+						Throwable noDepFoundException = new ModDependencyNotFoundException(currRegister.getModId());
+						NAPILogHelper.logError(noDepFoundException);
 					}
 
 					if (libraryVersionIterator != null && libraryIterator != null)

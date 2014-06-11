@@ -30,7 +30,7 @@ public final class BiomeRegistry
 	 */
 	public static final void registerBiome(BiomeGenBase biomeToAdd, EnumBiomeType biomeType) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
 	{	
-		switch (biomeType.value)
+		switch (biomeType.getValue())
 		{
 			case 0:
 				

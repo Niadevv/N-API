@@ -1,5 +1,7 @@
 package co.uk.niadel.mpi.biomes;
 
+import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
+
 /**
  * Only really used by BiomeRegistry, but is required to register any biome.
  * @author Niadel
@@ -13,11 +15,19 @@ public enum EnumBiomeType
 	COLD(3),
 	ALL(4);
 	
-	
-	public int value;
+	/**
+	 * The value of the type, used in the register thing.
+	 */
+	@Internal
+	private int value;
 
 	EnumBiomeType(int number)
 	{
 		this.value = number;
+	}
+	
+	public int getValue()
+	{
+		return this.value;
 	}
 }
