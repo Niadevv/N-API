@@ -37,13 +37,6 @@ public final class RenderRegistry
 	@Internal
 	public static final void addAllRenders()
 	{
-		try
-		{
-			ReflectionManipulateValues.setValue(RenderManager.class, renderManager, "instance", renderManager);
-		}
-		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
+		ReflectionManipulateValues.setValue(RenderManager.class, null, "instance", renderManager);
 	}
 }

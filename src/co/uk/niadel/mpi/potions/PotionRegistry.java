@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import net.minecraft.potion.Potion;
+import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
-@TestFeature(firstAppearance = "1.0")
 /**
  * Used to register Potions. This makes sure that you can have unlimited potions
  * and can easily distinguish between vanilla and modded. Also largely eliminates ID conflicts
@@ -16,6 +16,7 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  * Potion here, and even extend other potions as long as they in turn extend Potion.
  * @author Niadel
  */
+@TestFeature(firstAppearance = "1.0")
 public class PotionRegistry
 {
 	/**
@@ -42,6 +43,7 @@ public class PotionRegistry
 	 * @param potion
 	 * @return
 	 */
+	@RecommendedMethod
 	public static final Potion getPotion(String potion)
 	{
 		return modPotions.get(potion);
@@ -69,6 +71,6 @@ public class PotionRegistry
 			x++;
 		}
 		
-		ReflectionManipulateValues.setValue(Potion.class, "potionTypes", potions);
+		ReflectionManipulateValues.setSFValue(Potion.class, "potionTypes", potions);
 	}
 }

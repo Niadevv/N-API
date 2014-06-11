@@ -199,7 +199,7 @@ public class NModLoader extends URLClassLoader
 		}
 		catch (IOException | ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException e)
 		{
-			e.printStackTrace(NAPILogHelper.logStream);
+			NAPILogHelper.logError(e);
 		}
 	}
 	

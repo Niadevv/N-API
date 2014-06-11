@@ -12,18 +12,31 @@ import net.minecraft.block.material.MapColor;
  */
 public final class MaterialRegistry extends Material
 {
-	static Map<String, Object> materialRegistry = new HashMap<>();
+	/**
+	 * The materials.
+	 */
+	static Map<String, Material> materialRegistry = new HashMap<>();
 	
-	public MaterialRegistry(MapColor mapColour)
+	private MaterialRegistry(MapColor mapColour)
 	{
 		super(mapColour);
 	}
 	
-	public static final void registerModMaterial(String registerId, Object material)
+	/**
+	 * Registers the material.
+	 * @param registerId
+	 * @param material
+	 */
+	public static final void registerModMaterial(String registerId, Material material)
 	{
 		materialRegistry.put(registerId, material);
 	}
 	
+	/**
+	 * Gets a mod material from the registry.
+	 * @param id
+	 * @return
+	 */
 	public static final Object getModMaterial(String id)
 	{
 		return materialRegistry.get(id);

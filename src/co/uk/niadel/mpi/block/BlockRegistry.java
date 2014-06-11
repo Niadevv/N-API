@@ -1,28 +1,21 @@
 package co.uk.niadel.mpi.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.util.RegistryNamespaced;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.mpi.annotations.MPIAnnotations.Dangerous;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
 
 /**
  * Where you register blocks.
  * @author Niadel
  */
-public final class BlockRegistry extends Block
+public final class BlockRegistry
 {
 	/**
 	 * Used to prevent a ClassCastException.
 	 */
-	public static RegistryNamespaced registry = getRegistry();
+	public static RegistryNamespaced registry = Block.getRegistry();
 	
-	@Internal
-	private BlockRegistry(Material material)
-	{
-		super(material);
-	}
-
 	/**
 	 * Adds a standard block with the same method used in Block.java. I think you specify 
 	 * the namespace in the nonNumericId, but don't hold me to that.
@@ -43,6 +36,7 @@ public final class BlockRegistry extends Block
 	 * @param nonNumericId
 	 * @param block
 	 */
+	@Dangerous(reason = "Potentially compatability breaking.")
 	public static void addBlockDangerously(int numericId, String nonNumericId, Block block)
 	{
 		registry.addObject(numericId, nonNumericId, block);

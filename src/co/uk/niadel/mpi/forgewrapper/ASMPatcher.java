@@ -9,6 +9,11 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
+/**
+ * Applies the patches necessary for Forge and N-API to work moderately well together.
+ * @author Niadel
+ *
+ */
 public class ASMPatcher implements IClassTransformer, Opcodes
 {	
 	public byte[] transform(String currClassName, String newClassName, byte[] bytes)
@@ -151,6 +156,7 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 				mv.visitVarInsn(ALOAD, 5);
 				mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z");
 
+			//Obfuscated World patching.
 			case "afn":
 				mv = cw.visitMethod(ACC_PUBLIC, "d", "(Lqn;)Z", null, null);
 				mv.visitCode();
@@ -226,8 +232,21 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 				mv.visitFieldInsn(GETFIELD, "afi", "explosionZ", "D");
 				mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lqn;DDD)V");
 				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+			
+			//Adding the call to BiomeRegistry.registerAllBiomes.
+			case "net.minecraft.world.gen.layer.GenLayerBiome":
+				mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "initializeAllBiomeGenerators", "(JLnet/minecraft/world/WorldType;)[Lnet/minecraft/world/gen/layer/GenLayer;", null, null);
+				mv.visitCode();
+				
+				Label l52 = new Label();
+				mv.visitLabel(l52);
+				mv.visitLineNumber(107, l52);
+				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/layers/GenLayerRegistry", "iterateLayers", "()[Lco/uk/niadel/mpi/gen/layers/IGenLayer;");
+				mv.visitInsn(POP);
+			
+			default:
+				return null;
 		}
-		
 		
 		return bytes;
 	}

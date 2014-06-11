@@ -191,8 +191,9 @@ public final class UtilityMethods
 			}
 			catch (NumberFormatException e)
 			{
-				//TODO Do something more useful here.
-				throw new RuntimeException("A version number passed is not all numbers!");
+				e.printStackTrace(NAPILogHelper.logStream);
+				NAPILogHelper.logError(e);
+				NAPILogHelper.logError("The version " + version + " is not all numbers! It cannot be parsed correctly.");
 			}
 			
 			return arrayToReturn;
@@ -242,7 +243,8 @@ public final class UtilityMethods
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			e.printStackTrace(NAPILogHelper.logStream);
+			NAPILogHelper.logError(e);
 		}
 		
 		return bytesToReturn;
@@ -264,7 +266,8 @@ public final class UtilityMethods
 		}
 		catch (InstantiationException | IllegalAccessException e)
 		{
-			e.printStackTrace();
+			e.printStackTrace(NAPILogHelper.logStream);
+			NAPILogHelper.logError(e);
 		}
 		
 		return returnedObj;

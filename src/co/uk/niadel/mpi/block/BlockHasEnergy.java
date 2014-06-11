@@ -34,7 +34,7 @@ public abstract class BlockHasEnergy extends Block
 	}
 	
 	/**
-	 * Removes from thie block's measure.
+	 * Removes from the block's measure.
 	 * @param amountToDecrease
 	 */
 	public void decrementEnergyMeasure(long amountToDecrease)

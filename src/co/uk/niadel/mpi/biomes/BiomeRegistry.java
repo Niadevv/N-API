@@ -8,17 +8,16 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
 @TestFeature(firstAppearance = "1.0")
 /**
- * A system for registering biomes. I'm unsure of if Forge allows you to add biomes to certain
- * temperature groups, but, hey. This system is a more "brute force" method of adding biomes
- * as it uses Reflection to force the biomes in.
+ * A system for registering biomes. At time of documenting, Forge has no obvious way of adding Biomes. 
+ * This system is a more "brute force" method of adding biomes as it uses Reflection to "force" the biomes in.
  * @author Niadel
  */
 public final class BiomeRegistry 
 {
-	static BiomeGenBase[] hotBiomes;
-	static BiomeGenBase[] temperateBiomes;
-	static BiomeGenBase[] chillyBiomes;
-	static BiomeGenBase[] coldBiomes;	
+	static BiomeGenBase[] newHotBiomes;
+	static BiomeGenBase[] newTemperateBiomes;
+	static BiomeGenBase[] newChillyBiomes;
+	static BiomeGenBase[] newColdBiomes;	
 	
 	/**
 	 * Registers a biome.
@@ -35,30 +34,30 @@ public final class BiomeRegistry
 		{
 			case 0:
 				
-				hotBiomes[hotBiomes.length] = biomeToAdd;
+				newHotBiomes[newHotBiomes.length] = biomeToAdd;
 				break;
 			
 			case 1:
 				
-				temperateBiomes[temperateBiomes.length] = biomeToAdd;
+				newTemperateBiomes[newTemperateBiomes.length] = biomeToAdd;
 				break;
 			
 			case 2:
 				
-				chillyBiomes[chillyBiomes.length] = biomeToAdd;
+				newChillyBiomes[newChillyBiomes.length] = biomeToAdd;
 				break;
 				
 			case 3:
 				
-				coldBiomes[coldBiomes.length] = biomeToAdd;
+				newColdBiomes[newColdBiomes.length] = biomeToAdd;
 				break;
 			
 			case 4:
 				
-				coldBiomes[coldBiomes.length] = biomeToAdd;
-				chillyBiomes[chillyBiomes.length] = biomeToAdd;
-				temperateBiomes[temperateBiomes.length] = biomeToAdd;
-				hotBiomes[hotBiomes.length] = biomeToAdd;
+				newColdBiomes[newColdBiomes.length] = biomeToAdd;
+				newChillyBiomes[newChillyBiomes.length] = biomeToAdd;
+				newTemperateBiomes[newTemperateBiomes.length] = biomeToAdd;
+				newHotBiomes[newHotBiomes.length] = biomeToAdd;
 				break;
 		}
 	}
@@ -66,42 +65,34 @@ public final class BiomeRegistry
 	@Internal
 	public static final void registerAllBiomes(GenLayerBiome biomeGenLayer)
 	{
-		try 
+		BiomeGenBase[] hotBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151623_c");
+		BiomeGenBase[] temperateBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151621_d");
+		BiomeGenBase[] chillyBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151622_e");
+		BiomeGenBase[] coldBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151620_f");
+			
+		for (int i = 0; i == hotBiomes.length; i++)
 		{
-			BiomeGenBase[] oldHotBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151623_c");
-			BiomeGenBase[] oldTemperateBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151621_d");
-			BiomeGenBase[] oldChillyBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151622_e");
-			BiomeGenBase[] oldColdBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151620_f");
-			
-			for (int i = 0; i == hotBiomes.length; i++)
-			{
-				oldHotBiomes[oldHotBiomes.length] = hotBiomes[i];
-			}
-			
-			for (int i = 0; i == temperateBiomes.length; i++)
-			{
-				oldTemperateBiomes[oldTemperateBiomes.length] = temperateBiomes[i];
-			}
-			
-			for (int i = 0; i == chillyBiomes.length; i++)
-			{
-				oldChillyBiomes[oldChillyBiomes.length] = chillyBiomes[i];
-			}
-			
-			for (int i = 0; i == coldBiomes.length; i++)
-			{
-				oldColdBiomes[oldColdBiomes.length] = coldBiomes[i];
-			}
-			
-			ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151620_f", coldBiomes);
-			ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151622_e", chillyBiomes);
-			ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151621_d", temperateBiomes);
-			ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151623_c", hotBiomes);
-		} 
-		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) 
-		{
-			e.printStackTrace();
-			System.err.println("An error occured registering the biomes!");
+			hotBiomes[hotBiomes.length] = newHotBiomes[i];
 		}
+		
+		for (int i = 0; i == temperateBiomes.length; i++)
+		{
+			temperateBiomes[temperateBiomes.length] = newTemperateBiomes[i];
+		}
+		
+		for (int i = 0; i == chillyBiomes.length; i++)
+		{
+			chillyBiomes[chillyBiomes.length] = newChillyBiomes[i];
+		}
+		
+		for (int i = 0; i == coldBiomes.length; i++)
+		{
+			coldBiomes[coldBiomes.length] = newColdBiomes[i];
+		}
+		
+		ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151620_f", coldBiomes);
+		ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151622_e", chillyBiomes);
+		ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151621_d", temperateBiomes);
+		ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151623_c", hotBiomes);
 	}
 }

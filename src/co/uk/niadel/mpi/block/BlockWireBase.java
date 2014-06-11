@@ -19,7 +19,14 @@ import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
  */
 public class BlockWireBase extends Block implements ITileEntityProvider
 {
+	/**
+	 * The blocks this block is currently connected to.
+	 */
 	public Block[] blocksConnectedTo = new Block[6];
+	
+	/**
+	 * This block's Tile Entity, which does the real looking for blocks to connect to.
+	 */
 	public TileEntityWire wireTileEntity;
 	
 	/**
@@ -36,7 +43,6 @@ public class BlockWireBase extends Block implements ITileEntityProvider
 	public TileEntity createNewTileEntity(World worldObj, int metadata) 
 	{
 		this.wireTileEntity = new TileEntityWire(worldObj, this);
-		
 		return this.wireTileEntity;
 	}
 	

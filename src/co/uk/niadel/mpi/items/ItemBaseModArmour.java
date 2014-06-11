@@ -38,26 +38,10 @@ public class ItemBaseModArmour extends ItemArmor
 	public ItemBaseModArmour(ModArmourMaterial material, int renderIndex, int armourType)
 	{
 		super(defaultMaterial, renderIndex, armourType);
+		this.overlayIcon = (IIcon) ReflectionManipulateValues.getValue(ItemArmor.class, /* Remember that instance thing in Item? This is what that was for. */super.instance, "overlayIcon");
 		
-		try
-		{
-			this.overlayIcon = (IIcon) ReflectionManipulateValues.getValue(ItemArmor.class, /* Remember that instance thing in Item? This is what that was for */super.instance, "overlayIcon");
-		}
-		catch (SecurityException | IllegalArgumentException e1)
-		{
-			e1.printStackTrace();
-		}
-		
-		//Reflection patching, Notch dammit Mojang.
-		try
-		{
-			ReflectionManipulateValues.setValue(ItemArmor.class, super.instance, "material", null);
-			ReflectionManipulateValues.setValue(ItemBaseModArmour.class, this, "damageReduceAmount", material.damageReductionArray);
-		}
-		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
+		ReflectionManipulateValues.setValue(ItemArmor.class, super.instance, "material", null);
+		ReflectionManipulateValues.setValue(ItemBaseModArmour.class, this, "damageReduceAmount", material.damageReductionArray);
 		
 		this.modMaterial = material;
 	}
