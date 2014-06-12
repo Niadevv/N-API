@@ -1,6 +1,11 @@
 package co.uk.niadel.mpi.gen.layers;
 
+import net.minecraft.world.WorldType;
+
 public interface IGenLayer
 {
-	public void layerInit();
+	/**
+	 * The point where you initialise your GenLayer.
+	 */
+	public void layerInit(long seed, WorldType worldType);
 }

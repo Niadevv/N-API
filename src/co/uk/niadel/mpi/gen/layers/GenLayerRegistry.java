@@ -3,8 +3,9 @@ package co.uk.niadel.mpi.gen.layers;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.layer.GenLayer;
+import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 
 /**
  * Base for gen layers. Not entirely sure what this is for, but hey.
@@ -42,7 +43,7 @@ public abstract class GenLayerRegistry extends GenLayer
 	 * @return
 	 */
 	@Internal
-	public static final IGenLayer[] iterateLayers()
+	public static final IGenLayer[] iterateLayers(long seed, WorldType worldType)
 	{
 		IGenLayer[] layers = new IGenLayer[] {};
 		
@@ -56,7 +57,7 @@ public abstract class GenLayerRegistry extends GenLayer
 				i += 1;
 				IGenLayer currLayer = (IGenLayer) layerIterator.next();
 				layers[i] = currLayer;
-				currLayer.layerInit();
+				currLayer.layerInit(seed, worldType);
 			}
 		}
 		

@@ -15,6 +15,9 @@ import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
  */
 public class NAPILogHelper
 {
+	/**
+	 * The file where data is written to.
+	 */
 	public static File theLog = new File(NModLoader.mcMainDir.toPath() + File.separator + "configs" + File.separator + "NAPILog " + System.nanoTime() + ".txt");
 	
 	/**
@@ -35,7 +38,11 @@ public class NAPILogHelper
 	{
 		try
 		{
-			theLog.createNewFile();
+			if (!theLog.exists())
+			{
+				theLog.createNewFile();
+			}
+			
 			logStream = new PrintStream(theLog);
 			log("INITIALISED LOGGER PERFECTLY");
 			logStreamInitialised = true;
@@ -43,7 +50,7 @@ public class NAPILogHelper
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			logger.log(Level.ERROR, "LOGGER FAILED TO INITIALISE CORRECTLY, THE LOG FILE WILL NOT BE WRITTEN TO!");
+			logError("LOGGER FAILED TO INITIALISE CORRECTLY, THE LOG FILE WILL NOT BE WRITTEN TO!");
 			logStreamInitialised = false;
 		}
 	}
