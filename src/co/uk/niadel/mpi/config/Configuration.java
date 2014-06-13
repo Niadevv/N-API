@@ -25,7 +25,7 @@ public final class Configuration
 	/**
 	 * The mods config directory.
 	 */
-	public static File modsConfigs = new File(NModLoader.mcMainDir.toPath() + "configurations" + File.separator);
+	public static File modsConfigs = new File(NModLoader.mcMainDir.toPath() + "configurations".replace(".", "") + File.separator);
 	
 	/**
 	 * This file, the config.
@@ -145,15 +145,14 @@ public final class Configuration
 		try
 		{
 			updateOptions(theConfig);
+			return this.data.get(configValue);
 		}
 		catch (FileNotFoundException e)
 		{
-			System.err.println("[CONFIGERROR] Please create the config before attempting to get data from it.");
 			NAPILogHelper.logError("Someone forgot to create a config .-.");
 			NAPILogHelper.logError(e);
+			return null;
 		}
-		
-		return data.get(configValue);
 	}
 	
 	/**
@@ -162,7 +161,7 @@ public final class Configuration
 	 */
 	public final void addOption(String valueName, String defaultValue)
 	{
-		PrintWriter writer = null;
+		PrintWriter writer;
 		
 		try
 		{

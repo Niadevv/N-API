@@ -2,9 +2,11 @@ package co.uk.niadel.mpi.modhandler;
 
 import net.minecraft.potion.Potion;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Library;
+import co.uk.niadel.mpi.common.MPIEventHandler;
 import co.uk.niadel.mpi.config.Configuration;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityRegistry;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
+import co.uk.niadel.mpi.events.EventsList;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
 import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
@@ -29,6 +31,7 @@ public class ModRegister implements IModRegister
 			PotionRegistry.registerPotion(Potion.potionTypes[i].getName(), Potion.potionTypes[i]);
 		}
 		
+		EventsList.registerEventHandler(new MPIEventHandler());
 		NAPIOreDict.addDefaultEntries();
 		NAPILogHelper.init();
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");
