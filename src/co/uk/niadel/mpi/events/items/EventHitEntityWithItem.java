@@ -4,14 +4,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import co.uk.niadel.mpi.events.EventCancellable;
-import co.uk.niadel.mpi.events.IEvent;
 
 /**
  * Fired when an entity hits another with an item like a Sword. This allows for entities to only take damage from one type of item.
  * @author Niadel
  *
  */
-public class EventHitEntityWithItem extends EventCancellable implements IEvent
+public class EventHitEntityWithItem extends EventCancellable
 {
 	public ItemStack item;
 	public EntityLivingBase hitter, hitee;
@@ -30,11 +29,5 @@ public class EventHitEntityWithItem extends EventCancellable implements IEvent
 	public Item getItem()
 	{
 		return this.item.getItem();
-	}
-
-	@Override
-	public String getName()
-	{
-		return "EventHitEntityWithItem";
 	}
 }

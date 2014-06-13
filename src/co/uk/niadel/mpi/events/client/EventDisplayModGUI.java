@@ -2,14 +2,13 @@ package co.uk.niadel.mpi.events.client;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import co.uk.niadel.mpi.events.IEvent;
 
 /**
  * Fired when a GUI from a mod is displayed.
  * @author Niadel
  *
  */
-public class EventDisplayModGUI implements IEvent
+public class EventDisplayModGUI
 {
 	public String guiId, name;
 	public EntityPlayerMP player;
@@ -26,12 +25,5 @@ public class EventDisplayModGUI implements IEvent
 		this.inventorySlotSize = inventorySlotSize;
 		this.container = container;
 		this.otherInfo = otherInfo;
-	}
-	
-	
-	@Override
-	public String getName()
-	{
-		return "EventDisplayModGUI";
 	}
 }

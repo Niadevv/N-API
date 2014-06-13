@@ -27,37 +27,39 @@ public class GameDataAcquisitionUtils
 	}
 	
 	/**
-	 * Gets whether or not the passed world is on the client (rendering) side. If this breaks Forge side, blame Lex for apparently 
-	 * renaming isClient to isRemote, which is incredibly stupid and makes no sense. Or was it CPW who renamed it?
-	 * @return
-	 */
-	public static final boolean isWorldClientSide(World world)
-	{
-		return world.isClient;	
-	}
-	
-	public static final boolean isWorldClientSide()
-	{
-		return getWorld().isClient;
-	}
-	
-	/**
-	 * Returns whether or not the world is on the server (world controlling) side.
-	 * @return
+	 * Uses threads as Server side and Client side run in different threads.
 	 */
 	public static final boolean isWorldServerSide()
 	{
-		return !isWorldClientSide();
+		return Thread.currentThread().getName().equalsIgnoreCase("server thread");	
 	}
 	
-	public static final boolean isWorldServerSide(World world)
+	/**
+	 * Returns the opposite of isWorldServerSide()
+	 */
+	public static final boolean isWorldClientSide()
 	{
-		return !isWorldClientSide(world);
+		return !isWorldServerSide();
+	}
+	
+	/**
+	 * Gets the side of the specified world.
+	 * @param world
+	 */
+	public static final String getWorldSide(World world)
+	{
+		if (world.isClient)
+		{
+			return "Client";
+		}
+		else
+		{
+			return "Server";
+		}
 	}
 	
 	/**
 	 * Returns whether or not the client is primarily dominated by Forge and the Forge Wrapper is active.
-	 * @return
 	 */
 	public static final boolean isForgeDominated()
 	{
@@ -66,15 +68,27 @@ public class GameDataAcquisitionUtils
 	
 	/**
 	 * Returns whether or not the client is primarily dominated by N-API.
-	 * @return
 	 */
 	public static final boolean isNAPIDominated()
 	{
 		return !isForgeDominated();
 	}
 	
+	/**
+	 * Gets the current world's name.
+	 * @return
+	 */
 	public static final String getWorldName()
 	{
-		return MinecraftServer.getServer().getWorldName();
+		if (isWorldServerSide())
+		{
+			//Server side
+			return MinecraftServer.getServer().getWorldName();
+		}
+		else
+		{
+			//Client side
+			return Minecraft.getMinecraft().theWorld.getWorldInfo().getWorldName();
+		}
 	}
 }

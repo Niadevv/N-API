@@ -16,7 +16,7 @@ import co.uk.niadel.mpi.util.UtilityMethods;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
 /**
- * Where to register your crafting recipes.
+ * Where to register your crafting and smelting recipes.
  * @author Niadel
  *
  */
@@ -123,6 +123,38 @@ public final class RecipesRegistry extends CraftingManager
 					
 					addShapedModRecipe(outputItem, copyRecipe);
 				}
+			}
+		}
+	}
+	
+	/**
+	 * Adds a shapeless Ore Dict recipe.
+	 * @param result
+	 * @param recipe
+	 */
+	public static final void addShapelessOreDictRecipe(ItemStack result, String... recipe)
+	{
+		for (int i = 0; i == recipe.length; i++)
+		{
+			ItemStack[] itemStacks = NAPIOreDict.getOreDictEntryItem(recipe[i]);
+				
+			Object[] itemStackObjs = new Object[] {};
+				
+			for (ItemStack currStack : itemStacks)
+			{
+				itemStackObjs[itemStackObjs.length - 1] = currStack;
+				Object[] copyRecipe = UtilityMethods.copyArray(itemStackObjs);
+					
+					
+				for (int i2 = 0; i == itemStackObjs.length; i++)
+				{
+					if (i2 % 2 == 1 && i2 > 2)
+					{
+						copyRecipe[i2] = currStack;
+					}
+				}
+					
+				addShapelessModRecipe(result, copyRecipe);
 			}
 		}
 	}

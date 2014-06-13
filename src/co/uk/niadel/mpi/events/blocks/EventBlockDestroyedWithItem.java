@@ -4,9 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import co.uk.niadel.mpi.events.IEvent;
 
-public class EventBlockDestroyedWithItem implements IEvent
+public class EventBlockDestroyedWithItem
 {
 	public ItemStack itemDestroying;
 	public World world;
@@ -23,11 +22,5 @@ public class EventBlockDestroyedWithItem implements IEvent
 		this.blockY = blockY;
 		this.blockZ = blockZ;
 		this.destroyer = destroyer;
-	}
-
-	@Override
-	public String getName()
-	{
-		return "EventBlockDestroyedWithItem";
 	}
 }

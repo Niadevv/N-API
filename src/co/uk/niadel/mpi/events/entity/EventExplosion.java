@@ -1,9 +1,8 @@
 package co.uk.niadel.mpi.events.entity;
 
 import net.minecraft.entity.Entity;
-import co.uk.niadel.mpi.events.IEvent;
 
-public class EventExplosion implements IEvent
+public class EventExplosion
 {
 	Entity exploder;
 	double x;
@@ -16,11 +15,5 @@ public class EventExplosion implements IEvent
 		this.x = explosionX;
 		this.y = explosionY;
 		this.z = explosionZ;
-	}
-
-	@Override
-	public String getName()
-	{
-		return "EventExplosion";
 	}
 }

@@ -57,6 +57,7 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 		Label l9;
 		Label l15;
 		Label l79;
+		Label l17;
 		cr.accept(cn, 0);
 		
 		byte[] patchedBytes = null;
@@ -244,7 +245,38 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/layers/GenLayerRegistry", "iterateLayers", "()[Lco/uk/niadel/mpi/gen/layers/IGenLayer;");
 				mv.visitInsn(POP);
 			
+			case "net.minecraft.entity.EntityLiving":
+				mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Lnet/minecraft/world/World;)V", null, null);
+				
+				l17 = new Label();
+				mv.visitLabel(l17);
+				mv.visitLineNumber(94, l17);
+				mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit");
+				mv.visitInsn(DUP);
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitVarInsn(ALOAD, 1);
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "tasks", "Lnet/minecraft/entity/ai/EntityAITasks;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "targetTasks", "Lnet/minecraft/entity/ai/EntityAITasks;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "lookHelper", "Lnet/minecraft/entity/ai/EntityLookHelper;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "moveHelper", "Lnet/minecraft/entity/ai/EntityMoveHelper;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "jumpHelper", "Lnet/minecraft/entity/ai/EntityJumpHelper;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "bodyHelper", "Lnet/minecraft/entity/EntityBodyHelper;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "navigator", "Lnet/minecraft/pathfinding/PathNavigate;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "senses", "Lnet/minecraft/entity/ai/EntitySenses;");
+				mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit", "<init>", "(Lnet/minecraft/entity/EntityLiving;Lnet/minecraft/world/World;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityLookHelper;Lnet/minecraft/entity/ai/EntityMoveHelper;Lnet/minecraft/entity/ai/EntityJumpHelper;Lnet/minecraft/entity/EntityBodyHelper;Lnet/minecraft/pathfinding/PathNavigate;Lnet/minecraft/entity/ai/EntitySenses;)V");
+				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V");
+
+			
 			default:
+				//Not any of the correct classes, return null.
 				return null;
 		}
 		

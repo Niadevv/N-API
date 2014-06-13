@@ -12,5 +12,5 @@ public interface IEventHandler
 	 * as you know Java you do know how to check it, <i>right?</i>
 	 * @param event
 	 */
-	public void handleEvent(IEvent event);
+	public void handleEvent(Object event);
 }

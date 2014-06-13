@@ -39,7 +39,7 @@ public final class EventsList
 	 * @param name
 	 * @return firedEvent
 	 */
-	public static final void fireEvent(IEvent event)
+	public static final void fireEvent(Object event)
 	{
 		//Calls all event handlers' handleEvent methods as an event has been fired and the handlers
 		//May need to handle it in order to do special stuff for their mod.
@@ -53,7 +53,7 @@ public final class EventsList
 	 * @param name
 	 */
 	@Deprecated
-	public static final void fireEvent(IEvent event, String name)
+	public static final void fireEvent(Object event, String name)
 	{
 		fireEvent(event);
 	}
@@ -63,7 +63,7 @@ public final class EventsList
 	 * @param event
 	 */
 	@Internal
-	public static final IEvent callAllHandlers(IEvent event)
+	public static final Object callAllHandlers(Object event)
 	{
 		Iterator handlerIterator = eventHandlers.iterator();
 		

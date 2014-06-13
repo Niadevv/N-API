@@ -4,7 +4,7 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import co.uk.niadel.mpi.block.BlockWireBase;
+import co.uk.niadel.mpi.common.block.BlockWireBase;
 
 /**
  * Where most of the work of BlockWireBase is done.

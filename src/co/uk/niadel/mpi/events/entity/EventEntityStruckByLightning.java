@@ -2,9 +2,8 @@ package co.uk.niadel.mpi.events.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import co.uk.niadel.mpi.events.IEvent;
 
-public class EventEntityStruckByLightning implements IEvent
+public class EventEntityStruckByLightning
 {
 	public EntityLightningBolt lightningBolt;
 	public Entity victimEntity;
@@ -13,11 +12,5 @@ public class EventEntityStruckByLightning implements IEvent
 	{
 		this.lightningBolt = lightning;
 		this.victimEntity = victim;
-	}
-
-	@Override
-	public String getName()
-	{
-		return "EventEntityStruckByLightning";
 	}
 }

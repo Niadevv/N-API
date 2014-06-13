@@ -3,17 +3,28 @@ package co.uk.niadel.mpi.events.items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import co.uk.niadel.mpi.events.IEvent;
 
 /**
- * Fired when you right click an item as the name suggests.
+ * Fired when you right click an item as the name suggests. Can be used for lots of 
+ * different things.
  * @author Niadel
  *
  */
-public class EventItemRightClicked implements IEvent
+public class EventItemRightClicked
 {
+	/**
+	 * The held item that was clicked.
+	 */
 	public ItemStack clickedItem;
+	
+	/**
+	 * The world object.
+	 */
 	public World world;
+	
+	/**
+	 * The player that clicked the item.
+	 */
 	public EntityPlayer player;
 	
 	public EventItemRightClicked(ItemStack item, World world, EntityPlayer player)
@@ -21,11 +32,5 @@ public class EventItemRightClicked implements IEvent
 		this.clickedItem = item;
 		this.world = world;
 		this.player = player;
-	}
-
-	@Override
-	public String getName()
-	{
-		return "EventItemRightClicked";
 	}
 }
