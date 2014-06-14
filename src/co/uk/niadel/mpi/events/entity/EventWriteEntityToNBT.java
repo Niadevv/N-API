@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * Fired when an entity is written to NBT.
+ * Fired when an entity is written to NBT. Can be used to add NBT to vanilla mobs.
  * @author Niadel
  *
  */
