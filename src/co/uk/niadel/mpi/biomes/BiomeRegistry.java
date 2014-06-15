@@ -14,10 +14,10 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  */
 public final class BiomeRegistry 
 {
-	static BiomeGenBase[] newHotBiomes;
-	static BiomeGenBase[] newTemperateBiomes;
-	static BiomeGenBase[] newChillyBiomes;
-	static BiomeGenBase[] newColdBiomes;	
+	static BiomeGenBase[] newHotBiomes = new BiomeGenBase[] {};
+	static BiomeGenBase[] newTemperateBiomes = new BiomeGenBase[] {};
+	static BiomeGenBase[] newChillyBiomes = new BiomeGenBase[] {};
+	static BiomeGenBase[] newColdBiomes = new BiomeGenBase[] {};
 	
 	/**
 	 * Registers a biome.

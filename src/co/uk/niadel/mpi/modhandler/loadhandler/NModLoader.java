@@ -47,13 +47,6 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  * This isn't actually as flexible as the Forge mod loader, but it does most of the
  * same stuff. Flexibility may be improved in a later version of N-API.
  * 
- * The loader does the following:
- * <p> 1. Scan the mods directory for zips and jar files.
- * <p> 2. Extract the zip contents and put them in act_mods for actual loading.
- * <p> 3. Read ModID.modid and load the class with that name.
- * <p> 4. Do this for all mods, putting them into a Map keyed by a String and entried by the actual class object.
- * <p> 5. Loop through all of the objects in the Map containing the mods and call their registerTransformers() method.
- * 
  * TODO Remove the need of the ModID.modid file.
  * 
  * This is very System.gc() intensive to keep resources used at a minimum.
@@ -67,7 +60,7 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Dummy Constructor u.u
-	 * @param arg0
+	 * @param urls
 	 */
 	private NModLoader(URL[] urls)
 	{
@@ -78,6 +71,10 @@ public class NModLoader extends URLClassLoader
 	 * The Minecraft object.
 	 */
 	public static Minecraft theMinecraft = Minecraft.getMinecraft();
+	
+	/**
+	 * The MC profiler.
+	 */
 	public static Profiler mcProfiler = Minecraft.mcProfiler;
 	
 	/**
@@ -504,7 +501,7 @@ public class NModLoader extends URLClassLoader
 
 					if (!mods.contains(currDependency))
 					{
-						//Signify to the user that a mod dependency is not found.
+						//Tell the user that a mod dependency is not found.
 						Throwable noDepFoundException = new ModDependencyNotFoundException(currRegister.getModId());
 						NAPILogHelper.logError(noDepFoundException);
 					}
