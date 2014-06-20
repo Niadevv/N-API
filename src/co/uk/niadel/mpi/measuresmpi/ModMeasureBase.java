@@ -18,6 +18,16 @@ public abstract class ModMeasureBase
 	}
 	
 	/**
+	 * Sets the specified measure to the specified value.
+	 * @param name
+	 * @param newValue
+	 */
+	public void setMeasure(String name, long newValue)
+	{
+		this.getMeasure(name).setValue(newValue);
+	}
+	
+	/**
 	 * Returns the requested measure.
 	 * @param name
 	 * @return The requested measure.

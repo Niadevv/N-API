@@ -8,6 +8,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
+import co.uk.niadel.mpi.measuresmpi.ModMeasureBase;
+import co.uk.niadel.mpi.util.BlockDirectionsMod;
+import co.uk.niadel.mpi.util.UtilityMethods;
 
 
 /**
@@ -17,7 +20,7 @@ import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
  * @author Niadel
  *
  */
-public class BlockWireBase extends Block implements ITileEntityProvider
+public class BlockWireBase extends Block implements ITileEntityProvider, IMeasureTransferer, BlockDirectionsMod
 {
 	/**
 	 * The blocks this block is currently connected to.
@@ -30,13 +33,19 @@ public class BlockWireBase extends Block implements ITileEntityProvider
 	public TileEntityWire wireTileEntity;
 	
 	/**
+	 * This wire's measure that is transferred between containers and wires.
+	 */
+	public ModMeasureBase theMeasure;
+	
+	/**
 	 * Can be used by other blocks to easily get what blocks are surrounding this wire block.
 	 */
 	public Map<String, Block> blocksSurrounding = new HashMap<>();
 	
-	public BlockWireBase(Material material)
+	public BlockWireBase(Material material, ModMeasureBase measure)
 	{
 		super(material);
+		this.theMeasure = measure;
 	}
 	
 	@Override
@@ -51,9 +60,9 @@ public class BlockWireBase extends Block implements ITileEntityProvider
 	 * @param block
 	 * @return
 	 */
-	public boolean canConnectToBlock(Block block)
+	public boolean canTransferToBlock(Block block, int direction)
 	{
-		if (block instanceof BlockWireBase)
+		if (block instanceof IMeasureTransferer)
 		{
 			return true;
 		}
@@ -66,7 +75,71 @@ public class BlockWireBase extends Block implements ITileEntityProvider
 	/**
 	 * Called when a block is connected to.
 	 * @param block
-	 * @param direction 
+	 * @param direction
+	 * @return Whether or not this block connected sucessfully. 
 	 */
 	public void onConnect(Block block, int direction) {}
+
+	@Override
+	public void transferMeasure(IMeasureTransferer target, ModMeasureBase measure)
+	{
+		measure.incrementMeasure(1);
+		this.theMeasure.decrementMeasure(1);
+	}
+
+	@Override
+	public void onReceiveMeasure(IMeasureTransferer transferer, ModMeasureBase measure)
+	{
+		this.theMeasure.incrementMeasure(1);
+		measure.decrementMeasure(1);
+	}
+
+	@Override
+	public boolean canTransferTo(IMeasureTransferer target)
+	{
+		return true;
+	}
+
+	@Override
+	public ModMeasureBase getMeasure()
+	{
+		return this.theMeasure;
+	}
+	
+	public int[] getCoordsFromDirection(int direction)
+	{
+		int[] theCoords = UtilityMethods.getCoordsOfTE(this.wireTileEntity);
+		
+		switch (direction)
+		{
+			case UP:
+				theCoords[1] += 1;
+				break;
+			
+			case DOWN:
+				theCoords[1] -= 1;
+				break;
+			
+			case LEFT:
+				theCoords[0] += 1;
+				break;
+			
+			case RIGHT:
+				theCoords[0] -= 1;
+				break;
+				
+			case FORWARDS:
+				theCoords[2] += 1;
+				break;
+			
+			case BACKWARDS:
+				theCoords[2] -= 1;
+				break;
+			
+			default:
+				throw new IllegalArgumentException("The specified direction " + direction + " is not a correct direction! It must be in the range of 0-5!");
+		}
+		
+		return theCoords;
+	}
 }

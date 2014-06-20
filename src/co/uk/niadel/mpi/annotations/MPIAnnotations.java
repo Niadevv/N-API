@@ -80,9 +80,7 @@ public final class MPIAnnotations
 	
 	/**
 	 * Marks a mod as being a library. Only used if the mod is a library that doesn't change
-	 * anything or just adds methods and classes to interact with other mods. This is the only
-	 * annotation used at runtime, unlike the others which (currently) are only
-	 * for marking the mod's code.
+	 * anything or just adds methods and classes to interact with other mods.
 	 * @author Niadel
 	 *
 	 */

@@ -1,4 +1,4 @@
-package co.uk.niadel.mpi.block;
+package co.uk.niadel.mpi.common.block;
 
 
 /**

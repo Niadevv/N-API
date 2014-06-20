@@ -14,10 +14,11 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  */
 public final class BiomeRegistry 
 {
-	static BiomeGenBase[] newHotBiomes = new BiomeGenBase[] {};
-	static BiomeGenBase[] newTemperateBiomes = new BiomeGenBase[] {};
-	static BiomeGenBase[] newChillyBiomes = new BiomeGenBase[] {};
-	static BiomeGenBase[] newColdBiomes = new BiomeGenBase[] {};
+	//Limited, but shouldn't be a problem as not even Biomes O' Plenty adds 10000 biomes :P I think it adds 80.
+	static BiomeGenBase[] newHotBiomes = new BiomeGenBase[10000];
+	static BiomeGenBase[] newTemperateBiomes = new BiomeGenBase[10000];
+	static BiomeGenBase[] newChillyBiomes = new BiomeGenBase[10000];
+	static BiomeGenBase[] newColdBiomes = new BiomeGenBase[10000];
 	
 	/**
 	 * Registers a biome.

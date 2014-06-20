@@ -5,13 +5,15 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import co.uk.niadel.mpi.common.block.BlockWireBase;
+import co.uk.niadel.mpi.util.BlockDirectionsMod;
+import co.uk.niadel.mpi.util.UtilityMethods;
 
 /**
  * Where most of the work of BlockWireBase is done.
  * @author Niadel
  *
  */
-public class TileEntityWire extends TileEntity
+public class TileEntityWire extends TileEntity implements BlockDirectionsMod
 {
 	/**
 	 * The associated BlockWireBase. Incredibly important for this to work.
@@ -31,29 +33,22 @@ public class TileEntityWire extends TileEntity
 	/**
 	 * Called to update what the block is connected to. The direction int passed to onConnect is as follows:
 	 * 
-	 * 0 = left (negative X)
-	 * 1 = right (positive X)
-	 * 2 = up (positive Y)
-	 * 3 = down (negative Y)
-	 * 4 = forwards (positive Z)
-	 * 5 = backwards (negative Z)
+	 * <p>0 = left (negative X)
+	 * <p>1 = right (positive X)
+	 * <p>2 = up (positive Y)
+	 * <p>3 = down (negative Y)
+	 * <p>4 = forwards (positive Z)
+	 * <p>5 = backwards (negative Z)
 	 */
 	public void updateEntity()
 	{
-		Block blockLeft = this.worldObj.getBlock(this.posX - 1, this.posY, this.posZ);
-		Block blockRight = this.worldObj.getBlock(this.posX + 1, this.posY, this.posZ);
-		Block blockUp = this.worldObj.getBlock(this.posX, this.posY + 1, this.posZ);
-		Block blockDown = this.worldObj.getBlock(this.posX, this.posY - 1, this.posZ);
-		Block blockForward = this.worldObj.getBlock(this.posX, this.posY, this.posZ + 1);
-		Block blockBackward = this.worldObj.getBlock(this.posX, this.posY, this.posZ - 1);
+		Block[] blocksRelative = UtilityMethods.getBlocksRelativeToCoords(this.worldObj, this.posX, this.posY, this.posZ);
 		
-		Block[] blocksToTryToConnectTo = new Block[] {blockLeft, blockRight, blockUp, blockDown, blockForward, blockBackward};
-		
-		for (int i = 0; i == blocksToTryToConnectTo.length; i++)
+		for (int i = 0; i == blocksRelative.length; i++)
 		{
-			Block currBlock = blocksToTryToConnectTo[i];
+			Block currBlock = blocksRelative[i];
 			
-			if (this.associatedBlock.canConnectToBlock(currBlock))
+			if (this.associatedBlock.canTransferToBlock(currBlock, i))
 			{
 				this.associatedBlock.blocksConnectedTo[i] = currBlock;
 				this.associatedBlock.onConnect(currBlock, i);
@@ -62,11 +57,17 @@ public class TileEntityWire extends TileEntity
 		
 		//Reset associatedBlock.blocksSurrounding
 		this.associatedBlock.blocksSurrounding = new HashMap<>();
-		this.associatedBlock.blocksSurrounding.put("left", blockLeft);
-		this.associatedBlock.blocksSurrounding.put("right", blockRight);
-		this.associatedBlock.blocksSurrounding.put("up", blockUp);
-		this.associatedBlock.blocksSurrounding.put("down", blockDown);
-		this.associatedBlock.blocksSurrounding.put("forward", blockForward);
-		this.associatedBlock.blocksSurrounding.put("backward", blockBackward);
+		//Add the blocks.
+		this.associatedBlock.blocksSurrounding.put("left", blocksRelative[LEFT]);
+		this.associatedBlock.blocksSurrounding.put("right", blocksRelative[RIGHT]);
+		this.associatedBlock.blocksSurrounding.put("up", blocksRelative[UP]);
+		this.associatedBlock.blocksSurrounding.put("down", blocksRelative[DOWN]);
+		this.associatedBlock.blocksSurrounding.put("forward", blocksRelative[FORWARDS]);
+		this.associatedBlock.blocksSurrounding.put("backward", blocksRelative[BACKWARDS]);
+	}
+	
+	public World getWorld()
+	{
+		return this.worldObj;
 	}
 }

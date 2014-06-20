@@ -4,6 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+/**
+ * All throwables should implement this, well from mods anyways, I don't like to touch
+ * vanilla unnecessarily.
+ * @author Niadel
+ *
+ */
 public interface IThrowable
 {
 	/**

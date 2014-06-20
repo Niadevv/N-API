@@ -14,11 +14,13 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  */
 public class OreDictConverter
 {
-	private static OreDictionary forgeOreDict = new OreDictionary();
-	
+	/**
+	 * Gets whether or not Forge has initialised.
+	 * @return
+	 */
 	public static final boolean getForgeHasInit()
 	{
-		return ReflectionManipulateValues.getValue(OreDictionary.class, forgeOreDict, "hasInit");
+		return ReflectionManipulateValues.getValue(OreDictionary.class, null, "hasInit");
 	}
 	
 	/**

@@ -16,7 +16,7 @@ public enum EnumBiomeType
 	ALL(4);
 	
 	/**
-	 * The value of the type, used in the register thing.
+	 * The value of the type, used in the biome registry.
 	 */
 	@Internal
 	private int value;

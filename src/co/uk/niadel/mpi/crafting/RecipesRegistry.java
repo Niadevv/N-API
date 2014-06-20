@@ -1,19 +1,18 @@
 package co.uk.niadel.mpi.crafting;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.minecraft.block.Block;
-import net.minecraft.crash.CrashReport;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.util.ReportedException;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
 import co.uk.niadel.mpi.util.DoubleMap;
 import co.uk.niadel.mpi.util.UtilityMethods;
-import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
 /**
  * Where to register your crafting and smelting recipes.
@@ -37,6 +36,9 @@ public final class RecipesRegistry extends CraftingManager
 	 */
 	public static FurnaceRecipes furnaceRecipes = FurnaceRecipes.smelting();
 	
+	public static Map<Item, Integer> fuelsItems = new HashMap<>();
+	public static Map<Block, Integer> fuelsBlocks = new HashMap<>();
+	
 	/**
 	 * Mod Crafting Recipes, stored in a DoubleMap.
 	 */
@@ -47,6 +49,26 @@ public final class RecipesRegistry extends CraftingManager
 	 */
 	@Internal
 	private RecipesRegistry() {}
+	
+	/**
+	 * Adds something you can use as fuel for a furnace, Block version.
+	 * @param fuel
+	 * @param ticksOfBurnTime
+	 */
+	public static final void addFurnaceFuel(Block fuel, int ticksOfBurnTime)
+	{
+		fuelsBlocks.put(fuel, ticksOfBurnTime);
+	}
+	
+	/**
+	 * Adds something you can use as fuel for a furnace, Item version.
+	 * @param fuel
+	 * @param ticksOfBurnTime
+	 */
+	public static final void addFurnaceFuel(Item fuel, int ticksOfBurnTime)
+	{
+		fuelsItems.put(fuel, ticksOfBurnTime);
+	}
 	
 	/**
 	 * Adds a furnace recipe, item version. Wrapper for an obfuscated method name.
@@ -156,6 +178,34 @@ public final class RecipesRegistry extends CraftingManager
 					
 				addShapelessModRecipe(result, copyRecipe);
 			}
+		}
+	}
+	
+	/**
+	 * Uses N-API Ore Dict to add a smelting recipe with the output as an Item.
+	 * @param outputItem
+	 * @param oreDictName
+	 * @param xpGiven
+	 */
+	public static final void addOreDictSmeltingRecipe(Item outputItem, String oreDictName, float xpGiven)
+	{
+		for (ItemStack currItem : NAPIOreDict.getOreDictEntryItem(oreDictName))
+		{
+			addFurnaceRecipe(outputItem, currItem, xpGiven);
+		}
+	}
+	
+	/**
+	 * Uses N-API Ore Dict to add a smelting recipe with the output as a Block.
+	 * @param outputItem
+	 * @param oreDictName
+	 * @param xpGiven
+	 */
+	public static final void addOreDictSmeltingRecipe(Block outputItem, String oreDictName, float xpGiven)
+	{
+		for (ItemStack currItem : NAPIOreDict.getOreDictEntryItem(oreDictName))
+		{
+			addFurnaceRecipe(outputItem, currItem, xpGiven);
 		}
 	}
 	

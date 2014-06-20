@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
@@ -33,6 +34,26 @@ public final class UtilityMethods
 	 * Constructor to provide access to the 2 important byte manipulation things due to some weird foshizzles.
 	 */
 	public UtilityMethods() {}
+	
+	public static Block[] getBlocksRelativeToCoords(World world, int x, int y, int z)
+	{
+		return new Block[] {world.getBlock(x + 1, y, z), //left
+		world.getBlock(x - 1, y, z), //right
+		world.getBlock(x, y + 1, z), //up
+		world.getBlock(x, y - 1, z), //down
+		world.getBlock(x, y, z + 1), //forward
+		world.getBlock(x, y, z - 1)}; //backwards
+	}
+	
+	/**
+	 * Gets the coords of a Tile Entity as an int[].
+	 * @param theTE
+	 * @return
+	 */
+	public static int[] getCoordsOfTE(TileEntity theTE)
+	{
+		return new int[] {theTE.field_145848_d, theTE.field_145849_e, theTE.field_145851_c};
+	}
 	
 	/**
 	 * Converts 3 RGB values to a true RGB number. This means you don't have to spend ages calculating the RGB.

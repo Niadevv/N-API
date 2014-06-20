@@ -8,6 +8,11 @@ import net.minecraft.stats.Achievement;
 
 public final class AchievementRegistry
 {
+	/**
+	 * Registers an acheivement.
+	 * @param theAchievement
+	 * @param achievementClass
+	 */
 	public static void registerAchievement(Achievement theAchievement, Class<? extends Achievement> achievementClass)
 	{
 		// Reflection stuff for protected method. Use what you were given, eh?

@@ -1,4 +1,4 @@
-package co.uk.niadel.mpi.client;
+package co.uk.niadel.mpi.common.gui;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -8,7 +8,7 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.ShouldSuperInSubclasses;
 import co.uk.niadel.mpi.events.EventsList;
 import co.uk.niadel.mpi.events.client.EventDisplayModGUI;
 
-public abstract class GUIDisplayer
+public class GUIDisplayer
 {
 	/**
 	 * Does the actual displaying of the GUI.

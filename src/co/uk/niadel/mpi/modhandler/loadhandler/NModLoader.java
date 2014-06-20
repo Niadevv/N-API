@@ -194,6 +194,8 @@ public class NModLoader extends URLClassLoader
 				NAPILogHelper.logWarn("Please note it will take longer to load N-API with lots of mods as they need to be prepared for loading first! If you only have one mod, ignore this!");
 			}
 			
+			loadUrl(actModsDir.toURI().toURL());
+			
 			initNAPIRegister((Class<? extends IModRegister>) Class.forName("co.uk.niadel.mpi.modhandler.ModRegister"));
 
 			if (mcModsDir.listFiles() != null)
@@ -201,6 +203,7 @@ public class NModLoader extends URLClassLoader
 				for (File currFile : mcModsDir.listFiles())
 				{
 					File nextLoad = extractFromZip(new ZipFile(currFile));
+					//Just in case.
 					loadUrl(nextLoad.toURI().toURL());
 					loadClasses(nextLoad);
 				}

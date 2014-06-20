@@ -202,13 +202,4 @@ public final class BiomeSpawnRegistry
 			biomes[i].spawnableCaveCreatureList.add(spawn);
 		}
 	}
-	
-	/**
-	 * Registers all spawns.
-	 */
-	@Internal
-	public static final void registerAllSpawns()
-	{
-		BiomeGenBase.biomeList = biomes;
-	}
 }
