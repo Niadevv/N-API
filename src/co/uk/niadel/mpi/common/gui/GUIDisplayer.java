@@ -22,13 +22,12 @@ public class GUIDisplayer
 	 * @param otherInfo
 	 */
 	@ShouldSuperInSubclasses
-	public static void displayGUI(String guiId, EntityPlayerMP player, String name, boolean isLocalised, int inventorySlotSize, Container container, Object... otherInfo)
+	public static void displayGUI(String guiId, EntityPlayerMP player, String name, boolean isLocalised, int inventorySlotSize, Object... otherInfo)
 	{
 		player.getNextWindowId();
     	player.playerNetServerHandler.sendPacket(new S2DPacketOpenWindow(player.currentWindowId, 8, name, inventorySlotSize, isLocalised));
-    	player.openContainer = container;
     	player.openContainer.windowId = player.currentWindowId;
     	player.openContainer.addCraftingToCrafters(player);
-    	EventsList.fireEvent(new EventDisplayModGUI(guiId, player, name, isLocalised, inventorySlotSize, container, otherInfo));
+    	EventsList.fireEvent(new EventDisplayModGUI(guiId, player, name, isLocalised, inventorySlotSize, otherInfo));
 	}
 }

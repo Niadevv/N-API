@@ -15,6 +15,8 @@ public class EventHandlerFML
 	@SubscribeEvent
 	public void onWorldTick(WorldTickEvent event)
 	{
+		//Update N-API isClient so Forge mods and N-API mods get along better.
+		event.world.isClient = event.world.isRemote;
 		EventsList.fireEvent(new EventWorldTicked(event.world));
 	}
 }

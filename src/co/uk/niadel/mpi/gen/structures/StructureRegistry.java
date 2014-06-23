@@ -80,8 +80,6 @@ public class StructureRegistry
 	@Internal
 	public static void generateAllNonMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)
 	{
-		//Oh my Notch, I love Generics in Iterators, I should have used it lots more. In fact,
-		//when Beta hits, I'll do that. GENERICISE EVERYTHING!
 		Iterator<MapGenStructure> structureIterator = nonMapFDependantStructures.iterator();
 		
 		while (structureIterator.hasNext())

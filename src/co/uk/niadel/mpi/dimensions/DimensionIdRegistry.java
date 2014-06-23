@@ -6,7 +6,7 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.Dangerous;
 
 public class DimensionIdRegistry
 {
-	public static int[] occupiedIds = new int[] {-1, 0, 1};
+	public static int[] occupiedIds = new int[1000];
 	
 	/**
 	 * Keyed by the dimension's name and valued by the int id. Used in the N-API config.
@@ -20,10 +20,23 @@ public class DimensionIdRegistry
 	 */
 	public static final int registerId(String stringId)
 	{
-		int freeNumber = occupiedIds[occupiedIds.length - 1] + 1;
-		occupiedIds[occupiedIds.length] = freeNumber;
-		idMap.put(stringId, freeNumber);
-		return freeNumber;
+		if (occupiedIds[0] == -1 && occupiedIds[1] == 0 && occupiedIds[2] == 1)
+		{
+			int freeNumber = occupiedIds[occupiedIds.length - 1] + 1;
+			occupiedIds[occupiedIds.length] = freeNumber;
+			idMap.put(stringId, freeNumber);
+			return freeNumber;
+		}
+		else
+		{
+			occupiedIds[0] = -1;
+			occupiedIds[1] = 0;
+			occupiedIds[2] = 1;
+			int freeNumber = occupiedIds[occupiedIds.length - 1] + 1;
+			occupiedIds[occupiedIds.length] = freeNumber;
+			idMap.put(stringId, freeNumber);
+			return freeNumber;
+		}
 	}
 	
 	/**

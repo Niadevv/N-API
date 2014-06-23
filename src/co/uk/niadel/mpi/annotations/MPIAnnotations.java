@@ -15,6 +15,7 @@ public final class MPIAnnotations
 	 * @author Niadel
 	 */
 	@Retention(value = RetentionPolicy.SOURCE)
+	@Target(value = {ElementType.METHOD, ElementType.CONSTRUCTOR})
 	@Documented
 	public @interface RecommendedMethod
 	{
@@ -127,5 +128,18 @@ public final class MPIAnnotations
 	{
 		String version();
 		String modId();
+	}
+	
+	/**
+	 * Allows for a mod method that's important to be called something other than the default
+	 * preInit(), init(), and postInit(). loadPoint must be one of either preInit, init, or
+	 * postInit.
+	 * @author Niadel
+	 *
+	 */
+	@Retention(value = RetentionPolicy.RUNTIME)
+	public @interface LoadStateMethod 
+	{
+		String loadPoint();
 	}
 }

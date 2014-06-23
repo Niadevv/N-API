@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -361,6 +362,12 @@ public class NModLoader extends URLClassLoader
 		Class<? extends IModRegister> modRegisterClass = (Class<? extends IModRegister>) Class.forName(binaryName);
 		IModRegister modRegister = modRegisterClass.newInstance();
 		Annotation[] registerAnnotations = modRegisterClass.getAnnotations();
+		Method[] registerMethods = modRegisterClass.getDeclaredMethods();
+		
+		for (Method currMethod : modRegisterClass.getDeclaredMethods())
+		{
+			AnnotationHandlerRegistry.callAllMethodHandlers(registerAnnotations, currMethod, modRegister);
+		}
 		
 		modIds.put(modRegister.getModId(), binaryName);
 
@@ -369,34 +376,6 @@ public class NModLoader extends URLClassLoader
 			//Makes it easier to add future annotations.
 			for (Annotation annotation : registerAnnotations)
 			{
-				//If the class has the @Library annotation, add it to the modLibraries list.
-				if (annotation.annotationType() == Library.class)
-				{
-					//Add it to the libraries list instead of the mods list.
-					modLibraries.add(modRegister);
-				}
-				else if (annotation.annotationType() == UnstableMod.class)
-				{
-					//Tell the user that the mod is unstable and could break stuff drastically
-					System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
-					//Put it in the regular mods thing.
-					mods.add(modRegister.toString().replace("class ", ""));
-				}
-				else if (annotation.annotationType() == UnstableLibrary.class)
-				{
-					//Tell the user that the library is unstable and mods using it could break
-					System.out.println("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
-					modLibraries.add(modRegister);
-				}
-				else if (annotation.annotationType() == ModRegister.class)
-				{
-					//Set values of the register with Reflection because for some reason interface values are final by default.
-					//Huh, you learn something new every day. Unless you're dead :3
-					ReflectionManipulateValues.setValue(annotation.getClass(), "VERSION", ((ModRegister) annotation).version());
-					ReflectionManipulateValues.setValue(annotation.getClass(), "MODID", ((ModRegister) annotation).modId());
-					ReflectionManipulateValues.setValue(annotation.getClass(), "isUsingAnnotation", true);
-				}
-
 				//Gets all annotation handlers to handle the current annotation.
 				for (IAnnotationHandler currHandler : AnnotationHandlerRegistry.getAnnotationHandlers())
 				{

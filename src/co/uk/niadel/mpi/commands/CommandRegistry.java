@@ -44,7 +44,7 @@ public final class CommandRegistry extends ServerCommandManager
 	 */
 	public ICommand[] getAllCommands()
 	{
-		ICommand[] commands = new ICommand[] {};
+		ICommand[] commands = new ICommand[1000];
 		Iterator commandIterator = commandMap.entrySet().iterator();
 		int i = 0;
 		
@@ -68,7 +68,7 @@ public final class CommandRegistry extends ServerCommandManager
 	public ICommand[] getModCommands()
 	{
 		ICommand[] allCommands = getAllCommands();
-		ICommand[] returnedCommands = new ICommand[] {};
+		ICommand[] returnedCommands = new ICommand[1000];
 		
 		for (ICommand command : allCommands)
 		{

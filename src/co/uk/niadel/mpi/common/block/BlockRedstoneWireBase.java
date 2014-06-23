@@ -28,13 +28,13 @@ public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirecti
 	
 	public boolean canTransferToBlock(Block block, int direction)
 	{
-		if (direction == UP || direction == DOWN || !(block instanceof IRedstoneWire) || !(block instanceof BlockRedstoneWire))
+		if ((!(direction == UP) && !(direction == DOWN)) || block instanceof IRedstoneWire || block instanceof BlockRedstoneWire)
 		{
-			return false;
+			return true;
 		}
 		else
 		{
-			return true;
+			return false;
 		}
 	}
 

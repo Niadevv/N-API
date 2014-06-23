@@ -37,12 +37,23 @@ public final class UtilityMethods
 	
 	public static Block[] getBlocksRelativeToCoords(World world, int x, int y, int z)
 	{
-		return new Block[] {world.getBlock(x + 1, y, z), //left
-		world.getBlock(x - 1, y, z), //right
-		world.getBlock(x, y + 1, z), //up
-		world.getBlock(x, y - 1, z), //down
-		world.getBlock(x, y, z + 1), //forward
-		world.getBlock(x, y, z - 1)}; //backwards
+		return new Block[] 
+				{
+					world.getBlock(x + 1, y, z), //left
+					world.getBlock(x - 1, y, z), //right
+					world.getBlock(x, y + 1, z), //up
+					world.getBlock(x, y - 1, z), //down
+					world.getBlock(x, y, z + 1), //forward
+					world.getBlock(x, y, z - 1), //backwards
+					world.getBlock(x + 1, y + 1, z),//left-up
+					world.getBlock(x + 1, y - 1, z),//left-down
+					world.getBlock(x - 1, y + 1, z),//right-up
+					world.getBlock(x - 1, y - 1, z),//right-down
+					world.getBlock(x, y + 1, x + 1),//forwards-up
+					world.getBlock(x, y - 1, x + 1),//forwards-down
+					world.getBlock(x, y + 1, x - 1),//backwards-up
+					world.getBlock(x, y - 1, x - 1)//backwards-down
+				};
 	}
 	
 	/**

@@ -45,7 +45,7 @@ public abstract class GenLayerRegistry extends GenLayer
 	@Internal
 	public static final IGenLayer[] iterateLayers(long seed, WorldType worldType)
 	{
-		IGenLayer[] layers = new IGenLayer[] {};
+		IGenLayer[] layers = new IGenLayer[1000];
 		
 		if (!modLayers.isEmpty())
 		{

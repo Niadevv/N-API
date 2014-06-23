@@ -122,6 +122,10 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 			
 			//Add calls to events.
 			case "net.minecraft.world.World":
+				cw.newField("net/minecraft/world/World", "isClient", "Z");
+				fv = cw.visitField(ACC_PUBLIC, "isClient", "Z", null, null);
+				fv.visitEnd();
+				
 				mv = cw.visitMethod(ACC_PUBLIC, "spawnEntityInWorld", "(Lnet/minecraft/entity/Entity;)Z", null, null);
 				mv.visitCode();
 				
@@ -272,6 +276,26 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 				mv.visitVarInsn(ALOAD, 0);
 				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "senses", "Lnet/minecraft/entity/ai/EntitySenses;");
 				mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit", "<init>", "(Lnet/minecraft/entity/EntityLiving;Lnet/minecraft/world/World;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityLookHelper;Lnet/minecraft/entity/ai/EntityMoveHelper;Lnet/minecraft/entity/ai/EntityJumpHelper;Lnet/minecraft/entity/EntityBodyHelper;Lnet/minecraft/pathfinding/PathNavigate;Lnet/minecraft/entity/ai/EntitySenses;)V");
+				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V");
+
+			//Add call to Player events.
+			case "net.minecraft.entity.player.EntityPlayer":
+				mv = cw.visitMethod(ACC_PUBLIC, "stopUsingItem", "()V", null, null);
+				mv.visitCode();
+				
+				Label l3 = new Label();
+				mv.visitLabel(l3);
+				mv.visitLineNumber(238, l3);
+				mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/items/EventItemStoppedUse");
+				mv.visitInsn(DUP);
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUse", "Lnet/minecraft/item/ItemStack;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "worldObj", "Lnet/minecraft/world/World;");
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUseCount", "I");
+				mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemStoppedUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;I)V");
 				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V");
 
 			

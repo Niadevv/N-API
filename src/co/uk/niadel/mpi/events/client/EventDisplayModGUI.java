@@ -40,13 +40,12 @@ public class EventDisplayModGUI
 	 */
 	public Object[] otherInfo;
 	
-	public EventDisplayModGUI(String guiId, EntityPlayerMP player, String name, boolean isLocalised, int inventorySlotSize, Container container, Object... otherInfo)
+	public EventDisplayModGUI(String guiId, EntityPlayerMP player, String name, boolean isLocalised, int inventorySlotSize, Object... otherInfo)
 	{
 		this.guiId = guiId;
 		this.player = player;
 		this.isLocalised = isLocalised;
 		this.inventorySlotSize = inventorySlotSize;
-		this.container = container;
 		this.otherInfo = otherInfo;
 	}
 }

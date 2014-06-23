@@ -6,6 +6,7 @@ import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.util.RegistrySimple;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Dangerous;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
+import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
 /**
@@ -46,18 +47,19 @@ public final class BlockRegistry
 	}
 	
 	/**
-	 * Replaces a block with another block.
+	 * Replaces a block with another block. May not work.
 	 * @param numericId
 	 * @param nonNumericId
 	 * @param originalBlock
 	 * @param newBlock
 	 */
+	@TestFeature(firstAppearance = "1.0")
 	public static void replaceBlock(String nonNumericId, Block newBlock)
 	{
-		Map blocksMap = ReflectionManipulateValues.getValue(RegistrySimple.class, registry, "registryObjects");
+		Map blocksMap = ReflectionManipulateValues.getValue(RegistrySimple.class, Block.blockRegistry, "registryObjects");
 		blocksMap.remove(nonNumericId);
 		blocksMap.put(nonNumericId, newBlock);
 		
-		ReflectionManipulateValues.setValue(RegistrySimple.class, registry, "registryObjects", blocksMap);
+		ReflectionManipulateValues.setValue(RegistrySimple.class, Block.blockRegistry, "registryObjects", blocksMap);
 	}
 }
