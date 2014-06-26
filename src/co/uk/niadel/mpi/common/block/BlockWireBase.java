@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
 import co.uk.niadel.mpi.measuresmpi.ModMeasureBase;
 import co.uk.niadel.mpi.util.BlockDirectionsMod;
-import co.uk.niadel.mpi.util.UtilityMethods;
+import co.uk.niadel.mpi.util.MCUtils;
 
 
 /**
@@ -108,7 +108,7 @@ public class BlockWireBase extends Block implements ITileEntityProvider, IMeasur
 	
 	public int[] getCoordsFromDirection(int direction)
 	{
-		int[] theCoords = UtilityMethods.getCoordsOfTE(this.wireTileEntity);
+		int[] theCoords = MCUtils.getCoordsOfTE(this.wireTileEntity);
 		
 		switch (direction)
 		{

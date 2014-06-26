@@ -18,7 +18,7 @@ public class UniqueNumberAcquirer
 			Random random = new Random();
 			int triedInt = random.nextInt();
 		
-			if (!UtilityMethods.<Integer>doesArrayContainValue(numbersToExclude, triedInt))
+			if (!ArrayUtils.doesArrayContainValue(numbersToExclude, triedInt))
 			{
 				return triedInt;
 			}

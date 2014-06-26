@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import co.uk.niadel.mpi.common.block.BlockWireBase;
 import co.uk.niadel.mpi.util.BlockDirectionsMod;
-import co.uk.niadel.mpi.util.UtilityMethods;
+import co.uk.niadel.mpi.util.MCUtils;
 
 /**
  * Where most of the work of BlockWireBase is done.
@@ -42,7 +42,7 @@ public class TileEntityWire extends TileEntity implements BlockDirectionsMod
 	 */
 	public void updateEntity()
 	{
-		Block[] blocksRelative = UtilityMethods.getBlocksRelativeToCoords(this.worldObj, this.posX, this.posY, this.posZ);
+		Block[] blocksRelative = MCUtils.getBlocksRelativeToCoords(this.worldObj, this.posX, this.posY, this.posZ);
 		
 		for (int i = 0; i == blocksRelative.length; i++)
 		{

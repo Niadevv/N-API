@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import co.uk.niadel.mpi.measuresmpi.ModFluidMeasure;
+import co.uk.niadel.mpi.util.ArrayUtils;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.UtilityMethods;
 
@@ -30,7 +31,7 @@ public class NAPIOreDict
 	{
 		//If there's already an entry for this particular entry name, add the itemEntries to the end of the already existing ItemStack[]
 		//In that entry.
-		if (oreDictEntries.get(entryName) != null && !UtilityMethods.doesArrayContainValue(oreDictEntries.get(entryName), itemEntries))
+		if (oreDictEntries.get(entryName) != null && !ArrayUtils.doesArrayContainValue(oreDictEntries.get(entryName), itemEntries))
 		{
 			int x = 0;
 			
@@ -53,7 +54,7 @@ public class NAPIOreDict
 	 */
 	public static final void addOreDictEntry(String entryName, ModFluidMeasure[] entries)
 	{
-		if (oreDictFluidEntries.get(entryName) != null && !UtilityMethods.doesArrayContainValue(oreDictFluidEntries.get(entryName), entries))
+		if (oreDictFluidEntries.get(entryName) != null && !ArrayUtils.doesArrayContainValue(oreDictFluidEntries.get(entryName), entries))
 		{
 			int x = 0;
 			

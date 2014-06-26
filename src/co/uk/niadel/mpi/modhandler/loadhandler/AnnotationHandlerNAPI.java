@@ -3,10 +3,7 @@ package co.uk.niadel.mpi.modhandler.loadhandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.Library;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.ModRegister;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.UnstableLibrary;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.UnstableMod;
+import co.uk.niadel.mpi.annotations.MPIAnnotations.*;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
@@ -50,8 +47,26 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 	{
 		for (Annotation annotation : annotations)
 		{
-			
+			if (annotation.annotationType() == LoadStateMethod.class)
+			{
+				switch (((LoadStateMethod) annotation).loadPoint())
+				{
+					case "preInit":
+						NModLoader.preInitMethods.put(modRegister, theMethod);
+						break;
+					
+					case "init":
+						NModLoader.initMethods.put(modRegister, theMethod);
+						break;
+					
+					case "postInit":
+						NModLoader.postInitMethods.put(modRegister, theMethod);
+						break;
+						
+					default:
+						throw new IllegalArgumentException("The annotation LoadStateMethod on method " + theMethod.getName() + " of register " + modRegister.getClass().getName() + " does not have a valid specified state of execution!");
+				}
+			}
 		}
 	}
-
 }

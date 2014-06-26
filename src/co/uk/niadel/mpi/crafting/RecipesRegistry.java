@@ -11,8 +11,8 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
+import co.uk.niadel.mpi.util.ArrayUtils;
 import co.uk.niadel.mpi.util.DoubleMap;
-import co.uk.niadel.mpi.util.UtilityMethods;
 
 /**
  * Where to register your crafting and smelting recipes.
@@ -132,7 +132,7 @@ public final class RecipesRegistry extends CraftingManager
 				for (ItemStack currStack : itemStacks)
 				{
 					itemStackObjs[itemStackObjs.length - 1] = currStack;
-					Object[] copyRecipe = UtilityMethods.copyArray(itemStackObjs);
+					Object[] copyRecipe = ArrayUtils.copyArray(itemStackObjs);
 					
 					
 					for (int i2 = 0; i == itemStackObjs.length; i++)
@@ -165,7 +165,7 @@ public final class RecipesRegistry extends CraftingManager
 			for (ItemStack currStack : itemStacks)
 			{
 				itemStackObjs[itemStackObjs.length - 1] = currStack;
-				Object[] copyRecipe = UtilityMethods.copyArray(itemStackObjs);
+				Object[] copyRecipe = ArrayUtils.copyArray(itemStackObjs);
 					
 					
 				for (int i2 = 0; i == itemStackObjs.length; i++)

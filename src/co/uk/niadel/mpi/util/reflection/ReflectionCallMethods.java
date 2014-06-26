@@ -19,7 +19,7 @@ public final class ReflectionCallMethods
 	 * @param methodName
 	 * @param args
 	 */
-	public final static void callMethod(String className, String methodName, Object ... args) 
+	public static final void callMethod(String className, String methodName, Object ... args) 
 	{
 		try
 		{
@@ -40,7 +40,7 @@ public final class ReflectionCallMethods
 	 * @param methodName
 	 * @param args
 	 */
-	public final static <X> void callMethod(Class<? extends X> classToCallMethod, String methodName, Object ... args)
+	public static final <X> void callMethod(Class<? extends X> classToCallMethod, String methodName, Object ... args)
 	{
 		try
 		{

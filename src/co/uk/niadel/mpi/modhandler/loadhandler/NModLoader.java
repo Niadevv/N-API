@@ -28,20 +28,15 @@ import net.minecraft.util.ReportedException;
 import org.apache.commons.io.IOUtils;
 import co.uk.niadel.mpi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.Library;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.ModRegister;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.UnstableLibrary;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.UnstableMod;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
-import co.uk.niadel.mpi.crafting.RecipesRegistry;
 import co.uk.niadel.mpi.exceptions.ModDependencyNotFoundException;
 import co.uk.niadel.mpi.exceptions.OutdatedLibraryException;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.rendermanager.RenderRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
+import co.uk.niadel.mpi.util.ParseUtils;
 import co.uk.niadel.mpi.util.UtilityMethods;
-import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
 @TestFeature(stable = false, firstAppearance = "1.0")
 /**
@@ -112,6 +107,21 @@ public class NModLoader extends URLClassLoader
 	 * The version of N-API.
 	 */
 	protected static String nAPIVersion;
+	
+	/**
+	 * Methods to execute on preInit.
+	 */
+	public static Map<IModRegister, Method> preInitMethods = new HashMap<>();
+	
+	/**
+	 * Methods to execute on init.
+	 */
+	public static Map<IModRegister, Method> initMethods = new HashMap<>();
+	
+	/**
+	 * Methods to execture on postInit.
+	 */
+	public static Map<IModRegister, Method> postInitMethods = new HashMap<>();
 
 	/**
 	 * Looks for whether or not the mod with the specified modId exists.
@@ -440,7 +450,16 @@ public class NModLoader extends URLClassLoader
 	public static final void callAllPreInits() throws OutdatedLibraryException, ModDependencyNotFoundException
 	{
 		try
-		{
+		{	
+			//Handles the annotated methods, a bit of reflection magic.
+			Iterator methodsIterator = preInitMethods.entrySet().iterator();
+			Iterator<IModRegister> objsIterator = preInitMethods.keySet().iterator();
+			
+			while (methodsIterator.hasNext())
+			{
+				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
+			}
+			
 			//What iterates the classes in mods.
 			Iterator<String> modsIterator = mods.iterator();
 
@@ -483,9 +502,7 @@ public class NModLoader extends URLClassLoader
 
 					if (!mods.contains(currDependency))
 					{
-						//Tell the user that a mod dependency is not found.
-						Throwable noDepFoundException = new ModDependencyNotFoundException(currRegister.getModId());
-						NAPILogHelper.logError(noDepFoundException);
+						throw new ModDependencyNotFoundException(currDependency.getModId());
 					}
 
 					if (libraryVersionIterator != null && libraryIterator != null)
@@ -502,9 +519,9 @@ public class NModLoader extends URLClassLoader
 						}
 
 						//The version of the requested minimum library version.
-						int[] currVersion = UtilityMethods.parseVersionNumber(currLibraryVersion);
+						int[] currVersion = ParseUtils.parseVersionNumber(currLibraryVersion);
 						//The actual library version.
-						int[] currLibVersion = UtilityMethods.parseVersionNumber(currLib.getVersion());
+						int[] currLibVersion = ParseUtils.parseVersionNumber(currLib.getVersion());
 
 						for (int currNumber : currVersion)
 						{
@@ -531,7 +548,7 @@ public class NModLoader extends URLClassLoader
 				currRegister.preModInit();
 			}
 		}
-		catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1)
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException e1)
 		{
 			NAPILogHelper.logError(e1);
 		}
@@ -546,6 +563,14 @@ public class NModLoader extends URLClassLoader
 	{
 		try
 		{
+			Iterator methodsIterator = initMethods.entrySet().iterator();
+			Iterator<IModRegister> objsIterator = initMethods.keySet().iterator();
+			
+			while (methodsIterator.hasNext())
+			{
+				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
+			}
+			
 			Iterator<String> modsIterator = mods.iterator();
 
 			while (modsIterator.hasNext())
@@ -565,10 +590,9 @@ public class NModLoader extends URLClassLoader
 				IModRegister currRegister = (IModRegister) Class.forName(modsIterator.next()).newInstance();
 
 				currRegister.modInit();
-				//ASM classes are registered in modPreInit or modInit, call them here
 			}
 		}
-		catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1)
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException e1)
 		{
 			NAPILogHelper.logError(e1);
 		}
@@ -583,6 +607,14 @@ public class NModLoader extends URLClassLoader
 	{
 		try
 		{
+			Iterator methodsIterator = postInitMethods.entrySet().iterator();
+			Iterator<IModRegister> objsIterator = postInitMethods.keySet().iterator();
+			
+			while (methodsIterator.hasNext())
+			{
+				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
+			}
+			
 			Iterator<String> modsIterator = mods.iterator();
 
 			while (modsIterator.hasNext())
@@ -606,7 +638,7 @@ public class NModLoader extends URLClassLoader
 				RenderRegistry.addAllRenders();
 			}
 		}
-		catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1)
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException e1)
 		{
 			NAPILogHelper.logError(e1);
 		}

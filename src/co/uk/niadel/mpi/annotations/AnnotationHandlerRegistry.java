@@ -13,7 +13,7 @@ import co.uk.niadel.mpi.modhandler.IModRegister;
  * @author Niadel
  *
  */
-public class AnnotationHandlerRegistry
+public final class AnnotationHandlerRegistry
 {
 	/**
 	 * A Set that contains the Annotation Handlers.

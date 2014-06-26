@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 
-public class ASMRegistry 
+public final class ASMRegistry 
 {
 	/**
 	 * The list of ASM transformers registered.

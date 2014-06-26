@@ -1,6 +1,11 @@
 package co.uk.niadel.mpi.annotations;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.NYI;
 
 /**
  * Useful for mods with MPIs of their own but still mainly use
@@ -54,8 +59,13 @@ public final class MPIAnnotations
 	@Documented
 	public @interface Internal {}
 	
+	/**
+	 * Tells the user that they should super this method in subclasses.
+	 * @author Daniel1
+	 *
+	 */
 	@Retention(value = RetentionPolicy.SOURCE)
-	@Target(value = ElementType.METHOD)
+	@Target(value = {ElementType.METHOD, ElementType.CONSTRUCTOR})
 	@Documented
 	public @interface ShouldSuperInSubclasses
 	{
@@ -133,7 +143,7 @@ public final class MPIAnnotations
 	/**
 	 * Allows for a mod method that's important to be called something other than the default
 	 * preInit(), init(), and postInit(). loadPoint must be one of either preInit, init, or
-	 * postInit.
+	 * postInit. ONLY HAVE ONE METHOD MARKED WITH THIS PER CLASS!
 	 * @author Niadel
 	 *
 	 */
