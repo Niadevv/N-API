@@ -18,7 +18,7 @@ public final class BlockRegistry
 	/**
 	 * The block registry itself, from vanilla so you know it works.
 	 */
-	public static RegistryNamespaced registry = Block.getRegistry();
+	public static RegistryNamespaced registry = Block.blockRegistry;
 	
 	/**
 	 * Adds a standard block with the same method used in Block.java. I think you specify 

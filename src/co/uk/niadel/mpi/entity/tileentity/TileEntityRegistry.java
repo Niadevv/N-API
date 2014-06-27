@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
  * @author Niadel
  *
  */
-public final class TileEntityRegistry extends TileEntity
+public final class TileEntityRegistry
 {
 	/**
 	 * A Map that contains tile entity IDs from mods.
@@ -24,7 +24,7 @@ public final class TileEntityRegistry extends TileEntity
 	public static final void registerTileEntity(Class<? extends TileEntity> classToRegister, String id)
 	{
 		modTileEntitiesMap.put(id, classToRegister);
-		func_145826_a(classToRegister, id);
+		TileEntity.func_145826_a(classToRegister, id);
 	}
 	
 	/**

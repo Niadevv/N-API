@@ -15,7 +15,7 @@ public final class ItemRegistry
 	private String nonNumericId;
 	private String namespace;
 	
-	static RegistryNamespaced registry = Item.getRegistry();
+	static RegistryNamespaced registry = Item.itemRegistry;
 	
 	/**
 	 * Registers the item, specify the namespace in nonNumericId EG. my_mod:some_item.

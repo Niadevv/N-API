@@ -19,7 +19,7 @@ import co.uk.niadel.mpi.util.DoubleMap;
  * @author Niadel
  *
  */
-public final class RecipesRegistry extends CraftingManager
+public final class RecipesRegistry
 {
 	/**
 	 * Only exists for the purpose of one method.
@@ -217,7 +217,7 @@ public final class RecipesRegistry extends CraftingManager
 	private final void addNewModRecipesPrivate(CraftingManager craftingRecipeObject)
 	{
 		//Mojang! Y U NO USE GENERICS?! You can and SHOULD use them.
-		List recipes = getRecipes();
+		List recipes = CraftingManager.getInstance().recipes;
 		recipes.add(craftingRecipeObject);
 	}
 	

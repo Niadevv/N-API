@@ -71,7 +71,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * The MC profiler.
 	 */
-	public static Profiler mcProfiler = Minecraft.mcProfiler;
+	public static Profiler mcProfiler = theMinecraft.mcProfiler;
 	
 	/**
 	 * List of modids that have been found and are scheduled to be loaded/have been loaded.
