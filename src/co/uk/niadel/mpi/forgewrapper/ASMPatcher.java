@@ -120,7 +120,7 @@ public class ASMPatcher implements IClassTransformer, Opcodes
 				mv.visitVarInsn(ALOAD, 2);
 				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V");
 			
-			//Add calls to events.
+			//Add calls to events. Oh, and fix for Forge renaming isClient.
 			case "net.minecraft.world.World":
 				cw.newField("net/minecraft/world/World", "isClient", "Z");
 				fv = cw.visitField(ACC_PUBLIC, "isClient", "Z", null, null);

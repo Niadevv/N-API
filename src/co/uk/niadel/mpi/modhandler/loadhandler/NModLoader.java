@@ -29,6 +29,7 @@ import org.apache.commons.io.IOUtils;
 import co.uk.niadel.mpi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
+import co.uk.niadel.mpi.client.resources.ResourcesRegistry;
 import co.uk.niadel.mpi.exceptions.ModDependencyNotFoundException;
 import co.uk.niadel.mpi.exceptions.OutdatedLibraryException;
 import co.uk.niadel.mpi.modhandler.IModRegister;
@@ -36,9 +37,7 @@ import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.rendermanager.RenderRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.ParseUtils;
-import co.uk.niadel.mpi.util.UtilityMethods;
 
-@TestFeature(stable = false, firstAppearance = "1.0")
 /**
  * This isn't actually as flexible as the Forge mod loader, but it does most of the
  * same stuff. Flexibility may be improved in a later version of N-API.
@@ -50,6 +49,7 @@ import co.uk.niadel.mpi.util.UtilityMethods;
  * @author Niadel
  *
  */
+@TestFeature(stable = false, firstAppearance = "1.0")
 public class NModLoader extends URLClassLoader
 {
 	private static NModLoader instance = new NModLoader(new URL[0]);
@@ -104,11 +104,6 @@ public class NModLoader extends URLClassLoader
 	public static Map<String, String> modIds = new HashMap<>();
 	
 	/**
-	 * The version of N-API.
-	 */
-	protected static String nAPIVersion;
-	
-	/**
 	 * Methods to execute on preInit.
 	 */
 	public static Map<IModRegister, Method> preInitMethods = new HashMap<>();
@@ -119,7 +114,7 @@ public class NModLoader extends URLClassLoader
 	public static Map<IModRegister, Method> initMethods = new HashMap<>();
 	
 	/**
-	 * Methods to execture on postInit.
+	 * Methods to execute on postInit.
 	 */
 	public static Map<IModRegister, Method> postInitMethods = new HashMap<>();
 
@@ -157,13 +152,14 @@ public class NModLoader extends URLClassLoader
 		}
 	}
 	
-	/**
-	 * Loads a URL into the class path.
-	 * @param url
-	 */
-	public static final void loadUrl(URL url)
+	public final void loadClass(String className, byte[] bytes)
 	{
-		instance.addURL(url);
+		super.defineClass(className, bytes, 0, bytes.length);
+	}
+	
+	public static final void defineClass(String className, byte[] bytes)
+	{
+		instance.loadClass(className, bytes);
 	}
 	
 	/**
@@ -174,6 +170,16 @@ public class NModLoader extends URLClassLoader
 	{
 		super.addURL(url);
 	}
+	
+	/**
+	 * Loads a URL into the class path.
+	 * @param url
+	 */
+	public static final void loadUrl(URL url)
+	{
+		instance.addURL(url);
+	}
+	
 	
 	/**
 	 * The entry point for the loader.
@@ -281,7 +287,6 @@ public class NModLoader extends URLClassLoader
 			register.preModInit();
 			register.modInit();
 			register.postModInit();
-			nAPIVersion = register.getVersion();
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException | ClassNotFoundException e)
 		{
@@ -332,7 +337,6 @@ public class NModLoader extends URLClassLoader
 	 * @throws InvocationTargetException
 	 * @throws NoSuchFieldException
 	 * @throws InstantiationException 
-	 * @throws MCreatorDetectedException 
 	 */
 	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
 	{
@@ -546,6 +550,7 @@ public class NModLoader extends URLClassLoader
 
 				//Gets the register to do it's preModInit stuff.
 				currRegister.preModInit();
+				ResourcesRegistry.addAllResourceDomains();
 			}
 		}
 		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException e1)
@@ -647,5 +652,16 @@ public class NModLoader extends URLClassLoader
 		PotionRegistry.addAllPotions();
 		
 		System.gc();
+	}
+	
+	/**
+	 * Loads an ASM class.
+	 * @param theClass
+	 * @param bytes
+	 */
+	@TestFeature(firstAppearance = "1.0")
+	public static final void loadASMClass(Class theClass, byte[] bytes)
+	{
+		NModLoader.defineClass(theClass.getName(), bytes);
 	}
 }

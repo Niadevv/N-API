@@ -106,13 +106,27 @@ public class MCUtils
 	 */
 	public static final void addMessageToChat(String message, boolean shouldTranslate)
 	{
-		if (!shouldTranslate)
+		if (GameDataAcquisitionUtils.isWorldServerSide())
 		{
-			MinecraftServer.getServer().addChatMessage(new ChatComponentText(message));
+			if (!shouldTranslate)
+			{
+				MinecraftServer.getServer().addChatMessage(new ChatComponentText(message));
+			}
+			else
+			{
+				MinecraftServer.getServer().addChatMessage(new ChatComponentTranslation(message));
+			}
 		}
 		else
 		{
-			MinecraftServer.getServer().addChatMessage(new ChatComponentTranslation(message));
+			if (!shouldTranslate)
+			{
+				Minecraft.getMinecraft().thePlayer.sendChatMessage(message);
+			}
+			else
+			{
+				Minecraft.getMinecraft().thePlayer.sendChatMessage(new ChatComponentTranslation(message).getUnformattedTextForChat());
+			}
 		}
 	}
 	
