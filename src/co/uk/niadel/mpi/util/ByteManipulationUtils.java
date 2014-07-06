@@ -33,7 +33,7 @@ public class ByteManipulationUtils
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace(NAPILogHelper.logStream);
+			e.printStackTrace();
 			NAPILogHelper.logError(e);
 		}
 		
@@ -56,7 +56,7 @@ public class ByteManipulationUtils
 		}
 		catch (InstantiationException | IllegalAccessException e)
 		{
-			e.printStackTrace(NAPILogHelper.logStream);
+			e.printStackTrace();
 			NAPILogHelper.logError(e);
 		}
 		

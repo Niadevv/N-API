@@ -22,7 +22,7 @@ public class ParseUtils
 			}
 			catch (NumberFormatException e)
 			{
-				e.printStackTrace(NAPILogHelper.logStream);
+				e.printStackTrace();
 				NAPILogHelper.logError(e);
 				NAPILogHelper.logError("The version " + version + " is not all numbers! It cannot be parsed correctly.");
 			}

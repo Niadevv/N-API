@@ -1,9 +1,8 @@
 package co.uk.niadel.mpi.items;
 
-import java.util.Iterator;
-
 import net.minecraft.item.Item;
 import net.minecraft.util.RegistryNamespaced;
+import co.uk.niadel.mpi.util.UniqueNumberAcquirer;
 
 /**
  * Where you register Items.
@@ -11,17 +10,13 @@ import net.minecraft.util.RegistryNamespaced;
  */
 public final class ItemRegistry
 {
-	private int numericId;
-	private String nonNumericId;
-	private String namespace;
-	
-	static RegistryNamespaced registry = Item.itemRegistry;
+	public static RegistryNamespaced registry = Item.itemRegistry;
 	
 	/**
-	 * Registers the item, specify the namespace in nonNumericId EG. my_mod:some_item.
+	 * Registers the item itself. Like FML, it handles numeric ids internally.
 	 */
-	public final static void registerItem(int numericId, String nonNumericId, Object object)
+	public static final void registerItem(String nonNumericId, Item object)
 	{
-		registry.addObject(numericId, nonNumericId, object);
+		registry.addObject(UniqueNumberAcquirer.getFreeInt(2268), nonNumericId, object);
 	}
 }

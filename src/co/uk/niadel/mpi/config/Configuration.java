@@ -20,7 +20,7 @@ import co.uk.niadel.mpi.util.NAPILogHelper;
  * 
  * @author Niadel
  */
-public final class Configuration 
+public class Configuration 
 {
 	/**
 	 * The mods config directory.
@@ -45,15 +45,8 @@ public final class Configuration
 	 */
 	public Configuration(String configName, String[] data)
 	{
-		try
-		{
-			File theConfigFile = generateNewConfig(configName);
-			addData(data);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		this(configName);
+		addData(data);
 	}
 	
 	public Configuration(String configName)
@@ -94,16 +87,23 @@ public final class Configuration
 	 * @param data
 	 * @throws FileNotFoundException
 	 */
-	public final void addData(String[] data) throws FileNotFoundException
+	public final void addData(String[] data)
 	{
-		PrintStream configWriter = new PrintStream(this.theConfig);
-		
-		for (String currData : data)
+		try
 		{
-			configWriter.println(currData);
+			PrintStream configWriter = new PrintStream(this.theConfig);
+
+			for (String currData : data)
+			{
+				configWriter.println(currData);
+			}
+
+			configWriter.close();
 		}
-		
-		configWriter.close();
+		catch (FileNotFoundException e)
+		{
+			NAPILogHelper.logError("The file " + this.theConfig.getPath() + " does NOT exist!");
+		}
 	}
 	
 	/**
@@ -140,7 +140,7 @@ public final class Configuration
 	 * @param configValue
 	 * @return
 	 */
-	public final String getData(String configValue)
+	public final String getOptionValue(String configValue)
 	{
 		try
 		{
@@ -210,6 +210,23 @@ public final class Configuration
 		else
 		{
 			throw new RuntimeException("[CONFIGERROR] The arrays valueNames and defaultValues passed to addDataLines MUST be the same length!");
+		}
+	}
+	
+	/**
+	 * Gets whether the config option specified exists.
+	 * @param value
+	 * @return
+	 */
+	public final boolean doesOptionExist(String value)
+	{
+		if (data.get(value) != null)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 }

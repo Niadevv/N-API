@@ -9,22 +9,12 @@ import net.minecraft.world.World;
  * @author Niadel
  *
  */
-public class GameDataAcquisitionUtils
+public class MCData
 {
 	/**
 	 * Whether or not the client is Forge. False by default. Only set by NAPIMod in the Forge wrapper.
 	 */
 	public static boolean isForge = false;
-	
-	/**
-	 * Gets the World object. Note, I've heard the world gotten from Minecraft.getMinecraft() is client side
-	 * only, so this may be potentially useless. It's best to avoid using this when possible.
-	 * @return
-	 */
-	public static final World getWorld()
-	{
-		return Minecraft.getMinecraft().theWorld;
-	}
 	
 	/**
 	 * Uses threads as Server side and Client side run in different threads.
@@ -40,6 +30,23 @@ public class GameDataAcquisitionUtils
 	public static final boolean isWorldClientSide()
 	{
 		return !isWorldServerSide();
+	}
+	
+	/**
+	 * Gets whether or not the game is obfuscated.
+	 * @return
+	 */
+	public static final boolean isGameObfed()
+	{
+		try
+		{
+			Class.forName("bnq");
+			return true;
+		}
+		catch (ClassNotFoundException e)
+		{
+			return false;
+		}
 	}
 	
 	/**

@@ -58,61 +58,14 @@ public final class NAPIData
 	public static final String FULL_VERSION = NAME + "-" + MC_VERSION + "-" + STATE + "-" + VERSION;
 	
 	/**
-	 * Gets the version of Minecraft N-API is for.
-	 * @return
+	 * Fully qualified name of the standard N-API transformer.
 	 */
-	public static final String getMCVersion()
-	{
-		return "1.7.10";
-	}
+	public static final String NAPI_ASM_TRANSFORMER = "co.uk.niadel.mpi.asm.NAPIASMTransformer";
+	
+	public static final String[] ASMD_CLASSES = {"net.minecraft.item.Item", "net.minecraft.client.renderer.entity.RenderItem", "net.minecraft.world.gen.structure.StructureVillagePieces", "net.minecraft.world.World", "net.minecraft.util.Explosion", "net.minecraft.world.gen.layer.GenLayerBiome", "net.minecraft.entity.EntityLiving", "net.minecraft.entity.player.EntityPlayer"};
 	
 	/**
-	 * Gets whether or not N-API is beta or otherwise.
+	 * TODO fix this.
 	 */
-	public static final String getState()
-	{
-		return "early-alpha";
-	}
-	
-	/**
-	 * Gets the major version. 2 would effectively mean a complete overhaul.
-	 * @return
-	 */
-	public static final String getMajorVersion()
-	{
-		return "1";
-	}
-	
-	/**
-	 * Gets the minor version, should increment by one every time a new feature is released
-	 * or Minecraft updates after release to public.
-	 * @return
-	 */
-	public static final String getMinorVersion()
-	{
-		return "0";
-	}
-	
-	/**
-	 * Gets the bug fix version. Should increment everytime a bug fix release is released.
-	 * @return
-	 */
-	public static final String getBugFixVersion()
-	{
-		return "0";
-	}
-	
-	/**
-	 * Gets the version of N-API without the name and state prefix.
-	 * @return
-	 */
-	public static final String getNumericVersion()
-	{
-		return getMajorVersion() + "." + getMinorVersion() + "." + getBugFixVersion();
-	}
-	
-	public static final String getModId()
-	{
-		return "NIADEL_n_api";
-	}
+	public static final String[] ASMD_CLASSES_OBFD = {};
 }

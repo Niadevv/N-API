@@ -84,6 +84,7 @@ public class EventHandlerForge
 		if (despawnEvent.isCancelled())
 		{
 			//COUGH COUGH WRONG SPELLING OF CANCELLED COUGH COUGH #blamelex
+			//Also note that isCancelled is spelt correctly.
 			event.setCanceled(true);
 		}
 	}

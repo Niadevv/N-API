@@ -106,7 +106,7 @@ public class MCUtils
 	 */
 	public static final void addMessageToChat(String message, boolean shouldTranslate)
 	{
-		if (GameDataAcquisitionUtils.isWorldServerSide())
+		if (MCData.isWorldServerSide())
 		{
 			if (!shouldTranslate)
 			{

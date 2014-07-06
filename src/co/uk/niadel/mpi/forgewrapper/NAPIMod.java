@@ -7,10 +7,12 @@ import co.uk.niadel.mpi.forgewrapper.eventhandling.EventHandlerFML;
 import co.uk.niadel.mpi.forgewrapper.eventhandling.EventHandlerForge;
 import co.uk.niadel.mpi.forgewrapper.oredict.OreDictConverter;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
-import co.uk.niadel.mpi.util.GameDataAcquisitionUtils;
+import co.uk.niadel.mpi.util.MCData;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
@@ -21,21 +23,33 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  * @author Niadel
  *
  */
-@Mod(modid = "NIADEL_n_api", version = "early-alpha N-API-1.0.0", name = "N-API", acceptedMinecraftVersions = "1.7.2")
+@Mod(modid = NAPIData.MODID, version = NAPIData.FULL_VERSION, name = NAPIData.NAME, acceptedMinecraftVersions = NAPIData.MC_VERSION)
 public class NAPIMod
 {	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		//Tell N-API that the game is a Forge environment.
-		GameDataAcquisitionUtils.isForge = true;
+		MCData.isForge = true;
 		//Register the event handlers.
 		MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
 		FMLCommonHandler.instance().bus().register(new EventHandlerFML());
 		//Begin loading N-API mods.
 		NModLoader.loadModsFromDir();
 		ASMRegistry.invokeAllTransformers();
-		NModLoader.invokeRegisterMethods();
+		NModLoader.callAllPreInits();
 		OreDictConverter.addAllNAPIOreDictEntries();
+	}
+	
+	@EventHandler
+	public void init(FMLInitializationEvent event)
+	{
+		NModLoader.callAllInits();
+	}
+	
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		NModLoader.callAllPostInits();
 	}
 }

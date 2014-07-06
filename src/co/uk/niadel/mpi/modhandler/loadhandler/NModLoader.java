@@ -79,6 +79,11 @@ public class NModLoader extends URLClassLoader
 	public static List<String> mods = new ArrayList<>();
 	
 	/**
+	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods.
+	 */
+	public static List<String> forgeModids = new ArrayList<>();
+	
+	/**
 	 * A list of library classes, or classes marked with the @Library annotation.
 	 */
 	public static List<IModRegister> modLibraries = new ArrayList<>();
@@ -128,6 +133,11 @@ public class NModLoader extends URLClassLoader
 		if (modIds.containsKey(modId))
 		{
 			return mods.contains(modIds.get(modId));
+		}
+		else if (forgeModids.contains(modId))
+		{
+			//For Forge compat.
+			return true;
 		}
 		else
 		{
@@ -232,24 +242,6 @@ public class NModLoader extends URLClassLoader
 		{
 			NAPILogHelper.logError(e);
 		}
-	}
-	
-	/**
-	 * Calls all register's preModInit, modInit, and postModInit methods.
-	 */
-	public static final void invokeRegisterMethods()
-	{
-		try
-		{
-			callAllPreInits();
-		}
-		catch (OutdatedLibraryException | ModDependencyNotFoundException e)
-		{
-			e.printStackTrace(NAPILogHelper.logStream);
-		}
-		
-		callAllInits();
-		callAllPostInits();
 	}
 	
 	/**
@@ -451,7 +443,7 @@ public class NModLoader extends URLClassLoader
 	 * @throws OutdatedLibraryException 
 	 * @throws ModDependencyNotFoundException 
 	 */
-	public static final void callAllPreInits() throws OutdatedLibraryException, ModDependencyNotFoundException
+	public static final void callAllPreInits()
 	{
 		try
 		{	
@@ -553,7 +545,7 @@ public class NModLoader extends URLClassLoader
 				ResourcesRegistry.addAllResourceDomains();
 			}
 		}
-		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException e1)
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | ModDependencyNotFoundException | OutdatedLibraryException e1)
 		{
 			NAPILogHelper.logError(e1);
 		}

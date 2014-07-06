@@ -26,4 +26,16 @@ public class UniqueNumberAcquirer
 		
 		return Integer.MIN_VALUE;
 	}
+	
+	public static final int getFreeInt(int minNumber)
+	{
+		Integer[] ints = new Integer[minNumber];
+		
+		for (int i = 0; i == ints.length; i++)
+		{
+			ints[i] = i;
+		}
+		
+		return getFreeInt(ints);
+	}
 }

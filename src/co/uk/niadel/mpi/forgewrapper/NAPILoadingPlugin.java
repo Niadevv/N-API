@@ -3,20 +3,21 @@ package co.uk.niadel.mpi.forgewrapper;
 import java.util.Map;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.*;
+import co.uk.niadel.mpi.common.NAPIData;
 
 /**
  * Used for loading special stuff for Forge.
  * @author Niadel
  *
  */
-@Name(value = "N-API Forge Wrapper ASM Transformers and Access Transformers")
-@MCVersion(value = "1.7.2")
+@Name(value = "N-API Forge Wrapper Access Transformer")
+@MCVersion(value = NAPIData.MC_VERSION)
 public class NAPILoadingPlugin implements IFMLLoadingPlugin
 {
 	@Override
 	public String[] getASMTransformerClass()
 	{
-		return new String[] {"co.uk.niadel.api.forgewrapper.ASMPatcher"};
+		return new String[] {};
 	}
 
 	@Override
