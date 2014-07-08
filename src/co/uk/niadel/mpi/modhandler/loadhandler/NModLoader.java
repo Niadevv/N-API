@@ -29,6 +29,7 @@ import org.apache.commons.io.IOUtils;
 import co.uk.niadel.mpi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
+import co.uk.niadel.mpi.annotations.MPIAnnotations.*;
 import co.uk.niadel.mpi.client.resources.ResourcesRegistry;
 import co.uk.niadel.mpi.exceptions.ModDependencyNotFoundException;
 import co.uk.niadel.mpi.exceptions.OutdatedLibraryException;
@@ -52,15 +53,11 @@ import co.uk.niadel.mpi.util.ParseUtils;
 @TestFeature(stable = false, firstAppearance = "1.0")
 public class NModLoader extends URLClassLoader
 {
-	private static NModLoader instance = new NModLoader(new URL[0]);
+	private static final NModLoader instance = new NModLoader(new URL[0]);
 	
-	/**
-	 * Dummy Constructor u.u
-	 * @param urls
-	 */
-	private NModLoader(URL[] urls)
+	public NModLoader(URL[] urls)
 	{
-		super(urls);
+		super(urls, NModLoader.class.getClassLoader());
 	}
 
 	/**
@@ -76,7 +73,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * List of modids that have been found and are scheduled to be loaded/have been loaded.
 	 */
-	public static List<String> mods = new ArrayList<>();
+	public static List<Mod> mods = new ArrayList<>();
 	
 	/**
 	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods.
@@ -104,9 +101,9 @@ public class NModLoader extends URLClassLoader
 	public static File actModsDir = new File(mcModsDir + File.separator + "act_mods" + File.separator);
 	
 	/**
-	 * Keyed by the mod's modId, valued by the binary name.
+	 * Keyed by the mod's modId, valued by the modId's main class object.
 	 */
-	public static Map<String, String> modIds = new HashMap<>();
+	public static Map<String, Mod> modIds = new HashMap<>();
 	
 	/**
 	 * Methods to execute on preInit.
@@ -162,7 +159,8 @@ public class NModLoader extends URLClassLoader
 		}
 	}
 	
-	public final void loadClass(String className, byte[] bytes)
+	@Internal
+	private final void loadClass(String className, byte[] bytes)
 	{
 		super.defineClass(className, bytes, 0, bytes.length);
 	}
@@ -176,7 +174,7 @@ public class NModLoader extends URLClassLoader
 	 * Adds a URL into the class path.
 	 * @param url
 	 */
-	public final void addUrl(URL url)
+	private final void addUrl(URL url)
 	{
 		super.addURL(url);
 	}
@@ -190,6 +188,15 @@ public class NModLoader extends URLClassLoader
 		instance.addURL(url);
 	}
 	
+	/**
+	 * Gets a Mod object by it's mod id.
+	 * @param modId
+	 * @return
+	 */
+	public static final Mod getModByModId(String modId)
+	{
+		return modIds.get(modId);
+	}
 	
 	/**
 	 * The entry point for the loader.
@@ -275,7 +282,7 @@ public class NModLoader extends URLClassLoader
 		try
 		{
 			IModRegister register = theClass.newInstance();
-			processAnnotations(theClass.toString().replace("class ", ""));
+			processAnnotations(new Mod(register));
 			register.preModInit();
 			register.modInit();
 			register.postModInit();
@@ -340,12 +347,12 @@ public class NModLoader extends URLClassLoader
 				
 				if (binaryName.contains("mod_"))
 				{
-					System.out.println("Um... Why are you prefixing your mod class with mod_? This is not ModLoader, and underscores and names beginning with a lowercase letter in a class name is horrible naming practice."
-							+ "I'll let the mod load, but rename your class. Now. Go on, do it, NOW!");
 					NAPILogHelper.logWarn("The class with the binary name of " + binaryName + " has horrible naming practice. They should rename their class immediately!");
 				}
 				
-				processAnnotations(binaryName);
+				IModRegister binNameInstance = (IModRegister) Class.forName(binaryName).newInstance();
+				
+				processAnnotations(new Mod(binNameInstance));
 			}
 		}
 		else
@@ -363,19 +370,21 @@ public class NModLoader extends URLClassLoader
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public static final void processAnnotations(String binaryName) throws ClassNotFoundException, InstantiationException, IllegalAccessException
+	public static final void processAnnotations(Mod mod) throws ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		Class<? extends IModRegister> modRegisterClass = (Class<? extends IModRegister>) Class.forName(binaryName);
-		IModRegister modRegister = modRegisterClass.newInstance();
-		Annotation[] registerAnnotations = modRegisterClass.getAnnotations();
-		Method[] registerMethods = modRegisterClass.getDeclaredMethods();
+		IModRegister modRegister = mod.getMainClass();
+		Annotation[] registerAnnotations = mod.getClassAnnotations();
+		Map<Method, Annotation[]> registerMethods = mod.getMethodAnnotations();
 		
-		for (Method currMethod : modRegisterClass.getDeclaredMethods())
+		Iterator<Method> methodIterator = registerMethods.keySet().iterator();
+		Iterator annotationIterator = registerMethods.entrySet().iterator();
+		
+		while (methodIterator.hasNext())
 		{
-			AnnotationHandlerRegistry.callAllMethodHandlers(registerAnnotations, currMethod, modRegister);
+			AnnotationHandlerRegistry.callAllMethodHandlers((Annotation[]) annotationIterator.next(), methodIterator.next(), modRegister);
 		}
 		
-		modIds.put(modRegister.getModId(), binaryName);
+		modIds.put(modRegister.getModId(), mod);
 
 		if (registerAnnotations != null)
 		{
@@ -391,10 +400,15 @@ public class NModLoader extends URLClassLoader
 		}
 		else
 		{
-			mods.add(modRegister.toString().replace("class ", ""));
+			loadMod(modRegister);
 		}
 		
 		System.gc();
+	}
+	
+	public static final void loadMod(IModRegister mod)
+	{
+		mods.add(new Mod(mod.getModId(), mod.getVersion(), mod));
 	}
 	
 	/**
@@ -457,14 +471,11 @@ public class NModLoader extends URLClassLoader
 			}
 			
 			//What iterates the classes in mods.
-			Iterator<String> modsIterator = mods.iterator();
+			Iterator<Mod> modsIterator = mods.iterator();
 
 			while (modsIterator.hasNext())
 			{
-				//The current class being iterated.
-				String currClass = (String) modsIterator.next();
-
-				IModRegister currRegister = (IModRegister) Class.forName(modsIterator.next()).newInstance();
+				IModRegister currRegister = modsIterator.next().getMainClass();
 				currRegister.addRequiredMods();
 				currRegister.addRequiredLibraries();
 
@@ -545,7 +556,7 @@ public class NModLoader extends URLClassLoader
 				ResourcesRegistry.addAllResourceDomains();
 			}
 		}
-		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | ModDependencyNotFoundException | OutdatedLibraryException e1)
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ModDependencyNotFoundException | OutdatedLibraryException e1)
 		{
 			NAPILogHelper.logError(e1);
 		}
@@ -568,28 +579,16 @@ public class NModLoader extends URLClassLoader
 				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
 			}
 			
-			Iterator<String> modsIterator = mods.iterator();
+			Iterator<Mod> modsIterator = mods.iterator();
 
 			while (modsIterator.hasNext())
 			{
-				try
-				{
-					Class<? extends IModRegister> currClass = (Class<? extends IModRegister>) Class.forName(modsIterator.next());
-				}
-				catch (ClassNotFoundException | NullPointerException e)
-				{
-					if (e instanceof NullPointerException)
-					{
-						break;
-					}
-				}
-
-				IModRegister currRegister = (IModRegister) Class.forName(modsIterator.next()).newInstance();
+				IModRegister currRegister = modsIterator.next().getMainClass();
 
 				currRegister.modInit();
 			}
 		}
-		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException e1)
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
 		{
 			NAPILogHelper.logError(e1);
 		}
@@ -612,30 +611,17 @@ public class NModLoader extends URLClassLoader
 				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
 			}
 			
-			Iterator<String> modsIterator = mods.iterator();
+			Iterator<Mod> modsIterator = mods.iterator();
 
 			while (modsIterator.hasNext())
 			{
-				try
-				{
-					Class<? extends IModRegister> currClass = (Class<? extends IModRegister>) Class.forName(modsIterator.next());
-				}
-				catch (ClassNotFoundException | NullPointerException e)
-				{
-					if (e instanceof NullPointerException)
-					{
-						break;
-					}
-					e.printStackTrace();
-				}
-
-				IModRegister currRegister = (IModRegister) Class.forName(modsIterator.next()).newInstance();
+				IModRegister currRegister = modsIterator.next().getMainClass();
 
 				currRegister.postModInit();
 				RenderRegistry.addAllRenders();
 			}
 		}
-		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException e1)
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
 		{
 			NAPILogHelper.logError(e1);
 		}

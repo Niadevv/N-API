@@ -23,7 +23,7 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 			//Tell the user that the mod is unstable and could break stuff drastically
 			System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
 			//Put it in the regular mods thing.
-			NModLoader.mods.add(modRegister.toString().replace("class ", ""));
+			NModLoader.loadMod(modRegister);
 		}
 		else if (annotation.annotationType() == UnstableLibrary.class)
 		{

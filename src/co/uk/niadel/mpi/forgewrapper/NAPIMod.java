@@ -16,10 +16,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
- * Yes, I do know SOME Forge, but I have to ignore 500+ errors to do this :3. It is going to be
- * ****ing tedious to update versions. Thank you annotation borked logic u.u. If Java 8 fixes it,
- * I'm going to update to it for just the reason it fixes annotation logic. Forget Lambda 
- * expressions.
+ * Yes, I do know SOME Forge, but I have to ignore 500+ errors to do this :3.
  * @author Niadel
  *
  */
