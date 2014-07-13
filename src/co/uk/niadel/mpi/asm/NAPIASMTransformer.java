@@ -1,13 +1,22 @@
 package co.uk.niadel.mpi.asm;
 
-import java.util.Map;
+import java.util.ListIterator;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.LineNumberNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
 import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.util.MCData;
 
@@ -39,8 +48,11 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 		ClassWriter cw = new ClassWriter(cr, ASM4);
 		FieldVisitor fv;
 		MethodVisitor mv;
+		MethodNode methodNode;
 		
 		//Labels, because switch control structures are awkward with local variables.
+		LabelNode l0;
+		LabelNode l1;
 		Label l261;
 		Label l10;
 		Label l12;
@@ -123,7 +135,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				//Add the event local variable for EventEntitySpawned.
 				l6 = new Label();
 				mv.visitLineNumber(1409, l6);
-				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+				mv.visitFrame(F_SAME, 0, null, 0, null);
 				mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntitySpawned");
 				mv.visitInsn(DUP);
 				mv.visitVarInsn(ALOAD, 1);
@@ -132,7 +144,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				
 				l9 = new Label();
 				mv.visitLineNumber(1420, l9);
-				mv.visitFrame(Opcodes.F_APPEND,1, new Object[] {"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
+				mv.visitFrame(F_APPEND,1, new Object[] {"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
 				mv.visitVarInsn(ALOAD, 5);
 				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
 				
@@ -148,7 +160,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				
 				l15 = new Label();
 				mv.visitLineNumber(1423, l15);
-				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+				mv.visitFrame(F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, 5);
 				mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z");
 
@@ -160,7 +172,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				//Add the event local variable for EventEntitySpawned.
 				l6 = new Label();
 				mv.visitLineNumber(1409, l6);
-				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+				mv.visitFrame(F_SAME, 0, null, 0, null);
 				mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntitySpawned");
 				mv.visitInsn(DUP);
 				mv.visitVarInsn(ALOAD, 1);
@@ -169,7 +181,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				
 				l9 = new Label();
 				mv.visitLineNumber(1420, l9);
-				mv.visitFrame(Opcodes.F_APPEND,1, new Object[] {"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
+				mv.visitFrame(F_APPEND,1, new Object[] {"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
 				mv.visitVarInsn(ALOAD, 5);
 				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
 				
@@ -185,7 +197,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				
 				l15 = new Label();
 				mv.visitLineNumber(1423, l15);
-				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+				mv.visitFrame(F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, 5);
 				mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z");
 			
@@ -288,8 +300,44 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUseCount", "I");
 				mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemStoppedUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;I)V");
 				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V");
-
 			
+			//Ensure no-one tampers with MCData's getNAPIRegisterClass method via ASM or... (shudders) base edits.
+			case "co.uk.niadel.mpi.util.MCData":
+				methodNode = new MethodNode(ACC_PUBLIC + ACC_STATIC + ACC_FINAL, "getNAPIRegisterClass", "()Z", null, null);
+				
+				//Clear the instructions in the method, to get rid of dodgy tampering.
+				ListIterator insnIterator = methodNode.instructions.iterator();
+				
+				while (insnIterator.hasNext())
+				{
+					methodNode.instructions.remove((AbstractInsnNode) insnIterator.next());
+				}
+				
+				//Add the method instructions back in the way they should be.
+				l0 = new LabelNode();
+				l0.accept(methodNode);
+				methodNode.instructions.add(l0);
+				methodNode.instructions.add(new LineNumberNode(108, l0));
+				methodNode.instructions.add(new LdcInsnNode("co.uk.niadel.mpi.modhandler.ModRegister"));
+				methodNode.instructions.add(new InsnNode(ARETURN));
+			
+			//Add call to fire EventCrash.
+			case "net.minecraft.util.ReportedException":
+				methodNode = new MethodNode(ACC_PUBLIC, "<init>", "()V", null, null);
+				
+				l1 = new LabelNode();
+				l1.accept(methodNode);
+				methodNode.instructions.add(l1);
+				methodNode.instructions.add(new LineNumberNode(14, l1));
+				methodNode.instructions.add(new TypeInsnNode(NEW, "co/uk/niadel/mpi/events/client/EventCrash"));
+				methodNode.instructions.add(new InsnNode(DUP));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 1));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+				methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/client/EventCrash", "<init>", "(Lnet/minecraft/crash/CrashReport;Lnet/minecraft/util/ReportedException;)V"));
+				methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V"));
+				methodNode.instructions.add(new InsnNode(RETURN));
+				
+				
 			default:
 				//Not any of the correct classes, return null.
 				return null;

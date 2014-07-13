@@ -3,12 +3,12 @@ package co.uk.niadel.mpi.common;
 /**
  * Used to get info about the running version of N-API. Versioning follows Minecraft's
  * versioning conventions: majorversion.minorversion.bugfixversion
- * With the versions all capable of going up as high as possible, and don't follow decimal
+ * with the versions all capable of going up as high as possible, and don't follow decimal
  * logic.
  * @author Niadel
  *
  */
-public final class NAPIData
+public interface NAPIData
 {
 	/**
 	 * N-API's name.
@@ -62,10 +62,13 @@ public final class NAPIData
 	 */
 	public static final String NAPI_ASM_TRANSFORMER = "co.uk.niadel.mpi.asm.NAPIASMTransformer";
 	
-	public static final String[] ASMD_CLASSES = {"net.minecraft.item.Item", "net.minecraft.client.renderer.entity.RenderItem", "net.minecraft.world.gen.structure.StructureVillagePieces", "net.minecraft.world.World", "net.minecraft.util.Explosion", "net.minecraft.world.gen.layer.GenLayerBiome", "net.minecraft.entity.EntityLiving", "net.minecraft.entity.player.EntityPlayer"};
+	/**
+	 * List of classes used in NAPIASMTransformer.
+	 */
+	public static final String[] ASMD_CLASSES = {"net.minecraft.item.Item", "net.minecraft.client.renderer.entity.RenderItem", "net.minecraft.world.gen.structure.StructureVillagePieces", "net.minecraft.world.World", "net.minecraft.util.Explosion", "net.minecraft.world.gen.layer.GenLayerBiome", "net.minecraft.entity.EntityLiving", "net.minecraft.entity.player.EntityPlayer", "co.uk.niadel.mpi.util.MCData"};
 	
 	/**
-	 * TODO fix this.
+	 * List of obfuscated classes used in NAPIASMTransformer.
 	 */
-	public static final String[] ASMD_CLASSES_OBFD = {};
+	public static final String[] ASMD_CLASSES_OBFD = {"co.uk.niadel.mpi.util.MCData"};
 }

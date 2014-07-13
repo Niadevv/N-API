@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
+import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -38,14 +40,13 @@ import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.rendermanager.RenderRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.ParseUtils;
+import co.uk.niadel.mpi.util.MCData;
 
 /**
- * This isn't actually as flexible as the Forge mod loader, but it does most of the
+ * This isn't actually as flexible as FML, but it does most of the
  * same stuff. Flexibility may be improved in a later version of N-API.
  * 
  * TODO Remove the need of the ModID.modid file.
- * 
- * This is very System.gc() intensive to keep resources used at a minimum.
  * 
  * @author Niadel
  *
@@ -73,7 +74,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * List of modids that have been found and are scheduled to be loaded/have been loaded.
 	 */
-	public static List<Mod> mods = new ArrayList<>();
+	public static ModList mods = new ModList();
 	
 	/**
 	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods.
@@ -83,7 +84,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * A list of library classes, or classes marked with the @Library annotation.
 	 */
-	public static List<IModRegister> modLibraries = new ArrayList<>();
+	public static List<Library> modLibraries = new ArrayList<>();
 	
 	/**
 	 * The main Minecraft directory.
@@ -98,7 +99,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Where the decompressed mod zip files are copied to for later loading.
 	 */
-	public static File actModsDir = new File(mcModsDir + File.separator + "act_mods" + File.separator);
+	public static File actModsDir = new File(theMinecraft.mcDataDir + File.separator + "act_mods" + File.separator);
 	
 	/**
 	 * Keyed by the mod's modId, valued by the modId's main class object.
@@ -174,6 +175,7 @@ public class NModLoader extends URLClassLoader
 	 * Adds a URL into the class path.
 	 * @param url
 	 */
+	@Internal
 	private final void addUrl(URL url)
 	{
 		super.addURL(url);
@@ -189,13 +191,18 @@ public class NModLoader extends URLClassLoader
 	}
 	
 	/**
-	 * Gets a Mod object by it's mod id.
+	 * Gets a IModRegister object by it's mod id.
 	 * @param modId
 	 * @return
 	 */
-	public static final Mod getModByModId(String modId)
+	public static final IModRegister getModByModId(String modId)
 	{
-		return modIds.get(modId);
+		return mods.getModById(modId);
+	}
+	
+	public static final IModContainer getModContainerByModId(String modId)
+	{
+		return mods.getModContainerById(modId);
 	}
 	
 	/**
@@ -230,7 +237,7 @@ public class NModLoader extends URLClassLoader
 			
 			loadUrl(actModsDir.toURI().toURL());
 			
-			initNAPIRegister((Class<? extends IModRegister>) Class.forName("co.uk.niadel.mpi.modhandler.ModRegister"));
+			initNAPIRegister((Class<? extends IModRegister>) Class.forName(MCData.getNAPIRegisterClass()));
 
 			if (mcModsDir.listFiles() != null)
 			{
@@ -240,13 +247,13 @@ public class NModLoader extends URLClassLoader
 					//Just in case.
 					loadUrl(nextLoad.toURI().toURL());
 					loadClasses(nextLoad);
+					registerTransformers();
 				}
 			}
-
-			System.gc();
 		}
 		catch (IOException | ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException e)
 		{
+			e.printStackTrace();
 			NAPILogHelper.logError(e);
 		}
 	}
@@ -256,19 +263,19 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void registerTransformers()
 	{
-		Iterator modsObjectIterator = mods.iterator();
-		Iterator<IModRegister> modsLibraryIterator = modLibraries.iterator();
+		Iterator<Mod> modsObjectIterator = mods.iterator();
+		Iterator<Library> modsLibraryIterator = modLibraries.iterator();
 		
 		while (modsObjectIterator.hasNext())
 		{
-			IModRegister currRegister = (IModRegister) modsObjectIterator.next();
-			currRegister.registerTransformers();
+			Mod currRegister = (Mod) modsObjectIterator.next();
+			currRegister.getMainClass().registerTransformers();
 		}
 		
 		while (modsLibraryIterator.hasNext())
 		{
 			//Generics for the win!
-			modsLibraryIterator.next().registerTransformers();
+			modsLibraryIterator.next().getMainClass().registerTransformers();
 		}
 	}
 	
@@ -277,12 +284,12 @@ public class NModLoader extends URLClassLoader
 	 * the loader even though you have the ability to with the Reflection stuff.
 	 * @param theClass
 	 */
-	private static final void initNAPIRegister(Class<? extends IModRegister> theClass)
+	private static final void initNAPIRegister(Class theClass)
 	{
 		try
 		{
-			IModRegister register = theClass.newInstance();
-			processAnnotations(new Mod(register));
+			IModRegister register = (IModRegister) theClass.newInstance();
+			processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
 			register.preModInit();
 			register.modInit();
 			register.postModInit();
@@ -315,12 +322,12 @@ public class NModLoader extends URLClassLoader
 			InputStream zipInputStream = zip.getInputStream(currClass);
 			OutputStream output = new FileOutputStream(outputDir);
 			
-			//Probably the only instance in the entirety of N-API that an external library is used that isn't necessary for
+			//Probably the only instance in the entirety of N-API that an external library is 
+			//used that isn't necessary for
 			//key mod functionality.
 			IOUtils.copy(zipInputStream, output);
 		}
 		
-		System.gc();
 		return outputDir;
 	}
 	
@@ -359,8 +366,6 @@ public class NModLoader extends URLClassLoader
 		{
 			throw new IllegalArgumentException("The dir passed must be a directory to allow for the files to be loaded!");
 		}
-		
-		System.gc();
 	}
 	
 	/**
@@ -377,11 +382,11 @@ public class NModLoader extends URLClassLoader
 		Map<Method, Annotation[]> registerMethods = mod.getMethodAnnotations();
 		
 		Iterator<Method> methodIterator = registerMethods.keySet().iterator();
-		Iterator annotationIterator = registerMethods.entrySet().iterator();
+		Iterator<Entry<Method, Annotation[]>> annotationIterator = registerMethods.entrySet().iterator();
 		
 		while (methodIterator.hasNext())
 		{
-			AnnotationHandlerRegistry.callAllMethodHandlers((Annotation[]) annotationIterator.next(), methodIterator.next(), modRegister);
+			AnnotationHandlerRegistry.callAllMethodHandlers(annotationIterator.next().getValue(), methodIterator.next(), modRegister);
 		}
 		
 		modIds.put(modRegister.getModId(), mod);
@@ -402,13 +407,24 @@ public class NModLoader extends URLClassLoader
 		{
 			loadMod(modRegister);
 		}
-		
-		System.gc();
 	}
 	
+	/**
+	 * Converts an IModRegister into a Mod object and puts that Mod object into mods.
+	 * @param mod
+	 */
 	public static final void loadMod(IModRegister mod)
 	{
-		mods.add(new Mod(mod.getModId(), mod.getVersion(), mod));
+		mods.addMod(new Mod(mod.getModId(), mod.getVersion(), mod));
+	}
+	
+	/**
+	 * Converts an IModRegister into a Library object and puts that Library object into modLibraries.
+	 * @param mod
+	 */
+	public static final void loadLibrary(IModRegister mod)
+	{
+		modLibraries.add(new Library(mod.getModId(), mod.getVersion(), mod));
 	}
 	
 	/**
@@ -434,8 +450,6 @@ public class NModLoader extends URLClassLoader
 				}
 			}
 
-			System.gc();
-
 			if (binaryName != "")
 			{
 				return binaryName;
@@ -454,114 +468,101 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * This checks dependencies and libraries before calling a mod's modPreInit method.
-	 * @throws OutdatedLibraryException 
-	 * @throws ModDependencyNotFoundException 
 	 */
 	public static final void callAllPreInits()
 	{
-		try
-		{	
-			//Handles the annotated methods, a bit of reflection magic.
-			Iterator methodsIterator = preInitMethods.entrySet().iterator();
-			Iterator<IModRegister> objsIterator = preInitMethods.keySet().iterator();
-			
-			while (methodsIterator.hasNext())
-			{
-				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
-			}
-			
-			//What iterates the classes in mods.
-			Iterator<Mod> modsIterator = mods.iterator();
-
-			while (modsIterator.hasNext())
-			{
-				IModRegister currRegister = modsIterator.next().getMainClass();
-				currRegister.addRequiredMods();
-				currRegister.addRequiredLibraries();
-
-				Iterator<String> dependenciesIterator = currRegister.dependencies.iterator();
-				Iterator libraryIterator = currRegister.libraryDependencies.entrySet().iterator();
-				Iterator<String> libraryVersionIterator = currRegister.libraryDependencies.keySet().iterator();
-
-				//Iterates the dependencies of the mod
-				while (dependenciesIterator.hasNext())
-				{
-					//An independent dependency.
-					IModRegister currDependency = null;
-
-					try
-					{
-						currDependency = (IModRegister) (Class.forName((String) dependenciesIterator.next())).newInstance();
-					}
-					catch (NullPointerException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
-					{
-						//If there are no dependencies, stop this run of the dependency system. The only time NullPointerExceptions are actually useful -_-.
-						if (e instanceof NullPointerException)
-						{
-							break;
-						}
-						else if (e instanceof InstantiationException)
-						{
-							//Tell the user (angrily) to tell the author that they should not be making their register an interface.
-							NAPILogHelper.logError("Please ask the author of the mod " + currRegister.getModId() + " WHAT THE HELL ARE YOU DOING MAKING YOUR MOD DEPENDANT ON AN INTERFACE?!");
-						}
-					}
-
-					if (!mods.contains(currDependency))
-					{
-						throw new ModDependencyNotFoundException(currDependency.getModId());
-					}
-
-					if (libraryVersionIterator != null && libraryIterator != null)
-					{
-						//The current library version.
-						String currLibraryVersion = libraryVersionIterator.next();
-						//The current library
-						IModRegister currLib = (IModRegister) libraryIterator.next();
-
-						if (currLibraryVersion == "")
-						{
-							//Tell the user that a library doesn't have a version.
-							throw new RuntimeException("The library " + currLib.getModId() + " does NOT have a version! Contact the library's creator to fix this and then ask them why they aren't adding a version to their mod, especially if it's a library -_-!");
-						}
-
-						//The version of the requested minimum library version.
-						int[] currVersion = ParseUtils.parseVersionNumber(currLibraryVersion);
-						//The actual library version.
-						int[] currLibVersion = ParseUtils.parseVersionNumber(currLib.getVersion());
-
-						for (int currNumber : currVersion)
-						{
-							for (int i = 0; i == currLibVersion.length; i++)
-							{
-								if (currLibVersion[i] >= currNumber)
-								{
-									//One of the versions are ok, check the next one.
-									continue;
-								}
-								else
-								{
-									//Let the user know that a library is outdated.
-									throw new OutdatedLibraryException(currLib.getModId());
-								}
-							}
-						}
-
-						currLib.preModInit();
-					}
-				}
-
-				//Gets the register to do it's preModInit stuff.
-				currRegister.preModInit();
-				ResourcesRegistry.addAllResourceDomains();
-			}
-		}
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ModDependencyNotFoundException | OutdatedLibraryException e1)
+		Iterator<Mod> modsIterator = mods.iterator();
+		
+		while (modsIterator.hasNext())
 		{
-			NAPILogHelper.logError(e1);
+			IModRegister currRegister = modsIterator.next().getMainClass();
+			
+			if (checkDependencies(currRegister))
+			{
+				currRegister.preModInit();
+			}
 		}
 		
-		System.gc();
+		Iterator<Library> libraryIterator = mods.iterator();
+		
+		while (modsIterator.hasNext())
+		{
+			IModRegister currLibrary = libraryIterator.next().getMainClass();
+			
+			if (checkDependencies(currLibrary))
+			{
+				currLibrary.preModInit();
+			}
+			
+		}
+		
+		Iterator<Entry<IModRegister, Method>> methodsIterator = preInitMethods.entrySet().iterator();
+		
+		while (methodsIterator.hasNext())
+		{
+			Entry<IModRegister, Method> currMethod = methodsIterator.next();
+			
+			try
+			{
+				currMethod.getValue().invoke(currMethod.getKey(), new Object[] {});
+			}
+			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+			{
+				NAPILogHelper.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
+				e.printStackTrace();
+			}
+		}
+		
+		ResourcesRegistry.addAllResourceDomains();
+	}
+	
+	/**
+	 * Checks a register's dependencies. Returns true if checks were all successful.
+	 * @param register
+	 * @return
+	 */
+	public static final boolean checkDependencies(IModRegister register)
+	{
+		boolean depsGood = true;
+		boolean libDepsGood = true;
+		
+		//DEPENDENCIES CHECKING START
+		Iterator<IModRegister> depsIterator = register.dependencies.iterator();
+		
+		while (depsIterator.hasNext())
+		{
+			if (mods.contains(depsIterator.next()))
+			{
+				continue;
+			}
+			else
+			{
+				depsGood = false;
+			}
+		}
+		//DEPENDENCIES CHECKING END
+		
+		//LIBRARY CHECKING START
+		Iterator<IModRegister> libDepsIterator = register.libraryDependencies.keySet().iterator();
+		Iterator<Entry<IModRegister, String>> libDepsVersionsIter = register.libraryDependencies.entrySet().iterator();
+		
+		while (libDepsIterator.hasNext())
+		{
+			if (mods.compareContainerVersions(mods.getContainerFromRegister(register), mods.getContainerFromRegister(libDepsIterator.next())))
+			{
+				
+			}
+		}
+		
+		if (depsGood && libDepsGood)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		//LIBRARY CHECKING END
 	}
 	
 	/**
@@ -592,8 +593,6 @@ public class NModLoader extends URLClassLoader
 		{
 			NAPILogHelper.logError(e1);
 		}
-		
-		System.gc();
 	}
 	
 	/**
@@ -628,8 +627,6 @@ public class NModLoader extends URLClassLoader
 		
 		//Does the work of adding the potions to the Potion.potionTypes array. You know, just in case.
 		PotionRegistry.addAllPotions();
-		
-		System.gc();
 	}
 	
 	/**

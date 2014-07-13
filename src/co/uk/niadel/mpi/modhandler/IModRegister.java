@@ -16,14 +16,14 @@ public interface IModRegister
 	 * Non-Library dependencies. This is for mods that are extensions of another, like Thaumic Tinkerer is an extension
 	 * of Thaumcraft.
 	 */
-	public Set<String> dependencies = new HashSet<>();
+	public Set<IModRegister> dependencies = new HashSet<>();
 	
 	/**
 	 * The map that contains all libraries required by the mod - The first value
 	 * is the library's modid, and the second is the mod's minimum required version of that
 	 * library.
 	 */
-	public Map<String, String> libraryDependencies = new HashMap<>();
+	public Map<IModRegister, String> libraryDependencies = new HashMap<>();
 	
 	/**
 	 * Whether or not this Mod is using @ModRegister to define it's variables.

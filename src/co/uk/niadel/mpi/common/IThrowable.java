@@ -7,6 +7,8 @@ import net.minecraft.world.World;
 /**
  * All throwables should implement this, well from mods anyways, I don't like to touch
  * vanilla unnecessarily.
+ * 
+ * This interface allows for easy implementation of throwing items and cleaner onItemRightClick code.
  * @author Niadel
  *
  */

@@ -14,7 +14,7 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
  * @author Niadel
  *
  */
-public class Mod
+public class Mod implements IModContainer
 {
 	/**
 	 * The mod's modId.

@@ -12,24 +12,26 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 	@Override
 	public void handleAnnotation(Annotation annotation, IModRegister modRegister)
 	{
+		boolean shouldLoadAsLibrary = false;
+		
 		//If the class has the @Library annotation, add it to the modLibraries list.
 		if (annotation.annotationType() == Library.class)
 		{
 			//Add it to the libraries list instead of the mods list.
-			NModLoader.modLibraries.add(modRegister);
+			shouldLoadAsLibrary = true;
 		}
 		else if (annotation.annotationType() == UnstableMod.class)
 		{
 			//Tell the user that the mod is unstable and could break stuff drastically
 			System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
 			//Put it in the regular mods thing.
-			NModLoader.loadMod(modRegister);
+			shouldLoadAsLibrary = false;
 		}
 		else if (annotation.annotationType() == UnstableLibrary.class)
 		{
 			//Tell the user that the library is unstable and mods using it could break
 			System.out.println("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
-			NModLoader.modLibraries.add(modRegister);
+			shouldLoadAsLibrary = true;
 		}
 		else if (annotation.annotationType() == ModRegister.class)
 		{
@@ -40,6 +42,14 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 			ReflectionManipulateValues.setValue(annotation.getClass(), "isUsingAnnotation", true);
 		}
 
+		if (shouldLoadAsLibrary)
+		{
+			NModLoader.loadLibrary(modRegister);
+		}
+		else
+		{
+			NModLoader.loadMod(modRegister);
+		}
 	}
 
 	@Override

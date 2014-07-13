@@ -98,4 +98,13 @@ public class MCData
 			return Minecraft.getMinecraft().theWorld.getWorldInfo().getWorldName();
 		}
 	}
+	
+	/**
+	 * Used by the loader.
+	 * @return
+	 */
+	public static final String getNAPIRegisterClass()
+	{
+		return "co.uk.niadel.mpi.modhandler.ModRegister";
+	}
 }
