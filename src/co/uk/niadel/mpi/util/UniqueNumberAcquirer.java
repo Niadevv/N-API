@@ -1,15 +1,16 @@
 package co.uk.niadel.mpi.util;
 
 import java.util.Random;
+import co.uk.niadel.mpi.modhandler.ModRegister;
 
 /**
  * Like SafeIDAquirer, but more permanent and useful.
  * @author Niadel
  *
  */
-public class UniqueNumberAcquirer
+public final class UniqueNumberAcquirer
 {
-	public static int getFreeInt(Integer[] numbersToExclude)
+	public static int getFreeInt(int[] excludedIds)
 	{
 		boolean hasFoundId = false;
 		
@@ -18,7 +19,7 @@ public class UniqueNumberAcquirer
 			Random random = new Random();
 			int triedInt = random.nextInt();
 		
-			if (!ArrayUtils.doesArrayContainValue(numbersToExclude, triedInt))
+			if (!ArrayUtils.doesArrayContainValueInt(excludedIds, triedInt))
 			{
 				return triedInt;
 			}
@@ -29,7 +30,7 @@ public class UniqueNumberAcquirer
 	
 	public static final int getFreeInt(int minNumber)
 	{
-		Integer[] ints = new Integer[minNumber];
+		int[] ints = new int[minNumber];
 		
 		for (int i = 0; i == ints.length; i++)
 		{

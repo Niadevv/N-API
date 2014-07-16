@@ -21,7 +21,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  *
  */
 @Mod(modid = NAPIData.MODID, version = NAPIData.FULL_VERSION, name = NAPIData.NAME, acceptedMinecraftVersions = NAPIData.MC_VERSION)
-public class NAPIMod
+public final class NAPIMod
 {	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)

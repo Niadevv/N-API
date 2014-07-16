@@ -32,9 +32,9 @@ public final class ReflectionManipulateValues
 	}
 	
 	/**
-	 * The simpler version of the above method.
+	 * The simpler version of the above method. However, it assumes the value is non-static.
 	 * @param objectClass
-	 * @param variableName
+	 * @param variableNames
 	 * @param newValue
 	 */
 	public static final <X> void setValue(Class<? extends X> objectClass, String variableName, Object newValue)
@@ -52,7 +52,7 @@ public final class ReflectionManipulateValues
 	}
 	
 	/**
-	 * Bypass for static final fields, which can't be set by regular Reflection methods. Very cheaty Nebris.
+	 * Bypass for static final fields, which can't be set by regular Reflection methods. Very "cheaty Nebris".
 	 * @param objectClass
 	 * @param newValue
 	 * @param varName

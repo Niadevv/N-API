@@ -21,7 +21,7 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  * @author Niadel
  *
  */
-public class ItemBaseModArmour extends ItemArmor
+public abstract class ItemBaseModArmour extends ItemArmor
 {
 	private static final String[] CLOTH_OVERLAY_NAMES = {"leather_helmet_overlay", "leather_chestplate_overlay", "leather_leggings_overlay", "leather_boots_overlay"};
 	public static ArmorMaterial defaultMaterial = ArmorMaterial.CLOTH;
@@ -59,26 +59,31 @@ public class ItemBaseModArmour extends ItemArmor
 //ALL FOLLOWING METHODS ARE OVERRIDEN TO USE THE ModArmourMaterial SYSTEM. YOU NEED NOT BOTHER WITH THESE.
 //###########################################################################################################
 	
+	@Override
 	public boolean requiresMultipleRenderPasses()
     {
         return this.modMaterial == ModArmourMaterial.clothArmour;
     }
 	
+	@Override
 	public int getItemEnchantability()
 	{
 		return this.modMaterial.enchantability;
 	}
 	
+	@Override
 	public ArmorMaterial getArmorMaterial()
 	{
 		return null;
 	}
 	
+	@Override
     public boolean hasColor(ItemStack itemStack)
     {
         return this.modMaterial != ModArmourMaterial.clothArmour ? false : (!itemStack.hasTagCompound() ? false : (!itemStack.getTagCompound().func_150297_b("display", 10) ? false : itemStack.getTagCompound().getCompoundTag("display").func_150297_b("color", 3)));
     }
     
+	@Override
     public int getColor(ItemStack par1ItemStack)
     {
         if (this.modMaterial != ModArmourMaterial.clothArmour)
@@ -101,6 +106,7 @@ public class ItemBaseModArmour extends ItemArmor
         }
     }
     
+	@Override
     public void removeColor(ItemStack itemStack)
     {
         if (this.modMaterial == ModArmourMaterial.clothArmour)
@@ -119,6 +125,7 @@ public class ItemBaseModArmour extends ItemArmor
         }
     }
     
+	@Override
     public void func_82813_b(ItemStack par1ItemStack, int colourNumber)
     {
         if (this.modMaterial != ModArmourMaterial.clothArmour)
@@ -146,11 +153,13 @@ public class ItemBaseModArmour extends ItemArmor
         }
     }
     
+	@Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
         return this.modMaterial.getRepairMaterial() == par2ItemStack.getItem() ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
     
+	@Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
         super.registerIcons(par1IconRegister);

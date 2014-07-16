@@ -17,7 +17,7 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  * @author Niadel
  */
 @TestFeature(firstAppearance = "1.0")
-public class PotionRegistry
+public final class PotionRegistry
 {
 	/**
 	 * List of potions. As potions don't need to be put into the list of vanilla

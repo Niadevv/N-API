@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Dangerous;
 
-public class DimensionIdRegistry
+public final class DimensionIdRegistry
 {
 	public static int[] occupiedIds = new int[1000];
 	

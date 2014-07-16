@@ -1,6 +1,6 @@
 package co.uk.niadel.mpi.util;
 
-public class ParseUtils
+public final class ParseUtils
 {
 	/**
 	 * Method used by NModLoader in the Library sub-system of the Mods Dependencies system. 

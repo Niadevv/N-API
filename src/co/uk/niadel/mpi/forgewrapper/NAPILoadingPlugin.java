@@ -12,7 +12,7 @@ import co.uk.niadel.mpi.common.NAPIData;
  */
 @Name(value = "N-API Forge Wrapper Access Transformer")
 @MCVersion(value = NAPIData.MC_VERSION)
-public class NAPILoadingPlugin implements IFMLLoadingPlugin
+public final class NAPILoadingPlugin implements IFMLLoadingPlugin
 {
 	@Override
 	public String[] getASMTransformerClass()

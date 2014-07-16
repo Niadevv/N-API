@@ -26,6 +26,7 @@ public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirecti
 		super(Material.circuits, new ModRedstoneMeasure(instance));
 	}
 	
+	@Override
 	public boolean canTransferToBlock(Block block, int direction)
 	{
 		if ((!(direction == UP) && !(direction == DOWN)) || block instanceof IRedstoneWire || block instanceof BlockRedstoneWire)
@@ -43,7 +44,8 @@ public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirecti
 	{
 		return this.theMeasure.getMeasure("redstone").getValue();
 	}
-
+	
+	@Override
 	public long getMaxRedstoneLevel()
 	{
 		return 15;
@@ -78,6 +80,7 @@ public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirecti
 	/**
 	 * Powers the redstone wire.
 	 */
+	@Override
 	public void power(long newPower)
 	{
 		this.theMeasure.setMeasure("redstone", newPower);
@@ -94,21 +97,25 @@ public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirecti
 //##########################Methods overriden from vanilla ################################
 //#########################################################################################
 	
+	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
     {
         return null;
     }
-
+	
+	@Override
     public boolean isOpaqueCube()
     {
         return false;
     }
-
+	
+	@Override
     public boolean renderAsNormalBlock()
     {
         return false;
     }
-
+	
+	@Override
     public int getRenderType()
     {
         return 5;

@@ -11,7 +11,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 
-public class StructureRegistry
+public final class StructureRegistry
 {
 	/**
 	 * Contains the structures that will generate regardless of whether or not

@@ -26,7 +26,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  * @author Niadel
  *
  */
-public class EventHandlerForge
+public final class EventHandlerForge
 {
 	/**
 	 * Was meant to be cancellable, but Forge's BlockBreakEvent doesn't allow cancelling u.u.

@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.client.gui.GuiIngame;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 
-public class GUIHUDRegistry
+public final class GUIHUDRegistry
 {
 	public static final List<ISpecialHUDRenderer> renderers = new ArrayList<>();
 	

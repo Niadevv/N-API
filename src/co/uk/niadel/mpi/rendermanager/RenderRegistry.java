@@ -14,7 +14,7 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  */
 public final class RenderRegistry 
 {
-	static RenderManager renderManager = RenderManager.instance;
+	public static final RenderManager renderManager = RenderManager.instance;
 	
 	/**
 	 * Puts the render in the renders list.

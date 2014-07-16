@@ -12,7 +12,7 @@ import net.minecraft.util.WeightedRandomChestContent;
  * @author Niadel
  *
  */
-public class LootModifier
+public final class LootModifier
 {
 	/**
 	 * The List that contains the chest content to add for jungle chests for mods.
@@ -34,7 +34,7 @@ public class LootModifier
 	 * @param content
 	 * @param lootLoc
 	 */
-	public static void addLootSpawn(WeightedRandomChestContent content, EnumLootLocation lootLoc)
+	public static final void addLootSpawn(WeightedRandomChestContent content, EnumLootLocation lootLoc)
 	{
 		switch (lootLoc.locId)
 		{
@@ -54,7 +54,7 @@ public class LootModifier
 	 * @param content
 	 * @param lootLocs
 	 */
-	public static void addLootSpawns(WeightedRandomChestContent content, EnumLootLocation... lootLocs)
+	public static final void addLootSpawns(WeightedRandomChestContent content, EnumLootLocation... lootLocs)
 	{
 		for (EnumLootLocation lootLoc : lootLocs)
 		{

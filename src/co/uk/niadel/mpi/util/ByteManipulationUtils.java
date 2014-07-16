@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class ByteManipulationUtils
+public final class ByteManipulationUtils
 {
 	private static final ByteManipulationUtils instance = new ByteManipulationUtils();
 	
@@ -50,7 +50,7 @@ public class ByteManipulationUtils
 		X returnedObj = null;
 		try
 		{
-			DummyClassLoader loader = new DummyClassLoader();
+			DummyClassLoader loader = new DummyClassLoader(ByteManipulationUtils.class.getClassLoader());
 			Class<? extends X> tempClass = (Class<? extends X>) loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
 			return (X) tempClass.newInstance();
 		}
@@ -81,7 +81,7 @@ public class ByteManipulationUtils
 	private final <X> Class<? extends X> byteArrayToClassPrivate(byte[] bytesToConvert)
 	{
 		Class<? extends X> tempClass = null;
-		DummyClassLoader loader = new DummyClassLoader();
+		DummyClassLoader loader = new DummyClassLoader(ByteManipulationUtils.class.getClassLoader());
 		tempClass = (Class<? extends X>) loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
 		return tempClass;
 	}
@@ -103,9 +103,9 @@ public class ByteManipulationUtils
 	 */
 	private final class DummyClassLoader extends ClassLoader
 	{
-		public DummyClassLoader()
+		public DummyClassLoader(ClassLoader parent)
 		{
-			super();
+			super(parent);
 		}
 		
 		public Class<?> dummyDefineClass(String name, byte[] bytes, int offset, int length)

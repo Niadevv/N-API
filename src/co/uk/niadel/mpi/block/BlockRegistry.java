@@ -4,10 +4,10 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.util.RegistrySimple;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.Dangerous;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
+import co.uk.niadel.mpi.util.UniqueIdAcquirer;
 
 /**
  * Where you register blocks.
@@ -18,7 +18,12 @@ public final class BlockRegistry
 	/**
 	 * The block registry itself, from vanilla so you know it works.
 	 */
-	public static RegistryNamespaced registry = Block.blockRegistry;
+	public static final RegistryNamespaced registry = Block.blockRegistry;
+	
+	/**
+	 * Used for getting unique ids.
+	 */
+	public static final UniqueIdAcquirer numAcquirer = new UniqueIdAcquirer(); 
 	
 	/**
 	 * Adds a standard block with the same method used in Block.java. I think you specify 
@@ -28,22 +33,9 @@ public final class BlockRegistry
 	 * @param nonNumericId
 	 * @param block
 	 */
-	@RecommendedMethod
-	public static void addBlock(int numericId, String nonNumericId, Block block)
+	public static final void addBlock(String nonNumericId, Block block)
 	{
-		registry.addObject(numericId + 2267, nonNumericId, block);
-	}
-	
-	/**
-	 * Adds a block without the numeric id being incremented by 2267. Can break lots of stuff.
-	 * @param numericId
-	 * @param nonNumericId
-	 * @param block
-	 */
-	@Dangerous(reason = "Potentially compatability breaking.")
-	public static void addBlockDangerously(int numericId, String nonNumericId, Block block)
-	{
-		registry.addObject(numericId, nonNumericId, block);
+		registry.addObject(numAcquirer.nextId(nonNumericId), nonNumericId, block);
 	}
 	
 	/**
@@ -54,7 +46,7 @@ public final class BlockRegistry
 	 * @param newBlock
 	 */
 	@TestFeature(firstAppearance = "1.0")
-	public static void replaceBlock(String nonNumericId, Block newBlock)
+	public static final void replaceBlock(String nonNumericId, Block newBlock)
 	{
 		Map blocksMap = ReflectionManipulateValues.getValue(RegistrySimple.class, Block.blockRegistry, "registryObjects");
 		blocksMap.remove(nonNumericId);

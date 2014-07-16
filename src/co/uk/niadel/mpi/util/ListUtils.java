@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Dangerous;
 
-public class ListUtils
+public final class ListUtils
 {
 	/**
 	 * Gets a random number not in the specified list and below the max number.

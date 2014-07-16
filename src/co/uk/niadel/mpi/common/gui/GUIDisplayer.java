@@ -8,7 +8,12 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.ShouldSuperInSubclasses;
 import co.uk.niadel.mpi.events.EventsList;
 import co.uk.niadel.mpi.events.client.EventDisplayModGUI;
 
-public class GUIDisplayer
+/**
+ * Base class for things that help mods that need to display a GUI tons.
+ * @author Niadel
+ *
+ */
+public abstract class GUIDisplayer
 {
 	/**
 	 * Does the actual displaying of the GUI.

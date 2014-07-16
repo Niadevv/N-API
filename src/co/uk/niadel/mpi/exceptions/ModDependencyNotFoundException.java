@@ -1,6 +1,6 @@
 package co.uk.niadel.mpi.exceptions;
 
-public class ModDependencyNotFoundException extends Throwable
+public final class ModDependencyNotFoundException extends Throwable
 {
 	public ModDependencyNotFoundException(String modId)
 	{

@@ -22,7 +22,7 @@ import co.uk.niadel.mpi.common.NAPIData;
  * @author Niadel
  *
  */
-public class FileUtils
+public final class FileUtils
 {
 	/**
 	 * Copies directories recursively, with the help of a StackOverflow answer.

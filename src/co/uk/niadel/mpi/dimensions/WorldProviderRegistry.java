@@ -9,7 +9,7 @@ import net.minecraft.world.WorldProvider;
  * @author Niadel
  *
  */
-public class WorldProviderRegistry
+public final class WorldProviderRegistry
 {
 	/**
 	 * Map of the providers.

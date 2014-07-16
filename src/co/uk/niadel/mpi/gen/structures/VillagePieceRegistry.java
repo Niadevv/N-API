@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 
-public class VillagePieceRegistry
+public final class VillagePieceRegistry
 {
 	/**
 	 * The list of village pieces that will be added.

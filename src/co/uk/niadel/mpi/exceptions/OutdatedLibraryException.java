@@ -1,6 +1,6 @@
 package co.uk.niadel.mpi.exceptions;
 
-public class OutdatedLibraryException extends Throwable
+public final class OutdatedLibraryException extends Throwable
 {
 	public OutdatedLibraryException(String libraryId)
 	{

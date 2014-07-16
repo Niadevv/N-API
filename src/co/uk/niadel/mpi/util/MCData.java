@@ -9,7 +9,7 @@ import net.minecraft.world.World;
  * @author Niadel
  *
  */
-public class MCData
+public final class MCData
 {
 	/**
 	 * Whether or not the client is Forge. False by default. Only set by NAPIMod in the Forge wrapper.
@@ -100,7 +100,7 @@ public class MCData
 	}
 	
 	/**
-	 * Used by the loader.
+	 * Used by the loader. Unique method that is ASMd to be this exact thing to avoid tampering when ASM is initialised.
 	 * @return
 	 */
 	public static final String getNAPIRegisterClass()

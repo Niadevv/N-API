@@ -6,13 +6,14 @@ import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.asm.NAPIASMTransformer;
 import co.uk.niadel.mpi.common.MPIEventHandler;
 import co.uk.niadel.mpi.common.NAPIData;
+import co.uk.niadel.mpi.config.IdConfiguration;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityRegistry;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
 import co.uk.niadel.mpi.events.EventsList;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
 import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
-import co.uk.niadel.mpi.config.IdConfiguration;
+import co.uk.niadel.mpi.util.UniqueIdAcquirer;
 
 @Library(version = NAPIData.VERSION)
 /**
@@ -26,6 +27,11 @@ public final class ModRegister implements IModRegister
 	 * This is used in handling the deprecated numeric ids.
 	 */
 	public static final IdConfiguration config = new IdConfiguration(NAPIData.MODID + ".cfg");
+	
+	/**
+	 * Used by the internal block and item registries in order to handle numeric ids.
+	 */
+	public static final UniqueIdAcquirer idAcquirer = new UniqueIdAcquirer(2268);
 	
 	@Override
 	public void preModInit()

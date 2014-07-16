@@ -1,9 +1,12 @@
 package co.uk.niadel.mpi.config;
 
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 /**
  * Used for handling numeric ids like dimension ids and, up to 1.8, block and item ids.
  */
-public class IdConfiguration extends Configuration
+public final class IdConfiguration extends Configuration
 {
 	public IdConfiguration(String configName)
 	{
@@ -31,5 +34,32 @@ public class IdConfiguration extends Configuration
 	public int getId(String stringId)
 	{
 		return Integer.valueOf(getOptionValue(stringId));
+	}
+	
+	/**
+	 * Gets whether or not the specified id exists.
+	 * @param stringId
+	 * @return
+	 */
+	public boolean doesIdExist(String stringId)
+	{
+		return doesOptionExist(stringId);
+	}
+	
+	public boolean doesIdExist(int numId)
+	{
+		Iterator<Entry<String, String>> dataIterator = this.data.entrySet().iterator();
+		
+		while (dataIterator.hasNext())
+		{
+			int currValue = Integer.valueOf(dataIterator.next().getValue());
+			
+			if (currValue == numId)
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

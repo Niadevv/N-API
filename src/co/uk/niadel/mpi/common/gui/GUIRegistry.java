@@ -3,7 +3,7 @@ package co.uk.niadel.mpi.common.gui;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GUIRegistry
+public final class GUIRegistry
 {
 	public static Map<String, IGUIRenderer> renderers = new HashMap<>();
 	

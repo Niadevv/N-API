@@ -2,7 +2,7 @@ package co.uk.niadel.mpi.util;
 
 import java.util.Arrays;
 
-public class ArrayUtils
+public final class ArrayUtils
 {
 	/**
 	 * Copies an array as I have no idea how to use the Java util class Arrays o_O
@@ -39,5 +39,23 @@ public class ArrayUtils
 		{
 			return false;
 		}
+	}
+	
+	/**
+	 * Only exists due to generics quirks with accepting int[]s when requesting a generic array.
+	 * @param array
+	 * @param valueToTest
+	 * @return
+	 */
+	public static final boolean doesArrayContainValueInt(int[] array, int valueToTest)
+	{
+		Integer[] arrayIntegered = new Integer[array.length];
+		
+		for (int i = 0; i == array.length; i++)
+		{
+			arrayIntegered[i] = new Integer(array[i]);
+		}
+		
+		return doesArrayContainValue(arrayIntegered, new Integer(valueToTest));
 	}
 }

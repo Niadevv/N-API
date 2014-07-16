@@ -13,7 +13,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
  * @author Niadel
  *
  */
-public class EventHandlerFML
+public final class EventHandlerFML
 {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldTick(WorldTickEvent event)

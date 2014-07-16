@@ -12,7 +12,7 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  * @author Niadel
  *
  */
-public class OreDictConverter
+public final class OreDictConverter
 {
 	/**
 	 * Gets whether or not Forge has initialised.

@@ -6,13 +6,14 @@ import java.util.Map;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.layer.GenLayer;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.mpi.util.NAPILogHelper;
 
 /**
  * Base for gen layers. Not entirely sure what this is for, but hey.
  * @author Niadel
  *
  */
-public abstract class GenLayerRegistry extends GenLayer 
+public final class GenLayerRegistry extends GenLayer 
 {
 	/**
 	 * Map that is indexed by a mod specific id.
@@ -62,5 +63,12 @@ public abstract class GenLayerRegistry extends GenLayer
 		}
 		
 		return layers;
+	}
+
+	@Override
+	public int[] getInts(int p_75904_1_, int p_75904_2_, int p_75904_3_, int p_75904_4_)
+	{
+		NAPILogHelper.log("GenLayerRegistry.getInts called! Ignore this, you can blame GenLayer for having getInts as being abstract :P");
+		return null;
 	}
 }

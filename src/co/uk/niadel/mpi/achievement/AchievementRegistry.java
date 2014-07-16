@@ -15,7 +15,6 @@ public final class AchievementRegistry
 	 */
 	public static void registerAchievement(Achievement theAchievement, Class<? extends Achievement> achievementClass)
 	{
-		// Reflection stuff for protected method. Use what you were given, eh?
 		ReflectionCallMethods.callMethod(achievementClass, "registerStat", new Object[] {theAchievement, achievementClass});
 	}
 }

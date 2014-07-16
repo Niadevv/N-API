@@ -136,6 +136,46 @@ public class BlockWireBase extends Block implements ITileEntityProvider, IMeasur
 				theCoords[2] -= 1;
 				break;
 			
+			case DIAG_LEFT_UP:
+				theCoords[1] += 1;
+				theCoords[0] += 1;
+				break;
+			
+			case DIAG_LEFT_DOWN:
+				theCoords[1] -= 1;
+				theCoords[0] += 1;
+				break;
+			
+			case DIAG_RIGHT_UP:
+				theCoords[1] += 1;
+				theCoords[0] -= 1;
+				break;
+			
+			case DIAG_RIGHT_DOWN:
+				theCoords[1] -= 1;
+				theCoords[0] -= 1;
+				break;
+				
+			case DIAG_FORWARDS_UP:
+				theCoords[1] += 1;
+				theCoords[2] += 1;
+				break;
+				
+			case DIAG_FORWARDS_DOWN:
+				theCoords[1] -= 1;
+				theCoords[2] += 1;
+				break;
+				
+			case DIAG_BACKWARDS_UP:
+				theCoords[1] += 1;
+				theCoords[2] -= 1;
+				break;
+				
+			case DIAG_BACKWARDS_DOWN:
+				theCoords[1] -= 1;
+				theCoords[2] -= 1;
+				break;
+			
 			default:
 				throw new IllegalArgumentException("The specified direction " + direction + " is not a correct direction! It must be in the range of 0-5!");
 		}

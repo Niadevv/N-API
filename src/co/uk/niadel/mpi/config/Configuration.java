@@ -35,7 +35,7 @@ public class Configuration
 	/**
 	 * The data in the file. Indexed by the value name and keyed by the string value.
 	 */
-	private Map<String, String> data = new HashMap<>();
+	public Map<String, String> data = new HashMap<>();
 	
 	/**
 	 * Creates the new config with the pre-added data.

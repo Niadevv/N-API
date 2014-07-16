@@ -1,7 +1,7 @@
 package co.uk.niadel.mpi.measuresmpi;
 
 /**
- * Base for all measures of mods.
+ * The actual Measure itself. The ModMeasure classes handle these internally.
  * @author Niadel
  *
  */

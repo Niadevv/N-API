@@ -9,10 +9,13 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.LineNumberNode;
+import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
@@ -61,17 +64,54 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 		Label l15;
 		Label l79;
 		Label l17;
+		LabelNode l2;
+		ListIterator insnIterator;
 		cr.accept(cn, 0);
 		
 		byte[] patchedBytes = null;
 		
 		switch (className)
 		{
-			//Adding instance field so that the ItemBaseModArmour works
+			//Adding instance field so that the ItemBaseModArmour works, adding event calls.
 			case "net.minecraft.item.Item":
-				cw.newField("net/minecraft/item/Item", "instance", "Lnet/minecraft/item/Item;");
-				fv = cw.visitField(ACC_PUBLIC, "instance", "Lnet/minecraft/item/Item", null, null);
-				fv.visitEnd();
+				cn.fields.add(new FieldNode(ACC_PUBLIC, "instance", null, null, null));
+				
+				methodNode = new MethodNode(ACC_PUBLIC, "<init>", "()V", null, null);
+				
+				methodNode.instructions.add(new LineNumberNode(55, (LabelNode) methodNode.instructions.get(5)));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+				methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/item/Item", "instance", "Lnet/minecraft/item/Item;"));
+				
+				//Add onEaten event call.
+				methodNode = new MethodNode(ACC_PUBLIC, "onEaten", "(Lnet/minecraft/item/ItemStack)V", null, null);
+				insnIterator = methodNode.instructions.iterator();
+				
+				while (insnIterator.hasNext())
+				{
+					methodNode.instructions.remove((AbstractInsnNode) insnIterator.next());
+				}
+				
+				l0 = new LabelNode();
+				l0.accept(methodNode);
+				methodNode.instructions.add(l0);
+				methodNode.instructions.add(new LineNumberNode(478, l0));
+				methodNode.instructions.add(new TypeInsnNode(NEW, "co/uk/niadel/mpi/events/EventItemEaten"));
+				methodNode.instructions.add(new InsnNode(DUP));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 1));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 2));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 3));
+				methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/EventItemEaten", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;)V"));
+				methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V"));
+				l1 = new LabelNode();
+				l1.accept(methodNode);
+				methodNode.instructions.add(l1);
+				methodNode.instructions.add(new LineNumberNode(479, l1));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 1));
+				methodNode.instructions.add(new InsnNode(ARETURN));
+				l2 = new LabelNode();
+				l2.accept(methodNode);
+				methodNode.instructions.add(l2);
 				break;
 				
 			//Obfuscated Item patching
@@ -89,7 +129,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				mv.visitLabel(l261);
 				mv.visitLineNumber(498, l261);
 				mv.visitVarInsn(ALOAD, 0);
-				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/api/client/GUIHUDRegistry", "callAllRenderers", "(Lnet/minecraft/client/gui/GuiIngame;)V");
+				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lnet/minecraft/client/gui/GuiIngame;)V");
 				break;
 			
 			//Obfuscated RenderItem patching
@@ -100,7 +140,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				mv.visitLabel(l261);
 				mv.visitLineNumber(498, l261);
 				mv.visitVarInsn(ALOAD, 0);
-				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/api/client/GUIHUDRegistry", "callAllRenderers", "(Lbah;)V");
+				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lbah;)V");
 				break;
 			
 			//Add call to VillagePieceRegistry.addAllPieces in getStructureVillageWeightedPieceList
@@ -306,7 +346,7 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				methodNode = new MethodNode(ACC_PUBLIC + ACC_STATIC + ACC_FINAL, "getNAPIRegisterClass", "()Z", null, null);
 				
 				//Clear the instructions in the method, to get rid of dodgy tampering.
-				ListIterator insnIterator = methodNode.instructions.iterator();
+				insnIterator = methodNode.instructions.iterator();
 				
 				while (insnIterator.hasNext())
 				{
