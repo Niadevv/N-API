@@ -9,9 +9,7 @@ public final class ByteManipulationUtils
 	private static final ByteManipulationUtils instance = new ByteManipulationUtils();
 	
 	/**
-	 * Converts a class to a byte array. Incredibly useful if you want to use ASM as I don't 
-	 * actually know how to recursively pass byte[]s of vanilla classes without a metric poop 
-	 * ton of code.
+	 * Converts a class to a byte array.
 	 * @param objectToConvert
 	 * @return
 	 */

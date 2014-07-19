@@ -78,7 +78,7 @@ public final class Measure
 	}
 	
 	/**
-	 * Returns the name of the variable.
+	 * Returns the name of the Measure.
 	 * @return
 	 */
 	public final String getName()

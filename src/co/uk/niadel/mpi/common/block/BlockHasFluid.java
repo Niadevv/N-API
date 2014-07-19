@@ -26,6 +26,15 @@ public abstract class BlockHasFluid extends Block
 	}
 	
 	/**
+	 * Effectively useless, but there in case the other constructor is already handled.
+	 * @param material
+	 */
+	public BlockHasFluid(Material material)
+	{
+		super(material);
+	}
+
+	/**
 	 * Sets this block's measure. Used for blocks that may have different types of energy.
 	 * @param measure
 	 */

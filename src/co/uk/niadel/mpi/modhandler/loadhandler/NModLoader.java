@@ -200,6 +200,11 @@ public class NModLoader extends URLClassLoader
 		return mods.getModById(modId);
 	}
 	
+	/**
+	 * Gets the mod container corresponding to the specified mod id.
+	 * @param modId
+	 * @return
+	 */
 	public static final IModContainer getModContainerByModId(String modId)
 	{
 		return mods.getModContainerById(modId);
@@ -226,7 +231,7 @@ public class NModLoader extends URLClassLoader
 			if (!mcModsDir.exists())
 			{
 				mcModsDir.mkdir();
-				NAPILogHelper.log("Created mods folder! This user has not used mods folder mods before.");
+				NAPILogHelper.log("Created mods folder! This user has not used mods folder MPIs before.");
 			}
 			
 			if (!actModsDir.exists())
@@ -251,7 +256,7 @@ public class NModLoader extends URLClassLoader
 				}
 			}
 		}
-		catch (IOException | ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException e)
+		catch (IOException | ClassNotFoundException | SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
 		{
 			e.printStackTrace();
 			NAPILogHelper.logError(e);
@@ -268,15 +273,18 @@ public class NModLoader extends URLClassLoader
 		
 		while (modsObjectIterator.hasNext())
 		{
-			Mod currRegister = (Mod) modsObjectIterator.next();
-			currRegister.getMainClass().registerTransformers();
+			modsObjectIterator.next().getMainClass().registerTransformers();
 		}
+		
+		NAPILogHelper.log("Finished registering mod ASM transformers! Now loading library ASM transformers!");
 		
 		while (modsLibraryIterator.hasNext())
 		{
 			//Generics for the win!
 			modsLibraryIterator.next().getMainClass().registerTransformers();
 		}
+		
+		NAPILogHelper.log("Finished loading all ASM transformers!");
 	}
 	
 	/**
@@ -344,7 +352,7 @@ public class NModLoader extends URLClassLoader
 	 * @throws NoSuchFieldException
 	 * @throws InstantiationException 
 	 */
-	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, InstantiationException
+	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
 		if (dir.isDirectory())
 		{
@@ -394,19 +402,21 @@ public class NModLoader extends URLClassLoader
 		if (registerAnnotations != null)
 		{
 			//Makes it easier to add future annotations.
-			for (Annotation annotation : registerAnnotations)
+			for (IAnnotationHandler currHandler : AnnotationHandlerRegistry.getAnnotationHandlers())
 			{
-				//Gets all annotation handlers to handle the current annotation.
-				for (IAnnotationHandler currHandler : AnnotationHandlerRegistry.getAnnotationHandlers())
+				for (Annotation annotation : registerAnnotations)
 				{
 					currHandler.handleAnnotation(annotation, modRegister);
 				}
+				
+				if (currHandler.getClass().getName() != AnnotationHandlerNAPI.class.getName())
+				{
+					loadMod(mod.getMainClass());
+				}
 			}
 		}
-		else
-		{
-			loadMod(modRegister);
-		}
+		
+		NAPILogHelper.log("Finished processing annotations for the mod " + mod.modId + "!");
 	}
 	
 	/**
@@ -416,6 +426,7 @@ public class NModLoader extends URLClassLoader
 	public static final void loadMod(IModRegister mod)
 	{
 		mods.addMod(new Mod(mod.getModId(), mod.getVersion(), mod));
+		NAPILogHelper.log("Loaded mod " + mod.getModId() + "!");
 	}
 	
 	/**
@@ -425,6 +436,7 @@ public class NModLoader extends URLClassLoader
 	public static final void loadLibrary(IModRegister mod)
 	{
 		modLibraries.add(new Library(mod.getModId(), mod.getVersion(), mod));
+		NAPILogHelper.log("Loaded library " + mod.getModId() + "!");
 	}
 	
 	/**
@@ -514,6 +526,7 @@ public class NModLoader extends URLClassLoader
 		}
 		
 		ResourcesRegistry.addAllResourceDomains();
+		NAPILogHelper.log("Called all mod's modPreInit methods!");
 	}
 	
 	/**
@@ -588,6 +601,8 @@ public class NModLoader extends URLClassLoader
 
 				currRegister.modInit();
 			}
+			
+			NAPILogHelper.log("Called all mod's modInit methods!");
 		}
 		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
 		{
@@ -619,6 +634,8 @@ public class NModLoader extends URLClassLoader
 				currRegister.postModInit();
 				RenderRegistry.addAllRenders();
 			}
+			
+			NAPILogHelper.log("Finished calling all mod's register methods!");
 		}
 		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
 		{
@@ -638,5 +655,6 @@ public class NModLoader extends URLClassLoader
 	public static final void loadASMClass(Class theClass, byte[] bytes)
 	{
 		NModLoader.defineClass(theClass.getName(), bytes);
+		NAPILogHelper.log("Loaded ASM class " + theClass.getName());
 	}
 }

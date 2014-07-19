@@ -14,6 +14,7 @@ public interface IAnnotationHandler
 	/**
 	 * Where to handle the register and class. This is quite a powerful feature for
 	 * Library and MPI makers. However, it can lead to crashes, sometimes.
+	 * 
 	 * @param annotation
 	 * @param modRegister
 	 */

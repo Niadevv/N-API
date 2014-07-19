@@ -23,7 +23,7 @@ public interface NAPIData
 	/**
 	 * N-API's major version, increments every major overhaul after release.
 	 */
-	public static final String MAJOR_VERSION = "1";
+	public static final String MAJOR_VERSION = "0";
 	
 	/**
 	 * N-API's minor version, increments every update that just adds new features.

@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 /**
  * Used for handling numeric ids like dimension ids and, up to 1.8, block and item ids.
  */
-public final class IdConfiguration extends Configuration
+public class IdConfiguration extends Configuration
 {
 	public IdConfiguration(String configName)
 	{
@@ -46,6 +46,11 @@ public final class IdConfiguration extends Configuration
 		return doesOptionExist(stringId);
 	}
 	
+	/**
+	 * Does the same as above, but checks the numeric id instead.
+	 * @param numId
+	 * @return
+	 */
 	public boolean doesIdExist(int numId)
 	{
 		Iterator<Entry<String, String>> dataIterator = this.data.entrySet().iterator();

@@ -182,11 +182,16 @@ public final class FileUtils
 		{
 			out.println(fileScanner.nextLine());
 		}
-				
+		
 		fileScanner.close();
 		out.close();
 	}
 	
+	/**
+	 * Basically the same as cloneFiles, but with files instead.
+	 * @param from
+	 * @param to
+	 */
 	public static final void cloneFiles(File from, File to)
 	{
 		try

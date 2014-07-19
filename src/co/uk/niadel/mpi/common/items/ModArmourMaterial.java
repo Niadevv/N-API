@@ -1,19 +1,18 @@
-package co.uk.niadel.mpi.items;
+package co.uk.niadel.mpi.common.items;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 /**
- * Used to substitute the vanilla enums system.
+ * Used to substitute the vanilla enums system. It makes adding armour materials much easier as well as a benefit.
  * 
  * @author Niadel
  *
  */
 public class ModArmourMaterial
 {
-	public final int maxDamageFactor;
+	public final int maxDamageFactor, enchantability;
 	public final int[] damageReductionArray;
-	public final int enchantability;
 	public final String materialName;
 	
 	public static final ModArmourMaterial clothArmour = new ModArmourMaterial("CLOTH", 5, new int[]{1, 3, 2, 1}, 15);

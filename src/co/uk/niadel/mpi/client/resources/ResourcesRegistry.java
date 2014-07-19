@@ -12,10 +12,13 @@ import net.minecraft.client.resources.DefaultResourcePack;
  */
 public final class ResourcesRegistry
 {
+	/**
+	 * Set that contains the domains that have been added.
+	 */
 	public static final Set<String> addedDomains = new HashSet<>();
 	
 	/**
-	 * Adds a domain name. Call this in preInit.
+	 * Adds a domain name. Call this in preInit, or else it will not work.
 	 * @param domainName
 	 */
 	public static final void addResourceDomain(String domainName)

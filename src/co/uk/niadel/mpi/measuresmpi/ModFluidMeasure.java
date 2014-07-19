@@ -13,7 +13,7 @@ public class ModFluidMeasure extends ModMeasureBase
 	/**
 	 * True if the liquid can be used to produce energy in some form.
 	 */
-	protected boolean isEnergyProducer = false;	
+	public boolean isEnergyProducer = false;	
 	
 	/**
 	 * Initialises the information of the fluid measure.

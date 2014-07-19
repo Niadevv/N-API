@@ -36,7 +36,14 @@ public final class RecipesRegistry
 	 */
 	public static FurnaceRecipes furnaceRecipes = FurnaceRecipes.smelting();
 	
+	/**
+	 * A list of items that can be used as fuels.
+	 */
 	public static Map<Item, Integer> fuelsItems = new HashMap<>();
+	
+	/**
+	 * A list of blocks that can be used as fuels.
+	 */
 	public static Map<Block, Integer> fuelsBlocks = new HashMap<>();
 	
 	/**
@@ -187,9 +194,9 @@ public final class RecipesRegistry
 	 * @param oreDictName
 	 * @param xpGiven
 	 */
-	public static final void addOreDictSmeltingRecipe(Item outputItem, String oreDictName, float xpGiven)
+	public static final void addOreDictSmeltingRecipe(Item outputItem, String oreDictIngredient, float xpGiven)
 	{
-		for (ItemStack currItem : NAPIOreDict.getOreDictEntryItem(oreDictName))
+		for (ItemStack currItem : NAPIOreDict.getOreDictEntryItem(oreDictIngredient))
 		{
 			addFurnaceRecipe(outputItem, currItem, xpGiven);
 		}
@@ -216,8 +223,7 @@ public final class RecipesRegistry
 	@Internal
 	private final void addNewModRecipesPrivate(CraftingManager craftingRecipeObject)
 	{
-		//Mojang! Y U NO USE GENERICS?! You can and SHOULD use them.
-		List recipes = CraftingManager.getInstance().recipes;
+		List<CraftingManager> recipes = CraftingManager.getInstance().recipes;
 		recipes.add(craftingRecipeObject);
 	}
 	
@@ -245,7 +251,7 @@ public final class RecipesRegistry
 	 * @param recipe
 	 * @return
 	 */
-	private static final ItemStack getRecipeResultPrivate(Object[] recipe)
+	private static final ItemStack getRecipeResultPrivate(Object... recipe)
 	{
 		return modRecipes.get(recipe);
 	}

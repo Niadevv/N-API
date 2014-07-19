@@ -1,4 +1,4 @@
-package co.uk.niadel.mpi.items;
+package co.uk.niadel.mpi.common.items;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemArmor;
@@ -6,12 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
+import co.uk.niadel.mpi.common.items.ModArmourMaterial;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
 /**
- * Yes, Americans, armour is spelled with a U over here. We're English (as in, England English).
+ * Yes, Americans, armour is spelled with a U over here. I'm English (as in, England English).
  * 
- * 'NGLUND!
+ * 'NGLUND! (I suppose, I'm not sure what's the England equivalent of "'MURICA!" :P)
  * 
  * END NATIONALITY PRIDE RANT
  * 
@@ -57,6 +58,7 @@ public abstract class ItemBaseModArmour extends ItemArmor
 	
 //###########################################################################################################	
 //ALL FOLLOWING METHODS ARE OVERRIDEN TO USE THE ModArmourMaterial SYSTEM. YOU NEED NOT BOTHER WITH THESE.
+//(Unless, of course, you need to override these for your armour to work).
 //###########################################################################################################
 	
 	@Override

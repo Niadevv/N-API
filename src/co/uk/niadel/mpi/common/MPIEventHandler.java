@@ -58,8 +58,7 @@ public class MPIEventHandler implements IEventHandler
 		}
 		else if (event instanceof EventDisplayModGUI)
 		{
-			EventDisplayModGUI theEvent = (EventDisplayModGUI) event;
-			GUIRegistry.renderers.get(theEvent.guiId).render();
+			GUIRegistry.renderers.get(((EventDisplayModGUI) event).guiId).render();
 		}
 	}
 }

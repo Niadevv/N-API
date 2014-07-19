@@ -20,13 +20,18 @@ public class NAPILogHelper
 	 */
 	public static Logger logger = LogManager.getLogger("N-API");
 	
+	public static void log(Level logLevel, Object logged)
+	{
+		logger.log(logLevel, logged);
+	}
+	
 	/**
 	 * Logs a standard message.
 	 * @param log
 	 */
-	public static void log(String log)
+	public static void log(Object log)
 	{	
-		logger.log(Level.INFO, log);
+		log(Level.INFO, log);
 	}
 	
 	/**
@@ -35,7 +40,7 @@ public class NAPILogHelper
 	 */
 	public static void logError(Throwable e)
 	{	
-		logger.log(Level.ERROR, e.getMessage());
+		log(Level.ERROR, e);
 	}
 	
 	/**
@@ -44,7 +49,7 @@ public class NAPILogHelper
 	 */
 	public static void logError(String error)
 	{	
-		logger.log(Level.ERROR, error);
+		log(Level.ERROR, error);
 	}
 	
 	/**
@@ -53,7 +58,7 @@ public class NAPILogHelper
 	 */
 	public static void logWarn(String warning)
 	{	
-		logger.log(Level.WARN, warning);
+		log(Level.WARN, warning);
 	}
 	
 	/**
@@ -62,6 +67,6 @@ public class NAPILogHelper
 	 */
 	public static final void logDebug(String debugMessage)
 	{
-		logger.log(Level.DEBUG, debugMessage);
+		log(Level.DEBUG, debugMessage);
 	}
 }

@@ -2,14 +2,18 @@ package co.uk.niadel.mpi.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 
 /**
- * Improved version of Map, allowing you to get the key by the value. Used by RecipesRegistry.
+ * Improved version of Map, allowing you to get the key by the value. Used by RecipesRegistry. Apparently google commons
+ * has a BiMap with similar functionality, but that's a foreign library and I prefer not to use those when possible. Plus,
+ * I think you have to call that one's .inverse() function, meaning there's an extra step - this, however, doesn't have that.
  * @author Niadel
  *
  * @param <K>
  * @param <V>
  */
+@TestFeature(firstAppearance = "1.0")
 public class DoubleMap<K, V>
 {
 	/**
@@ -51,7 +55,7 @@ public class DoubleMap<K, V>
 	}
 	
 	/**
-	 * Class that is the representation of the entry and key.
+	 * Class that is the representation of a DoubleMap entry.
 	 * @author Niadel
 	 *
 	 * @param <V>

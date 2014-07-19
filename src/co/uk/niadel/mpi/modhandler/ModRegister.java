@@ -9,6 +9,7 @@ import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.config.IdConfiguration;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityRegistry;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
+import co.uk.niadel.mpi.entity.tileentity.TileEntityTank;
 import co.uk.niadel.mpi.events.EventsList;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
 import co.uk.niadel.mpi.potions.PotionRegistry;
@@ -24,7 +25,7 @@ import co.uk.niadel.mpi.util.UniqueIdAcquirer;
 public final class ModRegister implements IModRegister
 {
 	/**
-	 * This is used in handling the deprecated numeric ids.
+	 * This is used in handling numeric ids.
 	 */
 	public static final IdConfiguration config = new IdConfiguration(NAPIData.MODID + ".cfg");
 	
@@ -32,6 +33,11 @@ public final class ModRegister implements IModRegister
 	 * Used by the internal block and item registries in order to handle numeric ids.
 	 */
 	public static final UniqueIdAcquirer idAcquirer = new UniqueIdAcquirer(2268);
+	
+	/**
+	 * Used by the internal entity registries to handle entity numeric ids.
+	 */
+	public static final UniqueIdAcquirer entityIdAcquirer = new UniqueIdAcquirer(300);
 	
 	@Override
 	public void preModInit()
@@ -44,6 +50,7 @@ public final class ModRegister implements IModRegister
 		EventsList.registerEventHandler(new MPIEventHandler());
 		NAPIOreDict.addDefaultEntries();
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");
+		TileEntityRegistry.registerTileEntity(TileEntityTank.class, "TileEntityTank");
 		NAPILogHelper.log("Finished Pre-Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
 	}
 

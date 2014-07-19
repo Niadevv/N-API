@@ -2,6 +2,7 @@ package co.uk.niadel.mpi.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import co.uk.niadel.mpi.modhandler.ModRegister;
 
 /**
  * Where to register mobs. This makes entities summonable with /summon and (if you want) gives them spawn eggs.
@@ -10,14 +11,14 @@ import net.minecraft.entity.EntityList;
 public final class EntityRegistry extends EntityList
 {
 	/**
-	 * {@inheritDoc}
+	 * Registers an entity.
 	 * @param theClass
 	 * @param entityId
 	 * @param numericId
 	 */
-	public static final void registerEntity(Class<? extends Entity> theClass, String entityId, int numericId)
+	public static final void registerEntity(Class<? extends Entity> theClass, String entityId)
     {
-		addMapping(theClass, entityId, numericId);
+		addMapping(theClass, entityId, ModRegister.entityIdAcquirer.nextId(entityId));
     }
 	
     /**
@@ -29,8 +30,8 @@ public final class EntityRegistry extends EntityList
      * @param eggBackgroundColour
      * @param eggSpotColour
      */
-    public static final void registerEntityWithSpawnEgg(Class<? extends Entity> entityClass, String stringMobId, int numericMobId, int eggBackgroundColour, int eggSpotColour)
+    public static final void registerEntity(Class<? extends Entity> entityClass, String stringMobId, int eggBackgroundColour, int eggSpotColour)
     {
-		addMapping(entityClass, stringMobId, numericMobId, eggBackgroundColour, eggSpotColour);
+		addMapping(entityClass, stringMobId, ModRegister.entityIdAcquirer.nextId(stringMobId), eggBackgroundColour, eggSpotColour);
 	}
 }
