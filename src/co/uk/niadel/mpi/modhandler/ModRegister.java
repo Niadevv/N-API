@@ -11,6 +11,7 @@ import co.uk.niadel.mpi.entity.tileentity.TileEntityRegistry;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityTank;
 import co.uk.niadel.mpi.events.EventsList;
+import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
 import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
@@ -52,6 +53,7 @@ public final class ModRegister implements IModRegister
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");
 		TileEntityRegistry.registerTileEntity(TileEntityTank.class, "TileEntityTank");
 		NAPILogHelper.log("Finished Pre-Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
+		System.out.println(NModLoader.mcMainDir.toPath().toString());
 	}
 
 	@Override

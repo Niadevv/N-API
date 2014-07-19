@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
+import net.minecraft.entity.Entity;
 
 /**
  * Where to add entity renders.
@@ -14,10 +15,10 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  */
 public final class RenderRegistry 
 {
-	public static final RenderManager renderManager = RenderManager.instance;
+	private static Map<Class<? extends Render>, Render> rendersMap = new HashMap<>();
 	
 	/**
-	 * Puts the render in the renders list.
+	 * Puts the specified render on the render map.
 	 * @param entityClass
 	 * @param currRender
 	 * @throws NoSuchFieldException
@@ -25,18 +26,18 @@ public final class RenderRegistry
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static final void addRender(Class<? extends Render> entityClass, Render render) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public static final void addRender(Class<? extends Entity> entityClass, Render render) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
 	{
-		Map<Class<? extends Render>, Render> renderMap = (HashMap<Class<? extends Render>, Render>) ReflectionManipulateValues.getValue(RenderManager.class, renderManager, "entityRenderMap");
+		Map<Class<? extends Entity>, Render> renderMap = ReflectionManipulateValues.getValue(RenderManager.class, RenderManager.instance, "entityRenderMap");
 		renderMap.put(entityClass, render);
 	}
 	
 	/**
-	 * Adds all of the renders.
+	 * Adds all of the renders to the vanilla render map via some reflection magic.
 	 */
 	@Internal
 	public static final void addAllRenders()
 	{
-		ReflectionManipulateValues.setValue(RenderManager.class, null, "instance", renderManager);
+		ReflectionManipulateValues.setValue(RenderManager.class, RenderManager.instance, "entityRenderMap", rendersMap);
 	}
 }

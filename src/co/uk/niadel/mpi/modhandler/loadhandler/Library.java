@@ -29,4 +29,15 @@ public class Library extends Mod
 	{
 		super(modId, version, mainClass, classAnnotations, methodAnnotations);
 	}
+	
+	public Set<IModRegister> getDependencies()
+	{
+		return this.dependencies;
+	}
+	
+	@Override
+	public boolean isLibrary()
+	{
+		return true;
+	}
 }

@@ -10,7 +10,8 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
 /**
  * What is handled in loading by NModloader to make code a bit smaller. I guess it's a bit
  * like FML's ModContainer. This is somewhat flexible so as to support other loaders if other
- * mods dislike my own loader or need to add something to it.
+ * mods dislike my own loader or need to add something to it. The main use is to collect all of
+ * a mod's data into a single object for simpler loading.
  * @author Niadel
  *
  */
@@ -140,5 +141,10 @@ public class Mod implements IModContainer
 	public void invokePostInit()
 	{
 		this.mainClass.postModInit();
+	}
+	
+	public boolean isLibrary()
+	{
+		return false;
 	}
 }

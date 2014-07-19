@@ -16,7 +16,7 @@ import co.uk.niadel.mpi.util.NAPILogHelper;
 /**
  * Base for config files, these are relatively Forge-esque, down to the fact they're
  * in the same directory to avoid problems for people who have ID Mismatches and are 
- * used to Forge config methods, only you don't have to .load() the config.
+ * used to Forge config methods.
  * 
  * @author Niadel
  */
@@ -25,7 +25,7 @@ public class Configuration
 	/**
 	 * The mods config directory.
 	 */
-	public static File modsConfigs = new File(NModLoader.mcMainDir.toPath() + "configurations".replace(".", "") + File.separator);
+	public static File modsConfigs = new File(NModLoader.mcMainDir.toPath() + File.separator + "config" + File.separator);
 	
 	/**
 	 * This file, the config.
@@ -69,7 +69,7 @@ public class Configuration
 	 */
 	public final File generateNewConfig(String configName) throws IOException
 	{
-		File configFile = new File(modsConfigs.toPath() + configName);
+		File configFile = new File(modsConfigs.toPath() + File.separator + configName);
 		
 		if (!configFile.exists())
 		{
