@@ -21,7 +21,7 @@ public final class MCData
 	 */
 	public static final boolean isWorldServerSide()
 	{
-		return Thread.currentThread().getName().equalsIgnoreCase("server thread");	
+		return Thread.currentThread().getName().equalsIgnoreCase("Server thread");
 	}
 	
 	/**

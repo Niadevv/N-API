@@ -66,12 +66,7 @@ public class Mod implements IModContainer
 	@RecommendedMethod
 	public Mod(String modId, String version, IModRegister mainClass)
 	{
-		this.modId = modId;
-		this.version = version;
-		this.mainClass = mainClass;
-		this.mainClass.getClass().getName();
-		this.classAnnotations = mainClass.getClass().getAnnotations();
-		this.methodAnnotations = getMethodAnnotationsOfRegister(mainClass);
+		this(modId, version, mainClass, mainClass.getClass().getAnnotations(), getMethodAnnotationsOfRegister(mainClass));
 	}
 	
 	public Mod(IModRegister mainClass)

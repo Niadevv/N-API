@@ -15,7 +15,7 @@ import co.uk.niadel.mpi.modhandler.loadhandler.Mod;
  * @author Niadel
  *
  */
-public final class ModList
+public class ModList
 {
 	/**
 	 * The list the mods are stored in.

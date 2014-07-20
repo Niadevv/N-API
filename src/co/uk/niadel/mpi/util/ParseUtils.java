@@ -24,7 +24,7 @@ public final class ParseUtils
 			{
 				e.printStackTrace();
 				NAPILogHelper.logError(e);
-				NAPILogHelper.logError("The version " + version + " is not all numbers! It cannot be parsed correctly.");
+				NAPILogHelper.logError("The version " + version + " is not all numbers! It cannot be parsed!");
 			}
 			
 			return arrayToReturn;

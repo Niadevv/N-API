@@ -1,7 +1,8 @@
 package co.uk.niadel.mpi.util;
 
 import java.util.Random;
-import co.uk.niadel.mpi.modhandler.ModRegister;
+
+import co.uk.niadel.mpi.exceptions.FreeIdUnacquirableException;
 
 /**
  * Like SafeIDAquirer, but more permanent and useful.
@@ -10,19 +11,26 @@ import co.uk.niadel.mpi.modhandler.ModRegister;
  */
 public final class UniqueNumberAcquirer
 {
-	public static int getFreeInt(int[] excludedIds)
+	public static int getFreeInt(int[] excludedIds) throws FreeIdUnacquirableException
 	{
 		boolean hasFoundId = false;
 		
 		while (!hasFoundId)
 		{
-			Random random = new Random();
-			int triedInt = random.nextInt();
-		
-			if (!ArrayUtils.doesArrayContainValueInt(excludedIds, triedInt))
-			{
-				return triedInt;
-			}
+            if (!(excludedIds.length == Integer.MAX_VALUE))
+            {
+                Random random = new Random();
+                int triedInt = random.nextInt();
+
+                if (!ArrayUtils.doesArrayContainValueInt(excludedIds, triedInt)) {
+                    hasFoundId = true;
+                    return triedInt;
+                }
+            }
+            else
+            {
+                throw new FreeIdUnacquirableException();
+            }
 		}
 		
 		return Integer.MIN_VALUE;
@@ -30,13 +38,20 @@ public final class UniqueNumberAcquirer
 	
 	public static final int getFreeInt(int minNumber)
 	{
-		int[] ints = new int[minNumber];
-		
-		for (int i = 0; i == ints.length; i++)
-		{
-			ints[i] = i;
-		}
-		
-		return getFreeInt(ints);
+        try
+        {
+            int[] ints = new int[minNumber];
+
+            for (int i = 0; i == ints.length; i++) {
+                ints[i] = i;
+            }
+
+            return getFreeInt(ints);
+        }
+        catch (FreeIdUnacquirableException e)
+        {
+            e.printStackTrace();
+            return -1;
+        }
 	}
 }

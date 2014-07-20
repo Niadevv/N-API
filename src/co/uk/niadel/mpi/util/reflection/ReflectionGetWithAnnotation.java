@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
  * @author Niadel
  *
  */
-public class ReflectionGetWithAnnotation
+public final class ReflectionGetWithAnnotation
 {
 	/**
 	 * Gets an array of Method objects of a class that has the specified annotation.

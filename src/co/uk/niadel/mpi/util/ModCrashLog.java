@@ -72,7 +72,6 @@ public class ModCrashLog
 	
 	public String[] getLogText()
 	{
-		int i = 0;
 		String[] stringToReturn = new String[] {};
 		Scanner logScanner = null;
 		
@@ -84,7 +83,9 @@ public class ModCrashLog
 		{
 			e.printStackTrace();
 		}
-		
+
+        int i = 0;
+
 		while (logScanner.hasNext())
 		{
 			stringToReturn[i] = logScanner.next();

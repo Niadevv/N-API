@@ -19,12 +19,12 @@ public class DoubleMap<K, V>
 	/**
 	 * The Map with the key first.
 	 */
-	public Map<Entry, Entry> map1 = new HashMap<>();
+	public Map<Entry<K>, Entry<V>> map1 = new HashMap<>();
 	
 	/**
 	 * The Map with the value first.
 	 */
-	public Map<Entry, Entry> map2 = new HashMap<>();
+	public Map<Entry<V>, Entry<K>> map2 = new HashMap<>();
 	
 	public void put(K key, V value)
 	{
@@ -44,12 +44,12 @@ public class DoubleMap<K, V>
 		}
 	}
 	
-	private V getByKey(Entry getValue)
+	public V getByKey(Entry getValue)
 	{
 		return (V) map1.get(getValue);
 	}
 	
-	private K getByValue(Entry getValue)
+	public K getByValue(Entry getValue)
 	{
 		return (K) map2.get(getValue);
 	}
