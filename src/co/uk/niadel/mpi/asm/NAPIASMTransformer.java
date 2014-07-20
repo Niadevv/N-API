@@ -340,6 +340,35 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUseCount", "I");
 				mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemStoppedUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;I)V");
 				mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V");
+
+			case "net.minecraft.entity.EntityLivingBase":
+				methodNode = new MethodNode(ACC_PUBLIC, "onItemPickup", "(Lnet/minecraft/entity/Entity;I)V", null, null);
+
+				l0 = new LabelNode();
+				l0.accept(methodNode);
+
+				methodNode.instructions.add(l0);
+				methodNode.instructions.add(new TypeInsnNode(NEW, "co/uk/niadel/mpi/events/entity/EventEntityPickupItem"));
+				methodNode.instructions.add(new InsnNode(DUP));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+				methodNode.instructions.add(new FieldInsnNode(GETFIELD, "net/minecraft/entity/EntityLivingBase", "p_71001_1_", "Lnet/minecraft/entity/Entity"));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+				methodNode.instructions.add(new FieldInsnNode(GETFIELD, "net/minecraft/entity/EntityLivingBase", "p_71001_2_", "I"));
+				methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityPickupItem", "<init>", "(Lnet/minecraft/entity/Entity;I)V"));
+				methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V"));
+
+			case "net.minecraft.entity.Entity":
+				methodNode = new MethodNode(ACC_PUBLIC, "updateRidden", "()V", null, null);
+
+				l0 = new LabelNode();
+				l0.accept(methodNode);
+
+				methodNode.instructions.add(l0);
+				methodNode.instructions.add(new TypeInsnNode(NEW, "co/uk/niadel/mpi/events/entity/EventUpdateRidden"));
+				methodNode.instructions.add(new InsnNode(DUP));
+				methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+				methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventUpdateRidden", "<init>", "(Lnet/minecraft/entity/Entity;)V"));
+				methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V"));
 			
 			//Ensure no-one tampers with MCData's getNAPIRegisterClass method via ASM or... (shudders) base edits.
 			case "co.uk.niadel.mpi.util.MCData":
