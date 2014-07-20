@@ -73,7 +73,15 @@ public class Configuration
 		
 		if (!configFile.exists())
 		{
-			configFile.createNewFile();
+			try
+			{
+				configFile.createNewFile();
+			}
+			catch (IOException e)
+			{
+				NAPILogHelper.logError("Could not create " + configFile.getName() + "!");
+				e.printStackTrace();
+			}
 		}
 		
 		this.theConfig = configFile;
@@ -82,8 +90,7 @@ public class Configuration
 	
 	/**
 	 * Adds data to a the specified config file.
-	 * 
-	 * @param config
+	 *
 	 * @param data
 	 * @throws FileNotFoundException
 	 */
@@ -128,10 +135,10 @@ public class Configuration
 			
 			configScanner.close();
 		}
-		
-		//Will only be thrown if the config file doesn't exist and therefore
-		//needs to be created.
-		throw new FileNotFoundException("[CONFIGERROR] Config File not found!");
+		else
+		{
+			throw new FileNotFoundException("[CONFIGERROR] Config File not found!");
+		}
 	}
 	
 	/**

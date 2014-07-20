@@ -48,7 +48,7 @@ public class LangFileTranslator
 			}
 			
 			fileScanner.close();
-			this.fileName = langFile.toString();
+			this.fileName = langFile.getName();
 		}
 		catch (FileNotFoundException e) 
 		{

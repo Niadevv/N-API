@@ -15,7 +15,7 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 public final class OreDictConverter
 {
 	/**
-	 * Gets whether or not Forge has initialised.
+	 * Gets whether or not Forge ore dictionary has been initialised.
 	 * @return
 	 */
 	public static final boolean getForgeHasInit()

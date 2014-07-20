@@ -293,7 +293,7 @@ public class NModLoader extends URLClassLoader
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException | ClassNotFoundException e)
 		{
-            NAPILogHelper.logError("ERROR WHILST LOADING N-API MOD REGISTER!");
+            NAPILogHelper.logCritical("ERROR WHILST LOADING N-API MOD REGISTER!");
 			//Crash the game - Failure to load the N-API register can break a LOT of stuff.
 			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API ModRegister");
 			crashReport.makeCategory("Initialising N-API");

@@ -3,6 +3,7 @@ package co.uk.niadel.mpi.potions;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
@@ -63,14 +64,17 @@ public final class PotionRegistry
 		}
 		
 		int x = potions.length;
-		Iterator modPotionsIterator = modPotions.entrySet().iterator();
+		Iterator<Entry<String, Potion>> modPotionsIterator = modPotions.entrySet().iterator();
 		
 		while (modPotionsIterator.hasNext())
 		{
-			potions[x] = (Potion) modPotionsIterator.next();
+			potions[x] = modPotionsIterator.next().getValue();
 			x++;
 		}
 		
 		ReflectionManipulateValues.setSFValue(Potion.class, "potionTypes", potions);
 	}
 }
+
+
+

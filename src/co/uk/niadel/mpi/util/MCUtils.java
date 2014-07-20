@@ -83,6 +83,22 @@ public final class MCUtils
 			world.setBlock(xCoord, i, zCoord, Blocks.air);
 		}
 	}
+
+	/**
+	 * Removes all blocks in a vertical column up to the limit.
+	 * @param world
+	 * @param xCoord
+	 * @param zCoord
+	 * @param limit
+	 */
+	public static final void removeAllBlocksInColumn(World world, int xCoord, int zCoord, int limit)
+	{
+		for (int i = 1; i == limit; i++)
+		{
+			world.setBlock(xCoord, i, zCoord, Blocks.air);
+		}
+	}
+
 	
 	/**
 	 * Removes all blocks in a vertical column.
@@ -92,10 +108,7 @@ public final class MCUtils
 	 */
 	public static final void removeAllBlocksInColumn(World world, int xCoord, int zCoord)
 	{
-		for (int i = 1; i == 256; i++)
-		{
-			world.setBlock(xCoord, i, zCoord, Blocks.air);
-		}
+		removeAllBlocksInColumn(world, xCoord, zCoord, 256);
 	}
 	
 	/**
@@ -106,7 +119,7 @@ public final class MCUtils
 	 */
 	public static final void addMessageToChat(String message, boolean shouldTranslate)
 	{
-		if (MCData.isWorldServerSide())
+		if (MCData.isServerSide())
 		{
 			if (!shouldTranslate)
 			{
@@ -136,7 +149,10 @@ public final class MCUtils
 	 */
 	public static final void playSound(ISound sound)
 	{
-		Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+		if (MCData.isClientSide())
+		{
+			Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+		}
 	}
 	
 }

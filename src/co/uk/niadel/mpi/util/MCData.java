@@ -19,17 +19,17 @@ public final class MCData
 	/**
 	 * Uses threads as Server side and Client side run in different threads.
 	 */
-	public static final boolean isWorldServerSide()
+	public static final boolean isServerSide()
 	{
 		return Thread.currentThread().getName().equalsIgnoreCase("Server thread");
 	}
 	
 	/**
-	 * Returns the opposite of isWorldServerSide()
+	 * Returns the opposite of isServerSide()
 	 */
-	public static final boolean isWorldClientSide()
+	public static final boolean isClientSide()
 	{
-		return !isWorldServerSide();
+		return !isServerSide();
 	}
 	
 	/**
@@ -87,7 +87,7 @@ public final class MCData
 	 */
 	public static final String getWorldName()
 	{
-		if (isWorldServerSide())
+		if (isServerSide())
 		{
 			//Server side
 			return MinecraftServer.getServer().getWorldName();
