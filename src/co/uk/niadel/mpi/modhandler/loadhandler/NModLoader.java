@@ -212,17 +212,6 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * The entry point for the loader.
-	 * 
-	 * @throws ZipException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchFieldException
-	 * @throws InstantiationException
 	 */
 	public static final void loadModsFromDir()
 	{
@@ -231,7 +220,7 @@ public class NModLoader extends URLClassLoader
 			if (!mcModsDir.exists())
 			{
 				mcModsDir.mkdir();
-				NAPILogHelper.log("Created mods folder! This user has not used mods folder MPIs before.");
+				NAPILogHelper.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 			}
 			
 			if (!actModsDir.exists())
@@ -378,7 +367,7 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Processes annotations, doing special things depending on annotations.
-	 * @param binaryName
+	 * @param mod
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException

@@ -1,12 +1,13 @@
 package co.uk.niadel.mpi.common.items;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
-import co.uk.niadel.mpi.common.items.ModArmourMaterial;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
 /**

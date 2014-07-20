@@ -18,7 +18,7 @@ public class EntityBoss extends EntityMob implements IBossDisplayData
 	/**
 	 * The entity that is being launched. Can be anything. By default, it is an arrow.
 	 */
-	protected Entity projectileEntity;
+	public Entity projectileEntity;
 	
 	public EntityBoss(World world)
 	{
@@ -57,6 +57,14 @@ public class EntityBoss extends EntityMob implements IBossDisplayData
 		}
 	}
 	
+	/**
+	 * Non-reflection method that requires you to specify the projectile entity.
+	 * @param target
+	 * @param projectile
+	 * @param xOffset
+	 * @param yOffset
+	 * @param zOffset
+	 */
 	public void attackEntityFromRange(Entity target, Entity projectile, double xOffset, double yOffset, double zOffset)
 	{
 		double projectilePosX = this.posX + xOffset;

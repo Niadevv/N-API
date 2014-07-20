@@ -377,7 +377,6 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventsList", "fireEvent", "(Ljava/lang/Object;)V"));
 				methodNode.instructions.add(new InsnNode(RETURN));
 				
-				
 			default:
 				//Not any of the correct classes, return null.
 				return null;

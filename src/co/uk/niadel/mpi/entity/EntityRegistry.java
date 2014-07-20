@@ -13,7 +13,10 @@ import co.uk.niadel.mpi.modhandler.ModRegister;
  */
 public final class EntityRegistry extends EntityList
 {
-	public static BiomeGenBase[] biomes = BiomeGenBase.getBiomeGenArray();
+	/**
+	 * Only used to register entity spawns.
+	 */
+	private static BiomeGenBase[] biomes = BiomeGenBase.getBiomeGenArray();
 	
 	/**
 	 * Registers an entity.

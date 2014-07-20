@@ -15,7 +15,7 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 		boolean shouldLoadAsLibrary = false;
 		
 		//If the class has the @Library annotation, add it to the modLibraries list.
-		if (annotation.annotationType() == Library.class)
+		if (annotation.annotationType().getClass().equals(Library.class))
 		{
 			//Add it to the libraries list instead of the mods list.
 			shouldLoadAsLibrary = true;

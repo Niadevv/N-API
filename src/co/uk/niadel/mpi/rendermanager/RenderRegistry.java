@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 import net.minecraft.entity.Entity;
+import co.uk.niadel.mpi.util.MCData;
 
 /**
  * Where to add entity renders.
@@ -16,6 +17,11 @@ import net.minecraft.entity.Entity;
 public final class RenderRegistry 
 {
 	private static Map<Class<? extends Render>, Render> rendersMap = new HashMap<>();
+	
+	/**
+	 * The current rendering id, used for armour renders.
+	 */
+	public int currRenderId = MCData.isForge ? 10000 : 42;
 	
 	/**
 	 * Puts the specified render on the render map.
