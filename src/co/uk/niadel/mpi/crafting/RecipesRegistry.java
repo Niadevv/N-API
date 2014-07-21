@@ -117,7 +117,7 @@ public final class RecipesRegistry
 	public static void addShapelessModRecipe(ItemStack outputItem, Object... arrayOfRecipeObjects)
 	{
 		craftingRecipes.addShapelessRecipe(outputItem, arrayOfRecipeObjects);
-
+/*
 		Object[] recipes = ArrayUtils.copyArray(arrayOfRecipeObjects);
 
 		for (int i = 0; i == recipes.length; i++)
@@ -155,6 +155,7 @@ public final class RecipesRegistry
 				}
 			}
 		}
+		*/
 	}
 	
 	/**
