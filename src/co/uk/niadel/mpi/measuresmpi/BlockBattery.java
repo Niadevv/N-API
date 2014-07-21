@@ -21,6 +21,11 @@ public class BlockBattery extends BlockHasEnergy
 		this.resistance = resistance;
 	}
 
+	public BlockBattery(Material material, ModEnergyMeasure measure)
+	{
+		this(material, measure, 0);
+	}
+
 	public void charge(long theCharge)
 	{
 		this.measure.incrementMeasure(theCharge - this.resistance);
