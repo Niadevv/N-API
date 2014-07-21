@@ -1,22 +1,22 @@
 package co.uk.niadel.mpi.entity.tileentity;
 
+import co.uk.niadel.mpi.common.block.BlockHasMeasure;
 import net.minecraft.tileentity.TileEntity;
-import co.uk.niadel.mpi.measuresmpi.BlockTank;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityTank extends TileEntity
+public class TileEntityMeasureStorer extends TileEntity
 {
-	public BlockTank blockTank;
+	public BlockHasMeasure blockMeasureStorer;
 	
 	/**
 	 * The amount of liquid stored in the tank.
 	 */
 	public long measureValue;
 	
-	public TileEntityTank(BlockTank tank)
+	public TileEntityMeasureStorer(BlockHasMeasure blockStorer)
 	{
-		this.blockTank = tank;
-		this.measureValue = tank.liquidMeasure.getMeasures()[0].getValue();
+		this.blockMeasureStorer = blockStorer;
+		this.measureValue = blockStorer.measure.getMeasures()[0].getValue();
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class TileEntityTank extends TileEntity
 		
 		if (!this.worldObj.isClient)
 		{
-			this.blockTank.liquidMeasure.getMeasures()[0].setValue(this.measureValue);
+			this.blockMeasureStorer.measure.getMeasures()[0].setValue(this.measureValue);
 		}
 	}
 }

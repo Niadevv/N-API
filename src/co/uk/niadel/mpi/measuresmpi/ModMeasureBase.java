@@ -103,4 +103,9 @@ public abstract class ModMeasureBase
 			}
 		}
 	}
+
+	public boolean isEnergyProducer()
+	{
+		return false;
+	}
 }

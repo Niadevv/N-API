@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.common.block;
 
+import co.uk.niadel.mpi.measuresmpi.ModMeasureBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import co.uk.niadel.mpi.measuresmpi.EnumLiquidTypes;
@@ -12,17 +13,17 @@ import co.uk.niadel.mpi.measuresmpi.ModFluidMeasure;
  * @author Niadel
  *
  */
-public abstract class BlockHasFluid extends Block
+public abstract class BlockHasFluid extends BlockHasMeasure
 {
 	/**
 	 * This block's measure.
 	 */
 	public ModFluidMeasure liquidMeasure;
 	
-	public BlockHasFluid(Material material, Measure[] measures, EnumLiquidTypes liquidType)
+	public BlockHasFluid(Material material, ModMeasureBase measures, EnumLiquidTypes liquidType)
 	{
-		super(material);
-		this.liquidMeasure = new ModFluidMeasure(measures, liquidType);
+		super(material, measures);
+		this.measure = new ModFluidMeasure(measures.getMeasures(), liquidType);
 	}
 	
 	/**
@@ -31,7 +32,7 @@ public abstract class BlockHasFluid extends Block
 	 */
 	public BlockHasFluid(Material material)
 	{
-		super(material);
+		this(material, null, null);
 	}
 
 	/**
@@ -40,7 +41,7 @@ public abstract class BlockHasFluid extends Block
 	 */
 	public void setMeasure(ModFluidMeasure measure)
 	{
-		this.liquidMeasure = measure;
+		this.measure = measure;
 	}
 	
 	/**
@@ -49,7 +50,7 @@ public abstract class BlockHasFluid extends Block
 	 */
 	public void addToMeasure(long addAmount)
 	{
-		this.liquidMeasure.incrementMeasure(addAmount);
+		this.measure.incrementMeasure(addAmount);
 	}
 	
 	/**
@@ -58,7 +59,7 @@ public abstract class BlockHasFluid extends Block
 	 */
 	public void reduceFromMeasure(long minusAmount)
 	{
-		this.liquidMeasure.decrementMeasure(minusAmount);
+		this.measure.decrementMeasure(minusAmount);
 	}
 	
 	/**
@@ -67,6 +68,6 @@ public abstract class BlockHasFluid extends Block
 	 */
 	public boolean isContentsEnergyProducer()
 	{
-		return this.liquidMeasure.isEnergyProducer();
+		return this.measure.isEnergyProducer();
 	}
 }

@@ -10,7 +10,10 @@ import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
  */
 public class ModEnergyMeasure extends ModMeasureBase 
 {
-	public long containerFillByValue = 1;
+	/**
+	 * How much things that contain this value will have their value incremented by.
+	 */
+	protected long containerFillByValue = 1;
 
 	public ModEnergyMeasure(Measure[] measures)
 	{

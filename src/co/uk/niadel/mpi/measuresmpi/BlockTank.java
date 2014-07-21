@@ -1,8 +1,8 @@
 package co.uk.niadel.mpi.measuresmpi;
 
+import co.uk.niadel.mpi.entity.tileentity.TileEntityMeasureStorer;
 import net.minecraft.block.material.Material;
 import co.uk.niadel.mpi.common.block.BlockHasFluid;
-import co.uk.niadel.mpi.entity.tileentity.TileEntityTank;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -14,9 +14,9 @@ import net.minecraft.world.World;
  */
 public class BlockTank extends BlockHasFluid implements ITileEntityProvider
 {
-	public TileEntityTank tankTE;
+	public TileEntityMeasureStorer tankTE;
 	
-	private BlockTank(Material material, Measure[] measures, EnumLiquidTypes liquidType)
+	private BlockTank(Material material, ModFluidMeasure measures, EnumLiquidTypes liquidType)
 	{
 		super(material, measures, liquidType);
 	}
@@ -33,13 +33,13 @@ public class BlockTank extends BlockHasFluid implements ITileEntityProvider
 	
 	public BlockTank(Material material, int maxCapacity, String measureName, EnumLiquidTypes liquidType)
 	{
-		this(material, new Measure[] {new Measure(measureName, maxCapacity)}, liquidType);
+		this(material, new ModFluidMeasure(new Measure[] {new Measure(measureName, maxCapacity)}, liquidType), liquidType);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
 	{
-		this.tankTE = new TileEntityTank(this);
+		this.tankTE = new TileEntityMeasureStorer(this);
 		return this.tankTE;
 	}
 }

@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.common.block;
 
+import co.uk.niadel.mpi.measuresmpi.ModMeasureBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import co.uk.niadel.mpi.measuresmpi.Measure;
@@ -11,17 +12,11 @@ import co.uk.niadel.mpi.measuresmpi.ModEnergyMeasure;
  * @author Niadel
  *
  */
-public abstract class BlockHasEnergy extends Block
+public abstract class BlockHasEnergy extends BlockHasMeasure
 {
-	/**
-	 * This block's measure.
-	 */
-	public ModEnergyMeasure energyMeasure;
-	
-	public BlockHasEnergy(Material material, Measure[] measures)
+	public BlockHasEnergy(Material material, ModMeasureBase measure)
 	{
-		super(material);
-		this.energyMeasure = new ModEnergyMeasure(measures);
+		super(material, measure);
 	}
 	
 	/**
@@ -30,7 +25,7 @@ public abstract class BlockHasEnergy extends Block
 	 */
 	public void addEnergyMeasure(long amountToIncrease)
 	{
-		this.energyMeasure.incrementMeasure(amountToIncrease);
+		this.measure.incrementMeasure(amountToIncrease);
 	}
 	
 	/**
@@ -39,6 +34,6 @@ public abstract class BlockHasEnergy extends Block
 	 */
 	public void decrementEnergyMeasure(long amountToDecrease)
 	{
-		this.energyMeasure.decrementMeasure(amountToDecrease);
+		this.measure.decrementMeasure(amountToDecrease);
 	}
 }
