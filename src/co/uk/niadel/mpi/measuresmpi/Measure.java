@@ -22,7 +22,7 @@ public final class Measure
 	 */
 	public long cutOffPointMax;
 	
-	public Measure(long value, String name, long cutOffPointMax)
+	public Measure(long defaultValue, String name, long cutOffPointMax)
 	{
 		this.value = value;
 		this.name = name;

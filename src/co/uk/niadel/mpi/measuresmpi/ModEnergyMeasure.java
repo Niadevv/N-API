@@ -10,8 +10,26 @@ import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
  */
 public class ModEnergyMeasure extends ModMeasureBase 
 {
-	public ModEnergyMeasure(Measure[] measure)
+	public long containerFillByValue = 1;
+
+	public ModEnergyMeasure(Measure[] measures)
 	{
-		super(measure);
+		super(measures);
+	}
+
+	public ModEnergyMeasure(Measure[] measures, int containerFillByValue)
+	{
+		this(measures);
+		this.containerFillByValue = containerFillByValue;
+	}
+
+	public long getContainerFillByValue()
+	{
+		return this.containerFillByValue;
+	}
+
+	public void setContainerFillByValue(long newValue)
+	{
+		this.containerFillByValue = newValue;
 	}
 }

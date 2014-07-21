@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -33,13 +32,10 @@ import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.*;
 import co.uk.niadel.mpi.client.resources.ResourcesRegistry;
-import co.uk.niadel.mpi.exceptions.ModDependencyNotFoundException;
-import co.uk.niadel.mpi.exceptions.OutdatedLibraryException;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.rendermanager.RenderRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
-import co.uk.niadel.mpi.util.ParseUtils;
 import co.uk.niadel.mpi.util.MCData;
 
 /**
@@ -622,7 +618,7 @@ public class NModLoader extends URLClassLoader
 				IModRegister currRegister = modsIterator.next().getMainClass();
 
 				currRegister.postModInit();
-				RenderRegistry.addAllRenders();
+				RenderRegistry.addAllEntityRenders();
 			}
 			
 			NAPILogHelper.log("Finished calling all mod's register methods!");
