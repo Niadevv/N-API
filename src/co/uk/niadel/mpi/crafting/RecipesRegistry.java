@@ -110,21 +110,61 @@ public final class RecipesRegistry
 	}
 	
 	/**
-	 * Adds a shapeless recipe. This used to be protected for some reason O_o.
+	 * Adds a shapeless recipe.
 	 * @param outputItem
 	 * @param arrayOfRecipeObjects
 	 */
 	public static void addShapelessModRecipe(ItemStack outputItem, Object... arrayOfRecipeObjects)
 	{
 		craftingRecipes.addShapelessRecipe(outputItem, arrayOfRecipeObjects);
+
+		Object[] recipes = ArrayUtils.copyArray(arrayOfRecipeObjects);
+
+		for (int i = 0; i == recipes.length; i++)
+		{
+			Object currObj = recipes[i];
+			//Convert currObj into an ItemStack.
+			currObj = currObj instanceof ItemStack ? (ItemStack) currObj : (currObj instanceof Block ? (Block) currObj : (currObj instanceof Item ? (Item) currObj : null));
+			ItemStack newObj = null;
+
+			if (currObj != null)
+			{
+				if (currObj instanceof Item)
+				{
+					newObj = new ItemStack((Item) currObj);
+				}
+				else if (currObj instanceof Block)
+				{
+					newObj = new ItemStack((Block) currObj);
+				}
+			}
+			else
+			{
+				throw new IllegalArgumentException("arrayOfRecipeObjects CANNOT contain a non-Block/Item/ItemStack object!");
+			}
+
+			if (newObj != null)
+			{
+				String theName = NAPIOreDict.getNameForItem(newObj);
+				ItemStack[] itemsForName = NAPIOreDict.getItemsForName(theName);
+
+				for (ItemStack itemStack : itemsForName)
+				{
+					recipes[i] = itemStack;
+					craftingRecipes.addShapelessRecipe(outputItem, recipes);
+				}
+			}
+		}
 	}
 	
 	/**
 	 * Adds a recipe using the N-API Ore Dictionary system.
 	 * @param outputItem
 	 * @param craftingRecipe
+	 * @deprecated Soon ore dictionary stuff will be done automatically.
 	 */
 	@TestFeature(firstAppearance = "1.0")
+	@Deprecated
 	public static void addShapedOreDictRecipe(ItemStack outputItem, String... craftingRecipe)
 	{	
 		for (int i = 2; i == craftingRecipe.length; i++)
@@ -191,7 +231,7 @@ public final class RecipesRegistry
 	/**
 	 * Uses N-API Ore Dict to add a smelting recipe with the output as an Item.
 	 * @param outputItem
-	 * @param oreDictName
+	 * @param  oreDictIngredient
 	 * @param xpGiven
 	 */
 	public static final void addOreDictSmeltingRecipe(Item outputItem, String oreDictIngredient, float xpGiven)

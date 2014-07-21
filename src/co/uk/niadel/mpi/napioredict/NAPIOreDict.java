@@ -1,6 +1,8 @@
 package co.uk.niadel.mpi.napioredict;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,8 +21,9 @@ import co.uk.niadel.mpi.util.UtilityMethods;
  */
 public final class NAPIOreDict
 {
-	public static Map<String, ItemStack[]> oreDictEntries = new HashMap<>();
-	public static Map<String, ModFluidMeasure[]> oreDictFluidEntries = new HashMap<>();
+	public static Map<String, ArrayList<ItemStack>> oreDictEntries = new HashMap<>();
+	public static Map<String, ArrayList<ModFluidMeasure>> oreDictFluidEntries = new HashMap<>();
+	public static Map<String, ArrayList<Class<?>>> oreDictToClass = new HashMap<>();
 	
 	/**
 	 * Adds an entry to the oredict registry.
@@ -31,19 +34,26 @@ public final class NAPIOreDict
 	{
 		//If there's already an entry for this particular entry name, add the itemEntries to the end of the already existing ItemStack[]
 		//In that entry.
-		if (oreDictEntries.get(entryName) != null && !ArrayUtils.doesArrayContainValue(oreDictEntries.get(entryName), itemEntries))
+		if (oreDictEntries.get(entryName) != null)
 		{
 			int x = 0;
 			
-			for (int i = oreDictEntries.get(entryName).length; i == oreDictEntries.get(entryName).length + itemEntries.length; i++)
+			for (int i = oreDictEntries.get(entryName).size(); i == oreDictEntries.get(entryName).size() + itemEntries.length; i++)
 			{
-				oreDictEntries.get(entryName)[i] = itemEntries[x];
+				oreDictEntries.get(entryName).add(itemEntries[x]);
+				oreDictToClass.get(entryName).add(itemEntries[x].getClass());
 				x++;
 			}
 		}
 		else
 		{
-			oreDictEntries.put(entryName, itemEntries);
+			oreDictEntries.put(entryName, new ArrayList<ItemStack>());
+
+			for (int i = 0; i == itemEntries.length; i++)
+			{
+				oreDictEntries.get(entryName).add(itemEntries[i]);
+				oreDictToClass.get(entryName).add(itemEntries[i].getClass());
+			}
 		}
 	}
 	
@@ -54,19 +64,26 @@ public final class NAPIOreDict
 	 */
 	public static final void addOreDictEntry(String entryName, ModFluidMeasure[] entries)
 	{
-		if (oreDictFluidEntries.get(entryName) != null && !ArrayUtils.doesArrayContainValue(oreDictFluidEntries.get(entryName), entries))
+		if (oreDictFluidEntries.get(entryName) != null)
 		{
 			int x = 0;
 			
-			for (int i = oreDictFluidEntries.get(entryName).length; i == oreDictFluidEntries.get(entryName).length + entries.length; i++)
+			for (int i = oreDictFluidEntries.get(entryName).size(); i == oreDictFluidEntries.get(entryName).size() + entries.length; i++)
 			{
-				oreDictFluidEntries.get(entryName)[i] = entries[x];
+				oreDictFluidEntries.get(entryName).add(entries[x]);
+				oreDictToClass.get(entryName).add(entries[x].getClass());
 				x++;
 			}
 		}
 		else
 		{
-			oreDictFluidEntries.put(entryName, entries);
+			oreDictFluidEntries.put(entryName, new ArrayList<ModFluidMeasure>());
+
+			for (ModFluidMeasure measure : entries)
+			{
+				oreDictFluidEntries.get(entryName).add(measure);
+				oreDictToClass.get(entryName).add(measure.getClass());
+			}
 		}
 	}
 	
@@ -88,7 +105,7 @@ public final class NAPIOreDict
 			NAPILogHelper.logWarn("Someone got a null OreDict entry. Entry Name is " + entryName + ".");
 		}
 		
-		return oreDictEntries.get(entryName);
+		return (ItemStack[]) oreDictEntries.get(entryName).toArray();
 	}
 	
 	/**
@@ -104,7 +121,7 @@ public final class NAPIOreDict
 			NAPILogHelper.logWarn("Someone got a null OreDict fluid entry. Entry Name is " + entryName + ".");
 		}
 		
-		return oreDictFluidEntries.get(entryName);
+		return (ModFluidMeasure[]) oreDictFluidEntries.get(entryName).toArray();
 	}
 	
 	/**
@@ -154,5 +171,27 @@ public final class NAPIOreDict
 		addOreDictEntry("sapphire", new ItemStack[] {});
 		addOreDictEntry("bullet", new ItemStack[] {});
 		addOreDictEntry("circuit", new ItemStack[] {});
+	}
+
+	public static ItemStack[] getItemsForName(String entryName)
+	{
+		return (ItemStack[]) oreDictEntries.get(entryName).toArray();
+	}
+
+	public static String getNameForItem(ItemStack theItem)
+	{
+		Iterator<String> nameIterator = oreDictToClass.keySet().iterator();
+
+		while (nameIterator.hasNext())
+		{
+			String nextName = nameIterator.next();
+
+			if (oreDictToClass.get(nextName).contains(theItem.getClass()))
+			{
+				return nextName;
+			}
+		}
+
+		return "";
 	}
 }
