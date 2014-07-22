@@ -36,7 +36,7 @@ public final class ModRegister implements IModRegister
 	public static final UniqueIdAcquirer idAcquirer = new UniqueIdAcquirer(2268);
 	
 	/**
-	 * Used by the internal entity registries to handle entity numeric ids.
+	 * Used by the internal entity registries to handle numeric ids.
 	 */
 	public static final UniqueIdAcquirer entityIdAcquirer = new UniqueIdAcquirer(300);
 	

@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -46,6 +47,11 @@ public class Mod implements IModContainer
 	 * Map containing all of the mod's methods in the mod register
 	 */
 	public Map<Method, Annotation[]> methodAnnotations = new HashMap<>();
+
+	/**
+	 * The file this mod is on the file system.
+	 */
+	public File fileLocation;
 	
 	public Mod(String modId, String version, IModRegister mainClass, Annotation[] classAnnotations, Map<Method, Annotation[]> methodAnnotations)
 	{
@@ -72,6 +78,17 @@ public class Mod implements IModContainer
 	public Mod(IModRegister mainClass)
 	{
 		this(mainClass.getModId(), mainClass.getVersion(), mainClass, mainClass.getClass().getAnnotations(), getMethodAnnotationsOfRegister(mainClass));
+	}
+
+	/**
+	 * Sets where this mod is found on the file system. Returns this object for ease in constructing.
+	 * @param fileLocation
+	 * @return
+	 */
+	public Mod setFileLocation(File fileLocation)
+	{
+		this.fileLocation = fileLocation;
+		return this;
 	}
 	
 	public static Map<Method, Annotation[]> getMethodAnnotationsOfRegister(IModRegister mainClass)

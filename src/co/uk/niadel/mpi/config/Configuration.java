@@ -51,14 +51,7 @@ public class Configuration
 	
 	public Configuration(String configName)
 	{
-		try
-		{
-			File theConfigFile = generateNewConfig(configName);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		this.theConfig = generateNewConfig(configName);
 	}
 	
 	/**
@@ -67,10 +60,10 @@ public class Configuration
 	 * @return
 	 * @throws IOException
 	 */
-	public final File generateNewConfig(String configName) throws IOException
+	public final File generateNewConfig(String configName)
 	{
 		File configFile = new File(modsConfigs.toPath() + File.separator + configName);
-		
+
 		if (!configFile.exists())
 		{
 			try
@@ -83,8 +76,7 @@ public class Configuration
 				e.printStackTrace();
 			}
 		}
-		
-		this.theConfig = configFile;
+
 		return configFile;
 	}
 	

@@ -30,4 +30,9 @@ public class BlockBattery extends BlockHasEnergy
 	{
 		this.measure.incrementMeasure(theCharge - this.resistance);
 	}
+
+	public void drain(long drainAmount)
+	{
+		this.measure.decrementMeasure(drainAmount);
+	}
 }

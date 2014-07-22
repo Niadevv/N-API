@@ -282,6 +282,7 @@ public class NModLoader extends URLClassLoader
 		try
 		{
 			IModRegister register = (IModRegister) theClass.newInstance();
+			register.registerTransformers();
 			processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
 			register.preModInit();
 			register.modInit();
@@ -353,7 +354,7 @@ public class NModLoader extends URLClassLoader
 				
 				IModRegister binNameInstance = (IModRegister) Class.forName(binaryName).newInstance();
 				
-				processAnnotations(new Mod(binNameInstance));
+				processAnnotations(new Mod(binNameInstance).setFileLocation(dir));
 			}
 		}
 		else
@@ -394,7 +395,9 @@ public class NModLoader extends URLClassLoader
 				{
 					currHandler.handleAnnotation(annotation, modRegister);
 				}
-				
+
+				//This check is because AnnotationHandlerNAPI has to manually load the class in a different
+				//way due to the fact the annotation handler has to put load libraries as well as mods.
 				if (currHandler.getClass().getName() != AnnotationHandlerNAPI.class.getName())
 				{
 					loadMod(mod.getMainClass());

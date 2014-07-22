@@ -156,21 +156,21 @@ public final class NAPIOreDict
 		addOreDictEntry("mB", new ModFluidMeasure[] {});
 		
 		//Standard mod ore entries, all empty.
-		addOreDictEntry("copperOre", new ItemStack[] {});
-		addOreDictEntry("aluminiumOre", new ItemStack[] {});
-		addOreDictEntry("silverOre", new ItemStack[] {});
-		addOreDictEntry("uraniumOre", new ItemStack[] {});
-		addOreDictEntry("leadOre", new ItemStack[] {});
+		addOreDictEntry("copperOre", new ItemStack[1]);
+		addOreDictEntry("aluminiumOre", new ItemStack[1]);
+		addOreDictEntry("silverOre", new ItemStack[1]);
+		addOreDictEntry("uraniumOre", new ItemStack[1]);
+		addOreDictEntry("leadOre", new ItemStack[1]);
 		
 		//Standard mod item entries.
-		addOreDictEntry("sulphur", new ItemStack[] {});
-		addOreDictEntry("steelIngot", new ItemStack[] {});
-		addOreDictEntry("aluminiumIngot", new ItemStack[] {});
-		addOreDictEntry("silverIngot", new ItemStack[] {});
-		addOreDictEntry("ruby", new ItemStack[] {});
-		addOreDictEntry("sapphire", new ItemStack[] {});
-		addOreDictEntry("bullet", new ItemStack[] {});
-		addOreDictEntry("circuit", new ItemStack[] {});
+		addOreDictEntry("sulphur", new ItemStack[1]);
+		addOreDictEntry("steelIngot", new ItemStack[1]);
+		addOreDictEntry("aluminiumIngot", new ItemStack[1]);
+		addOreDictEntry("silverIngot", new ItemStack[1]);
+		addOreDictEntry("ruby", new ItemStack[1]);
+		addOreDictEntry("sapphire", new ItemStack[1]);
+		addOreDictEntry("bullet", new ItemStack[1]);
+		addOreDictEntry("circuit", new ItemStack[1]);
 	}
 
 	public static ItemStack[] getItemsForName(String entryName)
