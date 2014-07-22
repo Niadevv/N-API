@@ -4,3 +4,10 @@ eclipse
 forgesrc
 Installer
 src/net
+.idea
+out
+logs
+lib
+act_mods
+mods
+Changed Vanilla Classes To Backup.txt
