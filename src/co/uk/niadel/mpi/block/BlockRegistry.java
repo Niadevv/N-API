@@ -1,6 +1,8 @@
 package co.uk.niadel.mpi.block;
 
 import java.util.Map;
+
+import co.uk.niadel.mpi.modhandler.ModRegister;
 import net.minecraft.block.Block;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.util.RegistrySimple;
@@ -21,28 +23,21 @@ public final class BlockRegistry
 	public static final RegistryNamespaced registry = Block.blockRegistry;
 	
 	/**
-	 * Used for getting unique ids.
-	 */
-	public static final UniqueIdAcquirer numAcquirer = new UniqueIdAcquirer(); 
-	
-	/**
 	 * Adds a standard block with the same method used in Block.java. I think you specify 
-	 * the namespace in the nonNumericId, but don't hold me to that.
-	 * 
-	 * @param numericId
+	 * the namespace in the nonNumericId, but don't hold me to that. Handles numeric ids
+	 * internally.
+	 *
 	 * @param nonNumericId
 	 * @param block
 	 */
 	public static final void addBlock(String nonNumericId, Block block)
 	{
-		registry.addObject(numAcquirer.nextId(nonNumericId), nonNumericId, block);
+		registry.addObject(ModRegister.idAcquirer.nextId(nonNumericId), nonNumericId, block);
 	}
 	
 	/**
 	 * Replaces a block with another block. May not work.
-	 * @param numericId
 	 * @param nonNumericId
-	 * @param originalBlock
 	 * @param newBlock
 	 */
 	@TestFeature(firstAppearance = "1.0")

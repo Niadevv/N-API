@@ -10,7 +10,7 @@ import co.uk.niadel.mpi.modhandler.IModRegister;
 public class Library extends Mod
 {	
 	/**
-	 * A list of mod registers that this library depends on
+	 * A list of mod registers that this library depends on.
 	 */
 	public Set<IModRegister> dependencies = new HashSet<>();
 	

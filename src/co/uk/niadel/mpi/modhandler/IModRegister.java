@@ -15,6 +15,10 @@ public interface IModRegister
 	/**
 	 * Non-Library dependencies. This is for mods that are extensions of another, like Thaumic Tinkerer is an extension
 	 * of Thaumcraft.
+	 *
+	 * Example:
+	 * 		dependencies.add(NModLoader.getModByModId("NIADEL_n_api"));
+	 * 		Adds (unecessarily) the N-API register as a dependency.
 	 */
 	public Set<IModRegister> dependencies = new HashSet<>();
 	

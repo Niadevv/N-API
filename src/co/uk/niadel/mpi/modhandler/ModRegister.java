@@ -28,7 +28,7 @@ public final class ModRegister implements IModRegister
 	/**
 	 * This is used in handling numeric ids.
 	 */
-	public static final IdConfiguration config = new IdConfiguration(NAPIData.MODID + ".cfg");
+	public static final IdConfiguration config = new IdConfiguration("N-API.cfg");
 	
 	/**
 	 * Used by the internal block and item registries in order to handle numeric ids.

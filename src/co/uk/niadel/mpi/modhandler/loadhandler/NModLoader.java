@@ -277,7 +277,7 @@ public class NModLoader extends URLClassLoader
 	 * the loader even though you have the ability to with the Reflection stuff.
 	 * @param theClass
 	 */
-	private static final void initNAPIRegister(Class theClass)
+	private static final void initNAPIRegister(Class<? extends IModRegister> theClass)
 	{
 		try
 		{

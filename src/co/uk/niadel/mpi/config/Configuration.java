@@ -84,7 +84,6 @@ public class Configuration
 	 * Adds data to a the specified config file.
 	 *
 	 * @param data
-	 * @throws FileNotFoundException
 	 */
 	public final void addData(String[] data)
 	{

@@ -137,6 +137,7 @@ public final class NAPIOreDict
 		addOreDictEntry("woodSlabs", new ItemStack[] {new ItemStack(Blocks.wooden_slab, 1, 0), new ItemStack(Blocks.wooden_slab, 1, 1), new ItemStack(Blocks.wooden_slab, 1, 2), new ItemStack(Blocks.wooden_slab, 1, 3)});
 		//Dear lord, 13 records?!
 		addOreDictEntry("records", new ItemStack[] {new ItemStack(Items.record_11), new ItemStack(Items.record_13), new ItemStack(Items.record_blocks), new ItemStack(Items.record_cat), new ItemStack(Items.record_chirp), new ItemStack(Items.record_far), new ItemStack(Items.record_mall), new ItemStack(Items.record_mellohi), new ItemStack(Items.record_stal), new ItemStack(Items.record_strad), new ItemStack(Items.record_wait), new ItemStack(Items.record_ward)});
+		addOreDictEntry("seeds", new ItemStack[] {new ItemStack(Items.wheat_seeds), new ItemStack(Items.melon_seeds), new ItemStack(Items.pumpkin_seeds)});
 		
 		//Adds all of the 16 colour entries.
 		for (int i = 0; i == 15; i++)

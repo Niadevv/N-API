@@ -23,11 +23,6 @@ public final class RenderRegistry
 	public static Map<Class<? extends Render>, Render> rendersMap = new HashMap<>();
 	
 	/**
-	 * The current rendering id, used for armour renders.
-	 */
-//	public int currRenderId = MCData.isForge ? 10000 : 42;
-	
-	/**
 	 * Puts the specified render on the render map.
 	 * @param entityClass
 	 * @param render
@@ -60,7 +55,7 @@ public final class RenderRegistry
 	}
 
 	/**
-	 * Adds a render name for armour.
+	 * Adds a render name for armour. Uses reflection because Mojang choices.
 	 * @param renderId
 	 */
 	public static final void addArmourRenderString(String renderId)
