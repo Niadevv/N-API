@@ -1,5 +1,8 @@
 package co.uk.niadel.mpi.modhandler;
 
+import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.mpi.commands.CommandNAPI;
+import co.uk.niadel.mpi.commands.CommandRegistry;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityMeasureStorer;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Library;
@@ -17,12 +20,13 @@ import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.UniqueIdAcquirer;
 
-@Library(version = NAPIData.VERSION)
 /**
  * The N-API register. The non-registering parts are sorted out here.
  * 
  * @author Niadel
  */
+@Library(version = NAPIData.VERSION)
+@Internal
 public final class ModRegister implements IModRegister
 {
 	/**
@@ -54,6 +58,7 @@ public final class ModRegister implements IModRegister
 		TileEntityRegistry.registerTileEntity(TileEntityMeasureStorer.class, "TileEntityTank");
 		NAPILogHelper.log("Finished Pre-Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
 		System.out.println(NModLoader.mcMainDir.toPath().toString());
+		CommandRegistry.registerCommand(new CommandNAPI(), "N-API");
 	}
 
 	@Override

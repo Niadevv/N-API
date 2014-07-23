@@ -27,8 +27,8 @@ public final class CommandRegistry extends ServerCommandManager
 	public static Map<String, ICommand> modCommandMap = new HashMap<>();
 	
 	/**
-	 * Registers the command so you don't have to edit the base file. Is excessively complex as
-	 * register command isn't static.
+	 * Registers the command so you don't have to edit the base file. Is somewhat complex as
+	 * the register method isn't static.
 	 * @param command
 	 */
 	public static void registerCommand(ICommand command, String commandName)

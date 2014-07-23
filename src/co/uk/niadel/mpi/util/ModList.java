@@ -102,6 +102,11 @@ public class ModList
 		
 		return null;
 	}
+
+	public int getModCount()
+	{
+		return mods.size();
+	}
 	
 	/**
 	 * Returns the mod register by it's id.

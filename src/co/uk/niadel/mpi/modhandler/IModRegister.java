@@ -25,7 +25,8 @@ public interface IModRegister
 	/**
 	 * The map that contains all libraries required by the mod - The first value
 	 * is the library's modid, and the second is the mod's minimum required version of that
-	 * library.
+	 * library. Get the IModRegister by the same method you get it for when you add a dependency
+	 * and ensure the version is actually a version that will exist (see the library's IModRegister file).
 	 */
 	public Map<IModRegister, String> libraryDependencies = new HashMap<>();
 	
