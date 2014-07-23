@@ -86,13 +86,7 @@ public class NModLoader extends URLClassLoader
 	 * Where the decompressed mod zip files are copied to for later loading.
 	 */
 	public static File actModsDir = new File(theMinecraft.mcDataDir + File.separator + "act_mods" + File.separator);
-	
-	/**
-	 * Keyed by the mod's modId, valued by the modId's main class object.
-	 */
-	@Deprecated
-	public static Map<String, Mod> modIds = new HashMap<>();
-	
+
 	/**
 	 * Methods to execute on preInit.
 	 */
@@ -367,8 +361,6 @@ public class NModLoader extends URLClassLoader
 		{
 			AnnotationHandlerRegistry.callAllMethodHandlers(annotationIterator.next().getValue(), methodIterator.next(), modRegister);
 		}
-		
-		modIds.put(modRegister.getModId(), mod);
 
 		if (registerAnnotations != null)
 		{
