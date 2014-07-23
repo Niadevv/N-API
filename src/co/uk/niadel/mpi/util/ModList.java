@@ -57,8 +57,8 @@ public class ModList
 	}
 	
 	/**
-	 * Returns true if mod1's version is the same or greater than that of mod2's. Uses different code to the original
-	 * version checking code in NModLoader.
+	 * Returns true if mod1's version is the same or greater than that of mod2's. Uses different (and somewhat more efficient) code to
+	 * the original version checking code in NModLoader.
 	 */
 	public boolean compareContainerVersions(IModContainer mod1, IModContainer mod2)
 	{
@@ -145,5 +145,84 @@ public class ModList
 	public Iterator iterator()
 	{
 		return mods.iterator();
+	}
+
+	public boolean doesListContainLibrary(String modId)
+	{
+		Iterator<IModContainer> librariesIterator = this.iterator();
+
+		while (librariesIterator.hasNext())
+		{
+			IModContainer currLib = librariesIterator.next();
+
+			if (currLib.getModId() == modId && currLib.isLibrary())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public List<Library> getLibraryContainers()
+	{
+		List<Library> libsToReturn = new ArrayList<>();
+		Iterator<IModContainer> modsIter = this.iterator();
+
+		while (modsIter.hasNext())
+		{
+			IModContainer nextMod = modsIter.next();
+
+			if (nextMod.isLibrary())
+			{
+				libsToReturn.add((Library) nextMod);
+			}
+		}
+
+		return libsToReturn;
+	}
+
+	public List<IModRegister> getLibraryRegisters()
+	{
+		List<Library> libs = this.getLibraryContainers();
+		List<IModRegister> registersToReturn = new ArrayList<>();
+
+		while (libs.iterator().hasNext())
+		{
+			registersToReturn.add(libs.iterator().next().getMainClass());
+		}
+
+		return registersToReturn;
+	}
+
+	public List<Mod> getModContainers()
+	{
+		List<Mod> modsToReturn = new ArrayList<>();
+		Iterator<IModContainer> modsIter = this.iterator();
+
+		while (modsIter.hasNext())
+		{
+			IModContainer nextMod = modsIter.next();
+
+			if (!nextMod.isLibrary())
+			{
+				modsToReturn.add((Mod) nextMod);
+			}
+		}
+
+		return modsToReturn;
+	}
+
+	public List<IModRegister> getModRegisters()
+	{
+		List<Mod> libs = this.getModContainers();
+		List<IModRegister> registersToReturn = new ArrayList<>();
+
+		while (libs.iterator().hasNext())
+		{
+			registersToReturn.add(libs.iterator().next().getMainClass());
+		}
+
+		return registersToReturn;
 	}
 }

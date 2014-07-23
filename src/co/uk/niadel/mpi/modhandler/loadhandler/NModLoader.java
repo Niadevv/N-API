@@ -61,12 +61,7 @@ public class NModLoader extends URLClassLoader
 	 * The Minecraft object.
 	 */
 	public static Minecraft theMinecraft = Minecraft.getMinecraft();
-	
-	/**
-	 * The MC profiler.
-	 */
-	public static Profiler mcProfiler = theMinecraft.mcProfiler;
-	
+
 	/**
 	 * List of modids that have been found and are scheduled to be loaded/have been loaded.
 	 */
@@ -76,12 +71,7 @@ public class NModLoader extends URLClassLoader
 	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods.
 	 */
 	public static List<String> forgeModids = new ArrayList<>();
-	
-	/**
-	 * A list of library classes, or classes marked with the @Library annotation.
-	 */
-	public static List<Library> modLibraries = new ArrayList<>();
-	
+
 	/**
 	 * The main Minecraft directory.
 	 */
@@ -100,6 +90,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Keyed by the mod's modId, valued by the modId's main class object.
 	 */
+	@Deprecated
 	public static Map<String, Mod> modIds = new HashMap<>();
 	
 	/**
@@ -124,9 +115,9 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final boolean doesModExist(String modId)
 	{
-		if (modIds.containsKey(modId))
+		if (mods.contains(mods.getModContainerById(modId)))
 		{
-			return mods.contains(modIds.get(modId));
+			return true;
 		}
 		else if (forgeModids.contains(modId))
 		{
@@ -146,14 +137,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final boolean doesLibraryExist(String modId)
 	{
-		if (modIds.containsKey(modId))
-		{
-			return modLibraries.contains(modId);
-		}
-		else
-		{
-			return false;
-		}
+		return mods.doesListContainLibrary(modId);
 	}
 	
 	@Internal
@@ -254,7 +238,7 @@ public class NModLoader extends URLClassLoader
 	public static final void registerTransformers()
 	{
 		Iterator<Mod> modsObjectIterator = mods.iterator();
-		Iterator<Library> modsLibraryIterator = modLibraries.iterator();
+		Iterator<Library> modsLibraryIterator = mods.getLibraryContainers().iterator();
 		
 		while (modsObjectIterator.hasNext())
 		{
@@ -419,12 +403,12 @@ public class NModLoader extends URLClassLoader
 	}
 	
 	/**
-	 * Converts an IModRegister into a Library object and puts that Library object into modLibraries.
+	 * Adds the mod to mods.
 	 * @param mod
 	 */
 	public static final void loadLibrary(IModRegister mod)
 	{
-		modLibraries.add(new Library(mod.getModId(), mod.getVersion(), mod));
+		mods.addMod(mod, true);
 		NAPILogHelper.log("Loaded library " + mod.getModId() + "!");
 	}
 	

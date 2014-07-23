@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 
-public class Library extends Mod
+public class Library extends Mod implements IModContainer
 {	
 	/**
 	 * A list of mod registers that this library depends on.
@@ -28,6 +28,7 @@ public class Library extends Mod
 	public Library(String modId, String version, IModRegister mainClass, Annotation[] classAnnotations, Map<Method, Annotation[]> methodAnnotations)
 	{
 		super(modId, version, mainClass, classAnnotations, methodAnnotations);
+		this.dependencies = mainClass.dependencies;
 	}
 	
 	public Set<IModRegister> getDependencies()

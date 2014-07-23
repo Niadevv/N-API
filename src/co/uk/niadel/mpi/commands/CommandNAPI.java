@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.commands;
 
+import co.uk.niadel.mpi.annotations.MPIAnnotations.Temprorary;
 import co.uk.niadel.mpi.modhandler.loadhandler.Mod;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import net.minecraft.command.CommandBase;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 /**
  * Command for getting infos about N-API from in game.
  */
+@Temprorary(versionToBeRemoved = "The version I add a mods list GUI.")
 public class CommandNAPI extends CommandBase
 {
 	public String getCommandName()

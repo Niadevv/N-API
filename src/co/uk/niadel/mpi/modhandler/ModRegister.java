@@ -56,9 +56,8 @@ public final class ModRegister implements IModRegister
 		NAPIOreDict.addDefaultEntries();
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");
 		TileEntityRegistry.registerTileEntity(TileEntityMeasureStorer.class, "TileEntityTank");
-		NAPILogHelper.log("Finished Pre-Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
-		System.out.println(NModLoader.mcMainDir.toPath().toString());
 		CommandRegistry.registerCommand(new CommandNAPI(), "N-API");
+		NAPILogHelper.log("Finished Pre-Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
 	}
 
 	@Override
