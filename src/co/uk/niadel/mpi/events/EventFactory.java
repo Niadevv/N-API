@@ -20,27 +20,27 @@ import co.uk.niadel.mpi.util.NAPILogHelper;
  */
 public final class EventFactory
 {
-	private static Map<IEventHandler, Method[]> handlers = new HashMap<>();
+	private static Map<Object, Method[]> handlers = new HashMap<>();
 
-	public static final void registerEventHandler(IEventHandler handler)
+	public static final void registerEventHandler(Object handler)
 	{
 		handlers.put(handler, getHandlerMethods(handler));
 	}
 
-	public static final Method[] getHandlerMethods(IEventHandler handler)
+	public static final Method[] getHandlerMethods(Object handler)
 	{
 		return handler.getClass().getDeclaredMethods();
 	}
 
 	public static final void fireEvent(IEvent event)
 	{
-		Iterator<Entry<IEventHandler, Method[]>> handlersIter = handlers.entrySet().iterator();
+		Iterator<Entry<Object, Method[]>> handlersIter = handlers.entrySet().iterator();
 
 		while (handlersIter.hasNext())
 		{
-			Entry<IEventHandler, Method[]> currEntry = handlersIter.next();
+			Entry<Object, Method[]> currEntry = handlersIter.next();
 			Method[] handlerMethods = currEntry.getValue();
-			IEventHandler currHandler = currEntry.getKey();
+			Object currHandler = currEntry.getKey();
 
 			for (Method method : handlerMethods)
 			{
@@ -119,7 +119,7 @@ public final class EventFactory
 		return method.getDeclaredAnnotations();
 	}
 
-	public static final Map<IEventHandler, Method[]> getHandlers()
+	public static final Map<Object, Method[]> getHandlers()
 	{
 		return handlers;
 	}

@@ -4,6 +4,7 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.commands.CommandNAPI;
 import co.uk.niadel.mpi.commands.CommandRegistry;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityMeasureStorer;
+import co.uk.niadel.mpi.events.EventFactory;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Library;
 import co.uk.niadel.mpi.asm.ASMRegistry;
@@ -52,7 +53,7 @@ public final class ModRegister implements IModRegister
 			PotionRegistry.registerPotion(Potion.potionTypes[i].getName(), Potion.potionTypes[i]);
 		}
 		
-		EventsList.registerEventHandler(new MPIEventHandler());
+		EventFactory.registerEventHandler(new MPIEventHandler());
 		NAPIOreDict.addDefaultEntries();
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");
 		TileEntityRegistry.registerTileEntity(TileEntityMeasureStorer.class, "TileEntityTank");
