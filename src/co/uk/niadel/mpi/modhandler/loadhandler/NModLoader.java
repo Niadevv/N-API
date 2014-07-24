@@ -364,7 +364,7 @@ public class NModLoader extends URLClassLoader
 
 		if (registerAnnotations != null)
 		{
-			//Makes it easier to add future annotations.
+			//Makes it easier to add annotations.
 			for (IAnnotationHandler currHandler : AnnotationHandlerRegistry.getAnnotationHandlers())
 			{
 				for (Annotation annotation : registerAnnotations)

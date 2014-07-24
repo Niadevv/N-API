@@ -13,7 +13,7 @@ public final class VersionMarkingAnnotations
 	/**
 	 * Marks a feature as an test feature.
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
+	@Retention(RetentionPolicy.SOURCE)
 	@Documented
 	public @interface TestFeature
 	{
@@ -30,7 +30,7 @@ public final class VersionMarkingAnnotations
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
+	@Retention(RetentionPolicy.SOURCE)
 	@Documented
 	public @interface FirstStableRelease
 	{
@@ -42,7 +42,7 @@ public final class VersionMarkingAnnotations
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
+	@Retention(RetentionPolicy.SOURCE)
 	@Documented
 	public @interface NYI
 	{
@@ -55,7 +55,7 @@ public final class VersionMarkingAnnotations
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
+	@Retention(RetentionPolicy.SOURCE)
 	@Documented
 	public @interface NotCompleted
 	{

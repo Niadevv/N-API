@@ -40,6 +40,7 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 			ReflectionManipulateValues.setValue(annotation.getClass(), "VERSION", ((ModRegister) annotation).version());
 			ReflectionManipulateValues.setValue(annotation.getClass(), "MODID", ((ModRegister) annotation).modId());
 			ReflectionManipulateValues.setValue(annotation.getClass(), "isUsingAnnotation", true);
+			shouldLoadAsLibrary = false;
 		}
 
 		if (shouldLoadAsLibrary)

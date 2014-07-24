@@ -33,16 +33,7 @@ public class NAPILogHelper
 	{	
 		log(Level.INFO, log);
 	}
-	
-	/**
-	 * Logs an error.
-	 * @param e
-	 */
-	public static void logError(Throwable e)
-	{	
-		log(Level.ERROR, e);
-	}
-	
+
 	/**
 	 * Logs an error.
 	 * @param error

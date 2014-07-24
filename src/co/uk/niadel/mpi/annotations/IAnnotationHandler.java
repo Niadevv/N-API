@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 
 /**
- * All annotation handlers must implement this.
+ * All annotation handlers must implement this. Annotation handlers can, when used correctly, be incredibly useful.
  * @author Niadel
  *
  */
@@ -22,7 +22,7 @@ public interface IAnnotationHandler
 	
 	/**
 	 * Handles methods with annotations.
-	 * @param annotation
+	 * @param annotations
 	 * @param theMethod
 	 * @param modRegister
 	 */

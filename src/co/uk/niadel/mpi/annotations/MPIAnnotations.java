@@ -19,8 +19,8 @@ public final class MPIAnnotations
 	 * Marks a method as being the recommended method to use.
 	 * @author Niadel
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
-	@Target(value = {ElementType.METHOD, ElementType.CONSTRUCTOR})
+	@Retention(RetentionPolicy.SOURCE)
+	@Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
 	@Documented
 	public @interface RecommendedMethod
 	{
@@ -31,7 +31,7 @@ public final class MPIAnnotations
 	 * Marks a method as being dangerous to use. Usually used if a method can break compatibility between mods.
 	 * @author Niadel
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
+	@Retention(RetentionPolicy.SOURCE)
 	@Documented
 	public @interface Dangerous
 	{
@@ -43,7 +43,7 @@ public final class MPIAnnotations
 	 * Tells readers that you still want to add something.
 	 * @author Niadel
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
+	@Retention(RetentionPolicy.SOURCE)
 	@Documented
 	public @interface TODO
 	{
@@ -55,17 +55,17 @@ public final class MPIAnnotations
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
+	@Retention(RetentionPolicy.SOURCE)
 	@Documented
 	public @interface Internal {}
 	
 	/**
 	 * Tells the user that they should super this method in subclasses.
-	 * @author Daniel1
+	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
-	@Target(value = {ElementType.METHOD, ElementType.CONSTRUCTOR})
+	@Retention(RetentionPolicy.SOURCE)
+	@Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
 	@Documented
 	public @interface ShouldSuperInSubclasses
 	{
@@ -77,7 +77,7 @@ public final class MPIAnnotations
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.SOURCE)
+	@Retention(RetentionPolicy.SOURCE)
 	@Documented
 	public @interface Temprorary
 	{
@@ -91,11 +91,12 @@ public final class MPIAnnotations
 	
 	/**
 	 * Marks a mod as being a library. Only used if the mod is a library that doesn't change
-	 * anything or just adds methods and classes to interact with other mods.
+	 * anything or just adds methods and classes to interact with other mods. N-API's internal register
+	 * has this annotation.
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.RUNTIME)
+	@Retention(RetentionPolicy.RUNTIME)
 	@Documented
 	public @interface Library
 	{
@@ -107,7 +108,7 @@ public final class MPIAnnotations
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.RUNTIME)
+	@Retention(RetentionPolicy.RUNTIME)
 	@Documented
 	public @interface UnstableMod
 	{
@@ -119,10 +120,11 @@ public final class MPIAnnotations
 	 * Like @UnstableMod, but only for Libraries.
 	 * @author Niadel
 	 */
-	@Retention(value = RetentionPolicy.RUNTIME)
+	@Retention(RetentionPolicy.RUNTIME)
 	@Documented
 	public @interface UnstableLibrary
 	{
+		String version();
 		String specialMessage() default "This library is likely to change frequently and mods based on this "
 				+ "library may break!";
 	}
@@ -133,7 +135,7 @@ public final class MPIAnnotations
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.RUNTIME)
+	@Retention(RetentionPolicy.RUNTIME)
 	public @interface ModRegister
 	{
 		String version();
@@ -143,11 +145,11 @@ public final class MPIAnnotations
 	/**
 	 * Allows for a mod method that's important to be called something other than the default
 	 * preInit(), init(), and postInit(). loadPoint must be one of either preInit, init, or
-	 * postInit. ONLY HAVE ONE METHOD MARKED WITH THIS PER CLASS!
+	 * postInit. ONLY HAVE ONE METHOD OF THE SPECIFIC LOAD POINT MARKED WITH THIS PER CLASS!
 	 * @author Niadel
 	 *
 	 */
-	@Retention(value = RetentionPolicy.RUNTIME)
+	@Retention(RetentionPolicy.RUNTIME)
 	public @interface LoadStateMethod 
 	{
 		String loadPoint();
