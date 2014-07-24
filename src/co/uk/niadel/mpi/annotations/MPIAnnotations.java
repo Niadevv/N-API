@@ -150,8 +150,16 @@ public final class MPIAnnotations
 	 *
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
 	public @interface LoadStateMethod 
 	{
 		String loadPoint();
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	public @interface EventHandlerMethod
+	{
+
 	}
 }

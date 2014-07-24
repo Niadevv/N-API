@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.entity;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -8,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author Daniel1
  *
  */
-public class EventReadEntityFromNBT
+public class EventReadEntityFromNBT implements IEvent
 {
 	public Entity entity;
 	public NBTTagCompound tag;

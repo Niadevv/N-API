@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.items;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,7 @@ import co.uk.niadel.mpi.events.EventCancellable;
  * @author Niadel
  *
  */
-public class EventHitEntityWithItem extends EventCancellable
+public class EventHitEntityWithItem extends EventCancellable implements IEvent
 {
 	/**
 	 * The item the hitee was hit with.

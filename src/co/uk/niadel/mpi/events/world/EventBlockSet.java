@@ -1,9 +1,10 @@
 package co.uk.niadel.mpi.events.world;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
-public class EventBlockSet
+public class EventBlockSet implements IEvent
 {
 	public int x, y, z, metadata, flags;
 	public Block blockSet;

@@ -1,9 +1,10 @@
 package co.uk.niadel.mpi.events.client;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
 
-public class EventCrash
+public class EventCrash implements IEvent
 {
 	/**
 	 * The crash report.

@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.entity;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.EntityBodyHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
  * @author Niadel
  *
  */
-public class EventEntityLivingInit
+public class EventEntityLivingInit implements IEvent
 {
 	/**
 	 * The entity being initialised.

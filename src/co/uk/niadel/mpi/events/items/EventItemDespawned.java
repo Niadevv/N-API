@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.items;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.item.EntityItem;
 import co.uk.niadel.mpi.events.EventCancellable;
 
@@ -8,7 +9,7 @@ import co.uk.niadel.mpi.events.EventCancellable;
  * @author Niadel
  *
  */
-public class EventItemDespawned extends EventCancellable
+public class EventItemDespawned extends EventCancellable implements IEvent
 {
 	/**
 	 * The item that has despawned.

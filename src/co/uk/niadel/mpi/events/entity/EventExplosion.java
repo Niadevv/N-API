@@ -1,8 +1,9 @@
 package co.uk.niadel.mpi.events.entity;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.Entity;
 
-public class EventExplosion
+public class EventExplosion implements IEvent
 {
 	Entity exploder;
 	double x;

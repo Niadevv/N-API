@@ -1,6 +1,8 @@
 package co.uk.niadel.mpi.events.world;
 
 import java.util.Iterator;
+
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -11,7 +13,7 @@ import co.uk.niadel.mpi.events.EventsList;
  * this is quite powerful. It's also the most complex in terms of events.
  * @author Niadel
  */
-public class EventWorldTicked
+public class EventWorldTicked implements IEvent
 {
 	/**
 	 * The world that is ticked.

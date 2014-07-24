@@ -11,8 +11,10 @@ import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
  * List of events. You can fire an event whenever something special happens. TBH, the Events
  * system is a tad, how would you say, <i>convoluted</i> at the moment, but this will likely change in later versions.
  * @author Niadel
+ * @deprecated Will be replaced by EventFactory.
  *
  */
+@Deprecated
 public final class EventsList 
 {
 	/**
@@ -36,7 +38,6 @@ public final class EventsList
 	 * with)!
 	 * 
 	 * @param event
-	 * @param name
 	 * @return firedEvent
 	 */
 	public static final void fireEvent(Object event)

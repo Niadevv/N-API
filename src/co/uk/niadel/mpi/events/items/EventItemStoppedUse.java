@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.items;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -9,7 +10,7 @@ import net.minecraft.world.World;
  * @author Niadel
  *
  */
-public class EventItemStoppedUse
+public class EventItemStoppedUse implements IEvent
 {
 	/**
 	 * The item that has stopped being in use.

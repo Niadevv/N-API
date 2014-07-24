@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.blocks;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -10,7 +11,7 @@ import net.minecraft.world.World;
  * @author Niadel
  *
  */
-public class EventBlockDestroyedWithItem
+public class EventBlockDestroyedWithItem implements IEvent
 {
 	/**
 	 * The item used to destroy the block.

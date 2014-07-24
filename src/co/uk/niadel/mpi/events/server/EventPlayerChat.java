@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.server;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import co.uk.niadel.mpi.events.EventCancellable;
 
@@ -8,7 +9,7 @@ import co.uk.niadel.mpi.events.EventCancellable;
  * @author Niadel
  *
  */
-public class EventPlayerChat extends EventCancellable
+public class EventPlayerChat extends EventCancellable implements IEvent
 {
 	public EntityPlayer player;
 	public String text;

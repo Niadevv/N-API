@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.entity;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 
@@ -8,7 +9,7 @@ import net.minecraft.entity.effect.EntityLightningBolt;
  * @author Niadel
  *
  */
-public class EventEntityStruckByLightning
+public class EventEntityStruckByLightning implements IEvent
 {
 	/**
 	 * The lightning bolt itself.

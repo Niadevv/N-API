@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.client;
 
+import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 
@@ -8,7 +9,7 @@ import net.minecraft.inventory.Container;
  * sure if malicious modders will use this to enforce their vendetta against other mods.
  * @author Niadel
  */
-public class EventDisplayModGUI
+public class EventDisplayModGUI implements IEvent
 {
 	/**
 	 * The GUI's id and name.
