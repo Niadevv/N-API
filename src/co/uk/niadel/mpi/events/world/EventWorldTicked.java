@@ -2,11 +2,11 @@ package co.uk.niadel.mpi.events.world;
 
 import java.util.Iterator;
 
+import co.uk.niadel.mpi.events.EventFactory;
 import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import co.uk.niadel.mpi.events.EventsList;
 
 /**
  * This is fired when the world is ticked. As you can do a lot of stuff with a world object,
@@ -33,7 +33,7 @@ public class EventWorldTicked implements IEvent
 		
 		while (entityIterator.hasNext())
 		{
-			EventsList.fireEvent(entityIterator.next());
+			EventFactory.fireEvent(new EventEntityTicked(entityIterator.next()));
 		}
 	}
 	
@@ -43,7 +43,7 @@ public class EventWorldTicked implements IEvent
 		
 		while (playerIterator.hasNext())
 		{
-			EventsList.fireEvent(new EventPlayerTicked(playerIterator.next()));
+			EventFactory.fireEvent(new EventPlayerTicked(playerIterator.next()));
 		}
 	}
 }

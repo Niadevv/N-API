@@ -1,7 +1,6 @@
 package co.uk.niadel.mpi.events;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -77,7 +76,7 @@ public final class EventFactory
 		}
 
 		//Checks for a parameter that is an event and that it only has one parameter.
-		if (!(method.getParameterTypes().length != 1))
+		if (method.getParameterTypes().length == 1)
 		{
 			Class<?>[] theParamTypes = method.getParameterTypes();
 

@@ -1,6 +1,6 @@
 package co.uk.niadel.mpi.forgewrapper.eventhandling;
 
-import co.uk.niadel.mpi.events.EventsList;
+import co.uk.niadel.mpi.events.EventFactory;
 import co.uk.niadel.mpi.events.world.EventPlayerTicked;
 import co.uk.niadel.mpi.events.world.EventWorldTicked;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -20,12 +20,12 @@ public final class EventHandlerFML
 	{
 		//Update N-API isClient so Forge mods and N-API mods get along better.
 		event.world.isClient = event.world.isRemote;
-		EventsList.fireEvent(new EventWorldTicked(event.world));
+		EventFactory.fireEvent(new EventWorldTicked(event.world));
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onPlayerTick(PlayerTickEvent event)
 	{
-		EventsList.fireEvent(new EventPlayerTicked(event.player));
+		EventFactory.fireEvent(new EventPlayerTicked(event.player));
 	}
 }

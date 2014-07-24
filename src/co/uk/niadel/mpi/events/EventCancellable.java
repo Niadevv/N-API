@@ -5,7 +5,7 @@ package co.uk.niadel.mpi.events;
  * @author Niadel
  *
  */
-public abstract class EventCancellable
+public abstract class EventCancellable implements IEvent
 {
 	public boolean cancelled = false;
 	

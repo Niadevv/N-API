@@ -1,11 +1,9 @@
 package co.uk.niadel.mpi.common.gui;
 
+import co.uk.niadel.mpi.events.EventFactory;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
-import net.minecraft.tileentity.TileEntity;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.ShouldSuperInSubclasses;
-import co.uk.niadel.mpi.events.EventsList;
 import co.uk.niadel.mpi.events.client.EventDisplayModGUI;
 
 /**
@@ -19,11 +17,9 @@ public abstract class GUIDisplayer
 	 * Does the actual displaying of the GUI.
 	 * @param guiId
 	 * @param player
-	 * @param tileEntity
 	 * @param name
 	 * @param isLocalised
 	 * @param inventorySlotSize
-	 * @param container
 	 * @param otherInfo
 	 */
 	@ShouldSuperInSubclasses
@@ -33,6 +29,6 @@ public abstract class GUIDisplayer
     	player.playerNetServerHandler.sendPacket(new S2DPacketOpenWindow(player.currentWindowId, 8, name, inventorySlotSize, isLocalised));
     	player.openContainer.windowId = player.currentWindowId;
     	player.openContainer.addCraftingToCrafters(player);
-    	EventsList.fireEvent(new EventDisplayModGUI(guiId, player, name, isLocalised, inventorySlotSize, otherInfo));
+    	EventFactory.fireEvent(new EventDisplayModGUI(guiId, player, name, isLocalised, inventorySlotSize, otherInfo));
 	}
 }
