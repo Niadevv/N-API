@@ -3,6 +3,8 @@ package co.uk.niadel.mpi.commands;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import co.uk.niadel.mpi.util.MCData;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
@@ -33,8 +35,11 @@ public final class CommandRegistry extends ServerCommandManager
 	 */
 	public static void registerCommand(ICommand command, String commandName)
 	{
-		modCommandMap.put(commandName, command);
-		((ServerCommandManager) MinecraftServer.getServer().getCommandManager()).registerCommand(command);
+		if (MCData.isServerSide())
+		{
+			modCommandMap.put(commandName, command);
+			((ServerCommandManager) MinecraftServer.getServer().getCommandManager()).registerCommand(command);
+		}
 	}
 	
 	/**

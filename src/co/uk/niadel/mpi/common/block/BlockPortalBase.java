@@ -15,6 +15,7 @@ public class BlockPortalBase extends Block
 	 * The dimension id this portal will send you to.
 	 */
 	public int dimensionToTravelTo;
+
 	//So I'm not seen using code that doesn't follow naming conventions.
 	public static Material portal = Material.Portal;
 	

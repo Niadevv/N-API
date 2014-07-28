@@ -25,7 +25,7 @@ public class Configuration
 	/**
 	 * The mods config directory.
 	 */
-	public static File modsConfigs = new File(NModLoader.mcMainDir.toPath() + File.separator + "config" + File.separator);
+	public static File modsConfigs = new File(NModLoader.mcMainDir.toPath() + "config" + File.separator);
 	
 	/**
 	 * This file, the config.
@@ -62,7 +62,9 @@ public class Configuration
 	 */
 	public final File generateNewConfig(String configName)
 	{
+		System.out.println(modsConfigs.toPath().toString());
 		File configFile = new File(modsConfigs.toPath() + File.separator + configName);
+		System.out.println(configFile.toPath().toString());
 
 		if (!configFile.exists())
 		{

@@ -1,6 +1,7 @@
 package co.uk.niadel.mpi.common;
 
 import co.uk.niadel.mpi.annotations.MPIAnnotations.EventHandlerMethod;
+import co.uk.niadel.mpi.util.MCData;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -22,7 +23,10 @@ public class MPIEventHandler
 	@EventHandlerMethod
 	public void handleModDisplayEvent(EventDisplayModGUI event)
 	{
-		GUIRegistry.renderers.get(event.guiId).render();
+		if (MCData.isClientSide())
+		{
+			GUIRegistry.renderers.get(event.guiId).render();
+		}
 	}
 
 	@EventHandlerMethod

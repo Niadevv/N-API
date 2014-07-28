@@ -58,7 +58,7 @@ public final class ASMRegistry
 						 * on either the post or the GitHub (or do a PR on the GitHub). Only I 
 						 * should edit N-API's files, really, mainly because I have some grasp of 
 						 * what I'm doing - Anyone else touching N-API will likely kill all mods using N-API.*/
-						if (!currClassName.startsWith("co.uk.niadel.mpi"))
+						if (!currClassName.startsWith("co.uk.niadel.mpi") && !isClassExcluded(currClassName))
 						{
 							bytesMap.put(currClassName, ByteManipulationUtils.toByteArray(Class.forName(currClassName)));
 						}
@@ -68,15 +68,14 @@ public final class ASMRegistry
 						bytesMap.put(currClassName, ByteManipulationUtils.toByteArray(Class.forName(currClassName)));
 					}
 				}
-				
-				Iterator<String> nameIterator = bytesMap.keySet().iterator();
+
 				Iterator<Entry<String, byte[]>> bytesIterator = bytesMap.entrySet().iterator();
 				
-				while (nameIterator.hasNext())
+				while (bytesIterator.hasNext())
 				{
-					String currClassName = nameIterator.next();
-					byte[] transformedBytes = currTransformer.manipulateBytecodes(currClassName, bytesIterator.next().getValue());
-					NModLoader.defineClass(currClassName, transformedBytes);
+					Entry<String, byte[]> currBytes = bytesIterator.next();
+					byte[] transformedBytes = currTransformer.manipulateBytecodes(currBytes.getKey(), currBytes.getValue());
+					NModLoader.defineClass(currBytes.getKey(), transformedBytes);
 				}
 			}
 		}
@@ -87,11 +86,28 @@ public final class ASMRegistry
 	}
 	
 	/**
-	 * Adds a class to exclude from transforming.
+	 * Adds a class to exclude from transforming. You can
 	 * @param excludedName
 	 */
 	public static final void addASMClassExclusion(String excludedName)
 	{
 		excludedClasses.add(excludedName);
+	}
+
+	public static final boolean isClassExcluded(String name)
+	{
+		Iterator<String> exclusionIter = excludedClasses.iterator();
+
+		while (exclusionIter.hasNext())
+		{
+			String currName = exclusionIter.next();
+
+			if (name.startsWith(currName) || currName == name)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

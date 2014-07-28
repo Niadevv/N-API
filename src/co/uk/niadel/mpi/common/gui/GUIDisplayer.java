@@ -23,7 +23,7 @@ public abstract class GUIDisplayer
 	 * @param otherInfo
 	 */
 	@ShouldSuperInSubclasses
-	public static void displayGUI(String guiId, EntityPlayerMP player, String name, boolean isLocalised, int inventorySlotSize, Object... otherInfo)
+	public void displayGUI(String guiId, EntityPlayerMP player, String name, boolean isLocalised, int inventorySlotSize, Object... otherInfo)
 	{
 		player.getNextWindowId();
     	player.playerNetServerHandler.sendPacket(new S2DPacketOpenWindow(player.currentWindowId, 8, name, inventorySlotSize, isLocalised));

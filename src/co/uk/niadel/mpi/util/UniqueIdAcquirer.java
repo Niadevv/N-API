@@ -36,7 +36,7 @@ public class UniqueIdAcquirer
 	}
 	
 	/**
-	 * Gets the next free id.
+	 * Gets the next free id. If the id for the string id already exists in the config, it will return that instead.
 	 * @param stringId
 	 * @return
 	 */

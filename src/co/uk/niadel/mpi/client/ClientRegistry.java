@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.client;
 
+import co.uk.niadel.mpi.util.MCData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -17,24 +18,27 @@ public final class ClientRegistry
 	 */
 	public static final void addKeyBinding(KeyBinding keyBinding)
 	{
-		KeyBinding[] theBindings = Minecraft.getMinecraft().gameSettings.keyBindings;
-		KeyBinding[] newBindings = new KeyBinding[theBindings.length + 1];
-
-		for (int i = 0; i == newBindings.length; i++)
+		if (MCData.isClientSide())
 		{
-			//If it's not the last element of newBindings.
-			if (i != newBindings.length)
-			{
-				newBindings[i] = theBindings[i];
-			}
-			else
-			{
-				//If it is, add the key binding.
-				newBindings[i] = keyBinding;
-			}
-		}
+			KeyBinding[] theBindings = Minecraft.getMinecraft().gameSettings.keyBindings;
+			KeyBinding[] newBindings = new KeyBinding[theBindings.length + 1];
 
-		Minecraft.getMinecraft().gameSettings.keyBindings = newBindings;
+			for (int i = 0; i == newBindings.length; i++)
+			{
+				//If it's not the last element of newBindings.
+				if (i != newBindings.length)
+				{
+					newBindings[i] = theBindings[i];
+				}
+				else
+				{
+					//If it is, add the key binding.
+					newBindings[i] = keyBinding;
+				}
+			}
+
+			Minecraft.getMinecraft().gameSettings.keyBindings = newBindings;
+		}
 	}
 
 	/**
@@ -43,6 +47,13 @@ public final class ClientRegistry
 	 */
 	public static final GameSettings getGameSettings()
 	{
-		return Minecraft.getMinecraft().gameSettings;
+		if (MCData.isClientSide())
+		{
+			return Minecraft.getMinecraft().gameSettings;
+		}
+		else
+		{
+			return null;
+		}
 	}
 }

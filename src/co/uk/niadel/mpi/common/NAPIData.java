@@ -65,7 +65,18 @@ public interface NAPIData
 	/**
 	 * List of classes used in NAPIASMTransformer.
 	 */
-	public static final String[] ASMD_CLASSES = {"net.minecraft.item.Item", "net.minecraft.client.renderer.entity.RenderItem", "net.minecraft.world.gen.structure.StructureVillagePieces", "net.minecraft.world.World", "net.minecraft.util.Explosion", "net.minecraft.world.gen.layer.GenLayerBiome", "net.minecraft.entity.EntityLiving", "net.minecraft.entity.player.EntityPlayer", "co.uk.niadel.mpi.util.MCData"};
+	public static final String[] ASMD_CLASSES = {"net.minecraft.item.Item",
+			"net.minecraft.client.renderer.entity.RenderItem",
+			"net.minecraft.world.gen.structure.StructureVillagePieces",
+			"net.minecraft.world.World",
+			"net.minecraft.util.Explosion",
+			"net.minecraft.world.gen.layer.GenLayerBiome",
+			"net.minecraft.entity.EntityLiving",
+			"net.minecraft.entity.player.EntityPlayer",
+			"co.uk.niadel.mpi.util.MCData",
+			"net.minecraft.util.ReportedException",
+			"net.minecraft.entity.Entity",
+			"net.minecraft.entity.EntityLivingBase"};
 	
 	/**
 	 * List of obfuscated classes used in NAPIASMTransformer.

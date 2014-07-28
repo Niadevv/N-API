@@ -14,7 +14,6 @@ import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.config.IdConfiguration;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityRegistry;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityWire;
-import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
 import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
@@ -43,6 +42,11 @@ public final class ModRegister implements IModRegister
 	 * Used by the internal entity registries to handle numeric ids.
 	 */
 	public static final UniqueIdAcquirer entityIdAcquirer = new UniqueIdAcquirer(300);
+
+	/**
+	 * Used by the DimensionIdRegistry to get a unique dimension id.
+	 */
+	public static final UniqueIdAcquirer dimensionIdAcquirer = new UniqueIdAcquirer(2);
 	
 	@Override
 	public void preModInit()

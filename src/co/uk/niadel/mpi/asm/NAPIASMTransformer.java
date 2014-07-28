@@ -24,7 +24,8 @@ import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.util.MCData;
 
 /**
- * This class adds Event calls instead of having direct base edits.
+ * This class adds Event calls instead of having direct base edits. This class is special as it is the only class that has no restrictions
+ * on the classes it can or can't edit.
  * @author Niadel
  *
  */
@@ -165,9 +166,36 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 			
 			//Add calls to events. Oh, and fix for Forge renaming isClient.
 			case "net.minecraft.world.World":
-				cw.newField("net/minecraft/world/World", "isClient", "Z");
+				/*cw.newField("net/minecraft/world/World", "isClient", "Z");
 				fv = cw.visitField(ACC_PUBLIC, "isClient", "Z", null, null);
-				fv.visitEnd();
+				fv.visitEnd();*/
+
+				if (MCData.isForge)
+				{
+					cn.fields.add(new FieldNode(ACC_PUBLIC, "isClient", null, null, null));
+
+					methodNode = new MethodNode(ACC_PUBLIC, "<init>", "(Lnet/minecraft/world/storage/ISaveHandler;Ljava/lang/String;Lnet/minecraft/world/WorldProvider;Lnet/minecraft/world/WorldSettings;Lnet/minecraft/profiler/Profiler;)V", null, null);
+
+					l0 = new LabelNode();
+					l0.accept(methodNode);
+					methodNode.instructions.add(l0);
+					methodNode.instructions.add(new LineNumberNode(199, l0));
+					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+					methodNode.instructions.add(new FieldInsnNode(GETFIELD, "Lnet/minecraft/world/World", "isRemote", "Z"));
+					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+					methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "Lnet/minecraft/world/World", "isClient", "Z"));
+
+					methodNode = new MethodNode(ACC_PUBLIC, "<init>", "(Lnet/minecraft/world/storage/ISaveHandler;Ljava/lang/String;Lnet/minecraft/world/WorldSettings;Lnet/minecraft/world/WorldProvider;Lnet/minecraft/profiler/Profiler;)V", null, null);
+
+					l0 = new LabelNode();
+					l0.accept(methodNode);
+					methodNode.instructions.add(l0);
+					methodNode.instructions.add(new LineNumberNode(199, l0));
+					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+					methodNode.instructions.add(new FieldInsnNode(GETFIELD, "Lnet/minecraft/world/World", "isRemote", "Z"));
+					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+					methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "Lnet/minecraft/world/World", "isClient", "Z"));
+				}
 				
 				mv = cw.visitMethod(ACC_PUBLIC, "spawnEntityInWorld", "(Lnet/minecraft/entity/Entity;)Z", null, null);
 				mv.visitCode();

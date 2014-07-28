@@ -75,7 +75,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * The main Minecraft directory.
 	 */
-	public static File mcMainDir = theMinecraft.mcDataDir;
+	public static File mcMainDir = new File(theMinecraft.mcDataDir.getAbsolutePath());
 	
 	/**
 	 * The directory for mods to be put in, the same folder Forge uses.
