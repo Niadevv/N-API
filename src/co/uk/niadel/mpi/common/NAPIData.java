@@ -69,7 +69,7 @@ public interface NAPIData
 			"net.minecraft.client.renderer.entity.RenderItem",
 			"net.minecraft.world.gen.structure.StructureVillagePieces",
 			"net.minecraft.world.World",
-			"net.minecraft.util.Explosion",
+			"net.minecraft.world.Explosion",
 			"net.minecraft.world.gen.layer.GenLayerBiome",
 			"net.minecraft.entity.EntityLiving",
 			"net.minecraft.entity.player.EntityPlayer",

@@ -11,6 +11,7 @@ import java.util.Scanner;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.mpi.util.NAPILogHelper;
+import co.uk.niadel.mpi.util.UtilityMethods;
 
 @TestFeature(stable = false, firstAppearance = "1.0")
 /**
@@ -25,7 +26,7 @@ public class Configuration
 	/**
 	 * The mods config directory.
 	 */
-	public static File modsConfigs = new File(NModLoader.mcMainDir.toPath() + "config" + File.separator);
+	public static File modsConfigs = new File(NModLoader.mcMainDir, "config/");
 	
 	/**
 	 * This file, the config.
@@ -60,10 +61,28 @@ public class Configuration
 	 * @return
 	 * @throws IOException
 	 */
-	public final File generateNewConfig(String configName)
+	public File generateNewConfig(String configName)
 	{
+		File configFile = new File(modsConfigs, configName);
 		System.out.println(modsConfigs.toPath().toString());
-		File configFile = new File(modsConfigs.toPath() + File.separator + configName);
+
+		if (!modsConfigs.exists())
+		{
+			try
+			{
+				configFile.createNewFile();
+				NAPILogHelper.log("Created config directory " + configFile.getName());
+			}
+			catch (IOException e)
+			{
+				if (!modsConfigs.isDirectory())
+				{
+					NAPILogHelper.logError("WHY THE F*** IS modsConfigs NOT A DIRECTORY!?");
+				}
+				e.printStackTrace();
+			}
+		}
+
 		System.out.println(configFile.toPath().toString());
 
 		if (!configFile.exists())
@@ -71,10 +90,11 @@ public class Configuration
 			try
 			{
 				configFile.createNewFile();
+				NAPILogHelper.log("Created config file " + configFile.getName());
 			}
 			catch (IOException e)
 			{
-				NAPILogHelper.logError("Could not create " + configFile.getName() + "!");
+				NAPILogHelper.logError("Could not create " + configFile.getName() + "! Path is " + configFile.getPath().toString());
 				e.printStackTrace();
 			}
 		}
@@ -115,15 +135,12 @@ public class Configuration
 	{
 		if (config.exists())
 		{
-			int arrayPos = 0;
-			String[] dataToReturn = new String[] {};
 			Scanner configScanner = new Scanner(config.toString());
 			
 			while (configScanner.hasNext())
 			{
 				String currLine = configScanner.next();
 				this.data.put(currLine.replace("=", "").substring(0, currLine.indexOf("=")), currLine.replace("=", "").substring(currLine.indexOf("=") + 1));
-				++arrayPos;
 			}
 			
 			configScanner.close();
@@ -161,19 +178,19 @@ public class Configuration
 	 */
 	public final void addOption(String valueName, String defaultValue)
 	{
-		PrintWriter writer;
+		PrintStream writer;
 		
 		try
 		{
-			writer = new PrintWriter(this.theConfig);
+			writer = new PrintStream(this.theConfig);
 			
 			if (!valueName.trim().endsWith("="))
 			{
-				writer.append(valueName);
+				writer.println(valueName);
 			}
 			else
 			{
-				writer.append(valueName + " = " + defaultValue);
+				writer.println(valueName + " = " + defaultValue);
 			}
 		}
 		catch (FileNotFoundException e)
@@ -193,8 +210,7 @@ public class Configuration
 	 * <p> \/\/\/\/
 	 * <p>[1,2,3,4] defaultValues</p>
 	 * 
-	 * <!---It looks better in the Javadoc, don't worry. Huh, I remember much more HTML than
-	 * I thought I did.-->
+	 * <!---It looks better in the Javadoc, don't worry. Huh, I remember much more HTML than I thought I did.-->
 	 * @param valueNames
 	 * @param defaultValues
 	 */

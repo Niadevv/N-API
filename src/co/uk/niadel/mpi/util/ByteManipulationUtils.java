@@ -15,9 +15,9 @@ public final class ByteManipulationUtils
 	 */
 	public static final <X> byte[] toByteArray(X objectToConvert)
 	{
-		byte[] bytesToReturn = new byte[] {};
-		ByteArrayOutputStream byteOutputStream = null;
-		ObjectOutputStream objOutputStream = null;
+		byte[] bytesToReturn = new byte[100000];
+		ByteArrayOutputStream byteOutputStream;
+		ObjectOutputStream objOutputStream;
 		
 		try
 		{

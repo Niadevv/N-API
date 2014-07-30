@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
+import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +27,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.ReportedException;
+import net.minecraft.util.Util;
 import org.apache.commons.io.IOUtils;
 import co.uk.niadel.mpi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
@@ -75,17 +77,17 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * The main Minecraft directory.
 	 */
-	public static File mcMainDir = new File(theMinecraft.mcDataDir.getAbsolutePath());
+	public static File mcMainDir = new File(theMinecraft.mcDataDir.getAbsolutePath().substring(0, theMinecraft.mcDataDir.getAbsolutePath().length() - 1));
 	
 	/**
 	 * The directory for mods to be put in, the same folder Forge uses.
 	 */
-	public static File mcModsDir = new File(theMinecraft.mcDataDir + File.separator + "mods" + File.separator);
+	public static File mcModsDir = new File(theMinecraft.mcDataDir + "/mods/");
 	
 	/**
 	 * Where the decompressed mod zip files are copied to for later loading.
 	 */
-	public static File actModsDir = new File(theMinecraft.mcDataDir + File.separator + "act_mods" + File.separator);
+	public static File actModsDir = new File(theMinecraft.mcDataDir + "/act_mods/");
 
 	/**
 	 * Methods to execute on preInit.
@@ -491,6 +493,7 @@ public class NModLoader extends URLClassLoader
 		}
 		
 		ResourcesRegistry.addAllResourceDomains();
+		ASMRegistry.invokeAllTransformers();
 		NAPILogHelper.log("Called all mod's modPreInit methods!");
 	}
 	

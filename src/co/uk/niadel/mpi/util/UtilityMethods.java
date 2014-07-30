@@ -1,5 +1,11 @@
 package co.uk.niadel.mpi.util;
 
+import net.minecraft.crash.CrashReport;
+import net.minecraft.util.ReportedException;
+import net.minecraft.util.Util;
+
+import java.io.File;
+
 /**
  * Assorted methods that didn't really fit in the other utility classes.
  * @author Niadel
@@ -12,9 +18,9 @@ public final class UtilityMethods
 	 * @param red
 	 * @param green
 	 * @param blue
-	 * @return
+	 * @return The true RGB colour
 	 */
-	public static final int convertToRGBColour(int red, int green, int blue)
+	public static final long convertToRGBColour(int red, int green, int blue)
 	{
 		return ((red << 16) + (green << 8) + blue);
 	}

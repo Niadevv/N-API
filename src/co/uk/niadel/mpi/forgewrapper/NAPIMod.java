@@ -33,7 +33,6 @@ public final class NAPIMod
 		FMLCommonHandler.instance().bus().register(new EventHandlerFML());
 		//Begin loading N-API mods.
 		NModLoader.loadModsFromDir();
-		ASMRegistry.invokeAllTransformers();
 		NModLoader.callAllPreInits();
 		OreDictConverter.addAllNAPIOreDictEntries();
 	}

@@ -29,7 +29,7 @@ public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirecti
 	@Override
 	public boolean canTransferToBlock(Block block, int direction)
 	{
-		if ((!(direction == UP) && !(direction == DOWN)) || block instanceof IRedstoneWire || block instanceof BlockRedstoneWire)
+		if ((!(direction == UP) && !(direction == DOWN) && direction < 6) || block instanceof IRedstoneWire || block instanceof BlockRedstoneWire)
 		{
 			return true;
 		}
@@ -71,7 +71,7 @@ public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirecti
 			}
 			else
 			{
-				//This block's redstone is too high, set the redstone level to the highest available level of 15.
+				//This block's redstone is too high, set the redstone level to the highest available level of 15. Safety check for metadata values u.u 1.8! Y U NO HERE SOONER?!
 				this.wireTileEntity.getWorldObj().setBlockMetadataWithNotify(coordsArray[0], coordsArray[1], coordsArray[2], 15, 3);
 			}
 		}

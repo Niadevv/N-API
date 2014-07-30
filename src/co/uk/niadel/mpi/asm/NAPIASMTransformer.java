@@ -1,6 +1,8 @@
 package co.uk.niadel.mpi.asm;
 
 import java.util.ListIterator;
+
+import co.uk.niadel.mpi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -438,6 +440,8 @@ public class NAPIASMTransformer implements IASMTransformer, Opcodes
 				//Not any of the correct classes, return null.
 				return null;
 		}
+
+		NAPILogHelper.log("Transformed class " + className + "!");
 		
 		return bytes;
 	}
