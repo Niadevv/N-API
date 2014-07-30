@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="bcprov-jdk15on-1.47">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/AppData/Roaming/.minecraft/libraries/org/bouncycastle/bcprov-jdk15on/1.47/bcprov-jdk15on-1.47.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
