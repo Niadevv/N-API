@@ -2,6 +2,9 @@ package co.uk.niadel.mpi.dimensions;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import co.uk.niadel.mpi.modhandler.ModRegister;
+import co.uk.niadel.mpi.util.NAPILogHelper;
 import net.minecraft.world.WorldProvider;
 
 /**
@@ -15,22 +18,15 @@ public final class WorldProviderRegistry
 	 * Map of the providers.
 	 */
 	public static Map<Integer, WorldProvider> providerMap = new HashMap<>();
-	
+
 	/**
-	 * Adds a provider.
-	 * @param id
+	 * Adds a provider, getting the int id from the string value provided.
+	 * @param dimensionId
 	 * @param provider
 	 */
-	public static final void addProvider(int id, WorldProvider provider)
+	public static final void addProvider(String dimensionId, WorldProvider provider)
 	{
-		if (!(id == -1) || !(id == 0) || !(id == 1))
-		{
-			providerMap.put(id, provider);
-		}
-		else
-		{
-			System.err.println("YOU CANNOT REGISTER A PROVIDER IN A VANILLA PROVIDER ID (-1, 0, or 1)!");
-		}
+		providerMap.put(ModRegister.dimensionIdAcquirer.nextId(dimensionId), provider);
 	}
 	
 	/**
@@ -50,13 +46,6 @@ public final class WorldProviderRegistry
 	 */
 	public static final boolean doesProviderExist(int id)
 	{
-		if (getProvider(id) != null)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return getProvider(id) != null;
 	}
 }
