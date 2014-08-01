@@ -5,6 +5,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
+import co.uk.niadel.mpi.modhandler.IAdvancedModRegister;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
 
@@ -32,6 +34,11 @@ public class Mod implements IModContainer
 	 * The class that has the preModInit classes etc.
 	 */
 	public IModRegister mainClass;
+
+	/**
+	 * The Advanced mod register, if it's given one.
+	 */
+	public IAdvancedModRegister mainClassAdvanced;
 	
 	/**
 	 * The fully qualified (or binary) name of mainClass.
@@ -48,16 +55,32 @@ public class Mod implements IModContainer
 	 */
 	public Map<Method, Annotation[]> methodAnnotations = new HashMap<>();
 
+	public boolean isAdvancedRegister;
+
 	/**
 	 * The file this mod is on the file system.
 	 */
 	public File fileLocation;
 	
-	public Mod(String modId, String version, IModRegister mainClass, Annotation[] classAnnotations, Map<Method, Annotation[]> methodAnnotations)
+	public Mod(String modId, String version, Object mainClass, Annotation[] classAnnotations, Map<Method, Annotation[]> methodAnnotations)
 	{
+		if (mainClass instanceof IAdvancedModRegister)
+		{
+			this.mainClassAdvanced = (IAdvancedModRegister) mainClass;
+			this.isAdvancedRegister = true;
+		}
+		else if (mainClass instanceof IModRegister)
+		{
+			this.mainClass = (IModRegister) mainClass;
+			this.isAdvancedRegister = false;
+		}
+		else
+		{
+			throw new IllegalArgumentException("Somehow got a non IModRegister passed! Aborting load!");
+		}
+
 		this.modId = modId;
 		this.version = version;
-		this.mainClass = mainClass;
 		this.mainClassBinName = this.mainClass.getClass().getName();
 		this.classAnnotations = classAnnotations;
 		this.methodAnnotations = methodAnnotations;
@@ -105,7 +128,19 @@ public class Mod implements IModContainer
 	
 	public IModRegister getMainClass()
 	{
-		return this.mainClass;
+		if (this.isAdvancedRegister)
+		{
+			return this.mainClassAdvanced;
+		}
+		else
+		{
+			return this.mainClass;
+		}
+	}
+
+	public boolean isAdvancedRegister()
+	{
+		return this.isAdvancedRegister;
 	}
 	
 	/**
@@ -153,6 +188,14 @@ public class Mod implements IModContainer
 	public void invokePostInit()
 	{
 		this.mainClass.postModInit();
+	}
+
+	public void registerTransformers()
+	{
+		if (this.isAdvancedRegister)
+		{
+			this.mainClassAdvanced.registerTransformers();
+		}
 	}
 	
 	public boolean isLibrary()

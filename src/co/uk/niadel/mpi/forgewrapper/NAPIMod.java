@@ -1,5 +1,7 @@
 package co.uk.niadel.mpi.forgewrapper;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.common.NAPIData;
@@ -15,6 +17,9 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Yes, I do know SOME Forge, but I have to ignore 500+ errors to do this :3.
  * @author Niadel
@@ -28,6 +33,7 @@ public final class NAPIMod
 	{
 		//Tell N-API that the game is a Forge environment.
 		MCData.isForge = true;
+		handleFMLIds();
 		//Register the event handlers.
 		MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
 		FMLCommonHandler.instance().bus().register(new EventHandlerFML());
@@ -47,5 +53,19 @@ public final class NAPIMod
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		NModLoader.callAllPostInits();
+	}
+
+	/**
+	 * Allows mods to test for mods from Forge.
+	 */
+	public void handleFMLIds()
+	{
+		List<ModContainer> fmlIds = Loader.instance().getModList();
+		Iterator<ModContainer> modContainerIterator = fmlIds.iterator();
+
+		while (modContainerIterator.hasNext())
+		{
+			NModLoader.forgeModids.add(modContainerIterator.next().getModId());
+		}
 	}
 }

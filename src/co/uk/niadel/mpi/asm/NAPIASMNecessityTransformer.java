@@ -26,12 +26,12 @@ import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.util.MCData;
 
 /**
- * This class adds Event calls instead of having direct base edits. This class is special as it is the only class that has no restrictions
- * on the classes it can or can't edit.
+ * This class adds Event calls and other things necessary for N-API to workinstead of having direct base edits. This class is special as
+ * it is one of the only classes that has no restrictions on the classes it can or can't edit.
  * @author Niadel
  *
  */
-public class NAPIASMTransformer implements IASMTransformer, Opcodes
+public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 {
 	@Override
 	public String[] requestTransformedClasses()

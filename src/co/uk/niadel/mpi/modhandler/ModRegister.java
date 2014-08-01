@@ -1,6 +1,8 @@
 package co.uk.niadel.mpi.modhandler;
 
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.mpi.asm.NAPIASMNecessityTransformer;
+import co.uk.niadel.mpi.asm.NAPIASMUtilsTransformer;
 import co.uk.niadel.mpi.commands.CommandNAPI;
 import co.uk.niadel.mpi.commands.CommandRegistry;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityMeasureStorer;
@@ -8,7 +10,6 @@ import co.uk.niadel.mpi.events.EventFactory;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Library;
 import co.uk.niadel.mpi.asm.ASMRegistry;
-import co.uk.niadel.mpi.asm.NAPIASMTransformer;
 import co.uk.niadel.mpi.common.MPIEventHandler;
 import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.config.IdConfiguration;
@@ -26,7 +27,7 @@ import co.uk.niadel.mpi.util.UniqueIdAcquirer;
  */
 @Library(version = NAPIData.VERSION)
 @Internal
-public final class ModRegister implements IModRegister
+public final class ModRegister implements IAdvancedModRegister
 {
 	/**
 	 * This is used in handling numeric ids.
@@ -93,7 +94,12 @@ public final class ModRegister implements IModRegister
 	{
 		//Tells the user (rather cheesily) that the N-API ASM transformer is being registered.
 		NAPILogHelper.log("REGISTERING N-API ASM TRANSFORMER! Transformers, roll out!");
-		ASMRegistry.registerTransformer(new NAPIASMTransformer());
+		ASMRegistry.registerTransformer(new NAPIASMNecessityTransformer());
+		ASMRegistry.registerTransformer(new NAPIASMUtilsTransformer());
+		//Adds the Forge and FML classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
+		ASMRegistry.addASMClassExclusion("cpw.fml.mods");
+		ASMRegistry.addASMClassExclusion("net.minecraftforge");
+		ASMRegistry.addASMClassExclusion("net.minecraft.src.FMLRenderAccessLibrary");
 	}
 
 	@Override
@@ -106,5 +112,11 @@ public final class ModRegister implements IModRegister
 	public String getModId()
 	{
 		return NAPIData.MODID;
+	}
+
+	@Override
+	public void registerAnnotationHandlers()
+	{
+
 	}
 }

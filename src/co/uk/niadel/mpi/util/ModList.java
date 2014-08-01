@@ -11,7 +11,7 @@ import co.uk.niadel.mpi.modhandler.loadhandler.Library;
 import co.uk.niadel.mpi.modhandler.loadhandler.Mod;
 
 /**
- * A wrapper list around a list of mod containers (either Mod or Library at time of writing).
+ * A wrapper list around a list of mod containers (either Mod or Library at time of writing) for convenience.
  * @author Niadel
  *
  */
@@ -122,7 +122,7 @@ public class ModList
 	 * Returns the underlying list of mod containers.
 	 * @return
 	 */
-	public List<IModContainer> getUnderlyingList()
+	public List<IModContainer> getMods()
 	{
 		return mods;
 	}
@@ -137,12 +137,12 @@ public class ModList
 		return containersToRegistersMap.get(register);
 	}
 	
-	public boolean contains(Object object)
+	public boolean contains(IModRegister object)
 	{
 		return mods.contains(object);
 	}
 	
-	public Iterator iterator()
+	public Iterator<IModContainer> iterator()
 	{
 		return mods.iterator();
 	}

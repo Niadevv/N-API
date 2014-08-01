@@ -35,6 +35,7 @@ public final class CommandRegistry extends ServerCommandManager
 	 */
 	public static void registerCommand(ICommand command, String commandName)
 	{
+		//The check here stops an NPE.
 		if (MCData.isServerSide())
 		{
 			modCommandMap.put(commandName, command);
@@ -50,17 +51,13 @@ public final class CommandRegistry extends ServerCommandManager
 	public ICommand[] getAllCommands()
 	{
 		ICommand[] commands = new ICommand[1000];
-		Iterator commandIterator = commandMap.entrySet().iterator();
+		Iterator<Map.Entry<String, ICommand>> commandIterator = commandMap.entrySet().iterator();
 		int i = 0;
 		
 		while (commandIterator.hasNext())
 		{
-			if (i != 0)
-			{
-				i++;
-			}
-			
-			commands[i] = (ICommand) commandIterator.next();
+			commands[i] = commandIterator.next().getValue();
+			i++;
 		}
 		
 		return commands;

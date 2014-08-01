@@ -1,6 +1,7 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
 import co.uk.niadel.mpi.asm.ASMRegistry;
+import co.uk.niadel.mpi.modhandler.IAdvancedModRegister;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,22 +73,22 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods.
 	 */
-	public static List<String> forgeModids = new ArrayList<>();
+	public static final List<String> forgeModids = new ArrayList<>();
 
 	/**
 	 * The main Minecraft directory.
 	 */
-	public static File mcMainDir = new File(theMinecraft.mcDataDir.getAbsolutePath().substring(0, theMinecraft.mcDataDir.getAbsolutePath().length() - 1));
+	public static final File mcMainDir = new File(theMinecraft.mcDataDir.getAbsolutePath().substring(0, theMinecraft.mcDataDir.getAbsolutePath().length() - 1));
 	
 	/**
 	 * The directory for mods to be put in, the same folder Forge uses.
 	 */
-	public static File mcModsDir = new File(theMinecraft.mcDataDir + "/mods/");
+	public static final File mcModsDir = new File(theMinecraft.mcDataDir + "/mods/");
 	
 	/**
 	 * Where the decompressed mod zip files are copied to for later loading.
 	 */
-	public static File actModsDir = new File(theMinecraft.mcDataDir + "/act_mods/");
+	public static final File actModsDir = new File(theMinecraft.mcDataDir + "/act_mods/");
 
 	/**
 	 * Methods to execute on preInit.
@@ -128,7 +129,7 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Looks for whether or not the library with the specified modId exists.
-	 * @param modId
+	 * @param modId The modId to search for.
 	 * @return Whether the library exists.
 	 */
 	public static final boolean doesLibraryExist(String modId)
@@ -149,7 +150,7 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Adds a URL into the class path.
-	 * @param url
+	 * @param url The url to add.
 	 */
 	@Internal
 	private final void addUrl(URL url)
@@ -159,7 +160,7 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Loads a URL into the class path.
-	 * @param url
+	 * @param url The url to add.
 	 */
 	public static final void loadUrl(URL url)
 	{
@@ -168,8 +169,8 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Gets a IModRegister object by it's mod id.
-	 * @param modId
-	 * @return
+	 * @param modId The modId to get the Mod object of.
+	 * @return The Mod with the id of modId.
 	 */
 	public static final IModRegister getModByModId(String modId)
 	{
@@ -178,8 +179,8 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Gets the mod container corresponding to the specified mod id.
-	 * @param modId
-	 * @return
+	 * @param modId The modId to get the mod register of.
+	 * @return The mod container with the id of modId.
 	 */
 	public static final IModContainer getModContainerByModId(String modId)
 	{
@@ -199,15 +200,17 @@ public class NModLoader extends URLClassLoader
 				NAPILogHelper.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 			}
 			
-			if (!actModsDir.exists())
+			if (actModsDir.exists())
 			{
-				actModsDir.mkdirs();
-				NAPILogHelper.logWarn("Please note it will take longer to load N-API with lots of mods as they need to be prepared for loading first! If you only have one mod, ignore this!");
+				actModsDir.delete();
 			}
+
+			actModsDir.createNewFile();
+			actModsDir.mkdirs();
 			
 			loadUrl(actModsDir.toURI().toURL());
 			
-			initNAPIRegister((Class<? extends IModRegister>) Class.forName(MCData.getNAPIRegisterClass()));
+			initNAPIRegister((Class<? extends IAdvancedModRegister>) Class.forName(MCData.getNAPIRegisterClass()));
 
 			if (mcModsDir.listFiles() != null)
 			{
@@ -238,7 +241,12 @@ public class NModLoader extends URLClassLoader
 		
 		while (modsObjectIterator.hasNext())
 		{
-			modsObjectIterator.next().getMainClass().registerTransformers();
+			Mod nextMod = modsObjectIterator.next();
+
+			if (nextMod.getMainClass() instanceof IAdvancedModRegister)
+			{
+				modsObjectIterator.next().registerTransformers();
+			}
 		}
 		
 		NAPILogHelper.log("Finished registering mod ASM transformers! Now loading library ASM transformers!");
@@ -246,7 +254,7 @@ public class NModLoader extends URLClassLoader
 		while (modsLibraryIterator.hasNext())
 		{
 			//Generics for the win!
-			modsLibraryIterator.next().getMainClass().registerTransformers();
+			modsLibraryIterator.next().registerTransformers();
 		}
 		
 		NAPILogHelper.log("Finished loading all ASM transformers!");
@@ -257,11 +265,12 @@ public class NModLoader extends URLClassLoader
 	 * the loader even though you have the ability to with the Reflection stuff.
 	 * @param theClass
 	 */
-	private static final void initNAPIRegister(Class<? extends IModRegister> theClass)
+	private static final void initNAPIRegister(Class<? extends IAdvancedModRegister> theClass)
 	{
 		try
 		{
-			IModRegister register = (IModRegister) theClass.newInstance();
+			IAdvancedModRegister register = (IAdvancedModRegister) theClass.newInstance();
+			register.registerAnnotationHandlers();
 			register.registerTransformers();
 			processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
 			register.preModInit();
@@ -454,11 +463,16 @@ public class NModLoader extends URLClassLoader
 		
 		while (modsIterator.hasNext())
 		{
-			IModRegister currRegister = modsIterator.next().getMainClass();
-			
-			if (checkDependencies(currRegister))
+			Mod currMod = modsIterator.next();
+
+			if (currMod.isAdvancedRegister())
 			{
-				currRegister.preModInit();
+				IAdvancedModRegister currRegister = (IAdvancedModRegister) currMod.getMainClass();
+
+				if (checkDependencies(currRegister))
+				{
+					currRegister.preModInit();
+				}
 			}
 		}
 		
@@ -466,13 +480,17 @@ public class NModLoader extends URLClassLoader
 		
 		while (modsIterator.hasNext())
 		{
-			IModRegister currLibrary = libraryIterator.next().getMainClass();
-			
-			if (checkDependencies(currLibrary))
+			Library currLib = libraryIterator.next();
+
+			if (currLib.isAdvancedRegister())
 			{
-				currLibrary.preModInit();
+				IAdvancedModRegister currLibrary = (IAdvancedModRegister) currLib.getMainClass();
+
+				if (checkDependencies(currLibrary))
+				{
+					currLibrary.preModInit();
+				}
 			}
-			
 		}
 		
 		Iterator<Entry<IModRegister, Method>> methodsIterator = preInitMethods.entrySet().iterator();
@@ -502,7 +520,7 @@ public class NModLoader extends URLClassLoader
 	 * @param register
 	 * @return
 	 */
-	public static final boolean checkDependencies(IModRegister register)
+	public static final boolean checkDependencies(IAdvancedModRegister register)
 	{
 		boolean depsGood = true;
 		boolean libDepsGood = true;

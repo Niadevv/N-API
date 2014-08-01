@@ -21,7 +21,14 @@ public final class MCData
 	 */
 	public static final boolean isServerSide()
 	{
-		return Thread.currentThread().getName().equalsIgnoreCase("Server thread");
+		if (Thread.currentThread().getName().equalsIgnoreCase("Server thread"))
+		{
+			return true;
+		}
+		else
+		{
+			return Minecraft.getMinecraft() == null;
+		}
 	}
 	
 	/**

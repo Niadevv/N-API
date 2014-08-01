@@ -6,30 +6,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * All registers must implement this or else your mod will not load and stuff will break.
+ * Interface for basic mod registers that don't need to fuss with dependencies or ASM stuff. YOU MUST IMPLEMENT EITHER THIS
+ * OR IAdvancedModRegister FOR YOUR MOD TO BE LOADED!
  * @author Niadel
  *
  */
 public interface IModRegister
 {
-	/**
-	 * Non-Library dependencies. This is for mods that are extensions of another, like Thaumic Tinkerer is an extension
-	 * of Thaumcraft.
-	 *
-	 * Example:
-	 * 		dependencies.add(NModLoader.getModByModId("NIADEL_n_api"));
-	 * 		Adds (unecessarily) the N-API register as a dependency.
-	 */
-	public Set<IModRegister> dependencies = new HashSet<>();
-	
-	/**
-	 * The map that contains all libraries required by the mod - The first value
-	 * is the library's modid, and the second is the mod's minimum required version of that
-	 * library. Get the IModRegister by the same method you get it for when you add a dependency
-	 * and ensure the version is actually a version that will exist (see the library's IModRegister file).
-	 */
-	public Map<IModRegister, String> libraryDependencies = new HashMap<>();
-	
 	/**
 	 * Whether or not this Mod is using @ModRegister to define it's variables.
 	 */
@@ -61,19 +44,4 @@ public interface IModRegister
 	 * @return See above.
 	 */
 	public String getModId();
-	
-	/**
-	 * Where you register transformers. This is called BEFORE everything else, in Bootstrap. DO NOT USE TO REGISTER BLOCKS!
-	 */
-	public void registerTransformers();
-
-	/**
-	 * Where you add modids to the Set dependencies. 
-	 */
-	public void addRequiredMods();
-	
-	/**
-	 * Where you add required mod libraries.
-	 */
-	public void addRequiredLibraries();
 }

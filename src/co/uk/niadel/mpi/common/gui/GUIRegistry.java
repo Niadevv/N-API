@@ -1,5 +1,9 @@
 package co.uk.niadel.mpi.common.gui;
 
+import co.uk.niadel.mpi.util.MCData;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +25,14 @@ public final class GUIRegistry
 		else
 		{
 			throw new IllegalArgumentException(guiId + " is already registered as a GUI!");
+		}
+	}
+
+	public static final void displayGui(GuiScreen screen)
+	{
+		if (MCData.isClientSide())
+		{
+			Minecraft.getMinecraft().displayGuiScreen(screen);
 		}
 	}
 }

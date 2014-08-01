@@ -51,7 +51,7 @@ public final class ASMRegistry
 
 				for (String currClassName : requestedClasses)
 				{
-					if (!(currTransformer.getClass().getName() == NAPIASMTransformer.class.getName()))
+					if (!(currTransformer.getClass().getName() == NAPIASMNecessityTransformer.class.getName()) && !(currTransformer.getClass().getName() == NAPIASMUtilsTransformer.class.getName()))
 					{
 						/*Don't allow users to edit the N-API files themselves unless it's NAPIASMTransformer, 
 						 * if they do, they could break a LOT of stuff. If they want a feature, they can ask for it
@@ -86,7 +86,7 @@ public final class ASMRegistry
 	}
 	
 	/**
-	 * Adds a class to exclude from transforming. You can
+	 * Adds a class to exclude from transforming. You can add important MPI classes to this.
 	 * @param excludedName
 	 */
 	public static final void addASMClassExclusion(String excludedName)
