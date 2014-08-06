@@ -66,21 +66,15 @@ public final class EventFactory
 		boolean hasEventParam = false;
 
 		//Checks for the @EventHandlerMethod annotation.
-		for (Annotation annotation : getMethodAnnotations(method))
+		if (method.getAnnotation(EventHandlerMethod.class) != null)
 		{
-			if (annotation.getClass() == EventHandlerMethod.class)
-			{
-				hasTheAnnotation = true;
-				break;
-			}
+			hasTheAnnotation = true;
 		}
 
 		//Checks for a parameter that is an event and that it only has one parameter.
 		if (method.getParameterTypes().length == 1)
 		{
-			Class<?>[] theParamTypes = method.getParameterTypes();
-
-			if (ArrayUtils.doesArrayContainValue(theParamTypes[0].getInterfaces(), IEvent.class))
+			if (ArrayUtils.doesArrayContainValue(method.getParameterTypes()[0].getInterfaces(), IEvent.class))
 			{
 				hasEventParam = true;
 			}
@@ -90,27 +84,12 @@ public final class EventFactory
 			throw new RuntimeException("The method " + method.getName() + " must take ONLY ONE event as an argument!");
 		}
 
-		if (hasTheAnnotation && hasEventParam)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return hasTheAnnotation && hasEventParam;
 	}
 
 	public static final boolean isMethodForEvent(Method method, IEvent event)
 	{
-		if (isEventMethod(method))
-		{
-			if (ArrayUtils.doesArrayContainValue(method.getParameterTypes(), event.getClass()))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return isEventMethod(method) && ArrayUtils.doesArrayContainValue(method.getParameterTypes(), event.getClass());
 	}
 
 	public static final Annotation[] getMethodAnnotations(Method method)
