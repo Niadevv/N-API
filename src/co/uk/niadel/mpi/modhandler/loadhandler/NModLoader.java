@@ -116,14 +116,10 @@ public class NModLoader extends URLClassLoader
 		{
 			return true;
 		}
-		else if (forgeModids.contains(modId))
-		{
-			//For Forge compat.
-			return true;
-		}
 		else
 		{
-			return false;
+			//For Forge compat.
+			return forgeModids.contains(modId);
 		}
 	}
 	
@@ -236,16 +232,21 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void registerTransformers()
 	{
-		Iterator<Mod> modsObjectIterator = mods.iterator();
+		Iterator<IModContainer> modsObjectIterator = mods.iterator();
 		Iterator<Library> modsLibraryIterator = mods.getLibraryContainers().iterator();
 		
 		while (modsObjectIterator.hasNext())
 		{
-			Mod nextMod = modsObjectIterator.next();
+			IModContainer nextContainer = modsObjectIterator.next();
 
-			if (nextMod.getMainClass() instanceof IAdvancedModRegister)
+			if (!nextContainer.isLibrary())
 			{
-				modsObjectIterator.next().registerTransformers();
+				Mod nextMod = (Mod) nextContainer;
+
+				if (nextMod.getMainClass() instanceof IAdvancedModRegister)
+				{
+					nextMod.registerTransformers();
+				}
 			}
 		}
 		
@@ -459,24 +460,29 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllPreInits()
 	{
-		Iterator<Mod> modsIterator = mods.iterator();
+		Iterator<IModContainer> modsIterator = mods.iterator();
 		
 		while (modsIterator.hasNext())
 		{
-			Mod currMod = modsIterator.next();
+			IModContainer currContainer = modsIterator.next();
 
-			if (currMod.isAdvancedRegister())
+			if (!currContainer.isLibrary())
 			{
-				IAdvancedModRegister currRegister = (IAdvancedModRegister) currMod.getMainClass();
+				Mod currMod = (Mod) currContainer;
 
-				if (checkDependencies(currRegister))
+				if (currMod.isAdvancedRegister())
 				{
-					currRegister.preModInit();
+					IAdvancedModRegister currRegister = (IAdvancedModRegister) currMod.getMainClass();
+
+					if (checkDependencies(currRegister))
+					{
+						currRegister.preModInit();
+					}
 				}
 			}
 		}
 		
-		Iterator<Library> libraryIterator = mods.iterator();
+		Iterator<Library> libraryIterator = mods.getLibraryContainers().iterator();
 		
 		while (modsIterator.hasNext())
 		{
@@ -530,7 +536,7 @@ public class NModLoader extends URLClassLoader
 		
 		while (depsIterator.hasNext())
 		{
-			if (mods.contains(depsIterator.next()))
+			if (mods.contains(mods.getContainerFromRegister(depsIterator.next())))
 			{
 				continue;
 			}
@@ -579,7 +585,7 @@ public class NModLoader extends URLClassLoader
 				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
 			}
 			
-			Iterator<Mod> modsIterator = mods.iterator();
+			Iterator<IModContainer> modsIterator = mods.iterator();
 
 			while (modsIterator.hasNext())
 			{
@@ -611,7 +617,7 @@ public class NModLoader extends URLClassLoader
 				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
 			}
 			
-			Iterator<Mod> modsIterator = mods.iterator();
+			Iterator<IModContainer> modsIterator = mods.iterator();
 
 			while (modsIterator.hasNext())
 			{

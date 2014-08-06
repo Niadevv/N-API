@@ -1,6 +1,7 @@
 package co.uk.niadel.mpi.commands;
 
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Temprorary;
+import co.uk.niadel.mpi.modhandler.loadhandler.IModContainer;
 import co.uk.niadel.mpi.modhandler.loadhandler.Mod;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import net.minecraft.command.CommandBase;
@@ -24,11 +25,11 @@ public class CommandNAPI extends CommandBase
 	{
 		if (commandArgs[0].equalsIgnoreCase("listMods"))
 		{
-			Iterator<Mod> modIterator = NModLoader.mods.iterator();
+			Iterator<IModContainer> modIterator = NModLoader.mods.iterator();
 
 			while (modIterator.hasNext())
 			{
-				Mod nextMod = modIterator.next();
+				IModContainer nextMod = modIterator.next();
 				sender.addChatMessage(new ChatComponentText("Mod: " + nextMod.getModId() + " Version: " + nextMod.getVersion()));
 			}
 		}

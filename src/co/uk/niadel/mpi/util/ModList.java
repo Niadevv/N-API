@@ -137,7 +137,7 @@ public class ModList
 		return containersToRegistersMap.get(register);
 	}
 	
-	public boolean contains(IModRegister object)
+	public boolean contains(IModContainer object)
 	{
 		return mods.contains(object);
 	}

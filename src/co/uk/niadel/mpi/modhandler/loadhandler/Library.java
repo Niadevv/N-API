@@ -22,13 +22,21 @@ public class Library extends Mod implements IModContainer
 	public Library(IModRegister mainClass)
 	{
 		super(mainClass);
-		this.dependencies = mainClass.dependencies;
+
+		if (this.isAdvancedRegister())
+		{
+			this.dependencies = mainClassAdvanced.dependencies;
+		}
 	}
 	
 	public Library(String modId, String version, IModRegister mainClass, Annotation[] classAnnotations, Map<Method, Annotation[]> methodAnnotations)
 	{
 		super(modId, version, mainClass, classAnnotations, methodAnnotations);
-		this.dependencies = mainClass.dependencies;
+
+		if (this.isAdvancedRegister())
+		{
+			this.dependencies = mainClassAdvanced.dependencies;
+		}
 	}
 	
 	public Set<IModRegister> getDependencies()
