@@ -15,7 +15,7 @@ public final class ASMRegistry
 	/**
 	 * The list of ASM transformers registered.
 	 */
-	public static List<IASMTransformer> asmTransformers = new ArrayList<>();
+	public static final List<IASMTransformer> asmTransformers = new ArrayList<>();
 	
 	/**
 	 * A list of fully qualified class names that cannot be transformed, at least via the

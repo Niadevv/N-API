@@ -1,6 +1,9 @@
 package co.uk.niadel.mpi.forgewrapper;
 
 import java.util.Map;
+
+import co.uk.niadel.mpi.asm.ASMRegistry;
+import co.uk.niadel.mpi.util.ArrayUtils;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.*;
 import co.uk.niadel.mpi.common.NAPIData;
@@ -10,6 +13,7 @@ import co.uk.niadel.mpi.common.NAPIData;
  * @author Niadel
  *
  */
+@TransformerExclusions(/*TODO EXCLUSIONS FROM ASMRegistry*/)
 @Name(value = "N-API Forge Wrapper Access Transformer")
 @MCVersion(value = NAPIData.MC_VERSION)
 public final class NAPILoadingPlugin implements IFMLLoadingPlugin

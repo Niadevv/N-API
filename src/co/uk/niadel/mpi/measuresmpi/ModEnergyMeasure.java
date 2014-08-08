@@ -35,4 +35,9 @@ public class ModEnergyMeasure extends ModMeasureBase
 	{
 		this.containerFillByValue = newValue;
 	}
+
+	public final boolean isLiquidMeasure()
+	{
+		return false;
+	}
 }

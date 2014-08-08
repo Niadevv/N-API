@@ -44,4 +44,9 @@ public class ModFluidMeasure extends ModMeasureBase
 	{
 		return this.isEnergyProducer;
 	}
+
+	public final boolean isLiquidMeasure()
+	{
+		return true;
+	}
 }

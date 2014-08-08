@@ -1,5 +1,7 @@
 package co.uk.niadel.mpi.measuresmpi;
 
+import net.minecraft.block.Block;
+
 /**
  * The base for groups of measures.
  * @author Niadel
@@ -11,6 +13,11 @@ public abstract class ModMeasureBase
 	 * This groups array of Measure objects.
 	 */
 	protected Measure[] measures;
+
+	/**
+	 * The Block representation of this, if it has any.
+	 */
+	public Block associatedBlock;
 	
 	public ModMeasureBase(Measure[] measures)
 	{
@@ -62,6 +69,11 @@ public abstract class ModMeasureBase
 	{
 		this.measures = newMeasures;
 	}
+
+	public void setAssociatedBlock(Block block)
+	{
+		this.associatedBlock = block;
+	}
 	
 	/**
 	 * Increments the value of the smallest Measure in measures then updates all of the measures.
@@ -108,4 +120,6 @@ public abstract class ModMeasureBase
 	{
 		return false;
 	}
+
+	public abstract boolean isLiquidMeasure();
 }

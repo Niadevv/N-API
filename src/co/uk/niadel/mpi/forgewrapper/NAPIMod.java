@@ -1,9 +1,10 @@
 package co.uk.niadel.mpi.forgewrapper;
 
+import co.uk.niadel.mpi.common.IConverter;
+import co.uk.niadel.mpi.forgewrapper.measuresmpi.MeasureConverter;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraftforge.common.MinecraftForge;
-import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.forgewrapper.eventhandling.EventHandlerFML;
 import co.uk.niadel.mpi.forgewrapper.eventhandling.EventHandlerForge;
@@ -27,7 +28,10 @@ import java.util.List;
  */
 @Mod(modid = NAPIData.MODID, version = NAPIData.FULL_VERSION, name = NAPIData.NAME, acceptedMinecraftVersions = NAPIData.MC_VERSION)
 public final class NAPIMod
-{	
+{
+	IConverter measureConverter = new MeasureConverter();
+	IConverter oreDictConverter = new OreDictConverter();
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -40,7 +44,6 @@ public final class NAPIMod
 		//Begin loading N-API mods.
 		NModLoader.loadModsFromDir();
 		NModLoader.callAllPreInits();
-		OreDictConverter.addAllNAPIOreDictEntries();
 	}
 	
 	@EventHandler
@@ -53,12 +56,14 @@ public final class NAPIMod
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		NModLoader.callAllPostInits();
+		measureConverter.convert();
+		oreDictConverter.convert();
 	}
 
 	/**
 	 * Allows mods to test for mods from Forge.
 	 */
-	public void handleFMLIds()
+	public static final void handleFMLIds()
 	{
 		List<ModContainer> fmlIds = Loader.instance().getModList();
 		Iterator<ModContainer> modContainerIterator = fmlIds.iterator();

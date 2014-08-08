@@ -1,6 +1,9 @@
 package co.uk.niadel.mpi.forgewrapper.oredict;
 
 import java.util.Iterator;
+import java.util.List;
+
+import co.uk.niadel.mpi.common.IConverter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import co.uk.niadel.mpi.napioredict.NAPIOreDict;
@@ -12,7 +15,7 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  * @author Niadel
  *
  */
-public final class OreDictConverter
+public final class OreDictConverter implements IConverter
 {
 	/**
 	 * Gets whether or not Forge ore dictionary has been initialised.
@@ -28,7 +31,7 @@ public final class OreDictConverter
 	 * @param entryName
 	 * @param items
 	 */
-	public static final void addForgeOreDictEntry(String entryName, ItemStack[] items)
+	public static final void addForgeOreDictEntry(String entryName, List<ItemStack> items)
 	{	
 		if (getForgeHasInit())
 		{
@@ -43,7 +46,7 @@ public final class OreDictConverter
 	/**
 	 * Converts all of the N-API Ore Dictionary entries to Forge ones.
 	 */
-	public static final void addAllNAPIOreDictEntries()
+	public final void convert()
 	{
 		Iterator<String> nameIterator = NAPIOreDict.oreDictEntries.keySet().iterator();
 		

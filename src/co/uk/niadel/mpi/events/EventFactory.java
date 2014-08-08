@@ -66,7 +66,7 @@ public final class EventFactory
 		boolean hasEventParam = false;
 
 		//Checks for the @EventHandlerMethod annotation.
-		if (method.getAnnotation(EventHandlerMethod.class) != null)
+		if (method.isAnnotationPresent(EventHandlerMethod.class))
 		{
 			hasTheAnnotation = true;
 		}
@@ -74,10 +74,7 @@ public final class EventFactory
 		//Checks for a parameter that is an event and that it only has one parameter.
 		if (method.getParameterTypes().length == 1)
 		{
-			if (ArrayUtils.doesArrayContainValue(method.getParameterTypes()[0].getInterfaces(), IEvent.class))
-			{
-				hasEventParam = true;
-			}
+			hasEventParam = ArrayUtils.doesArrayContainValue(method.getParameterTypes()[0].getInterfaces(), IEvent.class);
 		}
 		else
 		{

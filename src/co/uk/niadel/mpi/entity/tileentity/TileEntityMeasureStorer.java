@@ -37,6 +37,11 @@ public class TileEntityMeasureStorer extends TileEntity
 	{
 		this.measureValue += valueToFillBy;
 	}
+
+	public void drain(long valueToDrainBy)
+	{
+		this.measureValue -= valueToDrainBy;
+	}
 	
 	@Override
 	public void updateEntity()

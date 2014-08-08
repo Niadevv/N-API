@@ -42,4 +42,30 @@ public class BlockTank extends BlockHasFluid implements ITileEntityProvider
 		this.tankTE = new TileEntityMeasureStorer(this);
 		return this.tankTE;
 	}
+
+	public void fill(long fillValue)
+	{
+		if (this.canFill() && this.tankTE != null)
+		{
+			this.tankTE.fill(fillValue);
+		}
+	}
+
+	public void drain(long drainValue)
+	{
+		if (this.canDrain() && this.tankTE != null)
+		{
+			this.tankTE.drain(drainValue);
+		}
+	}
+
+	public boolean canFill()
+	{
+		return true;
+	}
+
+	public boolean canDrain()
+	{
+		return true;
+	}
 }
