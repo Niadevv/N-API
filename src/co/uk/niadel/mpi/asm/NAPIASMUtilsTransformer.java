@@ -1,6 +1,5 @@
 package co.uk.niadel.mpi.asm;
 
-import co.uk.niadel.mpi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 
 /**
@@ -11,6 +10,7 @@ public class NAPIASMUtilsTransformer implements IASMTransformer
 	@Override
 	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
+		/**
 		try
 		{
 			if (Class.forName(className).newInstance() instanceof IAnnotationHandler)
@@ -22,6 +22,7 @@ public class NAPIASMUtilsTransformer implements IASMTransformer
 		{
 			e.printStackTrace();
 		}
+		*/
 
 		return bytes;
 	}
@@ -29,14 +30,7 @@ public class NAPIASMUtilsTransformer implements IASMTransformer
 	@Override
 	public String[] requestTransformedClasses()
 	{
-		String[] classes = new String[AnnotationHandlerRegistry.annotationHandlers.size()];
-
-		for (int i = 0; i == AnnotationHandlerRegistry.annotationHandlers.size(); i++)
-		{
-			classes[i] = AnnotationHandlerRegistry.annotationHandlers.toArray()[i].getClass().getCanonicalName();
-		}
-
-		return classes;
+		return new String[] {};
 	}
 
 	/**

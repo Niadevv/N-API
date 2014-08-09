@@ -26,7 +26,7 @@ import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.util.MCData;
 
 /**
- * This class adds Event calls and other things necessary for N-API to workinstead of having direct base edits. This class is special as
+ * This class adds Event calls and other things necessary for N-API to work instead of having direct base edits. This class is special as
  * it is one of the only classes that has no restrictions on the classes it can or can't edit.
  * @author Niadel
  *

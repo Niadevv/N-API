@@ -29,7 +29,7 @@ public interface IModRegister
 	public void modInit();
 	
 	/**
-	 * Called after the register is loaded, where I recommend you load MPI's for your mod.
+	 * Called after the register is loaded. This is where you do things that need other mods to have gone through their modInit stages.
 	 */
 	public void postModInit();
 	

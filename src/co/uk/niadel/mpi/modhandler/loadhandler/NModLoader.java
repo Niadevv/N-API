@@ -2,6 +2,7 @@ package co.uk.niadel.mpi.modhandler.loadhandler;
 
 import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.modhandler.IAdvancedModRegister;
+import co.uk.niadel.mpi.util.FileUtils;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import net.minecraft.client.Minecraft;
@@ -212,12 +214,17 @@ public class NModLoader extends URLClassLoader
 			{
 				for (File currFile : mcModsDir.listFiles())
 				{
-					File nextLoad = extractFromZip(new ZipFile(currFile));
-					//Just in case.
-					loadUrl(nextLoad.toURI().toURL());
-					loadClasses(nextLoad);
-					registerTransformers();
+					JarFile nextLoad = /*extractFromZip(new ZipFile(currFile));*/ loadModAsJF(currFile);
+
+					if (nextLoad != null)
+					{
+						//Just in case.
+						loadUrl(currFile.toURI().toURL());
+						loadClasses(nextLoad);
+					}
 				}
+
+				registerTransformers();
 			}
 		}
 		catch (IOException | ClassNotFoundException | SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
@@ -270,7 +277,7 @@ public class NModLoader extends URLClassLoader
 	{
 		try
 		{
-			IAdvancedModRegister register = (IAdvancedModRegister) theClass.newInstance();
+			IAdvancedModRegister register = theClass.newInstance();
 			register.registerAnnotationHandlers();
 			register.registerTransformers();
 			processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
@@ -295,7 +302,9 @@ public class NModLoader extends URLClassLoader
 	 * @param zip
 	 * @return outputDir
 	 * @throws IOException
+	 * @deprecated Will be back to attempting to load mods from jars.
 	 */
+	@Deprecated
 	public static final File extractFromZip(ZipFile zip) throws IOException
 	{
 		Enumeration<? extends ZipEntry> modsDirIter = zip.entries();
@@ -306,14 +315,32 @@ public class NModLoader extends URLClassLoader
 			ZipEntry currClass = modsDirIter.nextElement();
 			InputStream zipInputStream = zip.getInputStream(currClass);
 			OutputStream output = new FileOutputStream(outputDir);
-			
-			//Probably the only instance in the entirety of N-API that an external library is 
-			//used that isn't necessary for
-			//key mod functionality.
-			IOUtils.copy(zipInputStream, output);
+
+			FileUtils.cloneFiles(zipInputStream, output);
 		}
 		
 		return outputDir;
+	}
+
+	public static final JarFile loadModAsJF(File file)
+	{
+		if (file.getPath().endsWith(".jar"))
+		{
+			try
+			{
+				return new JarFile(file);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			NAPILogHelper.logError("File " + file.getPath() + " is NOT a jar file!");
+		}
+
+		return null;
 	}
 	
 	/**
@@ -321,36 +348,23 @@ public class NModLoader extends URLClassLoader
 	 * @param dir
 	 * @throws IOException
 	 * @throws ClassNotFoundException
-	 * @throws NoSuchMethodException
 	 * @throws SecurityException
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchFieldException
 	 * @throws InstantiationException 
 	 */
-	public static final void loadClasses(File dir) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	public static final void loadClasses(JarFile dir) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
-		if (dir.isDirectory())
+		String binaryName = getModBinaryName(dir);
+
+		if (binaryName.contains("mod_"))
 		{
-			for (File currFile : dir.listFiles())
-			{
-				String binaryName = getModBinaryName(dir);
-				
-				if (binaryName.contains("mod_"))
-				{
-					NAPILogHelper.logWarn("The class with the binary name of " + binaryName + " has horrible naming practice. They should rename their class immediately!");
-				}
-				
-				IModRegister binNameInstance = (IModRegister) Class.forName(binaryName).newInstance();
-				
-				processAnnotations(new Mod(binNameInstance).setFileLocation(dir));
-			}
+			NAPILogHelper.logWarn("The class with the binary name of " + binaryName + " has horrible naming practice. They should rename their class immediately!");
 		}
-		else
-		{
-			throw new IllegalArgumentException("The dir passed must be a directory to allow for the files to be loaded!");
-		}
+
+		IModRegister binNameInstance = (IModRegister) Class.forName(binaryName).newInstance();
+
+		processAnnotations(new Mod(binNameInstance).setFileLocation(new File(mcModsDir.toPath() + dir.getName())));
 	}
 	
 	/**
@@ -422,37 +436,19 @@ public class NModLoader extends URLClassLoader
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public static final String getModBinaryName(File dirToCheck)
+	public static final String getModBinaryName(JarFile dirToCheck)
 	{
 		try
 		{
-			String binaryName = "";
-
-			for (File currFile : dirToCheck.listFiles())
-			{
-				//If the file is called ModID.modid, get the first line and assign binaryName to that value.
-				if (currFile.getName().contains("ModID.modid"))
-				{
-					Scanner scanner = new Scanner(currFile);
-					binaryName = scanner.nextLine();
-					scanner.close();
-				}
-			}
-
-			if (binaryName != "")
-			{
-				return binaryName;
-			}
-			else
-			{
-				throw new IllegalArgumentException("There is no ModID.modid file in the directory " + dirToCheck.getPath());
-			}
+			Scanner scanner = new Scanner(dirToCheck.getInputStream(dirToCheck.getEntry("ModID.modid")));
+			return scanner.nextLine();
 		}
-		catch (FileNotFoundException e)
+		catch (IOException e)
 		{
-			NAPILogHelper.logError(e);
-			return "";
+			e.printStackTrace();
 		}
+
+		return null;
 	}
 	
 	/**
