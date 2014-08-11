@@ -65,23 +65,21 @@ public class Configuration
 
 		if (!modsConfigs.exists())
 		{
-			try
-			{
-				configFile.createNewFile();
-				NAPILogHelper.log("Created config directory " + configFile.getName());
-			}
-			catch (IOException e)
-			{
-				NAPILogHelper.log(configFile.toPath().toString());
+			modsConfigs.mkdir();
 
-				if (!modsConfigs.isDirectory())
-				{
-					NAPILogHelper.logError("WHY THE F*** IS modsConfigs NOT A DIRECTORY!?");
-					NAPILogHelper.log("modsConfigs path: " + modsConfigs.toPath().toString());
-				}
-
-				e.printStackTrace();
+			if (modsConfigs.isDirectory())
+			{
+				NAPILogHelper.log("Created config directory " + modsConfigs.toPath().toString());
 			}
+			else
+			{
+				NAPILogHelper.logError("Created config, but for some reason it's a file >:O");
+			}
+
+		}
+		else
+		{
+			NAPILogHelper.log("Config directory already exists!");
 		}
 
 		if (!configFile.exists())
@@ -89,11 +87,11 @@ public class Configuration
 			try
 			{
 				configFile.createNewFile();
-				NAPILogHelper.log("Created config file " + configFile.getName());
+				NAPILogHelper.log("Created config file " + configFile.toPath().toString());
 			}
 			catch (IOException e)
 			{
-				NAPILogHelper.logError("Could not create " + configFile.getName() + "! Path is " + configFile.getPath().toString());
+				NAPILogHelper.logError("Could not create config file " + configFile.toPath().toString() + "!");
 				e.printStackTrace();
 			}
 		}
@@ -139,7 +137,11 @@ public class Configuration
 			while (configScanner.hasNext())
 			{
 				String currLine = configScanner.next();
-				this.data.put(currLine.replace("=", "").substring(0, currLine.indexOf("=")), currLine.replace("=", "").substring(currLine.indexOf("=") + 1));
+
+				if (!currLine.startsWith("#") && !currLine.startsWith("//"))
+				{
+					this.data.put(currLine.substring(0, currLine.indexOf("=")), currLine.substring(currLine.indexOf("=") + 1));
+				}
 			}
 			
 			configScanner.close();
