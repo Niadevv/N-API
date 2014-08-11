@@ -1,11 +1,11 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
 import co.uk.niadel.mpi.asm.ASMRegistry;
+import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.modhandler.IAdvancedModRegister;
 import co.uk.niadel.mpi.util.FileUtils;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,10 +28,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
-import net.minecraft.profiler.Profiler;
 import net.minecraft.util.ReportedException;
-import net.minecraft.util.Util;
-import org.apache.commons.io.IOUtils;
 import co.uk.niadel.mpi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
@@ -199,16 +196,8 @@ public class NModLoader extends URLClassLoader
 				mcModsDir.mkdir();
 				NAPILogHelper.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 			}
-
-			if (actModsDir.exists())
-			{
-				actModsDir.delete();
-			}
-
-			actModsDir.createNewFile();
-			actModsDir.mkdirs();
 			
-			loadUrl(actModsDir.toURI().toURL());
+			loadUrl(mcModsDir.toURI().toURL());
 			
 			initNAPIRegister((Class<? extends IAdvancedModRegister>) Class.forName(MCData.getNAPIRegisterClass()));
 
@@ -273,19 +262,23 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Only ever used to load the N-API ModRegister, so the regular checks are ignored. Don't ever call this outside of
 	 * the loader even though you have the ability to with the Reflection stuff.
-	 * @param theClass
+	 * @param theClass The class that is loaded.
 	 */
 	private static final void initNAPIRegister(Class<? extends IAdvancedModRegister> theClass)
 	{
 		try
 		{
 			IAdvancedModRegister register = theClass.newInstance();
-			register.registerAnnotationHandlers();
-			register.registerTransformers();
-			processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
-			register.preModInit();
-			register.modInit();
-			register.postModInit();
+
+			if (register.getModId() == NAPIData.MODID)
+			{
+				register.registerAnnotationHandlers();
+				register.registerTransformers();
+				processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
+				register.preModInit();
+				register.modInit();
+				register.postModInit();
+			}
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException | ClassNotFoundException e)
 		{
@@ -295,33 +288,6 @@ public class NModLoader extends URLClassLoader
 			crashReport.makeCategory("Initialising N-API");
 			throw new ReportedException(crashReport);
 		}
-	}
-	
-	/**
-	 * Extracts the file for loading later on. Returns the file where the
-	 * extracted files are moved for convenience in loading.
-	 * 
-	 * @param zip
-	 * @return outputDir
-	 * @throws IOException
-	 * @deprecated Will be back to attempting to load mods from jars.
-	 */
-	@Deprecated
-	public static final File extractFromZip(ZipFile zip) throws IOException
-	{
-		Enumeration<? extends ZipEntry> modsDirIter = zip.entries();
-		File outputDir = new File(actModsDir.toPath() + zip.getName().replace(".zip", "").replace(".jar", "") + File.separator);
-		
-		while (modsDirIter.hasMoreElements())
-		{
-			ZipEntry currClass = modsDirIter.nextElement();
-			InputStream zipInputStream = zip.getInputStream(currClass);
-			OutputStream output = new FileOutputStream(outputDir);
-
-			FileUtils.cloneFiles(zipInputStream, output);
-		}
-		
-		return outputDir;
 	}
 
 	public static final JarFile loadModAsJF(File file)
@@ -457,10 +423,12 @@ public class NModLoader extends URLClassLoader
 	}
 	
 	/**
-	 * This checks dependencies and libraries before calling a mod's modPreInit method.
+	 * This invokes all of the ASM transformers, checks dependencies and libraries before calling a mod's modPreInit method.
 	 */
 	public static final void callAllPreInits()
 	{
+		ASMRegistry.invokeAllTransformers();
+
 		Iterator<Mod> modsIterator = mods.getModContainers().iterator();
 		
 		while (modsIterator.hasNext())
@@ -524,7 +492,6 @@ public class NModLoader extends URLClassLoader
 		}
 		
 		ResourcesRegistry.addAllResourceDomains();
-		ASMRegistry.invokeAllTransformers();
 		NAPILogHelper.log("Called all mod's modPreInit methods!");
 	}
 	
