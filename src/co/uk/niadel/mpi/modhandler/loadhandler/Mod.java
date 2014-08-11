@@ -81,7 +81,7 @@ public class Mod implements IModContainer
 
 		this.modId = modId;
 		this.version = version;
-		this.mainClassBinName = this.mainClass.getClass().getName();
+		this.mainClassBinName = this.mainClass != null ? this.mainClass.getClass().getName() : this.mainClassAdvanced.getClass().getName();
 		this.classAnnotations = classAnnotations;
 		this.methodAnnotations = methodAnnotations;
 	}

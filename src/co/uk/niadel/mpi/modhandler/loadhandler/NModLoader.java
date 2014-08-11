@@ -44,8 +44,8 @@ import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.MCData;
 
 /**
- * This isn't actually as flexible as FML, but it does most of the
- * same stuff. Flexibility may be improved in a later version of N-API.
+ * This isn't actually as flexible as FML, but it does most of the same stuff. Flexibility may be improved in a later version of N-API.
+ * It is worth noting that this is actually a LOT simpler than FML's loader.
  * 
  * TODO Remove the need of the ModID.modid file.
  * 
@@ -55,12 +55,7 @@ import co.uk.niadel.mpi.util.MCData;
 @TestFeature(stable = false, firstAppearance = "1.0")
 public class NModLoader extends URLClassLoader
 {
-	private static final NModLoader instance = new NModLoader(new URL[0]);
-	
-	public NModLoader(URL[] urls)
-	{
-		super(urls, NModLoader.class.getClassLoader());
-	}
+	private static final NModLoader instance = new NModLoader(new URL[0], getSystemClassLoader());
 
 	/**
 	 * The Minecraft object.
@@ -83,14 +78,16 @@ public class NModLoader extends URLClassLoader
 	public static final File mcMainDir = new File(theMinecraft.mcDataDir.getAbsolutePath().substring(0, theMinecraft.mcDataDir.getAbsolutePath().length() - 1));
 	
 	/**
-	 * The directory for mods to be put in, the same folder Forge uses.
+	 * The directory for mods to be put in, the same folder Forge uses for convenience.
 	 */
 	public static final File mcModsDir = new File(theMinecraft.mcDataDir + "/mods/");
 	
 	/**
 	 * Where the decompressed mod zip files are copied to for later loading.
+	 *
+	 * @deprecated Soon mod loading will be done from the jar file itself.
 	 */
-	public static final File actModsDir = new File(theMinecraft.mcDataDir + "/act_mods/");
+	public static final @Deprecated File actModsDir = new File(theMinecraft.mcDataDir + "/act_mods/");
 
 	/**
 	 * Methods to execute on preInit.
@@ -106,6 +103,11 @@ public class NModLoader extends URLClassLoader
 	 * Methods to execute on postInit.
 	 */
 	public static Map<IModRegister, Method> postInitMethods = new HashMap<>();
+
+	public NModLoader(URL[] urls, ClassLoader parent)
+	{
+		super(urls, parent);
+	}
 
 	/**
 	 * Looks for whether or not the mod with the specified modId exists.
@@ -197,7 +199,7 @@ public class NModLoader extends URLClassLoader
 				mcModsDir.mkdir();
 				NAPILogHelper.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 			}
-			
+
 			if (actModsDir.exists())
 			{
 				actModsDir.delete();
@@ -214,7 +216,7 @@ public class NModLoader extends URLClassLoader
 			{
 				for (File currFile : mcModsDir.listFiles())
 				{
-					JarFile nextLoad = /*extractFromZip(new ZipFile(currFile));*/ loadModAsJF(currFile);
+					JarFile nextLoad = loadModAsJF(currFile);
 
 					if (nextLoad != null)
 					{
@@ -335,6 +337,10 @@ public class NModLoader extends URLClassLoader
 				e.printStackTrace();
 			}
 		}
+		else if (file.getName().startsWith("1."))
+		{
+			NAPILogHelper.logWarn("Found subfolder for mods for " + file.getName() + "! Ignoring!");
+		}
 		else
 		{
 			NAPILogHelper.logError("File " + file.getPath() + " is NOT a jar file!");
@@ -433,8 +439,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Gets the mod id from the file ModID.modid in a file.
 	 * @param dirToCheck
-	 * @return
-	 * @throws FileNotFoundException
+	 * @return The mod's main class binary name.
 	 */
 	public static final String getModBinaryName(JarFile dirToCheck)
 	{
@@ -456,7 +461,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllPreInits()
 	{
-		Iterator<IModContainer> modsIterator = mods.iterator();
+		Iterator<Mod> modsIterator = mods.getModContainers().iterator();
 		
 		while (modsIterator.hasNext())
 		{
@@ -482,15 +487,21 @@ public class NModLoader extends URLClassLoader
 		
 		while (modsIterator.hasNext())
 		{
-			Library currLib = libraryIterator.next();
+			Library currLibContainer = libraryIterator.next();
 
-			if (currLib.isAdvancedRegister())
+			if (currLibContainer.isAdvancedRegister())
 			{
-				IAdvancedModRegister currLibrary = (IAdvancedModRegister) currLib.getMainClass();
+				IAdvancedModRegister currLibrary = (IAdvancedModRegister) currLibContainer.getMainClass();
 
 				if (checkDependencies(currLibrary))
 				{
 					currLibrary.preModInit();
+				}
+				else
+				{
+					NAPILogHelper.logError("The library " + currLibrary.getModId() + "'s dependency requirements were NOT met! Skipping it's loading!");
+					//Remove the library so it isn't put through the other phases of loading.
+					mods.getMods().remove(currLibrary);
 				}
 			}
 		}
@@ -524,21 +535,18 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final boolean checkDependencies(IAdvancedModRegister register)
 	{
-		boolean depsGood = true;
-		boolean libDepsGood = true;
-		
 		//DEPENDENCIES CHECKING START
 		Iterator<IModRegister> depsIterator = register.dependencies.iterator();
 		
 		while (depsIterator.hasNext())
 		{
-			if (mods.contains(mods.getContainerFromRegister(depsIterator.next())))
+			if (doesModExist(depsIterator.next().getModId()))
 			{
 				continue;
 			}
 			else
 			{
-				depsGood = false;
+				return false;
 			}
 		}
 		//DEPENDENCIES CHECKING END
@@ -549,20 +557,20 @@ public class NModLoader extends URLClassLoader
 		
 		while (libDepsIterator.hasNext())
 		{
-			if (mods.compareContainerVersions(mods.getContainerFromRegister(register), mods.getContainerFromRegister(libDepsIterator.next())))
+			Entry<IModRegister, String> currEntry = libDepsVersionsIter.next();
+
+			if (mods.compareContainerVersions(mods.getContainerFromRegister(register), mods.getContainerFromRegister(currEntry.getKey())))
 			{
-				
+				continue;
+			}
+			else
+			{
+				NAPILogHelper.logWarn("Library dependency " + currEntry.getKey().getModId() + " is outdated! Version required is " + currEntry.getValue() + ", but found version " + currEntry.getKey().getVersion() + "!");
+				return false;
 			}
 		}
 		
-		if (depsGood && libDepsGood)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return true;
 		//LIBRARY CHECKING END
 	}
 	

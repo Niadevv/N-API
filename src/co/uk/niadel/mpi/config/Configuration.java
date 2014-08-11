@@ -26,7 +26,7 @@ public class Configuration
 	/**
 	 * The mods config directory.
 	 */
-	public static File modsConfigs = new File(NModLoader.mcMainDir, "config/");
+	public static File modsConfigs = new File(NModLoader.mcMainDir, "config/").getAbsoluteFile();
 	
 	/**
 	 * This file, the config.
@@ -42,7 +42,6 @@ public class Configuration
 	 * Creates the new config with the pre-added data.
 	 * @param configName
 	 * @param data
-	 * @throws IOException
 	 */
 	public Configuration(String configName, String[] data)
 	{
@@ -58,13 +57,11 @@ public class Configuration
 	/**
 	 * Generates a new config file.
 	 * @param configName
-	 * @return
-	 * @throws IOException
+	 * @return The generated config file.
 	 */
 	public File generateNewConfig(String configName)
 	{
 		File configFile = new File(modsConfigs, configName);
-		System.out.println(modsConfigs.toPath().toString());
 
 		if (!modsConfigs.exists())
 		{
@@ -75,15 +72,17 @@ public class Configuration
 			}
 			catch (IOException e)
 			{
+				NAPILogHelper.log(configFile.toPath().toString());
+
 				if (!modsConfigs.isDirectory())
 				{
 					NAPILogHelper.logError("WHY THE F*** IS modsConfigs NOT A DIRECTORY!?");
+					NAPILogHelper.log("modsConfigs path: " + modsConfigs.toPath().toString());
 				}
+
 				e.printStackTrace();
 			}
 		}
-
-		System.out.println(configFile.toPath().toString());
 
 		if (!configFile.exists())
 		{

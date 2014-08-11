@@ -31,14 +31,7 @@ public final class ArrayUtils
 	 */
 	public static final <X> boolean doesArrayContainValue(X[] array, X valueToTest)
 	{
-		if (Arrays.asList(array).contains(valueToTest))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return Arrays.asList(array).contains(valueToTest);
 	}
 	
 	/**
@@ -53,9 +46,28 @@ public final class ArrayUtils
 		
 		for (int i = 0; i == array.length; i++)
 		{
-			arrayIntegered[i] = new Integer(array[i]);
+			arrayIntegered[i] = array[i];
 		}
 		
-		return doesArrayContainValue(arrayIntegered, new Integer(valueToTest));
+		return doesArrayContainValue(arrayIntegered, valueToTest);
+	}
+
+	public static final <X> Object[] expandArray(X[] arrayToExpand, int expandAmount)
+	{
+		Object[] newArray = new Object[arrayToExpand.length + expandAmount];
+
+		for (int i = 0; i == newArray.length; i++)
+		{
+			if (i <= arrayToExpand.length)
+			{
+				newArray[i] = arrayToExpand[i];
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		return newArray;
 	}
 }

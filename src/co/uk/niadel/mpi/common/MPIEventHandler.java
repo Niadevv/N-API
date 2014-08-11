@@ -1,6 +1,7 @@
 package co.uk.niadel.mpi.common;
 
 import co.uk.niadel.mpi.annotations.MPIAnnotations.EventHandlerMethod;
+import co.uk.niadel.mpi.common.block.IWrenchable;
 import co.uk.niadel.mpi.common.items.ICustomSpawnEgg;
 import co.uk.niadel.mpi.events.items.EventItemUse;
 import co.uk.niadel.mpi.util.MCData;
@@ -87,6 +88,10 @@ public class MPIEventHandler
 				e.printStackTrace();
 			}
 
+		}
+		else if (event.itemStack.getItem() instanceof IWrenchable && !event.world.isClient)
+		{
+			((IWrenchable) event.itemStack.getItem()).onWrench(event.itemStack, event.clicker, event.world, event.world.getBlock(event.x, event.y, event.z), event.x, event.y, event.z, event.side);
 		}
 	}
 }

@@ -1,8 +1,6 @@
 package co.uk.niadel.mpi.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public final class ByteManipulationUtils
 {
@@ -13,29 +11,64 @@ public final class ByteManipulationUtils
 	 * @param objectToConvert
 	 * @return
 	 */
-	public static final <X> byte[] toByteArray(X objectToConvert)
+	public static final byte[] toByteArray(Object objectToConvert)
 	{
-		byte[] bytesToReturn = new byte[100000];
-		ByteArrayOutputStream byteOutputStream;
-		ObjectOutputStream objOutputStream;
-		
+		InputStream stream = objectToInputStream(objectToConvert);
+
+		if (stream == null)
+		{
+			return new byte[0];
+		}
+
+		//Code borrowed and modified from https://forums.bukkit.org/threads/tutorial-extreme-beyond-reflection-asm-replacing-loaded-classes.99376/
+		//Edits include fixing the formatting to my taste, along with a few renames, and making the error print
+		//to the NAPI Log Helper, as well as fixing a bit of bad programming style.
+
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
 		try
 		{
-			byteOutputStream = new ByteArrayOutputStream();
-			objOutputStream = new ObjectOutputStream(byteOutputStream);
-			objOutputStream.writeObject(objectToConvert);
-			objOutputStream.flush();
-			bytesToReturn = byteOutputStream.toByteArray();
-			objOutputStream.close();
-			byteOutputStream.close();
+			int bytesRead;
+			byte[] data = new byte[16384];
+
+			while ((bytesRead = stream.read(data, 0, data.length)) != -1)
+			{
+				buffer.write(data, 0, bytesRead);
+			}
+
+			buffer.flush();
 		}
 		catch (IOException e)
 		{
+			NAPILogHelper.logError("Unable to convert " + objectToConvert.getClass().getName() + " to a byte array!");
 			e.printStackTrace();
-			NAPILogHelper.logError(e);
 		}
-		
-		return bytesToReturn;
+
+		return buffer.toByteArray();
+	}
+
+	public static final InputStream objectToInputStream(Object theObject)
+	{
+		try
+		{
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+
+
+			objectOutputStream.writeObject(theObject);
+
+			objectOutputStream.flush();
+			objectOutputStream.close();
+
+			return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+		}
+		catch (IOException e)
+		{
+			NAPILogHelper.log("Error converting object " + theObject.getClass().getName() + " to an input stream!");
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 	
 	/**

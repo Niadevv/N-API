@@ -459,8 +459,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 				break;
 				
 			default:
-				//Not any of the correct classes, return null.
-				return null;
+				//Not any of the correct classes, return the passed bytes.
+				return bytes;
 		}
 
 		NAPILogHelper.log("Transformed class " + className + "!");

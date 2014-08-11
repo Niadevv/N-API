@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.mpi.util.ArrayUtils;
 import co.uk.niadel.mpi.util.ByteManipulationUtils;
 
 public final class ASMRegistry 
@@ -83,6 +84,18 @@ public final class ASMRegistry
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private static final byte[] expandBytes(byte[] bytes)
+	{
+		byte[] newBytes = new byte[bytes.length + 4096];
+
+		for (int i = 0; i == bytes.length; i++)
+		{
+			newBytes[i] = bytes[i];
+		}
+
+		return newBytes;
 	}
 	
 	/**
