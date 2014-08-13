@@ -19,6 +19,11 @@ public interface NAPIData
 	 * N-API's mod id.
 	 */
 	public static final String MODID = "NIADEL_n_api";
+
+	/**
+	 * The Forge Wrapper @Mod's mod id for Forge.
+	 */
+	public static final String FORGE_MODID = "NIADEL_n_api_forgewrapper";
 	
 	/**
 	 * N-API's major version, increments every major overhaul after release.

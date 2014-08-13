@@ -5,8 +5,10 @@ import co.uk.niadel.mpi.asm.NAPIASMNecessityTransformer;
 import co.uk.niadel.mpi.asm.NAPIASMUtilsTransformer;
 import co.uk.niadel.mpi.commands.CommandNAPI;
 import co.uk.niadel.mpi.commands.CommandRegistry;
+import co.uk.niadel.mpi.common.measures.ModRedstoneMeasure;
 import co.uk.niadel.mpi.entity.tileentity.TileEntityMeasureStorer;
 import co.uk.niadel.mpi.events.EventFactory;
+import co.uk.niadel.mpi.measuresmpi.MeasureRegistry;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Library;
 import co.uk.niadel.mpi.asm.ASMRegistry;
@@ -56,7 +58,7 @@ public final class ModRegister implements IAdvancedModRegister
 		{
 			PotionRegistry.registerPotion(Potion.potionTypes[i].getName(), Potion.potionTypes[i]);
 		}
-		
+
 		EventFactory.registerEventHandler(new MPIEventHandler());
 		NAPIOreDict.addDefaultEntries();
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");

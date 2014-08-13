@@ -26,7 +26,7 @@ import java.util.List;
  * @author Niadel
  *
  */
-@Mod(modid = NAPIData.MODID, version = NAPIData.FULL_VERSION, name = NAPIData.NAME, acceptedMinecraftVersions = NAPIData.MC_VERSION)
+@Mod(modid = NAPIData.FORGE_MODID, version = NAPIData.FULL_VERSION, name = NAPIData.NAME, acceptedMinecraftVersions = NAPIData.MC_VERSION)
 public final class NAPIMod
 {
 	IConverter measureConverter = new MeasureConverter();

@@ -4,14 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.mpi.util.NAPILogHelper;
-import co.uk.niadel.mpi.util.UtilityMethods;
 
 @TestFeature(stable = false, firstAppearance = "1.0")
 /**
@@ -40,15 +38,19 @@ public class Configuration
 	
 	/**
 	 * Creates the new config with the pre-added data.
-	 * @param configName
-	 * @param data
+	 * @param configName The name of the config to generate.
+	 * @param data Extra data to add.
 	 */
 	public Configuration(String configName, String[] data)
 	{
 		this(configName);
-		addData(data);
+		this.addLines(data);
 	}
-	
+
+	/**
+	 * Creates a new config.
+	 * @param configName The name of the config to generate.
+	 */
 	public Configuration(String configName)
 	{
 		this.theConfig = generateNewConfig(configName);
@@ -56,7 +58,7 @@ public class Configuration
 	
 	/**
 	 * Generates a new config file.
-	 * @param configName
+	 * @param configName The name of the config to generate.
 	 * @return The generated config file.
 	 */
 	public File generateNewConfig(String configName)
@@ -75,7 +77,6 @@ public class Configuration
 			{
 				NAPILogHelper.logError("Created config, but for some reason it's a file >:O");
 			}
-
 		}
 		else
 		{
@@ -100,11 +101,11 @@ public class Configuration
 	}
 	
 	/**
-	 * Adds data to a the specified config file.
+	 * Adds lines to a the config file.
 	 *
-	 * @param data
+	 * @param data The lines of data to add.
 	 */
-	public final void addData(String[] data)
+	public final void addLines(String[] data)
 	{
 		try
 		{
@@ -125,19 +126,21 @@ public class Configuration
 	
 	/**
 	 * Updates data in the config.
-	 * @param config
 	 * @throws FileNotFoundException
 	 */
-	public final void updateOptions(File config) throws FileNotFoundException
+	public final void updateValues() throws FileNotFoundException
 	{
-		if (config.exists())
+		if (this.theConfig.exists())
 		{
-			Scanner configScanner = new Scanner(config.toString());
+			this.data.clear();
+
+			Scanner configScanner = new Scanner(this.theConfig);
 			
 			while (configScanner.hasNext())
 			{
 				String currLine = configScanner.next();
 
+				//Check is to allow for comments in the config. Allows both Python and Java one line comments.
 				if (!currLine.startsWith("#") && !currLine.startsWith("//"))
 				{
 					this.data.put(currLine.substring(0, currLine.indexOf("=")), currLine.substring(currLine.indexOf("=") + 1));
@@ -155,14 +158,14 @@ public class Configuration
 	/**
 	 * Gets a specific string of data to parse. You will need to parse this yourself, because
 	 * I'm too lazy at this point in time.
-	 * @param configValue
-	 * @return
+	 * @param configValue The value to get.
+	 * @return The value.
 	 */
-	public final String getOptionValue(String configValue)
+	public final String getConfigValue(String configValue)
 	{
 		try
 		{
-			updateOptions(theConfig);
+			updateValues();
 			return this.data.get(configValue);
 		}
 		catch (FileNotFoundException e)
@@ -172,32 +175,60 @@ public class Configuration
 			return null;
 		}
 	}
+
+	/**
+	 * Gets a config value, but if the config key does not exist, the value is created and the default value is returned.
+	 * @param configValue The key in the config.
+	 * @param defaultValue The default value to return if configValue does not exist.
+	 * @return
+	 */
+	public final String getConfigValue(String configValue, String defaultValue)
+	{
+		if (!this.doesConfigValueExist(configValue))
+		{
+			this.addConfigValue(configValue, defaultValue);
+			return defaultValue;
+		}
+		else
+		{
+			if (this.getConfigValue(configValue) != defaultValue)
+			{
+				return this.getConfigValue(configValue);
+			}
+			else
+			{
+				return defaultValue;
+			}
+		}
+	}
 	
 	/**
 	 * Adds an option to the config file.
 	 * @param valueName
+	 * @param defaultValue
 	 */
-	public final void addOption(String valueName, String defaultValue)
+	public final void addConfigValue(String valueName, String defaultValue)
 	{
-		PrintStream writer;
-		
 		try
 		{
-			writer = new PrintStream(this.theConfig);
-			
-			if (!valueName.trim().endsWith("="))
+			if (!this.doesConfigValueExist(valueName))
 			{
-				writer.println(valueName);
+				PrintStream writer = new PrintStream(this.theConfig);
+				writer.println(valueName + " = " + defaultValue);
+
+				this.data.put(valueName, defaultValue);
+
+				updateValues();
+				writer.close();
 			}
 			else
 			{
-				writer.println(valueName + " = " + defaultValue);
+				NAPILogHelper.logWarn("Config value " + valueName + " already exists in config file " + this.theConfig.toPath().toString() + "! Call to addConfigValue ignored!");
 			}
 		}
 		catch (FileNotFoundException e)
 		{
-			System.err.println("[CONFIGERROR] The config MUST be created BEFORE adding any data.");
-			NAPILogHelper.logError("Someone forgot to create a config .-.");
+			NAPILogHelper.logError("[CONFIGERROR] The config MUST be created BEFORE adding any data.");
 			NAPILogHelper.logError(e);
 		}
 	}
@@ -215,13 +246,13 @@ public class Configuration
 	 * @param valueNames
 	 * @param defaultValues
 	 */
-	public final void addOptions(String[] valueNames, String[] defaultValues)
+	public final void addConfigValues(String[] valueNames, String[] defaultValues)
 	{
 		if (valueNames.length == defaultValues.length)
 		{
 			for (int i = 0; i == valueNames.length; i++)
 			{
-				addOption(valueNames[i], defaultValues[i]);
+				addConfigValue(valueNames[i], defaultValues[i]);
 			}
 		}
 		else
@@ -235,15 +266,8 @@ public class Configuration
 	 * @param value
 	 * @return
 	 */
-	public final boolean doesOptionExist(String value)
+	public final boolean doesConfigValueExist(String value)
 	{
-		if (data.get(value) != null)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return data.get(value) != null;
 	}
 }

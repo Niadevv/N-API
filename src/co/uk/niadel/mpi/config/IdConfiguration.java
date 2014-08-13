@@ -20,9 +20,9 @@ public class IdConfiguration extends Configuration
 	 */
 	public void addId(String stringId, int id)
 	{
-		if (!doesOptionExist(stringId))
+		if (!doesConfigValueExist(stringId))
 		{
-			addOption(stringId, String.valueOf(id));
+			addConfigValue(stringId, String.valueOf(id));
 		}
 	}
 	
@@ -33,7 +33,7 @@ public class IdConfiguration extends Configuration
 	 */
 	public int getId(String stringId)
 	{
-		return Integer.valueOf(getOptionValue(stringId));
+		return Integer.valueOf(getConfigValue(stringId));
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class IdConfiguration extends Configuration
 	 */
 	public boolean doesIdExist(String stringId)
 	{
-		return doesOptionExist(stringId);
+		return doesConfigValueExist(stringId);
 	}
 	
 	/**

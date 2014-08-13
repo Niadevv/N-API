@@ -16,7 +16,7 @@ public final class ReflectionGetWithAnnotation
 	 * @param annotationToTestFor
 	 * @return
 	 */
-	public static final <X> Method[] getMethodWithAnnotation(Class<? extends X> theClass, Annotation annotationToTestFor)
+	public static final <X> Method[] getMethodsWithAnnotation(Class<? extends X> theClass, Annotation annotationToTestFor)
 	{
 		Method[] methods = new Method[] {};
 		

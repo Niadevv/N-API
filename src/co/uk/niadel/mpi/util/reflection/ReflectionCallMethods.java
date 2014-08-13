@@ -53,4 +53,9 @@ public final class ReflectionCallMethods
 			e.printStackTrace();
 		}
 	}
+
+	public static final <X> void callArglessMethod(Class<? extends X> classToCallMethod, String methodName)
+	{
+		callMethod(classToCallMethod, methodName, new Object[] {});
+	}
 }

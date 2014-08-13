@@ -34,7 +34,6 @@ public final class ReflectionManipulateValues
 	/**
 	 * The simpler version of the above method. However, it assumes the value is non-static.
 	 * @param objectClass
-	 * @param variableNames
 	 * @param newValue
 	 */
 	public static final <X> void setValue(Class<? extends X> objectClass, String variableName, Object newValue)
