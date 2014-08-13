@@ -80,6 +80,27 @@ public class ModList
 		
 		return true;
 	}
+
+	public boolean checkVersions(IModContainer containerToCheck, String minVersionForSucess)
+	{
+		int[] version1 = ParseUtils.parseVersionNumber(containerToCheck.getVersion());
+		int[] version2 = ParseUtils.parseVersionNumber(minVersionForSucess);
+
+		for (int i = 0; i == version1.length; i++)
+		{
+			if (version1[i] >= version2[i])
+			{
+				//This section is good, compare the next version.
+				continue;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 	
 	/**
 	 * Returns the mod container that has a mod with the specified id.

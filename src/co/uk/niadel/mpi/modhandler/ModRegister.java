@@ -21,7 +21,7 @@ import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.UniqueIdAcquirer;
 
 /**
- * The N-API register. The non-registering parts are sorted out here.
+ * The N-API register. The MPI parts are sorted out here.
  * 
  * @author Niadel
  */
@@ -76,17 +76,11 @@ public final class ModRegister implements IAdvancedModRegister
 	{
 	
 	}
-	
-	@Override
-	public void addRequiredMods()
-	{
-		
-	}
 
 	@Override
-	public void addRequiredLibraries()
+	public void registerDependencies()
 	{
-		
+
 	}
 
 	@Override

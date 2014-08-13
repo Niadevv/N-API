@@ -1,22 +1,19 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
 import co.uk.niadel.mpi.asm.ASMRegistry;
+import co.uk.niadel.mpi.client.ClientRegistry;
 import co.uk.niadel.mpi.common.NAPIData;
+import co.uk.niadel.mpi.modhandler.DependenciesRegistry;
 import co.uk.niadel.mpi.modhandler.IAdvancedModRegister;
-import co.uk.niadel.mpi.util.FileUtils;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +21,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
@@ -36,13 +32,12 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.*;
 import co.uk.niadel.mpi.client.resources.ResourcesRegistry;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.potions.PotionRegistry;
-import co.uk.niadel.mpi.rendermanager.RenderRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.MCData;
 
 /**
  * This isn't actually as flexible as FML, but it does most of the same stuff. Flexibility may be improved in a later version of N-API.
- * It is worth noting that this is actually a LOT simpler than FML's loader.
+ * It is worth noting that this is actually a LOT simpler than FML's loader, which spans a LOT of files.
  * 
  * TODO Remove the need of the ModID.modid file.
  * 
@@ -52,7 +47,10 @@ import co.uk.niadel.mpi.util.MCData;
 @TestFeature(stable = false, firstAppearance = "1.0")
 public class NModLoader extends URLClassLoader
 {
-	private static final NModLoader instance = new NModLoader(new URL[0], getSystemClassLoader());
+	/**
+	 * The NModLoader instance.
+	 */
+	private static final @Internal NModLoader instance = new NModLoader(new URL[0], getSystemClassLoader());
 
 	/**
 	 * The Minecraft object.
@@ -78,13 +76,6 @@ public class NModLoader extends URLClassLoader
 	 * The directory for mods to be put in, the same folder Forge uses for convenience.
 	 */
 	public static final File mcModsDir = new File(theMinecraft.mcDataDir + "/mods/");
-	
-	/**
-	 * Where the decompressed mod zip files are copied to for later loading.
-	 *
-	 * @deprecated Soon mod loading will be done from the jar file itself.
-	 */
-	public static final @Deprecated File actModsDir = new File(theMinecraft.mcDataDir + "/act_mods/");
 
 	/**
 	 * Methods to execute on preInit.
@@ -241,7 +232,7 @@ public class NModLoader extends URLClassLoader
 			{
 				Mod nextMod = (Mod) nextContainer;
 
-				if (nextMod.getMainClass() instanceof IAdvancedModRegister)
+				if (nextMod.isAdvancedRegister())
 				{
 					nextMod.registerTransformers();
 				}
@@ -253,7 +244,12 @@ public class NModLoader extends URLClassLoader
 		while (modsLibraryIterator.hasNext())
 		{
 			//Generics for the win!
-			modsLibraryIterator.next().registerTransformers();
+			Library nextLib = modsLibraryIterator.next();
+
+			if (nextLib.isAdvancedRegister())
+			{
+				nextLib.registerTransformers();
+			}
 		}
 		
 		NAPILogHelper.log("Finished loading all ASM transformers!");
@@ -502,43 +498,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final boolean checkDependencies(IAdvancedModRegister register)
 	{
-		//DEPENDENCIES CHECKING START
-		Iterator<IModRegister> depsIterator = register.dependencies.iterator();
-		
-		while (depsIterator.hasNext())
-		{
-			if (doesModExist(depsIterator.next().getModId()))
-			{
-				continue;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		//DEPENDENCIES CHECKING END
-		
-		//LIBRARY CHECKING START
-		Iterator<IModRegister> libDepsIterator = register.libraryDependencies.keySet().iterator();
-		Iterator<Entry<IModRegister, String>> libDepsVersionsIter = register.libraryDependencies.entrySet().iterator();
-		
-		while (libDepsIterator.hasNext())
-		{
-			Entry<IModRegister, String> currEntry = libDepsVersionsIter.next();
-
-			if (mods.compareContainerVersions(mods.getContainerFromRegister(register), mods.getContainerFromRegister(currEntry.getKey())))
-			{
-				continue;
-			}
-			else
-			{
-				NAPILogHelper.logWarn("Library dependency " + currEntry.getKey().getModId() + " is outdated! Version required is " + currEntry.getValue() + ", but found version " + currEntry.getKey().getVersion() + "!");
-				return false;
-			}
-		}
-		
-		return true;
-		//LIBRARY CHECKING END
+		return DependenciesRegistry.checkDependencies(register);
 	}
 	
 	/**
@@ -595,7 +555,7 @@ public class NModLoader extends URLClassLoader
 				IModRegister currRegister = modsIterator.next().getMainClass();
 
 				currRegister.postModInit();
-				RenderRegistry.addAllEntityRenders();
+				ClientRegistry.addAllEntityRenders();
 			}
 			
 			NAPILogHelper.log("Finished calling all mod's register methods!");
