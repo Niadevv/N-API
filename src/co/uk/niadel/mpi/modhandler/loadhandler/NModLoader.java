@@ -3,8 +3,7 @@ package co.uk.niadel.mpi.modhandler.loadhandler;
 import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.client.ClientRegistry;
 import co.uk.niadel.mpi.common.NAPIData;
-import co.uk.niadel.mpi.modhandler.DependenciesRegistry;
-import co.uk.niadel.mpi.modhandler.IAdvancedModRegister;
+import co.uk.niadel.mpi.modhandler.*;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +29,6 @@ import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.*;
 import co.uk.niadel.mpi.client.resources.ResourcesRegistry;
-import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.MCData;
@@ -55,12 +53,12 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * The Minecraft object.
 	 */
-	public static Minecraft theMinecraft = Minecraft.getMinecraft();
+	public static final Minecraft theMinecraft = Minecraft.getMinecraft();
 
 	/**
 	 * List of modids that have been found and are scheduled to be loaded/have been loaded.
 	 */
-	public static ModList mods = new ModList();
+	public static final ModList mods = new ModList();
 	
 	/**
 	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods.
@@ -80,17 +78,17 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Methods to execute on preInit.
 	 */
-	public static Map<IModRegister, Method> preInitMethods = new HashMap<>();
+	public static final Map<IModRegister, Method> preInitMethods = new HashMap<>();
 	
 	/**
 	 * Methods to execute on init.
 	 */
-	public static Map<IModRegister, Method> initMethods = new HashMap<>();
+	public static final Map<IModRegister, Method> initMethods = new HashMap<>();
 	
 	/**
 	 * Methods to execute on postInit.
 	 */
-	public static Map<IModRegister, Method> postInitMethods = new HashMap<>();
+	public static final Map<IModRegister, Method> postInitMethods = new HashMap<>();
 
 	public NModLoader(URL[] urls, ClassLoader parent)
 	{
@@ -99,20 +97,12 @@ public class NModLoader extends URLClassLoader
 
 	/**
 	 * Looks for whether or not the mod with the specified modId exists.
-	 * @param modId
+	 * @param modId The modId to check for.
 	 * @return Whether the mod exists.
 	 */
 	public static final boolean doesModExist(String modId)
 	{
-		if (mods.contains(mods.getModContainerById(modId)))
-		{
-			return true;
-		}
-		else
-		{
-			//For Forge compat.
-			return forgeModids.contains(modId);
-		}
+		return mods.contains(mods.getModContainerById(modId));
 	}
 	
 	/**
@@ -141,7 +131,7 @@ public class NModLoader extends URLClassLoader
 	 * @param url The url to add.
 	 */
 	@Internal
-	private final void addUrl(URL url)
+	private void addUrl(URL url)
 	{
 		super.addURL(url);
 	}
@@ -196,20 +186,23 @@ public class NModLoader extends URLClassLoader
 			{
 				for (File currFile : mcModsDir.listFiles())
 				{
-					JarFile nextLoad = loadModAsJF(currFile);
-
-					if (nextLoad != null)
+					if (!currFile.isDirectory())
 					{
-						//Just in case.
-						loadUrl(currFile.toURI().toURL());
-						loadClasses(nextLoad);
+						JarFile nextLoad = loadModAsJF(currFile);
+
+						if (nextLoad != null)
+						{
+							//Just in case.
+							loadUrl(currFile.toURI().toURL());
+							loadClasses(nextLoad);
+						}
 					}
 				}
 
 				registerTransformers();
 			}
 		}
-		catch (IOException | ClassNotFoundException | SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
+		catch (IOException | ClassNotFoundException | SecurityException | IllegalArgumentException e)
 		{
 			e.printStackTrace();
 			NAPILogHelper.logError(e);
@@ -276,7 +269,7 @@ public class NModLoader extends URLClassLoader
 				register.postModInit();
 			}
 		}
-		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException | ClassNotFoundException e)
+		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
 		{
             NAPILogHelper.logCritical("ERROR WHILST LOADING N-API MOD REGISTER!");
 			//Crash the game - Failure to load the N-API register can break a LOT of stuff.
@@ -286,9 +279,14 @@ public class NModLoader extends URLClassLoader
 		}
 	}
 
+	/**
+	 * Gets the jar of the specified file after checking it.
+	 * @param file The file to load.
+	 * @return The jar file requested, or null if checks are not met.
+	 */
 	public static final JarFile loadModAsJF(File file)
 	{
-		if (file.getPath().endsWith(".jar"))
+		if (file.getPath().endsWith(".jar") && !file.isDirectory())
 		{
 			try
 			{
@@ -299,58 +297,61 @@ public class NModLoader extends URLClassLoader
 				e.printStackTrace();
 			}
 		}
-		else if (file.getName().startsWith("1."))
-		{
-			NAPILogHelper.logWarn("Found subfolder for mods for " + file.getName() + "! Ignoring!");
-		}
-		else
-		{
-			NAPILogHelper.logError("File " + file.getPath() + " is NOT a jar file!");
-		}
 
 		return null;
 	}
 	
 	/**
 	 * Loads the classes in the directory.
-	 * @param dir
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InstantiationException 
+	 * @param dir The directory to load the classes of.
 	 */
-	public static final void loadClasses(JarFile dir) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	public static final void loadClasses(JarFile dir)
 	{
-		String binaryName = getModBinaryName(dir);
-
-		if (binaryName.contains("mod_"))
+		try
 		{
-			NAPILogHelper.logWarn("The class with the binary name of " + binaryName + " has horrible naming practice. They should rename their class immediately!");
+			String binaryName = getModBinaryName(dir);
+
+			if (binaryName != null)
+			{
+				if (binaryName.contains("mod_"))
+				{
+					NAPILogHelper.logWarn("The class with the binary name of " + binaryName + " has horrible naming practice. They should rename their class immediately!");
+				}
+
+				IModRegister binNameInstance = (IModRegister) Class.forName(binaryName).newInstance();
+
+				processAnnotations(new Mod(binNameInstance).setFileLocation(new File(mcModsDir.toPath() + dir.getName())));
+			}
 		}
+		catch (InstantiationException | ClassNotFoundException | IllegalAccessException e)
+		{
+			NAPILogHelper.logError("Unable to load the classes for jar file " + dir.getName() + "!");
+			e.printStackTrace();
 
-		IModRegister binNameInstance = (IModRegister) Class.forName(binaryName).newInstance();
-
-		processAnnotations(new Mod(binNameInstance).setFileLocation(new File(mcModsDir.toPath() + dir.getName())));
+			if (e instanceof ClassNotFoundException)
+			{
+				NAPILogHelper.logError("It would appear that the class specified by the jar file " + dir.getName() + "'s ModID.modid file is incorrect!");
+			}
+			else
+			{
+				NAPILogHelper.logError("It would appear that the jar file " + dir.getName() + "'s main mod class has a constructor with a parameter or is protected or private! DO NOT DO THIS!");
+			}
+		}
 	}
 	
 	/**
 	 * Processes annotations, doing special things depending on annotations.
-	 * @param mod
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
+	 * @param mod The mod to process the annotations of.
 	 */
-	public static final void processAnnotations(Mod mod) throws ClassNotFoundException, InstantiationException, IllegalAccessException
+	public static final void processAnnotations(Mod mod)
 	{
 		IModRegister modRegister = mod.getMainClass();
 		Annotation[] registerAnnotations = mod.getClassAnnotations();
 		Map<Method, Annotation[]> registerMethods = mod.getMethodAnnotations();
-		
+
 		Iterator<Method> methodIterator = registerMethods.keySet().iterator();
 		Iterator<Entry<Method, Annotation[]>> annotationIterator = registerMethods.entrySet().iterator();
-		
+
 		while (methodIterator.hasNext())
 		{
 			AnnotationHandlerRegistry.callAllMethodHandlers(annotationIterator.next().getValue(), methodIterator.next(), modRegister);
@@ -374,7 +375,7 @@ public class NModLoader extends URLClassLoader
 				}
 			}
 		}
-		
+
 		NAPILogHelper.log("Finished processing annotations for the mod " + mod.modId + "!");
 	}
 	
@@ -400,14 +401,14 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Gets the mod id from the file ModID.modid in a file.
-	 * @param dirToCheck
+	 * @param modJarFile The jar file of the mod to get the main class binary name of.
 	 * @return The mod's main class binary name.
 	 */
-	public static final String getModBinaryName(JarFile dirToCheck)
+	public static final String getModBinaryName(JarFile modJarFile)
 	{
 		try
 		{
-			Scanner scanner = new Scanner(dirToCheck.getInputStream(dirToCheck.getEntry("ModID.modid")));
+			Scanner scanner = new Scanner(modJarFile.getInputStream(modJarFile.getEntry("ModID.modid")));
 			return scanner.nextLine();
 		}
 		catch (IOException e)
