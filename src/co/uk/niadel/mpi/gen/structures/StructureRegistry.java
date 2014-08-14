@@ -11,6 +11,9 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 
+/**
+ * The registry for structures.
+ */
 public final class StructureRegistry
 {
 	/**
@@ -31,7 +34,9 @@ public final class StructureRegistry
 	
 	/**
 	 * Adds a stucture that will always generate.
-	 * @param structure
+	 * @param structure The structure object to generate.
+	 * @param structureClass The class of structure.
+	 * @param shortStructId The shortened structure id of structureClass, I recommend to do something like "YOU_your_mod:SSid" for compatabillity.
 	 */
 	public static void addNonMapFDependantStructure(MapGenStructure structure, Class structureClass, String shortStructId)
 	{
@@ -40,8 +45,8 @@ public final class StructureRegistry
 	}
 	
 	/**
-	 * Adds a structure that will only generate if Map Features is enabled.
-	 * @param structure
+	 * Adds a structure that will only generate if Map Features is enabled. Same params as
+	 * @see StructureRegistry#addNonMapFDependantStructure(net.minecraft.world.gen.structure.MapGenStructure, Class, String)
 	 */
 	public static void addMapFDependantStructure(MapGenStructure structure, Class structureClass, String shortStructId)
 	{
@@ -51,12 +56,12 @@ public final class StructureRegistry
 	
 	/**
 	 * Generates all Map Feature dependant structures. I have no idea what par1 or par2
-	 * does, you'll have to check MC's source.
-	 * @param provider
-	 * @param worldObj
-	 * @param par1
-	 * @param par2
-	 * @param blocks
+	 * does, you'll have to check MC's source. They're probably chunk coords.
+	 * @param provider The provider to generate the strucutres in.
+	 * @param worldObj The world object for provider.
+	 * @param par1 I have no idea.
+	 * @param par2 I have no idea.
+	 * @param blocks An array of blocks to generate in.
 	 */
 	@Internal
 	public static void generateAllMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)
@@ -70,12 +75,8 @@ public final class StructureRegistry
 	}
 	
 	/**
-	 * Generates all non-Map Feature dependant structures.
-	 * @param provider
-	 * @param worldObj
-	 * @param par1
-	 * @param par2
-	 * @param blocks
+	 * Generates all non-Map Feature dependant structures. Params are the same as
+	 * @see StructureRegistry#generateAllMapFDependantStructures
 	 */
 	@Internal
 	public static void generateAllNonMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)

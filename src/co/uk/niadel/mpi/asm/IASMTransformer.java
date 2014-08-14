@@ -14,8 +14,8 @@ public interface IASMTransformer
 	/**
 	 * Where you manipulate the bytecodes themselves - passedBytes is a Map of the
 	 * byte[]s of the classes you requested in requestTransformedClasses.
-	 * @param className
-	 * @param bytes
+	 * @param className The fully qualified name of the curent class being transformed.
+	 * @param bytes The bytes of the class that has the binary name of className.
 	 * @return The modified bytes.
 	 * 
 	 */
@@ -27,7 +27,7 @@ public interface IASMTransformer
 	 * 
 	 * Eg. net.minecraft.block.Block, 
 	 * net.minecraft.entity.Entity, etc.
-	 * @return
+	 * @return The classes that you want transformed.
 	 */
 	public String[] requestTransformedClasses();
 }

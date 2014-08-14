@@ -26,8 +26,8 @@ public abstract class ModMeasureBase
 	
 	/**
 	 * Sets the specified measure to the specified value.
-	 * @param name
-	 * @param newValue
+	 * @param name The Measure inside this measure's name to set.
+	 * @param newValue The new value of the Measure in this measure with the name name.
 	 */
 	public void setMeasure(String name, long newValue)
 	{
@@ -36,7 +36,7 @@ public abstract class ModMeasureBase
 	
 	/**
 	 * Returns the requested measure.
-	 * @param name
+	 * @param name The name of the measure to get.
 	 * @return The requested measure.
 	 */
 	public Measure getMeasure(String name)
@@ -63,13 +63,17 @@ public abstract class ModMeasureBase
 	
 	/**
 	 * Sets this measure's Measure array.
-	 * @param newMeasures
+	 * @param newMeasures The new Measures of this measure.
 	 */
 	public void setMeasures(Measure[] newMeasures)
 	{
 		this.measures = newMeasures;
 	}
 
+	/**
+	 * Sets the associated block of this measure, if any.
+	 * @param block The new associated block of this measure.
+	 */
 	public void setAssociatedBlock(Block block)
 	{
 		this.associatedBlock = block;
@@ -77,7 +81,7 @@ public abstract class ModMeasureBase
 	
 	/**
 	 * Increments the value of the smallest Measure in measures then updates all of the measures.
-	 * @param valueToIncrementBy
+	 * @param valueToIncrementBy The value to increment by.
 	 */
 	public void incrementMeasure(long valueToIncrementBy)
 	{
@@ -87,7 +91,7 @@ public abstract class ModMeasureBase
 	
 	/**
 	 * Subtracts the value of the smallest Measure in measures then updates all of the Measure objects.
-	 * @param valueToDecrementBy
+	 * @param valueToDecrementBy The value to decrement by.
 	 */
 	public void decrementMeasure(long valueToDecrementBy)
 	{

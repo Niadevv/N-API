@@ -20,6 +20,11 @@ public class ModEnergyMeasure extends ModMeasureBase
 		super(measures);
 	}
 
+	/**
+	 * One of the constructors.
+	 * @param measures The measures that are part of this measure.
+	 * @param containerFillByValue How much a container using this measure will be incremented on it's .measure.incrementMeasure() method.
+	 */
 	public ModEnergyMeasure(Measure[] measures, int containerFillByValue)
 	{
 		this(measures);

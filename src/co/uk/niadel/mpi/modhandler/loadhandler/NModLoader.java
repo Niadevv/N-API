@@ -249,8 +249,7 @@ public class NModLoader extends URLClassLoader
 	}
 	
 	/**
-	 * Only ever used to load the N-API ModRegister, so the regular checks are ignored. Don't ever call this outside of
-	 * the loader even though you have the ability to with the Reflection stuff.
+	 * Only ever used to load the N-API ModRegister, so the regular checks are ignored.
 	 * @param theClass The class that is loaded.
 	 */
 	private static final void initNAPIRegister(Class<? extends IAdvancedModRegister> theClass)

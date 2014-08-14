@@ -31,8 +31,8 @@ public final class Measure
 	
 	/**
 	 * Initialise the Measure at 0.
-	 * @param name
-	 * @param cutOffPointMax
+	 * @param name The name of this measure.
+	 * @param cutOffPointMax The maximum value this measure can be before it skips over to the next measure.
 	 */
 	public Measure(String name, long cutOffPointMax)
 	{
@@ -43,7 +43,7 @@ public final class Measure
 	
 	/**
 	 * Increments the value by valueToAdd.
-	 * @param valueToAdd
+	 * @param valueToAdd How much to increment this measure by.
 	 */
 	public final void addToValue(long valueToAdd)
 	{
@@ -52,7 +52,7 @@ public final class Measure
 	
 	/**
 	 * Decrements value by valueToSubtract.
-	 * @param valueToSubtract
+	 * @param valueToSubtract How much do decrement this measure by.
 	 */
 	public final void subtractFromValue(long valueToSubtract)
 	{
@@ -61,7 +61,7 @@ public final class Measure
 	
 	/**
 	 * Sets value to newValue.
-	 * @param newValue
+	 * @param newValue What this measure should be set to.
 	 */
 	public final void setValue(long newValue)
 	{
@@ -70,7 +70,7 @@ public final class Measure
 	
 	/**
 	 * Returns this Measure's value.
-	 * @return This measures value.
+	 * @return This measure's value.
 	 */
 	public final long getValue()
 	{
@@ -79,7 +79,7 @@ public final class Measure
 	
 	/**
 	 * Returns the name of the Measure.
-	 * @return
+	 * @return This measure's name.
 	 */
 	public final String getName()
 	{

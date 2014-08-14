@@ -55,6 +55,9 @@ public class Mod implements IModContainer
 	 */
 	public Map<Method, Annotation[]> methodAnnotations = new HashMap<>();
 
+	/**
+	 * Whether or not this mod's register is an advanced register.
+	 */
 	public boolean isAdvancedRegister;
 
 	/**
@@ -88,16 +91,20 @@ public class Mod implements IModContainer
 	
 	/**
 	 * This constructor is recommended as it's the least effort to use.
-	 * @param modId
-	 * @param version
-	 * @param mainClass
+	 * @param modId The modId of mainClass.
+	 * @param version The version of mainClass.
+	 * @param mainClass The mod register class.
 	 */
 	@RecommendedMethod
 	public Mod(String modId, String version, IModRegister mainClass)
 	{
 		this(modId, version, mainClass, mainClass.getClass().getAnnotations(), getMethodAnnotationsOfRegister(mainClass));
 	}
-	
+
+	/**
+	 * One of the Mod constructors. Has the least args.
+	 * @param mainClass The mod register class.
+	 */
 	public Mod(IModRegister mainClass)
 	{
 		this(mainClass.getModId(), mainClass.getVersion(), mainClass, mainClass.getClass().getAnnotations(), getMethodAnnotationsOfRegister(mainClass));
@@ -105,15 +112,20 @@ public class Mod implements IModContainer
 
 	/**
 	 * Sets where this mod is found on the file system. Returns this object for ease in constructing.
-	 * @param fileLocation
-	 * @return
+	 * @param fileLocation The location of this mod on the file system.
+	 * @return This Mod for use in construction.
 	 */
 	public Mod setFileLocation(File fileLocation)
 	{
 		this.fileLocation = fileLocation;
 		return this;
 	}
-	
+
+	/**
+	 * Gets the method annotations of the specified register.
+	 * @param mainClass The mod register class to get the annotations of.
+	 * @return A Map of each Method to it's Annotations.
+	 */
 	public static Map<Method, Annotation[]> getMethodAnnotationsOfRegister(IModRegister mainClass)
 	{
 		Map<Method, Annotation[]> methodAnnotations = new HashMap<>();
@@ -125,7 +137,11 @@ public class Mod implements IModContainer
 		
 		return methodAnnotations;
 	}
-	
+
+	/**
+	 * Gets the main class of this Mod.
+	 * @return This Mod's mod register.
+	 */
 	public IModRegister getMainClass()
 	{
 		if (this.isAdvancedRegister)
@@ -138,6 +154,10 @@ public class Mod implements IModContainer
 		}
 	}
 
+	/**
+	 * Returns whether or not this Mod's register is an advanced register.
+	 * @return Whether or not this Mod's register is an advanced register.
+	 */
 	public boolean isAdvancedRegister()
 	{
 		return this.isAdvancedRegister;
@@ -145,7 +165,7 @@ public class Mod implements IModContainer
 	
 	/**
 	 * Return this mod's mod id.
-	 * @return
+	 * @return This Mod's register's mod id.
 	 */
 	public String getModId()
 	{
@@ -154,7 +174,7 @@ public class Mod implements IModContainer
 	
 	/**
 	 * Returns this mod's version.
-	 * @return
+	 * @return This Mod's register's version.
 	 */
 	public String getVersion()
 	{
@@ -163,7 +183,7 @@ public class Mod implements IModContainer
 	
 	/**
 	 * Returns the annotations on this class.
-	 * @return
+	 * @return This Mod's register's class annotations.
 	 */
 	public Annotation[] getClassAnnotations()
 	{

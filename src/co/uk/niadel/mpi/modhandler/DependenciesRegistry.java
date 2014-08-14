@@ -12,8 +12,11 @@ import java.util.Map;
 /**
  * Used for adding dependencies.
  */
-public class DependenciesRegistry
+public final class DependenciesRegistry
 {
+	/**
+	 * The dependencies that have been registered. Key is the register, value is the list of modid dependencies for the key.
+	 */
 	public static Map<IAdvancedModRegister, List<String>> dependenciesMap = new HashMap<>();
 
 	/**
@@ -21,6 +24,11 @@ public class DependenciesRegistry
 	 */
 	public static Map<IAdvancedModRegister, List<Map<String, String>>> libDependenciesMap = new HashMap<>();
 
+	/**
+	 * Adds a single dependency.
+	 * @param register The register that will have the dependency.
+	 * @param dependency The dependency modid.
+	 */
 	public static final void addDependency(IAdvancedModRegister register, String dependency)
 	{
 		if (!dependenciesMap.containsKey(register))
@@ -33,6 +41,11 @@ public class DependenciesRegistry
 		}
 	}
 
+	/**
+	 * Adds a group of dependencies at once.
+	 * @param register The register that will have the dependencies.
+	 * @param dependencies The dependencies to register.
+	 */
 	public static final void addDependencies(IAdvancedModRegister register, String... dependencies)
 	{
 		for (String dependency : dependencies)
@@ -41,6 +54,12 @@ public class DependenciesRegistry
 		}
 	}
 
+	/**
+	 * Adds a library dependency.
+	 * @param register The register that will have the dependency.
+	 * @param libId The modid of the library dependency.
+	 * @param minLibVersion The minimum version the library dependency has to be.
+	 */
 	public static final void addLibDependency(IAdvancedModRegister register, String libId, String minLibVersion)
 	{
 		if (!libDependenciesMap.containsKey(register))
@@ -58,6 +77,11 @@ public class DependenciesRegistry
 		}
 	}
 
+	/**
+	 * Gets whether or not the specified register has any dependencies.
+	 * @param register The register to check.
+	 * @return Whether or not the specified register has any dependencies.
+	 */
 	public static final boolean doesRegisterHaveDependencies(IAdvancedModRegister register)
 	{
 		return dependenciesMap.containsKey(register) || libDependenciesMap.containsKey(register);
@@ -65,8 +89,8 @@ public class DependenciesRegistry
 
 	/**
 	 * Checks the dependencies of the specified register.
-	 * @param registerToCheck
-	 * @return
+	 * @param registerToCheck The mod register to check the dependencies of.
+	 * @return Whether or not the dependencies check was fully completed.
 	 */
 	@Internal
 	public static final boolean checkDependencies(IAdvancedModRegister registerToCheck)

@@ -25,7 +25,11 @@ public enum EnumBiomeType
 	{
 		this.value = number;
 	}
-	
+
+	/**
+	 * Gets the internal value used by BiomeRegistry.
+	 * @return The internal value used by BiomeRegistry.
+	 */
 	public int getValue()
 	{
 		return this.value;

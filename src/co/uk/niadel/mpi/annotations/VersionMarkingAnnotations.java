@@ -12,6 +12,7 @@ public final class VersionMarkingAnnotations
 {
 	/**
 	 * Marks a feature as an test feature.
+	 * @author Niadel
 	 */
 	@Retention(RetentionPolicy.SOURCE)
 	@Documented

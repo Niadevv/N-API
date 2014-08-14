@@ -7,6 +7,9 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.*;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
+/**
+ * The annotation handler used by N-API.
+ */
 public class AnnotationHandlerNAPI implements IAnnotationHandler
 {
 	@Override

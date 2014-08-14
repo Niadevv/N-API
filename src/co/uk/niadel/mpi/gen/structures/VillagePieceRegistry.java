@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 
+/**
+ * The registry for village houses.
+ */
 public final class VillagePieceRegistry
 {
 	/**

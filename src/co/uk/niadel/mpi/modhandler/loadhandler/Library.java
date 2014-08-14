@@ -2,9 +2,9 @@ package co.uk.niadel.mpi.modhandler.loadhandler;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import co.uk.niadel.mpi.modhandler.DependenciesRegistry;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 
 public class Library extends Mod implements IModContainer
@@ -12,7 +12,7 @@ public class Library extends Mod implements IModContainer
 	/**
 	 * A list of mod registers that this library depends on.
 	 */
-	public Set<IModRegister> dependencies = new HashSet<>();
+	public List<String> dependencies = new ArrayList<>();
 	
 	public Library(String modId, String version, IModRegister mainClass)
 	{
@@ -25,7 +25,7 @@ public class Library extends Mod implements IModContainer
 
 		if (this.isAdvancedRegister())
 		{
-			this.dependencies = mainClassAdvanced.dependencies;
+			this.dependencies = DependenciesRegistry.dependenciesMap.get(this.mainClassAdvanced);
 		}
 	}
 	
@@ -35,11 +35,11 @@ public class Library extends Mod implements IModContainer
 
 		if (this.isAdvancedRegister())
 		{
-			this.dependencies = mainClassAdvanced.dependencies;
+			this.dependencies = DependenciesRegistry.dependenciesMap.get(this.mainClassAdvanced);
 		}
 	}
 	
-	public Set<IModRegister> getDependencies()
+	public List<String> getDependencies()
 	{
 		return this.dependencies;
 	}

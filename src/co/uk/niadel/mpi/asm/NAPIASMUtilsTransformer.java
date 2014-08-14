@@ -32,15 +32,4 @@ public class NAPIASMUtilsTransformer implements IASMTransformer
 	{
 		return new String[] {};
 	}
-
-	/**
-	 * Adds the necessary transformations to the specified annotation handler.
-	 * @param className
-	 * @param bytes
-	 * @return
-	 */
-	public byte[] modifyAnnotationHandler(String className, byte[] bytes)
-	{
-		return bytes;
-	}
 }

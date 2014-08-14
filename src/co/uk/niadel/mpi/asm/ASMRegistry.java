@@ -11,6 +11,9 @@ import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.mpi.util.ArrayUtils;
 import co.uk.niadel.mpi.util.ByteManipulationUtils;
 
+/**
+ * Where your register stuff to do with ASM in N-API.
+ */
 public final class ASMRegistry 
 {
 	/**
@@ -26,7 +29,7 @@ public final class ASMRegistry
 	
 	/**
 	 * Adds an ASM transformer to the registry.
-	 * @param transformer
+	 * @param transformer The transformer to register.
 	 */
 	public static final void registerTransformer(IASMTransformer transformer)
 	{
@@ -86,18 +89,6 @@ public final class ASMRegistry
 		}
 	}
 
-	private static final byte[] expandBytes(byte[] bytes)
-	{
-		byte[] newBytes = new byte[bytes.length + 4096];
-
-		for (int i = 0; i == bytes.length; i++)
-		{
-			newBytes[i] = bytes[i];
-		}
-
-		return newBytes;
-	}
-	
 	/**
 	 * Adds a class to exclude from transforming. You can add important MPI classes to this.
 	 * @param excludedName
@@ -107,6 +98,11 @@ public final class ASMRegistry
 		excludedClasses.add(excludedName);
 	}
 
+	/**
+	 * Gets whether or not the specified class is excluded from ASM transformers.
+	 * @param name The name of the class to check, the fully qualified name.
+	 * @return Whether or not the class is excluded.
+	 */
 	public static final boolean isClassExcluded(String name)
 	{
 		Iterator<String> exclusionIter = excludedClasses.iterator();

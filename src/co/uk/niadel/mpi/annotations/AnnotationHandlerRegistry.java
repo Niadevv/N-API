@@ -18,16 +18,16 @@ public final class AnnotationHandlerRegistry
 	/**
 	 * A Set that contains the Annotation Handlers.
 	 */
-	public static Set<IAnnotationHandler> annotationHandlers = new HashSet<>();
+	private static Set<IAnnotationHandler> annotationHandlers = new HashSet<>();
 	
 	/**
 	 * Handlers that handle method annotations in Mod Registers.
 	 */
-	public static Set<IAnnotationHandler> methodAnnotationHandlers = new HashSet<>();
+	private static Set<IAnnotationHandler> methodAnnotationHandlers = new HashSet<>();
 	
 	/**
-	 * Adds an annotation handler to annotationHandlers.
-	 * @param handler
+	 * Registers an annotation handler.
+	 * @param handler The handler to register.
 	 */
 	public static final void addAnnotationHandler(IAnnotationHandler handler)
 	{
@@ -36,7 +36,7 @@ public final class AnnotationHandlerRegistry
 	
 	/**
 	 * Adds a handler that handles method annotations in Mod Registers.
-	 * @param handler
+	 * @param handler The handler to register.
 	 */
 	public static final void addMethodAnnotationHandler(IAnnotationHandler handler)
 	{
@@ -45,9 +45,9 @@ public final class AnnotationHandlerRegistry
 	
 	/**
 	 * Calls all method annotation handlers.
-	 * @param annotations
-	 * @param method
-	 * @param register
+	 * @param annotations The annotations of method.
+	 * @param method The method that has the annotations of annotations.
+	 * @param register The register that owns method.
 	 */
 	@Internal
 	public static final void callAllMethodHandlers(Annotation[] annotations, Method method, IModRegister register)
@@ -60,11 +60,20 @@ public final class AnnotationHandlerRegistry
 	
 	/**
 	 * Returns the annotation handlers in a Set.
-	 * @return
+	 * @return annotationHandlers
 	 */
 	@Internal
 	public static final Set<IAnnotationHandler> getAnnotationHandlers()
 	{
 		return annotationHandlers;
+	}
+
+	/**
+	 * Gets the method annotation handlers.
+	 * @return methodAnnotationHandlers
+	 */
+	public static final Set<IAnnotationHandler> getMethodAnnotationHandlers()
+	{
+		return methodAnnotationHandlers;
 	}
 }

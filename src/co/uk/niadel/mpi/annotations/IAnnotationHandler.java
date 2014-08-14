@@ -15,16 +15,16 @@ public interface IAnnotationHandler
 	 * Where to handle the register and class. This is quite a powerful feature for
 	 * Library and MPI makers. However, it can lead to crashes, sometimes.
 	 * 
-	 * @param annotation
-	 * @param modRegister
+	 * @param annotation The currently parsed annotation of modRegister.
+	 * @param modRegister The mod register that is being parsed for annotations.
 	 */
 	public void handleAnnotation(Annotation annotation, IModRegister modRegister);
 	
 	/**
 	 * Handles methods with annotations.
-	 * @param annotations
-	 * @param theMethod
-	 * @param modRegister
+	 * @param annotations The annotations of theMethod.
+	 * @param theMethod The method currently being parsed for annotations in modRegister.
+	 * @param modRegister The mod register that is being parsed for annotations.
 	 */
 	public void handleMethodAnnotations(Annotation[] annotations, Method theMethod, IModRegister modRegister);
 }

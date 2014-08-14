@@ -11,6 +11,9 @@ import co.uk.niadel.mpi.modhandler.ModRegister;
  */
 public final class ItemRegistry
 {
+	/**
+	 * The vanilla item registry.
+	 */
 	public static final RegistryNamespaced registry = Item.itemRegistry;
 	
 	/**
@@ -20,6 +23,9 @@ public final class ItemRegistry
 	
 	/**
 	 * Registers the item itself. Like FML, it handles numeric ids internally.
+	 *
+	 * @param nonNumericId The id to register the item under.
+	 * @param object The Item to register.
 	 */
 	public static final void registerItem(String nonNumericId, Item object)
 	{

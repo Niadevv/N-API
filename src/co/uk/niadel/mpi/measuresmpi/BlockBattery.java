@@ -26,11 +26,19 @@ public class BlockBattery extends BlockHasEnergy
 		this(material, measure, 0);
 	}
 
+	/**
+	 * 'Charges' this block.
+	 * @param theCharge How much to charge this battery by.
+	 */
 	public void charge(long theCharge)
 	{
 		this.measure.incrementMeasure(theCharge - this.resistance);
 	}
 
+	/**
+	 * 'Drains' this block.
+	 * @param drainAmount The amount to drain this block by.
+	 */
 	public void drain(long drainAmount)
 	{
 		this.measure.decrementMeasure(drainAmount);

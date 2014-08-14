@@ -56,6 +56,12 @@ public class Launch
 			argList.add(NAPIData.MC_VERSION);
 		}
 
-		return argList.toArray(new String[0]);
+		if (!argList.contains("--username"))
+		{
+			argList.add("--username");
+			argList.add("N-APIDev");
+		}
+
+		return argList.toArray(new String[argList.size()]);
 	}
 }

@@ -6,6 +6,9 @@ import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @TestFeature(firstAppearance = "1.0")
 /**
  * A system for registering biomes. At time of documenting, Forge has no obvious way of adding Biomes. 
@@ -14,81 +17,89 @@ import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
  */
 public final class BiomeRegistry 
 {
-	//Limited, but shouldn't be a problem as not even Biomes O' Plenty adds 10000 biomes :P I think it adds 80.
-	static BiomeGenBase[] newHotBiomes = new BiomeGenBase[10000];
-	static BiomeGenBase[] newTemperateBiomes = new BiomeGenBase[10000];
-	static BiomeGenBase[] newChillyBiomes = new BiomeGenBase[10000];
-	static BiomeGenBase[] newColdBiomes = new BiomeGenBase[10000];
+	/**
+	 * The biomes added by mods that are generated next to biomes like deserts.
+	 */
+	static List<BiomeGenBase> newHotBiomes = new ArrayList<>();
+
+	/**
+	 * The biomes added by mods that are generated next to biomes in the temperate category.
+	 */
+	static List<BiomeGenBase> newTemperateBiomes = new ArrayList<>();
+
+	/**
+	 * The biomes added by mods that belong in the chilly category.
+	 */
+	static List<BiomeGenBase> newChillyBiomes = new ArrayList<>();
+
+	/**
+	 * The biomes added by mods that belong in the cold category.
+	 */
+	static List<BiomeGenBase> newColdBiomes = new ArrayList<>();
 	
 	/**
 	 * Registers a biome.
-	 * @param biomeToAdd
-	 * @param biomeType
-	 * @throws NoSuchFieldException
-	 * @throws SecurityException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 * @param biomeToAdd The biome that is being added.
+	 * @param biomeType The type of biome that biomeToAdd is intended to be.
 	 */
-	public static final void registerBiome(BiomeGenBase biomeToAdd, EnumBiomeType biomeType) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public static final void registerBiome(BiomeGenBase biomeToAdd, EnumBiomeType biomeType)
 	{	
 		switch (biomeType.getValue())
 		{
 			case 0:
-				
-				newHotBiomes[newHotBiomes.length] = biomeToAdd;
+				newHotBiomes.add(biomeToAdd);
 				break;
 			
 			case 1:
-				
-				newTemperateBiomes[newTemperateBiomes.length] = biomeToAdd;
+				newTemperateBiomes.add(biomeToAdd);
 				break;
 			
 			case 2:
-				
-				newChillyBiomes[newChillyBiomes.length] = biomeToAdd;
+				newChillyBiomes.add(biomeToAdd);
 				break;
 				
 			case 3:
-				
-				newColdBiomes[newColdBiomes.length] = biomeToAdd;
+				newColdBiomes.add(biomeToAdd);
 				break;
 			
 			case 4:
-				
-				newColdBiomes[newColdBiomes.length] = biomeToAdd;
-				newChillyBiomes[newChillyBiomes.length] = biomeToAdd;
-				newTemperateBiomes[newTemperateBiomes.length] = biomeToAdd;
-				newHotBiomes[newHotBiomes.length] = biomeToAdd;
+				newColdBiomes.add(biomeToAdd);
+				newChillyBiomes.add(biomeToAdd);
+				newTemperateBiomes.add(biomeToAdd);
+				newHotBiomes.add(biomeToAdd);
 				break;
 		}
 	}
-	
+
+	/**
+	 * Registers all of the biomes added by mods to vanilla.
+	 */
 	@Internal
 	public static final void registerAllBiomes(GenLayerBiome biomeGenLayer)
 	{
-		BiomeGenBase[] hotBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151623_c");
-		BiomeGenBase[] temperateBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151621_d");
-		BiomeGenBase[] chillyBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151622_e");
-		BiomeGenBase[] coldBiomes = (BiomeGenBase[]) ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151620_f");
+		BiomeGenBase[] hotBiomes = ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151623_c");
+		BiomeGenBase[] temperateBiomes = ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151621_d");
+		BiomeGenBase[] chillyBiomes = ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151622_e");
+		BiomeGenBase[] coldBiomes = ReflectionManipulateValues.getValue(GenLayerBiome.class, biomeGenLayer, "field_151620_f");
 			
 		for (int i = 0; i == hotBiomes.length; i++)
 		{
-			hotBiomes[hotBiomes.length] = newHotBiomes[i];
+			hotBiomes[hotBiomes.length] = newHotBiomes.get(i);
 		}
 		
 		for (int i = 0; i == temperateBiomes.length; i++)
 		{
-			temperateBiomes[temperateBiomes.length] = newTemperateBiomes[i];
+			temperateBiomes[temperateBiomes.length] = newTemperateBiomes.get(i);
 		}
 		
 		for (int i = 0; i == chillyBiomes.length; i++)
 		{
-			chillyBiomes[chillyBiomes.length] = newChillyBiomes[i];
+			chillyBiomes[chillyBiomes.length] = newChillyBiomes.get(i);
 		}
 		
 		for (int i = 0; i == coldBiomes.length; i++)
 		{
-			coldBiomes[coldBiomes.length] = newColdBiomes[i];
+			coldBiomes[coldBiomes.length] = newColdBiomes.get(i);
 		}
 		
 		ReflectionManipulateValues.setValue(GenLayerBiome.class, biomeGenLayer, "field_151620_f", coldBiomes);

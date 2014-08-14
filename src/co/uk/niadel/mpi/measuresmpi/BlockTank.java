@@ -43,6 +43,10 @@ public class BlockTank extends BlockHasFluid implements ITileEntityProvider
 		return this.tankTE;
 	}
 
+	/**
+	 * 'Fills' this block.
+	 * @param fillValue The amount to fill this block by.
+	 */
 	public void fill(long fillValue)
 	{
 		if (this.canFill() && this.tankTE != null)
@@ -51,6 +55,10 @@ public class BlockTank extends BlockHasFluid implements ITileEntityProvider
 		}
 	}
 
+	/**
+	 * 'Drains' this block.
+	 * @param drainValue How much to drain this block.
+	 */
 	public void drain(long drainValue)
 	{
 		if (this.canDrain() && this.tankTE != null)
@@ -59,11 +67,19 @@ public class BlockTank extends BlockHasFluid implements ITileEntityProvider
 		}
 	}
 
+	/**
+	 * Gets whether or not this block can be filled.
+	 * @return Whether or not this block can be filled.
+	 */
 	public boolean canFill()
 	{
 		return true;
 	}
 
+	/**
+	 * Gets whether or not this block can be drained.
+	 * @return Whether or not this block can be filled.
+	 */
 	public boolean canDrain()
 	{
 		return true;

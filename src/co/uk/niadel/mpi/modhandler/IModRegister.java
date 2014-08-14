@@ -35,13 +35,13 @@ public interface IModRegister
 	
 	/**
 	 * Returns the version of the mod.
-	 * @return See above.
+	 * @return This mod's version.
 	 */
 	public String getVersion();
 	
 	/**
 	 * Returns the mod id of this mod.
-	 * @return See above.
+	 * @return This mod's modid.
 	 */
 	public String getModId();
 }
