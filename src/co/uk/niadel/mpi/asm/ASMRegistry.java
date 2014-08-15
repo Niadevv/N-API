@@ -25,7 +25,7 @@ public final class ASMRegistry
 	 * A list of fully qualified class names that cannot be transformed, at least via the
 	 * N-API approved method.
 	 */
-	public static List<String> excludedClasses = new ArrayList<>();
+	public static final List<String> excludedClasses = new ArrayList<>();
 	
 	/**
 	 * Adds an ASM transformer to the registry.
@@ -43,16 +43,30 @@ public final class ASMRegistry
 	@Internal
 	public static final void invokeAllTransformers()
 	{
-		try
+		Iterator<IASMTransformer> asmIterator = asmTransformers.iterator();
+
+		while (asmIterator.hasNext())
 		{
-			Iterator<IASMTransformer> asmIterator = asmTransformers.iterator();
+			IASMTransformer currTransformer = asmIterator.next();
+			String[] requestedClasses = currTransformer.requestTransformedClasses();
+			//Map<String, byte[]> bytesMap = new HashMap<>();
 
-			while (asmIterator.hasNext())
+			for (String currClassName : requestedClasses)
 			{
-				IASMTransformer currTransformer = (IASMTransformer) asmIterator.next();
-				String[] requestedClasses = currTransformer.requestTransformedClasses();
-				Map<String, byte[]> bytesMap = new HashMap<>();
+				if (!(currTransformer.getClass().getName() == NAPIASMNecessityTransformer.class.getName()) && !(currTransformer.getClass().getName() == NAPIASMUtilsTransformer.class.getName()))
+				{
+					if (ASMRegistry.isClassExcluded(currClassName))
+					{
+						currTransformer.manipulateBytecodes(currClassName);
+					}
+				}
+				else
+				{
+					currTransformer.manipulateBytecodes(currClassName);
+				}
+			}
 
+				/* Old code kept in case byte are needed again.
 				for (String currClassName : requestedClasses)
 				{
 					if (!(currTransformer.getClass().getName() == NAPIASMNecessityTransformer.class.getName()) && !(currTransformer.getClass().getName() == NAPIASMUtilsTransformer.class.getName()))
@@ -61,7 +75,7 @@ public final class ASMRegistry
 						 * if they do, they could break a LOT of stuff. If they want a feature, they can ask for it
 						 * on either the post or the GitHub (or do a PR on the GitHub). Only I 
 						 * should edit N-API's files, really, mainly because I have some grasp of 
-						 * what I'm doing - Anyone else touching N-API will likely kill all mods using N-API.*/
+						 * what I'm doing - Anyone else touching N-API will likely kill all mods using N-API.*
 						if (!currClassName.startsWith("co.uk.niadel.mpi") && !isClassExcluded(currClassName))
 						{
 							bytesMap.put(currClassName, ByteManipulationUtils.toByteArray(Class.forName(currClassName)));
@@ -80,12 +94,7 @@ public final class ASMRegistry
 					Entry<String, byte[]> currBytes = bytesIterator.next();
 					byte[] transformedBytes = currTransformer.manipulateBytecodes(currBytes.getKey(), currBytes.getValue());
 					NModLoader.defineClass(currBytes.getKey(), transformedBytes);
-				}
-			}
-		}
-		catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
+				}*/
 		}
 	}
 

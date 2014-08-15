@@ -13,13 +13,12 @@ public interface IASMTransformer
 {	
 	/**
 	 * Where you manipulate the bytecodes themselves - passedBytes is a Map of the
-	 * byte[]s of the classes you requested in requestTransformedClasses.
+	 * byte[]s of the classes you requested in requestTransformedClasses. You can use ClassReader's String based constructor.
 	 * @param className The fully qualified name of the curent class being transformed.
-	 * @param bytes The bytes of the class that has the binary name of className.
 	 * @return The modified bytes.
 	 * 
 	 */
-	public byte[] manipulateBytecodes(String className, byte[] bytes);
+	public byte[] manipulateBytecodes(String className);
 	
 	/**
 	 * Necessary for the transformer to work, this is where you tell the loader that

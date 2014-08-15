@@ -8,7 +8,7 @@ import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 public class NAPIASMUtilsTransformer implements IASMTransformer
 {
 	@Override
-	public byte[] manipulateBytecodes(String className, byte[] bytes)
+	public byte[] manipulateBytecodes(String className)
 	{
 		/**
 		try
@@ -24,7 +24,7 @@ public class NAPIASMUtilsTransformer implements IASMTransformer
 		}
 		*/
 
-		return bytes;
+		return null;
 	}
 
 	@Override

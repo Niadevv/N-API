@@ -81,7 +81,10 @@ public interface NAPIData
 			"co.uk.niadel.mpi.util.MCData",
 			"net.minecraft.util.ReportedException",
 			"net.minecraft.entity.Entity",
-			"net.minecraft.entity.EntityLivingBase"};
+			"net.minecraft.entity.EntityLivingBase",
+			"net.minecraft.world.WorldProvider",
+			"net.minecraft.util.ObjectIntIdentityMap"
+	};
 	
 	/**
 	 * List of obfuscated classes used in NAPIASMTransformer.
