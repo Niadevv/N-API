@@ -7,7 +7,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.EventHandlerMethod;
+
+import co.uk.niadel.mpi.asm.ASMRegistry;
+import co.uk.niadel.mpi.asm.NAPIASMEventHandlerTransformer;
+import co.uk.niadel.mpi.events.EventHandlerMethod;
+import co.uk.niadel.mpi.modhandler.ModRegister;
 import co.uk.niadel.mpi.util.ArrayUtils;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 
@@ -33,6 +37,9 @@ public final class EventFactory
 
 	public static final void fireEvent(IEvent event)
 	{
+		NAPIASMEventHandlerTransformer.setCurrentEvent(event);
+
+		/* OLD REFLECTION CODE
 		Iterator<Entry<Object, Method[]>> handlersIter = handlers.entrySet().iterator();
 
 		while (handlersIter.hasNext())
@@ -57,7 +64,7 @@ public final class EventFactory
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	public static final boolean isEventMethod(Method method)
@@ -97,5 +104,13 @@ public final class EventFactory
 	public static final Map<Object, Method[]> getHandlers()
 	{
 		return handlers;
+	}
+
+	/**
+	 * SPECIAL: Used by NAPIASMEventHandlerTransformer
+	 */
+	public static final void callAllEventHandlers()
+	{
+
 	}
 }

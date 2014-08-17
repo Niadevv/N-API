@@ -22,5 +22,5 @@ public interface IAdvancedModRegister extends IModRegister
 	/**
 	 * Where you add annotation handlers.
 	 */
-	public void registerAnnotationHandlers();
+	public void registerEventHandlers();
 }

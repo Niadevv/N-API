@@ -3,6 +3,7 @@ package co.uk.niadel.mpi.modhandler.loadhandler;
 import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.client.ClientRegistry;
 import co.uk.niadel.mpi.common.NAPIData;
+import co.uk.niadel.mpi.init.Launch;
 import co.uk.niadel.mpi.modhandler.*;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
@@ -90,6 +91,11 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final Map<IModRegister, Method> postInitMethods = new HashMap<>();
 
+	/**
+	 * Whether or not N-API should initialise - False if the user's Java version is not 7.
+	 */
+	public static boolean shouldInit = true;
+
 	public NModLoader(URL[] urls, ClassLoader parent)
 	{
 		super(urls, parent);
@@ -115,15 +121,9 @@ public class NModLoader extends URLClassLoader
 		return mods.doesListContainLibrary(modId);
 	}
 	
-	@Internal
-	private final void loadClass(String className, byte[] bytes)
-	{
-		super.defineClass(className, bytes, 0, bytes.length);
-	}
-	
 	public static final void defineClass(String className, byte[] bytes)
 	{
-		instance.loadClass(className, bytes);
+		instance.defineClass(className, bytes, 0, bytes.length);
 	}
 	
 	/**
@@ -170,42 +170,48 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void loadModsFromDir()
 	{
-		try
+		if (Launch.shouldInit)
 		{
-			if (!mcModsDir.exists())
+			try
 			{
-				mcModsDir.mkdir();
-				NAPILogHelper.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
-			}
-			
-			loadUrl(mcModsDir.toURI().toURL());
-			
-			initNAPIRegister((Class<? extends IAdvancedModRegister>) Class.forName(MCData.getNAPIRegisterClass()));
-
-			if (mcModsDir.listFiles() != null)
-			{
-				for (File currFile : mcModsDir.listFiles())
+				if (!mcModsDir.exists())
 				{
-					if (!currFile.isDirectory())
-					{
-						JarFile nextLoad = loadModAsJF(currFile);
-
-						if (nextLoad != null)
-						{
-							//Just in case.
-							loadUrl(currFile.toURI().toURL());
-							loadClasses(nextLoad);
-						}
-					}
+					mcModsDir.mkdir();
+					NAPILogHelper.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 				}
 
-				registerTransformers();
+				loadUrl(mcModsDir.toURI().toURL());
+
+				initNAPIRegister((Class<? extends IAdvancedModRegister>) Class.forName(MCData.getNAPIRegisterClass()));
+
+				if (mcModsDir.listFiles() != null)
+				{
+					for (File currFile : mcModsDir.listFiles())
+					{
+						if (!currFile.isDirectory())
+						{
+							JarFile nextLoad = loadModAsJF(currFile);
+
+							if (nextLoad != null)
+							{
+								//Just in case.
+								loadUrl(currFile.toURI().toURL());
+								loadClasses(nextLoad);
+							}
+						}
+					}
+
+					registerTransformers();
+				}
+			} catch (IOException | ClassNotFoundException | SecurityException | IllegalArgumentException e)
+			{
+				e.printStackTrace();
+				NAPILogHelper.logError(e);
 			}
 		}
-		catch (IOException | ClassNotFoundException | SecurityException | IllegalArgumentException e)
+		else
 		{
-			e.printStackTrace();
-			NAPILogHelper.logError(e);
+			shouldInit = false;
 		}
 	}
 	
@@ -260,7 +266,7 @@ public class NModLoader extends URLClassLoader
 
 			if (register.getModId() == NAPIData.MODID)
 			{
-				register.registerAnnotationHandlers();
+				register.registerEventHandlers();
 				register.registerTransformers();
 				processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
 				register.preModInit();
@@ -380,7 +386,7 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Converts an IModRegister into a Mod object and puts that Mod object into mods.
-	 * @param mod
+	 * @param mod The mod to load.
 	 */
 	public static final void loadMod(IModRegister mod)
 	{
@@ -390,7 +396,7 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Adds the mod to mods.
-	 * @param mod
+	 * @param mod The mod to load the library of.
 	 */
 	public static final void loadLibrary(IModRegister mod)
 	{
@@ -423,78 +429,80 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllPreInits()
 	{
-		ASMRegistry.invokeAllTransformers();
-
-		Iterator<Mod> modsIterator = mods.getModContainers().iterator();
-		
-		while (modsIterator.hasNext())
+		if (shouldInit)
 		{
-			IModContainer currContainer = modsIterator.next();
+			ASMRegistry.invokeAllTransformers();
 
-			if (!currContainer.isLibrary())
+			Iterator<Mod> modsIterator = mods.getModContainers().iterator();
+
+			while (modsIterator.hasNext())
 			{
-				Mod currMod = (Mod) currContainer;
+				IModContainer currContainer = modsIterator.next();
 
-				if (currMod.isAdvancedRegister())
+				if (!currContainer.isLibrary())
 				{
-					IAdvancedModRegister currRegister = (IAdvancedModRegister) currMod.getMainClass();
+					Mod currMod = (Mod) currContainer;
 
-					if (checkDependencies(currRegister))
+					if (currMod.isAdvancedRegister())
 					{
-						currRegister.preModInit();
+						IAdvancedModRegister currRegister = (IAdvancedModRegister) currMod.getMainClass();
+
+						if (checkDependencies(currRegister))
+						{
+							currRegister.preModInit();
+						}
 					}
 				}
 			}
-		}
-		
-		Iterator<Library> libraryIterator = mods.getLibraryContainers().iterator();
-		
-		while (modsIterator.hasNext())
-		{
-			Library currLibContainer = libraryIterator.next();
 
-			if (currLibContainer.isAdvancedRegister())
-			{
-				IAdvancedModRegister currLibrary = (IAdvancedModRegister) currLibContainer.getMainClass();
+			Iterator<Library> libraryIterator = mods.getLibraryContainers().iterator();
 
-				if (checkDependencies(currLibrary))
-				{
-					currLibrary.preModInit();
-				}
-				else
-				{
-					NAPILogHelper.logError("The library " + currLibrary.getModId() + "'s dependency requirements were NOT met! Skipping it's loading!");
-					//Remove the library so it isn't put through the other phases of loading.
-					mods.getMods().remove(currLibrary);
-				}
-			}
-		}
-		
-		Iterator<Entry<IModRegister, Method>> methodsIterator = preInitMethods.entrySet().iterator();
-		
-		while (methodsIterator.hasNext())
-		{
-			Entry<IModRegister, Method> currMethod = methodsIterator.next();
-			
-			try
+			while (modsIterator.hasNext())
 			{
-				currMethod.getValue().invoke(currMethod.getKey(), new Object[] {});
+				Library currLibContainer = libraryIterator.next();
+
+				if (currLibContainer.isAdvancedRegister())
+				{
+					IAdvancedModRegister currLibrary = (IAdvancedModRegister) currLibContainer.getMainClass();
+
+					if (checkDependencies(currLibrary))
+					{
+						currLibrary.preModInit();
+					}
+					else
+					{
+						NAPILogHelper.logError("The library " + currLibrary.getModId() + "'s dependency requirements were NOT met! Skipping it's loading!");
+						//Remove the library so it isn't put through the other phases of loading.
+						mods.getMods().remove(currLibrary);
+					}
+				}
 			}
-			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+
+			Iterator<Entry<IModRegister, Method>> methodsIterator = preInitMethods.entrySet().iterator();
+
+			while (methodsIterator.hasNext())
 			{
-				NAPILogHelper.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
-				e.printStackTrace();
+				Entry<IModRegister, Method> currMethod = methodsIterator.next();
+
+				try
+				{
+					currMethod.getValue().invoke(currMethod.getKey(), new Object[]{});
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+				{
+					NAPILogHelper.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
+					e.printStackTrace();
+				}
 			}
+
+			ResourcesRegistry.addAllResourceDomains();
+			NAPILogHelper.log("Called all mod's modPreInit methods!");
 		}
-		
-		ResourcesRegistry.addAllResourceDomains();
-		NAPILogHelper.log("Called all mod's modPreInit methods!");
 	}
 	
 	/**
 	 * Checks a register's dependencies. Returns true if checks were all successful.
-	 * @param register
-	 * @return
+	 * @param register The register to check the dependencies of.
+	 * @return Whether or not the register passed the checks.
 	 */
 	public static final boolean checkDependencies(IAdvancedModRegister register)
 	{
@@ -506,30 +514,33 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllInits()
 	{
-		try
+		if (shouldInit)
 		{
-			Iterator methodsIterator = initMethods.entrySet().iterator();
-			Iterator<IModRegister> objsIterator = initMethods.keySet().iterator();
-			
-			while (methodsIterator.hasNext())
+			try
 			{
-				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
-			}
-			
-			Iterator<IModContainer> modsIterator = mods.iterator();
+				Iterator methodsIterator = initMethods.entrySet().iterator();
+				Iterator<IModRegister> objsIterator = initMethods.keySet().iterator();
 
-			while (modsIterator.hasNext())
+				while (methodsIterator.hasNext())
+				{
+					((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[]{});
+				}
+
+				Iterator<IModContainer> modsIterator = mods.iterator();
+
+				while (modsIterator.hasNext())
+				{
+					IModRegister currRegister = modsIterator.next().getMainClass();
+
+					currRegister.modInit();
+				}
+
+				NAPILogHelper.log("Called all mod's modInit methods!");
+			}
+			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
 			{
-				IModRegister currRegister = modsIterator.next().getMainClass();
-
-				currRegister.modInit();
+				NAPILogHelper.logError(e1);
 			}
-			
-			NAPILogHelper.log("Called all mod's modInit methods!");
-		}
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
-		{
-			NAPILogHelper.logError(e1);
 		}
 	}
 	
@@ -538,41 +549,43 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllPostInits()
 	{
-		try
+		if (shouldInit)
 		{
-			Iterator methodsIterator = postInitMethods.entrySet().iterator();
-			Iterator<IModRegister> objsIterator = postInitMethods.keySet().iterator();
-			
-			while (methodsIterator.hasNext())
+			try
 			{
-				((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[] {});
-			}
-			
-			Iterator<IModContainer> modsIterator = mods.iterator();
+				Iterator methodsIterator = postInitMethods.entrySet().iterator();
+				Iterator<IModRegister> objsIterator = postInitMethods.keySet().iterator();
 
-			while (modsIterator.hasNext())
+				while (methodsIterator.hasNext())
+				{
+					((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[]{});
+				}
+
+				Iterator<IModContainer> modsIterator = mods.iterator();
+
+				while (modsIterator.hasNext())
+				{
+					IModRegister currRegister = modsIterator.next().getMainClass();
+
+					currRegister.postModInit();
+					ClientRegistry.addAllEntityRenders();
+				}
+
+				NAPILogHelper.log("Finished calling all mod's register methods!");
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
 			{
-				IModRegister currRegister = modsIterator.next().getMainClass();
-
-				currRegister.postModInit();
-				ClientRegistry.addAllEntityRenders();
+				NAPILogHelper.logError(e1);
 			}
-			
-			NAPILogHelper.log("Finished calling all mod's register methods!");
+
+			//Does the work of adding the potions to the Potion.potionTypes array. You know, just in case.
+			PotionRegistry.addAllPotions();
 		}
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
-		{
-			NAPILogHelper.logError(e1);
-		}
-		
-		//Does the work of adding the potions to the Potion.potionTypes array. You know, just in case.
-		PotionRegistry.addAllPotions();
 	}
 	
 	/**
 	 * Loads an ASM class.
-	 * @param theClass
-	 * @param bytes
+	 * @param theClass The class that was transformed to load.
+	 * @param bytes The bytes of theClass.
 	 */
 	@TestFeature(firstAppearance = "1.0")
 	public static final void loadASMClass(Class theClass, byte[] bytes)

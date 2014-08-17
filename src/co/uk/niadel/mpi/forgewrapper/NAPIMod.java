@@ -2,6 +2,8 @@ package co.uk.niadel.mpi.forgewrapper;
 
 import co.uk.niadel.mpi.common.IConverter;
 import co.uk.niadel.mpi.forgewrapper.measuresmpi.MeasureConverter;
+import co.uk.niadel.mpi.init.Launch;
+import co.uk.niadel.mpi.util.NAPILogHelper;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraftforge.common.MinecraftForge;
@@ -35,29 +37,38 @@ public final class NAPIMod
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		//Tell N-API that the game is a Forge environment.
-		MCData.isForge = true;
-		handleFMLIds();
-		//Register the event handlers.
-		MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
-		FMLCommonHandler.instance().bus().register(new EventHandlerFML());
-		//Begin loading N-API mods.
-		NModLoader.loadModsFromDir();
-		NModLoader.callAllPreInits();
+		if (Launch.checkJavaVersion())
+		{
+			//Tell N-API that the game is a Forge environment.
+			MCData.isForge = true;
+			handleFMLIds();
+			//Register the event handlers.
+			MinecraftForge.EVENT_BUS.register(new EventHandlerForge());
+			FMLCommonHandler.instance().bus().register(new EventHandlerFML());
+			//Begin loading N-API mods.
+			NModLoader.loadModsFromDir();
+			NModLoader.callAllPreInits();
+		}
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		NModLoader.callAllInits();
+		if (Launch.checkJavaVersion())
+		{
+			NModLoader.callAllInits();
+		}
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		NModLoader.callAllPostInits();
-		measureConverter.convert();
-		oreDictConverter.convert();
+		if (Launch.checkJavaVersion())
+		{
+			NModLoader.callAllPostInits();
+			measureConverter.convert();
+			oreDictConverter.convert();
+		}
 	}
 
 	/**

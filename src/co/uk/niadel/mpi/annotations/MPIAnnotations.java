@@ -155,15 +155,4 @@ public final class MPIAnnotations
 	{
 		String loadPoint();
 	}
-
-	/**
-	 * Marks a method as a method that handles a method, specifically the one it has in it's parameters.
-	 */
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	public @interface EventHandlerMethod
-	{
-
-	}
 }
