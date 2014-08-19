@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Optimises Event Handler data getting. Special as it is not actually registered.
+ * Optimises Event Handler data getting. Special as it is not actually registered and is called manually.
  */
 public class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
 {
@@ -36,6 +36,8 @@ public class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
 			ClassReader classReader = new ClassReader(className);
 			ClassNode classNode = new ClassNode();
 			classReader.accept(classNode, 0);
+			MethodNode eventMethodNode = null;
+			int currentIteration = 0;
 
 			//Workaround for problem where foreach loops appear to not autocast the current methodNode.
 			for (int i = 0; i == classNode.methods.size(); i++)
@@ -49,9 +51,19 @@ public class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
 
 					if (annotationNode.desc == "Lco/uk/niadel/events/EventHandlerMethod;")
 					{
-						addEventHandlerCall(methodNode);
+						currentIteration++;
+						eventMethodNode = addEventHandlerCall(methodNode, currentIteration);
 					}
 				}
+			}
+
+			if (eventMethodNode != null)
+			{
+				//Add the return instruction.
+				LabelNode labelNode = new LabelNode();
+				labelNode.accept(eventMethodNode);
+				eventMethodNode.instructions.add(new LineNumberNode(107 + currentIteration + 1, labelNode));
+				eventMethodNode.instructions.add(new InsnNode(RETURN));
 			}
 		}
 		catch (IOException e)
@@ -76,7 +88,7 @@ public class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
 		return classes.toArray(new String[classes.size()]);
 	}
 
-	private void addEventHandlerCall(MethodNode eventMethodNode) throws IOException
+	private MethodNode addEventHandlerCall(MethodNode eventMethodNode, int currentIteration) throws IOException
 	{
 		ClassReader evFacClassReader = new ClassReader("co.uk.niadel.mpi.events.EventFactory");
 		ClassWriter evFacClassWriter = new ClassWriter(evFacClassReader, ClassWriter.COMPUTE_MAXS);
@@ -134,11 +146,19 @@ public class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
 				evFacMethodNode = new MethodNode(ACC_PUBLIC + ACC_STATIC + ACC_FINAL, "callAllEventHandlers", "()V", null, null);
 			}
 
+			//Add the instructions themselves.
+			LabelNode labelNode = new LabelNode();
+			labelNode.accept(evFacMethodNode);
+			evFacMethodNode.instructions.add(new LineNumberNode(107 + currentIteration, labelNode));
 			evFacMethodNode.instructions.add(new TypeInsnNode(NEW, paramAsType));
 			evFacMethodNode.instructions.add(new InsnNode(DUP));
 			evFacMethodNode.instructions.add(new FieldInsnNode(GETSTATIC, "co/uk/niadel/mpi/asm/NAPIASMEventHandlerTransformer", "currentEvent", "Lco/uk/niadel/mpi/events/IEvent"));
-			//evFacMethodNode.instructions.add(new MethodInsnNode())
+			evFacMethodNode.instructions.add(new TypeInsnNode(CHECKCAST, paramAsType));
+			evFacMethodNode.instructions.add(new MethodInsnNode(INVOKEVIRTUAL, paramAsType, eventMethodNode.name, "(" + eventMethodParam + ")V"));
+			return evFacMethodNode;
 		}
+
+		return null;
 	}
 
 	public static void onEventChanged(IEvent newEvent)

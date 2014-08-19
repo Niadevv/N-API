@@ -1,19 +1,12 @@
 package co.uk.niadel.mpi.events;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import co.uk.niadel.mpi.asm.ASMRegistry;
 import co.uk.niadel.mpi.asm.NAPIASMEventHandlerTransformer;
-import co.uk.niadel.mpi.events.EventHandlerMethod;
-import co.uk.niadel.mpi.modhandler.ModRegister;
 import co.uk.niadel.mpi.util.ArrayUtils;
-import co.uk.niadel.mpi.util.NAPILogHelper;
 
 /**
  * Where events are fired/generated, and event handlers are registered. Replaces EventsList and allows for event handlers

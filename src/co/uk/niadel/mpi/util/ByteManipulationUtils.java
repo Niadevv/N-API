@@ -8,8 +8,8 @@ public final class ByteManipulationUtils
 	
 	/**
 	 * Converts a class to a byte array.
-	 * @param objectToConvert
-	 * @return
+	 * @param objectToConvert The object to convert to bytes.
+	 * @return The bytes of objectToConvert
 	 */
 	public static final byte[] toByteArray(Object objectToConvert)
 	{
@@ -47,6 +47,11 @@ public final class ByteManipulationUtils
 		return buffer.toByteArray();
 	}
 
+	/**
+	 * Converts an object into an input stream.
+	 * @param theObject The object to convert into an input stream.
+	 * @return The InputStream object of theObject
+	 */
 	public static final InputStream objectToInputStream(Object theObject)
 	{
 		try
@@ -83,7 +88,7 @@ public final class ByteManipulationUtils
 		{
 			DummyClassLoader loader = new DummyClassLoader(ByteManipulationUtils.class.getClassLoader());
 			Class<? extends X> tempClass = (Class<? extends X>) loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
-			return (X) tempClass.newInstance();
+			return tempClass.newInstance();
 		}
 		catch (InstantiationException | IllegalAccessException e)
 		{

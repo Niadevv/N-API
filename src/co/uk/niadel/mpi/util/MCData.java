@@ -41,7 +41,7 @@ public final class MCData
 	
 	/**
 	 * Gets whether or not the game is obfuscated.
-	 * @return
+	 * @return Whether or not the game is obfuscated.
 	 */
 	public static final boolean isGameObfed()
 	{
@@ -53,22 +53,6 @@ public final class MCData
 		catch (ClassNotFoundException e)
 		{
 			return false;
-		}
-	}
-	
-	/**
-	 * Gets the side of the specified world.
-	 * @param world
-	 */
-	public static final String getWorldSide(World world)
-	{
-		if (world.isClient)
-		{
-			return "Client";
-		}
-		else
-		{
-			return "Server";
 		}
 	}
 	
@@ -90,7 +74,7 @@ public final class MCData
 	
 	/**
 	 * Gets the current world's name.
-	 * @return
+	 * @return The world's name.
 	 */
 	public static final String getWorldName()
 	{
@@ -108,7 +92,7 @@ public final class MCData
 	
 	/**
 	 * Used by the loader. Unique method that is ASMd to be this exact thing to avoid tampering when ASM is initialised.
-	 * @return
+	 * @return The fully qualified name of the NAPI Mod Register.
 	 */
 	public static final String getNAPIRegisterClass()
 	{

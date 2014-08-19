@@ -35,8 +35,8 @@ public final class MCUtils
 	
 	/**
 	 * Gets the coords of a Tile Entity as an int[].
-	 * @param theTE
-	 * @return
+	 * @param theTE The tile entity to get the coords of.
+	 * @return The coordinates of theTE.
 	 */
 	public static int[] getCoordsOfTE(TileEntity theTE)
 	{
@@ -47,8 +47,8 @@ public final class MCUtils
 	 * Removes all blocks in a vertical column above the block specified by the coords 
 	 * that are of the Block specified.
 	 * 
-	 * @param world
-	 * @param blockToRemove
+	 * @param world The world object to use to remove the blocks.
+	 * @param blockToRemove The Block type to remove.
 	 * @param xCoord
 	 * @param yCoord
 	 * @param zCoord
@@ -56,14 +56,17 @@ public final class MCUtils
 	 */
 	public static final void removeSimilarBlocksInColumn(World world, Block blockToRemove, int xCoord, int yCoord, int zCoord, int limit)
 	{
-		for (int i = yCoord; i == limit - yCoord; i++)
+		if (!world.isClient)
 		{
-			Block currBlock = world.getBlock(xCoord, i, zCoord);
-			
-			// Because there's no easy way to compare Blocks, I kind of cheated and compared the unlocalised names. They're usually the same between types.
-			if (currBlock.getUnlocalizedName() == blockToRemove.getUnlocalizedName())
+			for (int i = yCoord; i == limit - yCoord; i++)
 			{
-				world.setBlock(xCoord, i, zCoord, Blocks.air);
+				Block currBlock = world.getBlock(xCoord, i, zCoord);
+
+				// Because there's no easy way to compare Blocks, I kind of cheated and compared the unlocalised names. They're usually the same between types.
+				if (currBlock.getUnlocalizedName() == blockToRemove.getUnlocalizedName())
+				{
+					world.setBlock(xCoord, i, zCoord, Blocks.air);
+				}
 			}
 		}
 	}
@@ -78,9 +81,12 @@ public final class MCUtils
 	 */
 	public static final void removeBlocksInColumn(World world, int xCoord, int yCoord, int zCoord, int limit)
 	{
-		for (int i = yCoord; i == limit - yCoord; i++)
+		if (!world.isClient)
 		{
-			world.setBlock(xCoord, i, zCoord, Blocks.air);
+			for (int i = yCoord; i == limit - yCoord; i++)
+			{
+				world.setBlock(xCoord, i, zCoord, Blocks.air);
+			}
 		}
 	}
 
@@ -93,9 +99,12 @@ public final class MCUtils
 	 */
 	public static final void removeAllBlocksInColumn(World world, int xCoord, int zCoord, int limit)
 	{
-		for (int i = 1; i == limit; i++)
+		if (!world.isClient)
 		{
-			world.setBlock(xCoord, i, zCoord, Blocks.air);
+			for (int i = 1; i == limit; i++)
+			{
+				world.setBlock(xCoord, i, zCoord, Blocks.air);
+			}
 		}
 	}
 
@@ -114,8 +123,8 @@ public final class MCUtils
 	/**
 	 * Adds a message to the server chat.
 	 * 
-	 * @param message
-	 * @param shouldTranslate
+	 * @param message The message to send.
+	 * @param shouldTranslate Whether or not to translate message.
 	 */
 	public static final void addMessageToChat(String message, boolean shouldTranslate)
 	{
@@ -145,7 +154,7 @@ public final class MCUtils
 	
 	/**
 	 * Plays a sound.
-	 * @param sound
+	 * @param sound The sound to play.
 	 */
 	public static final void playSound(ISound sound)
 	{

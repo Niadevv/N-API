@@ -545,35 +545,41 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 
 				//Add patch to allow for more blocks to be added. LOTS more blocks to be added.
 				case "net.minecraft.util.ObjectIntIdentityMap":
-					methodNode = new MethodNode(ACC_PUBLIC, "<init>", "()V", null, null);
-
-					Iterator<AbstractInsnNode> insnNodeIterator1 = methodNode.instructions.iterator();
-
-					while (insnNodeIterator1.hasNext())
+					//If the game is FML, FML changes the block registry to be that of it's own internal type, which most likely has
+					//This sort of thing already added. In that case, this ASM is useless as ObjectIntIdentityMap is not used,
+					//or if it is, FML more than likely has that covered.
+					if (!MCData.isForge)
 					{
-						methodNode.instructions.remove(insnNodeIterator1.next());
-					}
+						methodNode = new MethodNode(ACC_PUBLIC, "<init>", "()V", null, null);
 
-					ln0 = new LabelNode();
-					ln0.accept(methodNode);
-					methodNode.instructions.add(new LineNumberNode(10, ln0));
-					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V"));
-					ln1 = new LabelNode();
-					ln1.accept(methodNode);
-					methodNode.instructions.add(new LineNumberNode(12, ln1));
-					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-					methodNode.instructions.add(new TypeInsnNode(NEW, "java/util/IdentityHashMap"));
-					methodNode.instructions.add(new InsnNode(DUP));
-					methodNode.instructions.add(new VarInsnNode(SIPUSH, Integer.MAX_VALUE));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/util/IdentityHashMap", "<init>", "(I)V"));
-					methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/util/ObjectIntIdentityMap.field_148749_a", "Ljava/util/IdentityHashMap;", null));
-					ln2 = new LabelNode();
-					ln2.accept(methodNode);
-					methodNode.instructions.add(new LineNumberNode(13, ln2));
-					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/google/common/collect/Lists", "newArrayList", "()Ljava/util/ArrayList;"));
-					methodNode.instructions.add(new InsnNode(RETURN));
+						Iterator<AbstractInsnNode> insnNodeIterator1 = methodNode.instructions.iterator();
+
+						while (insnNodeIterator1.hasNext())
+						{
+							methodNode.instructions.remove(insnNodeIterator1.next());
+						}
+
+						ln0 = new LabelNode();
+						ln0.accept(methodNode);
+						methodNode.instructions.add(new LineNumberNode(10, ln0));
+						methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+						methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V"));
+						ln1 = new LabelNode();
+						ln1.accept(methodNode);
+						methodNode.instructions.add(new LineNumberNode(12, ln1));
+						methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+						methodNode.instructions.add(new TypeInsnNode(NEW, "java/util/IdentityHashMap"));
+						methodNode.instructions.add(new InsnNode(DUP));
+						methodNode.instructions.add(new VarInsnNode(SIPUSH, Integer.MAX_VALUE));
+						methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/util/IdentityHashMap", "<init>", "(I)V"));
+						methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/util/ObjectIntIdentityMap.field_148749_a", "Ljava/util/IdentityHashMap;", null));
+						ln2 = new LabelNode();
+						ln2.accept(methodNode);
+						methodNode.instructions.add(new LineNumberNode(13, ln2));
+						methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+						methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/google/common/collect/Lists", "newArrayList", "()Ljava/util/ArrayList;"));
+						methodNode.instructions.add(new InsnNode(RETURN));
+					}
 					break;
 
 				default:

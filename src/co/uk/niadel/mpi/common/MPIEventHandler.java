@@ -1,8 +1,9 @@
 package co.uk.niadel.mpi.common;
 
-import co.uk.niadel.mpi.annotations.MPIAnnotations.EventHandlerMethod;
+import co.uk.niadel.mpi.annotations.MPIAnnotations;
 import co.uk.niadel.mpi.common.block.IWrenchable;
 import co.uk.niadel.mpi.common.items.ICustomSpawnEgg;
+import co.uk.niadel.mpi.events.EventHandlerMethod;
 import co.uk.niadel.mpi.events.items.EventItemUse;
 import co.uk.niadel.mpi.util.MCData;
 import net.minecraft.block.Block;

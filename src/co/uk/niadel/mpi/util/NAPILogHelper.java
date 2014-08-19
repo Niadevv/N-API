@@ -27,7 +27,7 @@ public class NAPILogHelper
 	
 	/**
 	 * Logs a standard message.
-	 * @param log
+	 * @param log The object to log.
 	 */
 	public static void log(Object log)
 	{	
@@ -36,7 +36,7 @@ public class NAPILogHelper
 
 	/**
 	 * Logs an error.
-	 * @param error
+	 * @param error The error object to log.
 	 */
 	public static void logError(Object error)
 	{	
@@ -45,16 +45,16 @@ public class NAPILogHelper
 
     /**
      * Logs a critical error.
-     * @param error
+     * @param critical The critical object to log.
      */
-    public static void logCritical(Object error)
+    public static void logCritical(Object critical)
     {
-        log(Level.FATAL, error);
+        log(Level.FATAL, critical);
     }
 	
 	/**
 	 * Logs a warning.
-	 * @param warning
+	 * @param warning The critical warning to log.
 	 */
 	public static void logWarn(Object warning)
 	{	
@@ -63,7 +63,7 @@ public class NAPILogHelper
 	
 	/**
 	 * Logs a message for debugging.
-	 * @param debugMessage
+	 * @param debugMessage The debug message to log.
 	 */
 	public static final void logDebug(Object debugMessage)
 	{

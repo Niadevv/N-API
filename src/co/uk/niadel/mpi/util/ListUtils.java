@@ -10,7 +10,7 @@ public final class ListUtils
 	 * Gets a random number not in the specified list and below the max number.
 	 * @param listOfNumsToExclude
 	 * @param maxNum
-	 * @return
+	 * @return A number not in listOfNumsToExclude and lower than maxNum
 	 */
 	@Dangerous(reason = "Potential infinite loop!")
 	public static final int getNumberNotInList(List<Integer> listOfNumsToExclude, int maxNum)
