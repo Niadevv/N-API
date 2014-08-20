@@ -18,7 +18,7 @@ public class NAPIConfigGUIFactory implements IModGuiFactory
 
 	@Override
 	public Class<? extends GuiScreen> mainConfigGuiClass() {
-		return null;
+		return NAPIConfigGUI.class;
 	}
 
 	@Override
