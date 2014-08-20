@@ -119,7 +119,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					ln0.accept(methodNode);
 					methodNode.instructions.add(new LineNumberNode(45, ln0));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V"));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false));
 					ln1 = new LabelNode();
 					ln1.accept(methodNode);
 					methodNode.instructions.add(new LineNumberNode(55, ln1));
@@ -155,8 +155,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 1));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 2));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 3));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/EventItemEaten", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;)V"));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V"));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/EventItemEaten", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;)V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false));
 					ln1 = new LabelNode();
 					ln1.accept(methodNode);
 					methodNode.instructions.add(ln1);
@@ -185,8 +185,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 						methodNode.instructions.add(new VarInsnNode(ALOAD, i));
 					}
 
-					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/world/World;IIIIFFF)V"));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V"));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/world/World;IIIIFFF)V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false));
 					break;
 
 				//Obfuscated Item patching
@@ -204,7 +204,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitLabel(l261);
 					mv.visitLineNumber(498, l261);
 					mv.visitVarInsn(ALOAD, 0);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lnet/minecraft/client/gui/GuiIngame;)V");
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lnet/minecraft/client/gui/GuiIngame;)V", false);
 					break;
 
 				//Obfuscated RenderItem patching
@@ -215,7 +215,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitLabel(l261);
 					mv.visitLineNumber(498, l261);
 					mv.visitVarInsn(ALOAD, 0);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lbah;)V");
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lbah;)V", false);
 					break;
 
 				//Add call to VillagePieceRegistry.addAllPieces in getStructureVillageWeightedPieceList
@@ -226,7 +226,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitLabel(l10);
 					mv.visitLineNumber(54, l10);
 					mv.visitVarInsn(ALOAD, 2);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V");
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V", false);
 					break;
 
 				//Obfuscated StructureVillagePieces patching
@@ -237,7 +237,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitLabel(l10);
 					mv.visitLineNumber(54, l10);
 					mv.visitVarInsn(ALOAD, 2);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V");
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V", false);
 					break;
 
 				//Add calls to events. Oh, and fix for Forge renaming isClient.
@@ -279,14 +279,14 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntitySpawned");
 					mv.visitInsn(DUP);
 					mv.visitVarInsn(ALOAD, 1);
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntitySpawned", "<init>", "(Lnet/minecraft/entity/Entity;)V");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntitySpawned", "<init>", "(Lnet/minecraft/entity/Entity;)V", false);
 					mv.visitVarInsn(ASTORE, 5);
 
 					l9 = new Label();
 					mv.visitLineNumber(1420, l9);
 					mv.visitFrame(F_APPEND, 1, new Object[]{"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
 					mv.visitVarInsn(ALOAD, 5);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 
 
 					l12 = new Label();
@@ -295,14 +295,14 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned");
 					mv.visitInsn(DUP);
 					mv.visitVarInsn(ALOAD, 6);
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned", "<init>", "(Lnet/minecraft/entity/player/EntityPlayer;)V");
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned", "<init>", "(Lnet/minecraft/entity/player/EntityPlayer;)V", false);
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 
 					l15 = new Label();
 					mv.visitLineNumber(1423, l15);
 					mv.visitFrame(F_SAME, 0, null, 0, null);
 					mv.visitVarInsn(ALOAD, 5);
-					mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z", false);
 					break;
 
 				//Obfuscated World patching.
@@ -317,14 +317,14 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntitySpawned");
 					mv.visitInsn(DUP);
 					mv.visitVarInsn(ALOAD, 1);
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntitySpawned", "<init>", "(Lqn;)V");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntitySpawned", "<init>", "(Lqn;)V", false);
 					mv.visitVarInsn(ASTORE, 5);
 
 					l9 = new Label();
 					mv.visitLineNumber(1420, l9);
 					mv.visitFrame(F_APPEND, 1, new Object[]{"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
 					mv.visitVarInsn(ALOAD, 5);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 
 
 					l12 = new Label();
@@ -333,14 +333,14 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned");
 					mv.visitInsn(DUP);
 					mv.visitVarInsn(ALOAD, 6);
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned", "<init>", "(Lxl;)V");
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned", "<init>", "(Lxl;)V", false);
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 
 					l15 = new Label();
 					mv.visitLineNumber(1423, l15);
 					mv.visitFrame(F_SAME, 0, null, 0, null);
 					mv.visitVarInsn(ALOAD, 5);
-					mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z", false);
 					break;
 
 				//Add EventFactory call to doExplosionA
@@ -360,8 +360,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "explosionY", "D");
 					mv.visitVarInsn(ALOAD, 0);
 					mv.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "explosionZ", "D");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lnet/minecraft/entity/Entity;DDD)V");
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lnet/minecraft/entity/Entity;DDD)V", false);
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
 				//Obfuscated Explosion patching.
@@ -381,8 +381,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitFieldInsn(GETFIELD, "afi", "explosionY", "D");
 					mv.visitVarInsn(ALOAD, 0);
 					mv.visitFieldInsn(GETFIELD, "afi", "explosionZ", "D");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lqn;DDD)V");
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lqn;DDD)V", false);
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
 				//Adding the call to BiomeRegistry.registerAllBiomes.
@@ -393,7 +393,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					Label l52 = new Label();
 					mv.visitLabel(l52);
 					mv.visitLineNumber(107, l52);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/layers/GenLayerRegistry", "iterateLayers", "()[Lco/uk/niadel/mpi/gen/layers/IGenLayer;");
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/layers/GenLayerRegistry", "iterateLayers", "()[Lco/uk/niadel/mpi/gen/layers/IGenLayer;", false);
 					mv.visitInsn(POP);
 					break;
 
@@ -423,8 +423,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "navigator", "Lnet/minecraft/pathfinding/PathNavigate;");
 					mv.visitVarInsn(ALOAD, 0);
 					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "senses", "Lnet/minecraft/entity/ai/EntitySenses;");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit", "<init>", "(Lnet/minecraft/entity/EntityLiving;Lnet/minecraft/world/World;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityLookHelper;Lnet/minecraft/entity/ai/EntityMoveHelper;Lnet/minecraft/entity/ai/EntityJumpHelper;Lnet/minecraft/entity/EntityBodyHelper;Lnet/minecraft/pathfinding/PathNavigate;Lnet/minecraft/entity/ai/EntitySenses;)V");
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit", "<init>", "(Lnet/minecraft/entity/EntityLiving;Lnet/minecraft/world/World;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityLookHelper;Lnet/minecraft/entity/ai/EntityMoveHelper;Lnet/minecraft/entity/ai/EntityJumpHelper;Lnet/minecraft/entity/EntityBodyHelper;Lnet/minecraft/pathfinding/PathNavigate;Lnet/minecraft/entity/ai/EntitySenses;)V", false);
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
 				//Add call to Player events.
@@ -444,8 +444,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitVarInsn(ALOAD, 0);
 					mv.visitVarInsn(ALOAD, 0);
 					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUseCount", "I");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemStoppedUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;I)V");
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemStoppedUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;I)V", false);
+					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
 				case "net.minecraft.entity.EntityLivingBase":
@@ -461,8 +461,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					methodNode.instructions.add(new FieldInsnNode(GETFIELD, "net/minecraft/entity/EntityLivingBase", "p_71001_1_", "Lnet/minecraft/entity/Entity"));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 					methodNode.instructions.add(new FieldInsnNode(GETFIELD, "net/minecraft/entity/EntityLivingBase", "p_71001_2_", "I"));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityPickupItem", "<init>", "(Lnet/minecraft/entity/Entity;I)V"));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V"));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityPickupItem", "<init>", "(Lnet/minecraft/entity/Entity;I)V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false));
 					break;
 
 				case "net.minecraft.entity.Entity":
@@ -475,8 +475,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					methodNode.instructions.add(new TypeInsnNode(NEW, "co/uk/niadel/mpi/events/entity/EventUpdateRidden"));
 					methodNode.instructions.add(new InsnNode(DUP));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventUpdateRidden", "<init>", "(Lnet/minecraft/entity/Entity;)V"));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V"));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventUpdateRidden", "<init>", "(Lnet/minecraft/entity/Entity;)V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false));
 					break;
 
 				//Ensure no-one tampers with MCData's getNAPIRegisterClass method via ASM or... (shudders) base edits.
@@ -512,8 +512,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					methodNode.instructions.add(new InsnNode(DUP));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 1));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/client/EventCrash", "<init>", "(Lnet/minecraft/crash/CrashReport;Lnet/minecraft/util/ReportedException;)V"));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V"));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/client/EventCrash", "<init>", "(Lnet/minecraft/crash/CrashReport;Lnet/minecraft/util/ReportedException;)V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false));
 					methodNode.instructions.add(new InsnNode(RETURN));
 					break;
 
@@ -536,7 +536,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					ln0.accept(methodNode);
 					methodNode.instructions.add(new LineNumberNode(204, ln0));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-					methodNode.instructions.add(new MethodInsnNode(INVOKEVIRTUAL, "co/uk/niadel/mpi/dimensions/ProviderRegistry", "getProvider", "(I)Lnet/minecraft/world/WorldProvider;"));
+					methodNode.instructions.add(new MethodInsnNode(INVOKEVIRTUAL, "co/uk/niadel/mpi/dimensions/ProviderRegistry", "getProvider", "(I)Lnet/minecraft/world/WorldProvider;", false));
 					ln1 = new LabelNode();
 					ln1.accept(methodNode);
 					methodNode.instructions.add(new InsnNode(ARETURN));
@@ -563,7 +563,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 						ln0.accept(methodNode);
 						methodNode.instructions.add(new LineNumberNode(10, ln0));
 						methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-						methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V"));
+						methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false));
 						ln1 = new LabelNode();
 						ln1.accept(methodNode);
 						methodNode.instructions.add(new LineNumberNode(12, ln1));
@@ -571,13 +571,13 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 						methodNode.instructions.add(new TypeInsnNode(NEW, "java/util/IdentityHashMap"));
 						methodNode.instructions.add(new InsnNode(DUP));
 						methodNode.instructions.add(new VarInsnNode(SIPUSH, Integer.MAX_VALUE));
-						methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/util/IdentityHashMap", "<init>", "(I)V"));
+						methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/util/IdentityHashMap", "<init>", "(I)V", false));
 						methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/util/ObjectIntIdentityMap.field_148749_a", "Ljava/util/IdentityHashMap;", null));
 						ln2 = new LabelNode();
 						ln2.accept(methodNode);
 						methodNode.instructions.add(new LineNumberNode(13, ln2));
 						methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-						methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/google/common/collect/Lists", "newArrayList", "()Ljava/util/ArrayList;"));
+						methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/google/common/collect/Lists", "newArrayList", "()Ljava/util/ArrayList;", false));
 						methodNode.instructions.add(new InsnNode(RETURN));
 					}
 					break;
