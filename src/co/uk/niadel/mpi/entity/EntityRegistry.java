@@ -56,7 +56,8 @@ public final class EntityRegistry extends EntityList
 	}
 
 	/**
-	 * Removes an entity from the registered entities. Performance heavy because Minecraft had the key variables private.
+	 * Removes an entity from the registered entities. Performance heavy because Minecraft had the key variables private and I have
+	 * to brute force them into Minecraft with Reflection.
 	 * @param entityClass The class of the entity to remove.
 	 * @param entityId The entity id of the entity to remove.
 	 */

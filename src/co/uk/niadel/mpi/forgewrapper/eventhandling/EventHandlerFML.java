@@ -1,8 +1,11 @@
 package co.uk.niadel.mpi.forgewrapper.eventhandling;
 
+import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.events.EventFactory;
 import co.uk.niadel.mpi.events.world.EventPlayerTicked;
 import co.uk.niadel.mpi.events.world.EventWorldTicked;
+import co.uk.niadel.mpi.forgewrapper.NAPIMod;
+import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -27,5 +30,14 @@ public final class EventHandlerFML
 	public void onPlayerTick(PlayerTickEvent event)
 	{
 		EventFactory.fireEvent(new EventPlayerTicked(event.player));
+	}
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onConfigChanged(OnConfigChangedEvent event)
+	{
+		if (event.modID == NAPIData.FORGE_MODID)
+		{
+			NAPIMod.updateConfig();
+		}
 	}
 }
