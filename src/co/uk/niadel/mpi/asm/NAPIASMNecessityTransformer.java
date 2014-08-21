@@ -230,7 +230,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					break;
 
 				//Obfuscated StructureVillagePieces patching
-				case "aua":
+				case "avp":
 					mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "a", "(Ljava/util/Random;I)Ljava/util/List;", null, null);
 					mv.visitCode();
 					l10 = new Label();
@@ -365,7 +365,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					break;
 
 				//Obfuscated Explosion patching.
-				case "afi":
+				case "agw":
 					mv = cw.visitMethod(ACC_PUBLIC, "a", "()V", null, null);
 					mv.visitCode();
 
@@ -374,14 +374,14 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventExplosion");
 					mv.visitInsn(DUP);
 					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "afi", "exploder", "Lqn;");
+					mv.visitFieldInsn(GETFIELD, "agw", "exploder", "Lsa;");
 					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "afi", "explosionX", "D");
+					mv.visitFieldInsn(GETFIELD, "agw", "explosionX", "D");
 					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "afi", "explosionY", "D");
+					mv.visitFieldInsn(GETFIELD, "agw", "explosionY", "D");
 					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "afi", "explosionZ", "D");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lqn;DDD)V", false);
+					mv.visitFieldInsn(GETFIELD, "agw", "explosionZ", "D");
+					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lsa;DDD)V", false);
 					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
@@ -476,6 +476,20 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					methodNode.instructions.add(new InsnNode(DUP));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventUpdateRidden", "<init>", "(Lnet/minecraft/entity/Entity;)V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false));
+					break;
+
+				case "sa":
+					methodNode = new MethodNode(ACC_PUBLIC, "ab", "()V", null, null);
+
+					ln0 = new LabelNode();
+					ln0.accept(methodNode);
+
+					methodNode.instructions.add(ln0);
+					methodNode.instructions.add(new TypeInsnNode(NEW, "co/uk/niadel/mpi/events/entity/EventUpdateRidden"));
+					methodNode.instructions.add(new InsnNode(DUP));
+					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventUpdateRidden", "<init>", "(Lsa;)V", false));
 					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false));
 					break;
 

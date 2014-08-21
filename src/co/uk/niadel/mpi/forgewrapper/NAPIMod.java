@@ -100,7 +100,13 @@ public final class NAPIMod
 		//Make sure the ids exist.
 		for (Entry<String, String> currEntry : ModRegister.config.data.entrySet())
 		{
-			napiConfiguration.get("n-api", currEntry.getKey(), Integer.valueOf(currEntry.getValue()));
+			int currentForgeConfigValue = napiConfiguration.get("n-api", currEntry.getKey(), Integer.valueOf(currEntry.getValue())).getInt();
+
+			//If the Forge configuration value for this particular ID is not equal to the N-API ID
+			if (currentForgeConfigValue != Integer.valueOf(ModRegister.config.getConfigValue(currEntry.getValue())));
+			{
+				ModRegister.config.setConfigValue(currEntry.getKey(), String.valueOf(currentForgeConfigValue));
+			}
 		}
 	}
 }

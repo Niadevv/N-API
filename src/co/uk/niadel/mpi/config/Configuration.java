@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.mpi.util.FileUtils;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 
 @TestFeature(stable = false, firstAppearance = "1.0")
@@ -126,32 +127,60 @@ public class Configuration
 	
 	/**
 	 * Updates data in the config.
-	 * @throws FileNotFoundException
 	 */
-	public final void updateValues() throws FileNotFoundException
+	public final void updateConfig()
 	{
-		if (this.theConfig.exists())
+		try
 		{
-			this.data.clear();
-
-			Scanner configScanner = new Scanner(this.theConfig);
-			
-			while (configScanner.hasNext())
+			if (this.theConfig.exists())
 			{
-				String currLine = configScanner.next();
+				Scanner configScanner;
 
-				//Check is to allow for comments in the config. Allows both Python and Java one line comments.
-				if (!currLine.startsWith("#") && !currLine.startsWith("//"))
+				configScanner = new Scanner(this.theConfig);
+				PrintStream configWriter;
+
+				int lineCount = 0;
+
+				while (configScanner.hasNext())
 				{
-					this.data.put(currLine.substring(0, currLine.indexOf("=")), currLine.substring(currLine.indexOf("=") + 1));
+					lineCount++;
+					String currLine = configScanner.nextLine();
+
+					if (!currLine.startsWith("#") && !currLine.startsWith("//"))
+					{
+						if (currLine.substring(currLine.indexOf("=") + 1) != this.data.get(currLine.substring(0, currLine.indexOf("="))))
+						{
+							FileUtils.addToLine(currLine.substring(0, currLine.indexOf("=")) + this.data.get(currLine.substring(currLine.indexOf("=") + 1)), lineCount, this.theConfig);
+						}
+					}
 				}
+
+				this.data.clear();
+
+				configScanner = new Scanner(this.theConfig);
+
+				while (configScanner.hasNext())
+				{
+					String currLine = configScanner.nextLine();
+
+					//Check is to allow for comments in the config. Allows both Python and Java one line comments.
+					if (!currLine.startsWith("#") && !currLine.startsWith("//"))
+					{
+						this.data.put(currLine.substring(0, currLine.indexOf("=")), currLine.substring(currLine.indexOf("=") + 1));
+					}
+				}
+
+				configScanner.close();
 			}
-			
-			configScanner.close();
+			else
+			{
+				throw new FileNotFoundException("[CONFIGERROR] Config File not found!");
+			}
 		}
-		else
+		catch (IOException e)
 		{
-			throw new FileNotFoundException("[CONFIGERROR] Config File not found!");
+			NAPILogHelper.logError("Error while updating config " + this.theConfig.getName() + "! Read stack trace for error!");
+			e.printStackTrace();
 		}
 	}
 	
@@ -163,24 +192,15 @@ public class Configuration
 	 */
 	public final String getConfigValue(String configValue)
 	{
-		try
-		{
-			updateValues();
-			return this.data.get(configValue);
-		}
-		catch (FileNotFoundException e)
-		{
-			NAPILogHelper.logError("Someone forgot to create a config .-.");
-			NAPILogHelper.logError(e);
-			return null;
-		}
+		updateConfig();
+		return this.data.get(configValue);
 	}
 
 	/**
 	 * Gets a config value, but if the config key does not exist, the value is created and the default value is returned.
 	 * @param configValue The key in the config.
 	 * @param defaultValue The default value to return if configValue does not exist.
-	 * @return
+	 * @return The value that is of configValue, or defaultValue if the value does not exist.
 	 */
 	public final String getConfigValue(String configValue, String defaultValue)
 	{
@@ -218,7 +238,7 @@ public class Configuration
 
 				this.data.put(valueName, defaultValue);
 
-				updateValues();
+				updateConfig();
 				writer.close();
 			}
 			else
@@ -269,5 +289,12 @@ public class Configuration
 	public final boolean doesConfigValueExist(String value)
 	{
 		return data.get(value) != null;
+	}
+
+	public final void setConfigValue(String configValue, String newValue)
+	{
+		data.remove(configValue);
+		data.put(configValue, newValue);
+		updateConfig();
 	}
 }

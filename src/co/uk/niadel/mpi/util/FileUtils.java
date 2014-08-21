@@ -203,4 +203,55 @@ public final class FileUtils
 			e.printStackTrace();
 		}
 	}
+
+	public static final void addToLine(String toAdd, int lineToAddAt, File theFile)
+	{
+		File tempFile = new File("temp");
+
+		try (Scanner scanner = new Scanner(theFile))
+		{
+			int lineCounter = 0;
+			tempFile.createNewFile();
+			PrintStream printStream = new PrintStream(tempFile);
+
+			//Copy the original file's contents to a temp file.
+			while (scanner.hasNext())
+			{
+				String nextLine = scanner.nextLine();
+				lineCounter++;
+
+				if (lineCounter == lineToAddAt)
+				{
+					printStream.println(toAdd);
+				}
+				else
+				{
+					printStream.println(nextLine);
+				}
+			}
+
+			//Clear the original file.
+			theFile.delete();
+			theFile.createNewFile();
+
+			Scanner scanner2 = new Scanner(tempFile);
+
+			PrintStream printStream2 = new PrintStream(theFile);
+
+			//Copy the temp file's contents to the original file.
+			while (scanner2.hasNext())
+			{
+				printStream2.println(scanner2.nextLine());
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			//Delete the temp file as it is no longer needed.
+			tempFile.delete();
+		}
+	}
 }

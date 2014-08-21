@@ -59,7 +59,6 @@ public final class ByteManipulationUtils
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
 
-
 			objectOutputStream.writeObject(theObject);
 
 			objectOutputStream.flush();
