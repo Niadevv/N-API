@@ -13,8 +13,8 @@ public final class GUIRegistry
 	
 	/**
 	 * Adds a renderer.
-	 * @param guiId
-	 * @param renderer
+	 * @param guiId The string id of the GUI. It's best to have a naming convention like yourmodid:name_of_gui
+	 * @param renderer The renderer to add.
 	 */
 	public static final void addRenderer(String guiId, IGUIRenderer renderer)
 	{
@@ -26,6 +26,11 @@ public final class GUIRegistry
 		{
 			throw new IllegalArgumentException(guiId + " is already registered as a GUI!");
 		}
+	}
+
+	public static final void renderGUIRenderer(String guiId)
+	{
+		renderers.get(guiId).render();
 	}
 
 	public static final void displayGui(GuiScreen screen)

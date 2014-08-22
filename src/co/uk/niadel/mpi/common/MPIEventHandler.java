@@ -1,15 +1,14 @@
 package co.uk.niadel.mpi.common;
 
-import co.uk.niadel.mpi.annotations.MPIAnnotations;
 import co.uk.niadel.mpi.common.block.IWrenchable;
 import co.uk.niadel.mpi.common.items.ICustomSpawnEgg;
 import co.uk.niadel.mpi.events.EventHandlerMethod;
 import co.uk.niadel.mpi.events.items.EventItemUse;
 import co.uk.niadel.mpi.util.MCData;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import co.uk.niadel.mpi.common.block.IMeasureTransferer;
 import co.uk.niadel.mpi.common.gui.GUIRegistry;
@@ -33,7 +32,7 @@ public class MPIEventHandler
 	{
 		if (MCData.isClientSide())
 		{
-			GUIRegistry.renderers.get(event.guiId).render();
+			GUIRegistry.renderGUIRenderer(event.guiId);
 		}
 	}
 
@@ -64,11 +63,31 @@ public class MPIEventHandler
 		if (!event.world.isClient)
 		{
 			//For throwable items.
-			Item thrownItem = event.clickedItem.getItem();
+			Item item = event.clickedItem.getItem();
 
-			if (thrownItem instanceof IThrowable)
+			if (item instanceof IThrowableItem)
 			{
-				((IThrowable) thrownItem).throwItem(event.clickedItem, event.world, event.player);
+				IThrowableItem throwable = (IThrowableItem) item;
+
+				if (throwable.canThrowItem(event.clickedItem, event.world, event.player))
+				{
+					//Borrowed, modified (mainly for optimisation purposes) and partially deobfuscated code from EntityThrowable
+					final float PI = (float) Math.PI;
+					Entity thrownEntity = throwable.getThrownEntity(event.world, event.player);
+					thrownEntity.setLocationAndAngles(event.player.posX, event.player.posY + (double) event.player.getEyeHeight(), event.player.posZ, event.player.rotationYaw, event.player.rotationPitch);
+					thrownEntity.posX -= (double)(MathHelper.cos(thrownEntity.rotationYaw / 180.0F * PI) * 0.16F);
+					thrownEntity.posY -= 0.10000000149011612D;
+					thrownEntity.posZ -= (double)(MathHelper.sin(thrownEntity.rotationYaw / 180.0F * PI) * 0.16F);
+					thrownEntity.setPosition(thrownEntity.posX, thrownEntity.posY, thrownEntity.posZ);
+					thrownEntity.yOffset = 0.0F;
+					final float CONSTANT = 0.4F;
+					final float COSVALUE = MathHelper.cos(thrownEntity.rotationPitch / 180.0F * PI);
+					thrownEntity.motionX = (double)(-MathHelper.sin(thrownEntity.rotationYaw / 180.0F * PI) * COSVALUE * CONSTANT);
+					thrownEntity.motionZ = (double)(MathHelper.cos(thrownEntity.rotationYaw / 180.0F * PI) * COSVALUE * CONSTANT);
+					thrownEntity.motionY = (double)(-MathHelper.sin((thrownEntity.rotationPitch) / 180.0F * PI) * CONSTANT);
+
+					event.world.spawnEntityInWorld(thrownEntity);
+				}
 			}
 		}
 	}
@@ -88,7 +107,6 @@ public class MPIEventHandler
 			{
 				e.printStackTrace();
 			}
-
 		}
 		else if (event.itemStack.getItem() instanceof IWrenchable && !event.world.isClient)
 		{

@@ -25,8 +25,6 @@ public class Launch
 	 */
 	public static final String REQ_JAVA_VERSION_STRING = "7";
 
-	public static boolean shouldInit = true;
-
 	public static void main(String[] args)
 	{
 		if (checkJavaVersion())
@@ -47,10 +45,7 @@ public class Launch
 	{
 		List<String> argList = new ArrayList<>();
 
-		for (String arg : args)
-		{
-			argList.add(arg);
-		}
+		argList.addAll(Arrays.asList(args));
 
 		if (!argList.contains("--accessToken"))
 		{
@@ -97,7 +92,7 @@ public class Launch
 		}
 		else
 		{
-			NAPILogHelper.logCritical("Java version is not " + REQ_JAVA_VERSION_STRING + "! If you are using Java 8, please downgrade as ASM does not work with Java 8, and N-API needs ASM to function correctly. If you are using Java 6, for the love of god, update all ready!");
+			NAPILogHelper.logCritical("Java version is not " + REQ_JAVA_VERSION_STRING + "! If you are using Java 6, for the love of god, update all ready!");
 			return false;
 		}
 	}

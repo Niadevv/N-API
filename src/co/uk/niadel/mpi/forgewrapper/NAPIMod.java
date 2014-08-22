@@ -35,8 +35,14 @@ import java.util.Map.Entry;
 @Mod(modid = NAPIData.FORGE_MODID, version = NAPIData.FULL_VERSION, name = NAPIData.NAME, acceptedMinecraftVersions = NAPIData.MC_VERSION, guiFactory = "co.uk.niadel.mpi.forgewrapper.NAPIConfigGUIFactory")
 public final class NAPIMod
 {
+	/**
+	 * The Forge-version of the N-API config.
+	 */
 	public static Configuration napiConfiguration;
 
+	/**
+	 * The N-API instance. Not sure what this is used for, but it's tehre nonetheless.
+	 */
 	@Instance(NAPIData.FORGE_MODID)
 	public NAPIMod instance;
 
@@ -95,6 +101,9 @@ public final class NAPIMod
 		}
 	}
 
+	/**
+	 * Updates both the Forge Wrapper and N-API configs to have their values match.
+	 */
 	public static final void updateConfig()
 	{
 		//Make sure the ids exist.
