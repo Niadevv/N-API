@@ -40,7 +40,7 @@ public abstract class ItemBaseModArmour extends ItemArmor
 	public ItemBaseModArmour(ModArmourMaterial material, int renderIndex, int armourType)
 	{
 		super(defaultMaterial, renderIndex, armourType);
-		this.overlayIcon = (IIcon) ReflectionManipulateValues.getValue(ItemArmor.class, /* Remember that instance thing in Item? This is what that was for. */super.instance, "overlayIcon");
+		this.overlayIcon = (IIcon) ReflectionManipulateValues.getValue(ItemArmor.class, /* Remember that INSTANCE thing in Item? This is what that was for. */super.instance, "overlayIcon");
 		
 		ReflectionManipulateValues.setValue(ItemArmor.class, super.instance, "material", null);
 		ReflectionManipulateValues.setValue(ItemBaseModArmour.class, this, "damageReduceAmount", material.damageReductionArray);

@@ -1,17 +1,24 @@
 package co.uk.niadel.mpi.asm;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.mpi.util.NAPILogHelper;
 
 /**
  * Where your register stuff to do with ASM in N-API.
  */
 public final class ASMRegistry 
 {
+	public static final List<String> allClasses = new ArrayList<>();
+
 	/**
 	 * The list of ASM transformers registered.
 	 */
@@ -84,12 +91,13 @@ public final class ASMRegistry
 
 	public static final void callASMTransformer(IASMTransformer currTransformer)
 	{
-		String[] requestedClasses = currTransformer.requestTransformedClasses();
+		//Kept in case the requestTransformedClasses route has to be taken.
+		//String[] requestedClasses = currTransformer.requestTransformedClasses();
 		//Map<String, byte[]> bytesMap = new HashMap<>();
 
 		try
 		{
-			for (String currClassName : requestedClasses)
+			for (String currClassName : allClasses)
 			{
 				if (!(currTransformer.getClass().getName() == NAPIASMNecessityTransformer.class.getName()) && !(currTransformer.getClass().getName() == NAPIASMEventHandlerTransformer.class.getName()))
 				{
@@ -148,5 +156,114 @@ public final class ASMRegistry
 					byte[] transformedBytes = currTransformer.manipulateBytecodes(currBytes.getKey(), currBytes.getValue());
 					NModLoader.defineClass(currBytes.getKey(), transformedBytes);
 				}*/
+	}
+
+	/**
+	 * Gets all of the classes loaded and puts them in allClasses.
+	 */
+	@Internal
+	private static final void getAllLoadedClassNames()
+	{
+		Package[] allPackages = NModLoader.INSTANCE.getPackages();
+
+		for (Package currPackage : allPackages)
+		{
+			String packageName = currPackage.getName();
+
+			Class[] classesForPackage = getClassesForPackage(packageName);
+
+			for (Class clazz : classesForPackage)
+			{
+				allClasses.add(clazz.getName());
+			}
+		}
+	}
+
+	//Next two methods are borrowed code from http://www.dzone.com/snippets/get-all-classes-within-package
+	/*
+	Changes from original code:
+		Fixing the formatting to my style
+		Getting rid of the assert statements
+		Getting rid of unecessary Types in the instantiated generic types.
+		Adding a try-catch instead of doing what I USED to do and make the method's throws declaration include the error (the first one
+		doesn't have this in order to check if there was an error getting the class names, one of the uses of exceptions)
+	*/
+	@Internal
+	private static final Class[] getClassesForPackage(String packageName)
+	{
+		try
+		{
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+			if (classLoader != null)
+			{
+				String path = packageName.replace('.', '/');
+				Enumeration<URL> resources = classLoader.getResources(path);
+				List<File> dirs = new ArrayList<>();
+
+				while (resources.hasMoreElements())
+				{
+					URL resource = resources.nextElement();
+					dirs.add(new File(resource.getFile()));
+				}
+
+				ArrayList<Class> classes = new ArrayList<>();
+
+				for (File directory : dirs)
+				{
+					classes.addAll(findClasses(directory, packageName));
+				}
+
+				return classes.toArray(new Class[classes.size()]);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		catch (IOException e)
+		{
+			NAPILogHelper.logError(e);
+			return null;
+		}
+	}
+
+	@Internal
+	private static final List<Class> findClasses(File directory, String packageName)
+	{
+		try
+		{
+			List<Class> classes = new ArrayList<>();
+
+			if (!directory.exists())
+			{
+				return classes;
+			}
+
+			File[] files = directory.listFiles();
+
+			for (File file : files)
+			{
+				if (file.isDirectory() && !file.getName().contains("."))
+				{
+					classes.addAll(findClasses(file, packageName + "." + file.getName()));
+				}
+				else if (file.getName().endsWith(".class"))
+				{
+					classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+				}
+			}
+			return classes;
+		}
+		catch (ClassNotFoundException e)
+		{
+			NAPILogHelper.logError(e);
+			return null;
+		}
+	}
+
+	static
+	{
+		getAllLoadedClassNames();
 	}
 }

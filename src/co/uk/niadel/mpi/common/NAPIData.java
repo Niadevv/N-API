@@ -36,7 +36,7 @@ public interface NAPIData
 	public static final String MINOR_VERSION = "0";
 	
 	/**
-	 * N-API's bug fix version, increments every time I fix a "Nia-Derp" or other bug.
+	 * N-API's bug fix version, increments every time I fix a "Nia-Derp" or other (set of) bug(s).
 	 */
 	public static final String BUGFIX_VERSION = "0";
 	
@@ -66,28 +66,4 @@ public interface NAPIData
 	 * Fully qualified name of the standard N-API transformer.
 	 */
 	public static final String NAPI_ASM_TRANSFORMER = "co.uk.niadel.mpi.asm.NAPIASMTransformer";
-	
-	/**
-	 * List of classes used in NAPIASMTransformer.
-	 */
-	public static final String[] ASMD_CLASSES = {"net.minecraft.item.Item",
-			"net.minecraft.client.renderer.entity.RenderItem",
-			"net.minecraft.world.gen.structure.StructureVillagePieces",
-			"net.minecraft.world.World",
-			"net.minecraft.world.Explosion",
-			"net.minecraft.world.gen.layer.GenLayerBiome",
-			"net.minecraft.entity.EntityLiving",
-			"net.minecraft.entity.player.EntityPlayer",
-			"co.uk.niadel.mpi.util.MCData",
-			"net.minecraft.util.ReportedException",
-			"net.minecraft.entity.Entity",
-			"net.minecraft.entity.EntityLivingBase",
-			"net.minecraft.world.WorldProvider",
-			"net.minecraft.util.ObjectIntIdentityMap"
-	};
-	
-	/**
-	 * List of obfuscated classes used in NAPIASMTransformer.
-	 */
-	public static final String[] ASMD_CLASSES_OBFD = {"co.uk.niadel.mpi.util.MCData"};
 }

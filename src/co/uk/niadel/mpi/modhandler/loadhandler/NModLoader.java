@@ -47,9 +47,9 @@ import co.uk.niadel.mpi.util.MCData;
 public class NModLoader extends URLClassLoader
 {
 	/**
-	 * The NModLoader instance.
+	 * The NModLoader INSTANCE.
 	 */
-	private static final @Internal NModLoader instance = new NModLoader(new URL[0], getSystemClassLoader());
+	public static final @Internal NModLoader INSTANCE = new NModLoader(new URL[0], getSystemClassLoader());
 
 	/**
 	 * The Minecraft object.
@@ -120,10 +120,15 @@ public class NModLoader extends URLClassLoader
 	{
 		return mods.doesListContainLibrary(modId);
 	}
-	
+
+	public final Package[] getPackages()
+	{
+		return INSTANCE.getPackages();
+	}
+
 	public static final void defineClass(String className, byte[] bytes)
 	{
-		instance.defineClass(className, bytes, 0, bytes.length);
+		INSTANCE.defineClass(className, bytes, 0, bytes.length);
 	}
 	
 	/**
@@ -142,7 +147,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void loadUrl(URL url)
 	{
-		instance.addURL(url);
+		INSTANCE.addURL(url);
 	}
 	
 	/**
@@ -170,7 +175,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void loadModsFromDir()
 	{
-		if (Launch.shouldInit)
+		if (Launch.checkJavaVersion())
 		{
 			try
 			{

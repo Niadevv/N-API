@@ -1,4 +1,4 @@
-package co.uk.niadel.mpi.events.world;
+package co.uk.niadel.mpi.events.blocks;
 
 import co.uk.niadel.mpi.events.IEvent;
 import net.minecraft.block.Block;

@@ -17,7 +17,7 @@ import co.uk.niadel.mpi.util.BlockDirectionsMod;
 public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirectionsMod, IRedstoneWire
 {
 	/**
-	 * A static instance to allow for the constructor to work.
+	 * A static INSTANCE to allow for the constructor to work.
 	 */
 	public static BlockRedstoneWireBase instance = new BlockRedstoneWireBase();
 	

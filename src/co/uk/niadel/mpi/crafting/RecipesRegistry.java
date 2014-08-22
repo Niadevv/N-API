@@ -27,12 +27,12 @@ public final class RecipesRegistry
 	private static RecipesRegistry instance = new RecipesRegistry(); 
 	
 	/**
-	 * The crafting recipe registry instance.
+	 * The crafting recipe registry INSTANCE.
 	 */
 	public static CraftingManager craftingRecipes = CraftingManager.getInstance();
 	
 	/**
-	 * The vanilla smelting recipes instance.
+	 * The vanilla smelting recipes INSTANCE.
 	 */
 	public static FurnaceRecipes furnaceRecipes = FurnaceRecipes.smelting();
 	

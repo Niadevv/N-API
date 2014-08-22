@@ -41,7 +41,7 @@ public final class NAPIMod
 	public static Configuration napiConfiguration;
 
 	/**
-	 * The N-API instance. Not sure what this is used for, but it's tehre nonetheless.
+	 * The N-API INSTANCE. Not sure what this is used for, but it's tehre nonetheless.
 	 */
 	@Instance(NAPIData.FORGE_MODID)
 	public NAPIMod instance;

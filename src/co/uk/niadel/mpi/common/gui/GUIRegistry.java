@@ -7,6 +7,9 @@ import net.minecraft.client.gui.GuiScreen;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The registry for GUI displayers and a method for displaying a GuiScreen.
+ */
 public final class GUIRegistry
 {
 	public static Map<String, IGUIRenderer> renderers = new HashMap<>();

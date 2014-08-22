@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Optimises Event Handler data getting. Special as it is not actually registered and is called manually.
  */
-public class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
+public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
 {
 	/**
 	 * The current event.
@@ -70,19 +70,6 @@ public class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
 		}
 
 		return null;
-	}
-
-	@Override
-	public String[] requestTransformedClasses()
-	{
-		List<String> classes = new ArrayList<>();
-
-		for (Object currEventHandler : EventFactory.getHandlers().entrySet())
-		{
-			classes.add(currEventHandler.getClass().getName());
-		}
-
-		return classes.toArray(new String[classes.size()]);
 	}
 
 	private MethodNode addEventHandlerCall(MethodNode eventMethodNode, int currentIteration) throws IOException

@@ -14,14 +14,14 @@ import co.uk.niadel.mpi.common.block.IMeasureTransferer;
 import co.uk.niadel.mpi.common.gui.GUIRegistry;
 import co.uk.niadel.mpi.events.client.EventDisplayModGUI;
 import co.uk.niadel.mpi.events.items.EventItemRightClicked;
-import co.uk.niadel.mpi.events.world.EventBlockSet;
+import co.uk.niadel.mpi.events.blocks.EventBlockSet;
 import co.uk.niadel.mpi.util.MCUtils;
 
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Used for IThrowable and the more Forge-esque utilities. Is also a reference implementation
- * of an Event Handler.
+ * Used for IThrowableItem and the more Forge-esque utilities. Is also a reference implementation
+ * of an Event Handler. This makes modder's lives much easier and is a core part of the common package.
  * @author Niadel
  *
  */
@@ -60,11 +60,11 @@ public class MPIEventHandler
 	@EventHandlerMethod
 	public void handleItemRightClicked(EventItemRightClicked event)
 	{
+		Item item = event.clickedItem.getItem();
+
 		if (!event.world.isClient)
 		{
 			//For throwable items.
-			Item item = event.clickedItem.getItem();
-
 			if (item instanceof IThrowableItem)
 			{
 				IThrowableItem throwable = (IThrowableItem) item;
@@ -73,7 +73,7 @@ public class MPIEventHandler
 				{
 					//Borrowed, modified (mainly for optimisation purposes) and partially deobfuscated code from EntityThrowable
 					final float PI = (float) Math.PI;
-					Entity thrownEntity = throwable.getThrownEntity(event.world, event.player);
+					final Entity thrownEntity = throwable.getThrownEntity(event.world, event.player);
 					thrownEntity.setLocationAndAngles(event.player.posX, event.player.posY + (double) event.player.getEyeHeight(), event.player.posZ, event.player.rotationYaw, event.player.rotationPitch);
 					thrownEntity.posX -= (double)(MathHelper.cos(thrownEntity.rotationYaw / 180.0F * PI) * 0.16F);
 					thrownEntity.posY -= 0.10000000149011612D;

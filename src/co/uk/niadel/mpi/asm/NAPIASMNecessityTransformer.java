@@ -35,19 +35,6 @@ import co.uk.niadel.mpi.util.MCData;
  */
 public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 {
-	@Override
-	public String[] requestTransformedClasses()
-	{
-		if (MCData.isGameObfed())
-		{
-			return NAPIData.ASMD_CLASSES_OBFD;
-		}
-		else
-		{
-			return NAPIData.ASMD_CLASSES;
-		}
-	}
-
 	public static final void deleteBytecodesOfMethod(MethodNode method)
 	{
 		Iterator<AbstractInsnNode> insnNodeIterator = method.instructions.iterator();
@@ -107,9 +94,9 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 
 			switch (className)
 			{
-				//Adding instance field so that the ItemBaseModArmour works, adding event calls.
+				//Adding INSTANCE field so that the ItemBaseModArmour works, adding event calls.
 				case "net.minecraft.item.Item":
-					cn.fields.add(new FieldNode(ACC_PUBLIC, "instance", null, null, null));
+					cn.fields.add(new FieldNode(ACC_PUBLIC, "INSTANCE", null, null, null));
 
 					methodNode = constructMethodNode(ACC_PUBLIC, "<init>", "()V", null, null, cn);
 
@@ -131,7 +118,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					methodNode.instructions.add(new LineNumberNode(80, ln2));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
-					methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/item/Item", "instance", "Lnet/minecraft/item/Item"));
+					methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/item/Item", "INSTANCE", "Lnet/minecraft/item/Item"));
 					ln3 = new LabelNode();
 					ln3.accept(methodNode);
 					methodNode.instructions.add(new LineNumberNode(858, ln3));
@@ -191,8 +178,8 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 
 				//Obfuscated Item patching
 				case "abn":
-					cw.newField("abn", "instance", "Labn;");
-					fv = cw.visitField(ACC_PUBLIC, "instance", "Labn", null, null);
+					cw.newField("abn", "INSTANCE", "Labn;");
+					fv = cw.visitField(ACC_PUBLIC, "INSTANCE", "Labn", null, null);
 					fv.visitEnd();
 					break;
 
