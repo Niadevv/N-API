@@ -42,26 +42,32 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 			MethodNode eventMethodNode = null;
 			int currentIteration = 0;
 
-			for (MethodNode methodNode : classNode.methods)
+			//If the class is an event handler.
+			if (classNode.interfaces.contains("co/uk/niadel/mpi/events/IEventHandler"))
 			{
-				for (AnnotationNode annotationNode : methodNode.visibleAnnotations)
+				for (MethodNode methodNode : classNode.methods)
 				{
-					if (annotationNode.desc == "Lco/uk/niadel/events/EventHandlerMethod;")
+					for (AnnotationNode annotationNode : methodNode.visibleAnnotations)
 					{
-						currentIteration++;
-						eventMethodNode = addEventHandlerCall(methodNode, currentIteration);
+						if (annotationNode.desc == "Lco/uk/niadel/events/EventHandlerMethod;")
+						{
+							currentIteration++;
+							eventMethodNode = addEventHandlerCall(methodNode, currentIteration);
+						}
 					}
+				}
+
+				if (eventMethodNode != null)
+				{
+					//Add the return instruction.
+					LabelNode labelNode = new LabelNode();
+					labelNode.accept(eventMethodNode);
+					eventMethodNode.instructions.add(new LineNumberNode(108 + currentIteration, labelNode));
+					eventMethodNode.instructions.add(new InsnNode(RETURN));
 				}
 			}
 
-			if (eventMethodNode != null)
-			{
-				//Add the return instruction.
-				LabelNode labelNode = new LabelNode();
-				labelNode.accept(eventMethodNode);
-				eventMethodNode.instructions.add(new LineNumberNode(107 + currentIteration + 1, labelNode));
-				eventMethodNode.instructions.add(new InsnNode(RETURN));
-			}
+			return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
 		}
 		catch (IOException e)
 		{
@@ -75,7 +81,6 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 	private MethodNode addEventHandlerCall(MethodNode eventMethodNode, int currentIteration) throws IOException
 	{
 		ClassReader evFacClassReader = new ClassReader("co.uk.niadel.mpi.events.EventFactory");
-		ClassWriter evFacClassWriter = new ClassWriter(evFacClassReader, ClassWriter.COMPUTE_MAXS);
 		ClassNode evFacClassNode = new ClassNode();
 		evFacClassReader.accept(evFacClassNode, 0);
 		MethodNode evFacMethodNode = null;

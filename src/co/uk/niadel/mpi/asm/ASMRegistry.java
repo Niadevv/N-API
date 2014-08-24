@@ -3,10 +3,7 @@ package co.uk.niadel.mpi.asm;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
@@ -17,6 +14,11 @@ import co.uk.niadel.mpi.util.NAPILogHelper;
  */
 public final class ASMRegistry 
 {
+	private static final List<String> badClasses = new ArrayList<>(Arrays.asList("net.minecraft.util.StringTranslate"));
+
+	/**
+	 * All class names loaded.
+	 */
 	public static final List<String> allClasses = new ArrayList<>();
 
 	/**
@@ -46,11 +48,9 @@ public final class ASMRegistry
 	@Internal
 	public static final void invokeAllTransformers()
 	{
-		Iterator<IASMTransformer> asmIterator = asmTransformers.iterator();
-
-		while (asmIterator.hasNext())
+		for (IASMTransformer currTransformer : asmTransformers)
 		{
-			callASMTransformer(asmIterator.next());
+			callASMTransformer(currTransformer);
 		}
 	}
 
@@ -61,6 +61,8 @@ public final class ASMRegistry
 	public static final void addASMClassExclusion(String excludedName)
 	{
 		//net.minecraft classes should ALWAYS be allowed to be transformed. The only exception is the FMLRenderAccessLibrary.
+		//And no, future me, excludedName is NOT meant to have a ! operator. Not sure as to whether or not the or operator was the
+		//right one to use, but hey.
 		if (excludedName == "net.minecraft.src.FMLRenderAccessLibrary" || !excludedName.startsWith("net.minecraft."))
 		{
 			excludedClasses.add(excludedName);
@@ -174,6 +176,7 @@ public final class ASMRegistry
 
 			for (Class clazz : classesForPackage)
 			{
+				NAPILogHelper.log("Found class " + clazz.getName() + "!");
 				allClasses.add(clazz.getName());
 			}
 		}
@@ -185,8 +188,7 @@ public final class ASMRegistry
 		Fixing the formatting to my style
 		Getting rid of the assert statements
 		Getting rid of unecessary Types in the instantiated generic types.
-		Adding a try-catch instead of doing what I USED to do and make the method's throws declaration include the error (the first one
-		doesn't have this in order to check if there was an error getting the class names, one of the uses of exceptions)
+		Adding a try-catch instead of doing what I USED to do and make the method's throws declaration include the error.
 	*/
 	@Internal
 	private static final Class[] getClassesForPackage(String packageName)
@@ -259,6 +261,17 @@ public final class ASMRegistry
 		{
 			NAPILogHelper.logError(e);
 			return null;
+		}
+	}
+
+	private static final void fixBadClasses()
+	{
+		NAPIASMClassFixingTransformer transformer = new NAPIASMClassFixingTransformer();
+
+		for (String badClass : badClasses)
+		{
+			transformer.manipulateBytecodes(badClass);
+
 		}
 	}
 

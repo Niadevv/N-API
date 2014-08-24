@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class Launch
 {
+	public static final List<String> args = new ArrayList<>();
+
 	/**
 	 * The minimum allowed version of java for N-API to run.
 	 */

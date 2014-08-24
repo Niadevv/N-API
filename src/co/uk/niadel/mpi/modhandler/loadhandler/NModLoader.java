@@ -5,6 +5,7 @@ import co.uk.niadel.mpi.client.ClientRegistry;
 import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.init.Launch;
 import co.uk.niadel.mpi.modhandler.*;
+import co.uk.niadel.mpi.modhandler.ModRegister;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
 import java.io.IOException;
@@ -123,7 +124,7 @@ public class NModLoader extends URLClassLoader
 
 	public final Package[] getPackages()
 	{
-		return INSTANCE.getPackages();
+		return super.getPackages();
 	}
 
 	public static final void defineClass(String className, byte[] bytes)
@@ -267,16 +268,19 @@ public class NModLoader extends URLClassLoader
 	{
 		try
 		{
-			IAdvancedModRegister register = theClass.newInstance();
-
-			if (register.getModId() == NAPIData.MODID)
+			if (theClass == ModRegister.class)
 			{
-				register.registerEventHandlers();
-				register.registerTransformers();
-				processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
-				register.preModInit();
-				register.modInit();
-				register.postModInit();
+				IAdvancedModRegister register = theClass.newInstance();
+
+				if (register.getModId() == NAPIData.MODID)
+				{
+					register.registerEventHandlers();
+					register.registerTransformers();
+					processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
+					register.preModInit();
+					register.modInit();
+					register.postModInit();
+				}
 			}
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)

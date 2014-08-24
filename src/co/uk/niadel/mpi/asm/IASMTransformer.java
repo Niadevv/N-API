@@ -5,7 +5,7 @@ import co.uk.niadel.mpi.util.ByteManipulationUtils;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 
 /**
- * Interface implemented by all ASM transformers.
+ * Interface implemented by all ASM transformers that want to not break all mods in existence.
  *
  * @author Niadel
  */

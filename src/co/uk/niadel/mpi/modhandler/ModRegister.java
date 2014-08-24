@@ -1,6 +1,7 @@
 package co.uk.niadel.mpi.modhandler;
 
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.mpi.asm.NAPIASMDeGameExitingTransformer;
 import co.uk.niadel.mpi.asm.NAPIASMEventHandlerTransformer;
 import co.uk.niadel.mpi.asm.NAPIASMNecessityTransformer;
 import co.uk.niadel.mpi.commands.CommandNAPI;
@@ -91,6 +92,7 @@ public final class ModRegister implements IAdvancedModRegister
 		//Tells the user (rather cheesily) that the N-API ASM transformer is being registered.
 		NAPILogHelper.log("REGISTERING N-API ASM TRANSFORMER! Transformers, roll out!");
 		ASMRegistry.registerTransformer(new NAPIASMNecessityTransformer());
+		ASMRegistry.registerTransformer(new NAPIASMDeGameExitingTransformer());
 		//Adds the Forge and FML classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
 		ASMRegistry.addASMClassExclusion("cpw.fml.mods");
 		ASMRegistry.addASMClassExclusion("net.minecraftforge");
