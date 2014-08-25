@@ -2,12 +2,17 @@ package co.uk.niadel.mpi.util;
 
 import java.util.Arrays;
 
+/**
+ * Utillities for arrays.
+ *
+ * @author Niadel
+ */
 public final class ArrayUtils
 {
 	/**
 	 * Copies an array as I have no idea how to use the Java util class Arrays o_O
-	 * @param arrayToCopy
-	 * @return
+	 * @param arrayToCopy The array to copy.
+	 * @return The copied array.
 	 */
 	public static final <X, Y> X[] copyArray(Y[] arrayToCopy)
 	{
@@ -25,8 +30,8 @@ public final class ArrayUtils
 	
 	/**
 	 * Tests if the specified array contains the specified value.
-	 * @param array
-	 * @param valueToTest
+	 * @param array The array to test to see if it contains the value.
+	 * @param valueToTest The value to check to see if array contains.
 	 * @return Whether array contains valueToTest.
 	 */
 	public static final <X> boolean doesArrayContainValue(X[] array, X valueToTest)
@@ -52,6 +57,13 @@ public final class ArrayUtils
 		return doesArrayContainValue(arrayIntegered, valueToTest);
 	}
 
+	/**
+	 * Expands an array.
+	 * @param arrayToExpand The array to expand.
+	 * @param expandAmount The amount to expand arrayToExpand by.
+	 * @param <X>
+	 * @return The expanded array.
+	 */
 	public static final <X> Object[] expandArray(X[] arrayToExpand, int expandAmount)
 	{
 		Object[] newArray = new Object[arrayToExpand.length + expandAmount];

@@ -17,8 +17,8 @@ public final class GameRuleRegistry
 	
 	/**
 	 * Adds a game rule.
-	 * @param gameRuleName
-	 * @param defaultValue
+	 * @param gameRuleName The name of the game rule.
+	 * @param defaultValue The default value of the gamerule.
 	 */
 	public static final void addGameRule(String gameRuleName, String defaultValue)
 	{

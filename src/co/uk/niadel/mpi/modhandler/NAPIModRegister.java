@@ -20,15 +20,17 @@ import co.uk.niadel.mpi.napioredict.NAPIOreDict;
 import co.uk.niadel.mpi.potions.PotionRegistry;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.UniqueIdAcquirer;
+import co.uk.niadel.mpi.annotations.ModRegister;
 
 /**
  * The N-API register. The MPI parts are sorted out here.
  * 
  * @author Niadel
  */
+@ModRegister(modId = NAPIData.MODID, version = NAPIData.VERSION)
 @Library(version = NAPIData.VERSION)
 @Internal
-public final class ModRegister implements IAdvancedModRegister
+public final class NAPIModRegister implements IAdvancedModRegister
 {
 	/**
 	 * This is used in handling numeric ids.
@@ -70,7 +72,7 @@ public final class ModRegister implements IAdvancedModRegister
 	@Override
 	public void modInit() 
 	{
-		CommandRegistry.registerCommand(new CommandNAPI(), "N-API");
+		CommandRegistry.registerModCommand(new CommandNAPI());
 		NAPILogHelper.log("Finished Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
 	}
 

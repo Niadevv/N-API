@@ -1,10 +1,7 @@
 package co.uk.niadel.mpi.asm;
 
-import co.uk.niadel.mpi.annotations.IAnnotationHandler;
-import co.uk.niadel.mpi.annotations.MPIAnnotations;
-import co.uk.niadel.mpi.events.EventFactory;
 import co.uk.niadel.mpi.events.IEvent;
-import co.uk.niadel.mpi.modhandler.ModRegister;
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -12,8 +9,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Optimises Event Handler data getting. Special as it is not actually registered and is called manually.
@@ -153,7 +148,7 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 		if (newEvent.getClass() != currentEvent.getClass())
 		{
 			//Recall this transformer.
-			ASMRegistry.callASMTransformer(ModRegister.eventHandler);
+			ASMRegistry.callASMTransformer(NAPIModRegister.eventHandler);
 		}
 	}
 }

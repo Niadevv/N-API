@@ -2,6 +2,11 @@ package co.uk.niadel.mpi.util;
 
 import java.io.*;
 
+/**
+ * Utillities for manipulating bytes.
+ *
+ * @author Niadel
+ */
 public final class ByteManipulationUtils
 {
 	private static final ByteManipulationUtils instance = new ByteManipulationUtils();

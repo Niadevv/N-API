@@ -5,23 +5,29 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 
+/**
+ * Implemented by all mod containers. Mod containers basically wrap around mod objects and allow ease of acquisition of
+ * data about the container.
+ *
+ * @author Niadel
+ */
 public interface IModContainer
 {
 	/**
 	 * Should return the IModRegister that this container contains.
 	 * @return
 	 */
-	public IModRegister getMainClass();
+	public Object getMainClass();
 	
 	/**
 	 * Should get this container's mod's id.
-	 * @return
+	 * @return This container's mod id.
 	 */
 	public String getModId();
 	
 	/**
 	 * Should get this container's mod's version.
-	 * @return
+	 * @return This container's version.
 	 */
 	public String getVersion();
 	

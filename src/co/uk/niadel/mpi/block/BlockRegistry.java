@@ -3,18 +3,18 @@ package co.uk.niadel.mpi.block;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.uk.niadel.mpi.modhandler.ModRegister;
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 import co.uk.niadel.mpi.util.MCData;
 import co.uk.niadel.mpi.util.reflection.ReflectionCallMethods;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockFire;
-import net.minecraft.init.Blocks;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.util.RegistrySimple;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
 import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
-import co.uk.niadel.mpi.util.UniqueIdAcquirer;
 
 /**
  * Where you register blocks.
@@ -41,7 +41,7 @@ public final class BlockRegistry
 	 */
 	public static final void addBlock(String nonNumericId, Block block)
 	{
-		registry.addObject(ModRegister.idAcquirer.nextId(nonNumericId), nonNumericId, block);
+		registry.addObject(NAPIModRegister.idAcquirer.nextId(nonNumericId), nonNumericId, block);
 	}
 	
 	/**
@@ -69,12 +69,22 @@ public final class BlockRegistry
 	{
 		if (!MCData.isForge)
 		{
-			ReflectionCallMethods.callMethod(BlockFire.class, "func_149842_a", Blocks.fire.getIdFromBlock(block), flammabillity, chanceToNotBurn);
+			ReflectionCallMethods.callMethod(BlockFire.class, "func_149842_a", Block.getIdFromBlock(block), flammabillity, chanceToNotBurn);
 		}
 		else
 		{
 			//Forge compat.
 			ReflectionCallMethods.callMethod(BlockFire.class, "setFireInfo", block, flammabillity, chanceToNotBurn);
 		}
+	}
+
+	/**
+	 * Add a dispenser behaviour.
+	 * @param itemDispensed Item to dispense.
+	 * @param behaviour The behaviour itself.
+	 */
+	public static final void addDispenserBehaviour(Item itemDispensed, IBehaviorDispenseItem behaviour)
+	{
+		BlockDispenser.dispenseBehaviorRegistry.putObject(itemDispensed, behaviour);
 	}
 }

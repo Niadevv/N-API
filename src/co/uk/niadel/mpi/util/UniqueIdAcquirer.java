@@ -1,7 +1,7 @@
 package co.uk.niadel.mpi.util;
 
 import co.uk.niadel.mpi.exceptions.FreeIdUnacquirableException;
-import co.uk.niadel.mpi.modhandler.ModRegister;
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 
 /**
  * Important class necessary for internal ID handling until said id necessity is removed.
@@ -37,8 +37,8 @@ public class UniqueIdAcquirer
 	
 	/**
 	 * Gets the next free id. If the id for the string id already exists in the config, it will return that instead.
-	 * @param stringId
-	 * @return
+	 * @param stringId The id to get a unique int id for.
+	 * @return A unique id, or the id that is for the specified stringId.
 	 */
 	public int nextId(String stringId)
 	{
@@ -46,13 +46,13 @@ public class UniqueIdAcquirer
 		{
 			int theId = UniqueNumberAcquirer.getFreeInt(this.excludedIds);
 
-			if (!ModRegister.config.doesIdExist(theId))
+			if (!NAPIModRegister.config.doesIdExist(theId))
 			{
-				ModRegister.config.addId(stringId, theId);
+				NAPIModRegister.config.addId(stringId, theId);
 			}
 			else
 			{
-				return ModRegister.config.getId(stringId);
+				return NAPIModRegister.config.getId(stringId);
 			}
 
 			this.excludedIds[excludedIds.length] = theId;

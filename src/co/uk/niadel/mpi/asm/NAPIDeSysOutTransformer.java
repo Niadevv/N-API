@@ -24,15 +24,19 @@ public class NAPIDeSysOutTransformer implements IASMTransformer, Opcodes
 			ClassNode classNode = new ClassNode();
 			classReader.accept(classNode, 0);
 
+			//Yup. I'm allowing it to catch my own uses of System.out.println.
 			if (!className.contains("net.minecraft.") && !className.startsWith("java"))
 			{
 				for (MethodNode method : classNode.methods)
 				{
 					String allExceptionsThrown = method.exceptions == null ? "---" : "";
 
-					for (String exceptionThrown : method.exceptions)
+					if (method.exceptions != null)
 					{
-						allExceptionsThrown = allExceptionsThrown + "," + exceptionThrown;
+						for (String exceptionThrown : method.exceptions)
+						{
+							allExceptionsThrown = allExceptionsThrown + "," + exceptionThrown;
+						}
 					}
 
 					for (int i = 0; i == method.instructions.size(); i++)

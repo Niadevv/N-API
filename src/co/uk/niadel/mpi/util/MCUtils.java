@@ -10,6 +10,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
+/**
+ * Utillities to do stuff relating to Minecraft.
+ *
+ * @author Niadel
+ */
 public final class MCUtils
 {
 	public static Block[] getBlocksRelativeToCoords(World world, int x, int y, int z)

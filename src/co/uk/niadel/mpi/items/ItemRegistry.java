@@ -1,9 +1,9 @@
 package co.uk.niadel.mpi.items;
 
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 import net.minecraft.item.Item;
 import net.minecraft.util.RegistryNamespaced;
 import co.uk.niadel.mpi.util.UniqueIdAcquirer;
-import co.uk.niadel.mpi.modhandler.ModRegister;
 
 /**
  * Where you register Items.
@@ -19,7 +19,7 @@ public final class ItemRegistry
 	/**
 	 * Used to handle numeric ids internally.
 	 */
-	public static final UniqueIdAcquirer numAcquirer = ModRegister.idAcquirer;
+	public static final UniqueIdAcquirer numAcquirer = NAPIModRegister.idAcquirer;
 	
 	/**
 	 * Registers the item itself. Like FML, it handles numeric ids internally.

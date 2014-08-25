@@ -37,9 +37,12 @@ public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 				{
 					String allExceptionsThrown = methodNode.exceptions == null ? "---" : "";
 
-					for (String exceptionThrown : methodNode.exceptions)
+					if (methodNode.exceptions != null)
 					{
-						allExceptionsThrown = allExceptionsThrown + "," + exceptionThrown;
+						for (String exceptionThrown : methodNode.exceptions)
+						{
+							allExceptionsThrown = allExceptionsThrown + "," + exceptionThrown;
+						}
 					}
 
 					ListIterator<AbstractInsnNode> insnIterator = methodNode.instructions.iterator();

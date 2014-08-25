@@ -1,13 +1,12 @@
 package co.uk.niadel.mpi.entity;
 
-import co.uk.niadel.mpi.util.reflection.ReflectionCallMethods;
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.world.biome.BiomeGenBase;
-import co.uk.niadel.mpi.modhandler.ModRegister;
 
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public final class EntityRegistry extends EntityList
 	 */
 	public static final void registerEntity(Class<? extends Entity> theClass, String entityId)
     {
-		addMapping(theClass, entityId, ModRegister.entityIdAcquirer.nextId(entityId));
+		addMapping(theClass, entityId, NAPIModRegister.entityIdAcquirer.nextId(entityId));
     }
 	
     /**
@@ -52,7 +51,7 @@ public final class EntityRegistry extends EntityList
      */
     public static final void registerEntity(Class<? extends Entity> entityClass, String stringMobId, int eggBackgroundColour, int eggSpotColour)
     {
-		addMapping(entityClass, stringMobId, ModRegister.entityIdAcquirer.nextId(stringMobId), eggBackgroundColour, eggSpotColour);
+		addMapping(entityClass, stringMobId, NAPIModRegister.entityIdAcquirer.nextId(stringMobId), eggBackgroundColour, eggSpotColour);
 	}
 
 	/**
@@ -65,7 +64,7 @@ public final class EntityRegistry extends EntityList
 	{
 		stringIdToClassMap.remove(entityId);
 		classToStringIdMap.remove(entityClass);
-		numericIdToClassMap.remove(ModRegister.config.getId(entityId));
+		numericIdToClassMap.remove(NAPIModRegister.config.getId(entityId));
 		classToNumericIdMap.remove(entityClass);
 		stringIdToNumericIdMap.remove(entityId);
 		ReflectionManipulateValues.setValue(EntityList.class, null, "stringToClassMapping", stringIdToClassMap);

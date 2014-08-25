@@ -16,7 +16,7 @@ import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
  * @author Niadel
  *
  */
-public class ModList
+public class ModList implements Iterable<IModContainer>
 {
 	/**
 	 * The list the mods are stored in.
@@ -48,17 +48,15 @@ public class ModList
 	 * @param mod
 	 * @param isLibrary
 	 */
-	public void addMod(IModRegister mod, boolean isLibrary)
+	public void addMod(IModContainer mod, boolean isLibrary)
 	{
 		if (!isLibrary)
 		{
-			Mod container = new Mod(mod);
-			this.mods.add(container);
+			this.mods.add(mod);
 		}
 		else
 		{
-			Library container = new Library(mod);
-			this.mods.add(container);
+			this.mods.add(mod);
 		}
 	}
 	
@@ -140,7 +138,7 @@ public class ModList
 	 * @param modId
 	 * @return
 	 */
-	public IModRegister getModById(String modId)
+	public Object getModById(String modId)
 	{
 		return getModContainerById(modId).getMainClass();
 	}
@@ -173,7 +171,12 @@ public class ModList
 	{
 		return mods.contains(getModContainerById(modid)) || forgeModids.containsKey(modid);
 	}
-	
+
+	/**
+	 * Gets the iterator for this list.
+	 * @return The iterator for this list.
+	 */
+	@Override
 	public Iterator<IModContainer> iterator()
 	{
 		return mods.iterator();
@@ -196,6 +199,10 @@ public class ModList
 		return false;
 	}
 
+	/**
+	 * Gets the library containers in this list.
+	 * @return
+	 */
 	public List<Library> getLibraryContainers()
 	{
 		List<Library> libsToReturn = new ArrayList<>();

@@ -5,7 +5,7 @@ import co.uk.niadel.mpi.client.ClientRegistry;
 import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.init.Launch;
 import co.uk.niadel.mpi.modhandler.*;
-import co.uk.niadel.mpi.modhandler.ModRegister;
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
 import java.io.IOException;
@@ -14,10 +14,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -150,17 +148,7 @@ public class NModLoader extends URLClassLoader
 	{
 		INSTANCE.addURL(url);
 	}
-	
-	/**
-	 * Gets a IModRegister object by it's mod id.
-	 * @param modId The modId to get the Mod object of.
-	 * @return The Mod with the id of modId.
-	 */
-	public static final IModRegister getModByModId(String modId)
-	{
-		return mods.getModById(modId);
-	}
-	
+
 	/**
 	 * Gets the mod container corresponding to the specified mod id.
 	 * @param modId The modId to get the mod register of.
@@ -264,23 +252,20 @@ public class NModLoader extends URLClassLoader
 	 * Only ever used to load the N-API ModRegister, so the regular checks are ignored.
 	 * @param theClass The class that is loaded.
 	 */
-	private static final void initNAPIRegister(Class<? extends IAdvancedModRegister> theClass)
+	private static final void initNAPIRegister(Class<NAPIModRegister> theClass)
 	{
 		try
 		{
-			if (theClass == ModRegister.class)
+			if (theClass == NAPIModRegister.class)
 			{
-				IAdvancedModRegister register = theClass.newInstance();
+				NAPIModRegister register = theClass.newInstance();
 
-				if (register.getModId() == NAPIData.MODID)
-				{
-					register.registerEventHandlers();
-					register.registerTransformers();
-					processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
-					register.preModInit();
-					register.modInit();
-					register.postModInit();
-				}
+				register.registerEventHandlers();
+				register.registerTransformers();
+				processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
+				register.preModInit();
+				register.modInit();
+				register.postModInit();
 			}
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
@@ -397,17 +382,19 @@ public class NModLoader extends URLClassLoader
 	 * Converts an IModRegister into a Mod object and puts that Mod object into mods.
 	 * @param mod The mod to load.
 	 */
-	public static final void loadMod(IModRegister mod)
+	public static final void loadMod(IModContainer mod)
 	{
-		mods.addMod(new Mod(mod.getModId(), mod.getVersion(), mod));
+		mods.addMod(mod);
 		NAPILogHelper.log("Loaded mod " + mod.getModId() + "!");
 	}
 	
 	/**
 	 * Adds the mod to mods.
 	 * @param mod The mod to load the library of.
+	 * @deprecated Use loadMod and pass it a ModContainer object, instead of the old Mod or Library.
 	 */
-	public static final void loadLibrary(IModRegister mod)
+	@Deprecated
+	public static final void loadLibrary(IModContainer mod)
 	{
 		mods.addMod(mod, true);
 		NAPILogHelper.log("Loaded library " + mod.getModId() + "!");

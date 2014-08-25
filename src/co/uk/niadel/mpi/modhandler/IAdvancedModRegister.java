@@ -3,6 +3,7 @@ package co.uk.niadel.mpi.modhandler;
 /**
  * Interface for advanced mod registers that need access to things like dependencies of ASM.
  */
+@Deprecated
 public interface IAdvancedModRegister extends IModRegister
 {
 	/**

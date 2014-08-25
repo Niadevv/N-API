@@ -3,7 +3,7 @@ package co.uk.niadel.mpi.dimensions;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.uk.niadel.mpi.modhandler.ModRegister;
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderEnd;
@@ -29,7 +29,7 @@ public final class WorldProviderRegistry
 	 */
 	public static final void addProvider(String dimensionId, Class<? extends WorldProvider> provider)
 	{
-		providerMap.put(ModRegister.dimensionIdAcquirer.nextId(dimensionId), provider);
+		providerMap.put(NAPIModRegister.dimensionIdAcquirer.nextId(dimensionId), provider);
 	}
 
 	private static final void addVanillaProvider(int id, Class<? extends WorldProvider> clazz)

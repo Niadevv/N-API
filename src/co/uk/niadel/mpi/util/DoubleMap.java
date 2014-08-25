@@ -8,6 +8,7 @@ import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.TestFeature;
  * Improved version of Map, allowing you to get the key by the value. Used by RecipesRegistry. Apparently google commons
  * has a BiMap with similar functionality, but that's a foreign library and I prefer not to use those when possible. Plus,
  * I think you have to call that one's .inverse() function, meaning there's an extra step - this, however, doesn't have that.
+ * Note that it's a bit iffy when both keys are the same type.
  * @author Niadel
  *
  * @param <K>

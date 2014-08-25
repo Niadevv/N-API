@@ -1,11 +1,5 @@
 package co.uk.niadel.mpi.util;
 
-import net.minecraft.crash.CrashReport;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.Util;
-
-import java.io.File;
-
 /**
  * Assorted methods that didn't really fit in the other utility classes.
  * @author Niadel

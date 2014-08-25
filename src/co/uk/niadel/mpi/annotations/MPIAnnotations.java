@@ -130,19 +130,6 @@ public final class MPIAnnotations
 	}
 	
 	/**
-	 * Somewhat analagous to Forge's @Mod annotation, only optional, and is just a shortcut rather than the fixed way
-	 * of defining ModRegisters.
-	 * @author Niadel
-	 *
-	 */
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface ModRegister
-	{
-		String version();
-		String modId();
-	}
-	
-	/**
 	 * Allows for a mod method that's important to be called something other than the default
 	 * preInit(), init(), and postInit(). loadPoint must be one of either preInit, init, or
 	 * postInit. ONLY HAVE ONE METHOD OF THE SPECIFIC LOAD POINT MARKED WITH THIS PER CLASS!

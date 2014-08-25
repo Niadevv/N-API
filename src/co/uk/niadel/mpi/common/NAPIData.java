@@ -1,5 +1,7 @@
 package co.uk.niadel.mpi.common;
 
+import co.uk.niadel.mpi.asm.IASMTransformer;
+
 /**
  * Used to get info about the running version of N-API. Versioning follows Minecraft's
  * versioning conventions: majorversion.minorversion.bugfixversion
@@ -68,4 +70,6 @@ public interface NAPIData
 	public static final String NAPI_ASM_EVENT_TRANSFORMER = "co.uk.niadel.mpi.asm.NAPIASMEventHandlerTransformer";
 
 	public static final String FORGE_CONFIG_GUI_FACTORY = "co.uk.niadel.mpi.forgewrapper.NAPIConfigGUIFactory";
+
+	public static final IASMTransformer[] dummyTransformerArray = new IASMTransformer[0];
 }

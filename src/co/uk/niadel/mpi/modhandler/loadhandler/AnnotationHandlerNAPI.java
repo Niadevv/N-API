@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.*;
 import co.uk.niadel.mpi.modhandler.IModRegister;
-import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
+import co.uk.niadel.mpi.util.NAPILogHelper;
 
 /**
  * The annotation handler used by N-API.
@@ -26,17 +26,18 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 		else if (annotation.annotationType() == UnstableMod.class)
 		{
 			//Tell the user that the mod is unstable and could break stuff drastically
-			System.out.println("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
+			NAPILogHelper.log("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
 			//Put it in the regular mods thing.
 			shouldLoadAsLibrary = false;
 		}
 		else if (annotation.annotationType() == UnstableLibrary.class)
 		{
 			//Tell the user that the library is unstable and mods using it could break
-			System.out.println("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
+			NAPILogHelper.log("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
 			shouldLoadAsLibrary = true;
 		}
-		else if (annotation.annotationType() == ModRegister.class)
+		//Old @ModRegister code.
+		/*else if (annotation.annotationType() == ModRegister.class)
 		{
 			//Set values of the register with Reflection because for some reason interface values are final by default.
 			//Huh, you learn something new every day. Unless you're dead :3
@@ -44,7 +45,7 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 			ReflectionManipulateValues.setValue(annotation.getClass(), "MODID", ((ModRegister) annotation).modId());
 			ReflectionManipulateValues.setValue(annotation.getClass(), "isUsingAnnotation", true);
 			shouldLoadAsLibrary = false;
-		}
+		}*/
 
 		if (shouldLoadAsLibrary)
 		{

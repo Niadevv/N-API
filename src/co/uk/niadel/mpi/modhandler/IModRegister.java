@@ -11,6 +11,7 @@ import java.util.Set;
  * @author Niadel
  *
  */
+@Deprecated
 public interface IModRegister
 {
 	/**

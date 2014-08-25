@@ -14,7 +14,7 @@ public final class GUIHUDRegistry
 	
 	/**
 	 * Registers a GUI renderer.
-	 * @param renderer
+	 * @param renderer The HUD renderer to add.
 	 */
 	public static final void registerGUIHUDRenderer(ISpecialHUDRenderer renderer)
 	{

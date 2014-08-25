@@ -5,7 +5,7 @@ import java.util.Random;
 import co.uk.niadel.mpi.exceptions.FreeIdUnacquirableException;
 
 /**
- * Like SafeIDAquirer, but more permanent and useful.
+ * Used internally by UniqueIdAcquirer.
  * @author Niadel
  *
  */
@@ -32,7 +32,8 @@ public final class UniqueNumberAcquirer
                 throw new FreeIdUnacquirableException();
             }
 		}
-		
+
+		//Return the smallest possible value to signal that something went wrong.
 		return Integer.MIN_VALUE;
 	}
 	

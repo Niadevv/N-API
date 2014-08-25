@@ -57,7 +57,9 @@ public class ModCrashReport
 		"We appear to be having technical difficulties, we apologise for the inconvenience.",
 		"We apologise for the inconvenience.",
 		"So sad that errors will always be errors. Has the error code been spoiled over the updates? NOW CRASH!",
-		"Crash reports! Now wasting multiple hours of modder's lives due to solving the bugs these have!"
+		"Crash reports! Now wasting multiple hours of modder's lives due to solving the bugs these have!",
+		"The Error has occurred! Player, you are NOT getting away!",
+		"Was it something I said?"
 	};
 
 	/**

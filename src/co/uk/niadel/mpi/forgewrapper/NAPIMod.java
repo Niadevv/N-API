@@ -3,8 +3,7 @@ package co.uk.niadel.mpi.forgewrapper;
 import co.uk.niadel.mpi.common.IConverter;
 import co.uk.niadel.mpi.forgewrapper.measuresmpi.MeasureConverter;
 import co.uk.niadel.mpi.init.Launch;
-import co.uk.niadel.mpi.modhandler.ModRegister;
-import co.uk.niadel.mpi.util.NAPILogHelper;
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraftforge.common.MinecraftForge;
@@ -110,14 +109,14 @@ public final class NAPIMod
 	public static final void updateConfig()
 	{
 		//Make sure the ids exist.
-		for (Entry<String, String> currEntry : ModRegister.config.data.entrySet())
+		for (Entry<String, String> currEntry : NAPIModRegister.config.data.entrySet())
 		{
 			int currentForgeConfigValue = napiConfiguration.get(NAPI_CONFIG_CATEGORY, currEntry.getKey(), Integer.valueOf(currEntry.getValue())).getInt();
 
 			//If the Forge configuration value for this particular ID is not equal to the N-API ID
-			if (currentForgeConfigValue != Integer.valueOf(ModRegister.config.getConfigValue(currEntry.getValue())));
+			if (currentForgeConfigValue != Integer.valueOf(NAPIModRegister.config.getConfigValue(currEntry.getValue())));
 			{
-				ModRegister.config.setConfigValue(currEntry.getKey(), String.valueOf(currentForgeConfigValue));
+				NAPIModRegister.config.setConfigValue(currEntry.getKey(), String.valueOf(currentForgeConfigValue));
 			}
 		}
 	}

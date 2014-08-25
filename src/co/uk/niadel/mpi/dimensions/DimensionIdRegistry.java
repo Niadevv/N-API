@@ -2,8 +2,8 @@ package co.uk.niadel.mpi.dimensions;
 
 import java.util.HashMap;
 import java.util.Map;
-import co.uk.niadel.mpi.annotations.MPIAnnotations.Dangerous;
-import co.uk.niadel.mpi.modhandler.ModRegister;
+
+import co.uk.niadel.mpi.modhandler.NAPIModRegister;
 
 public final class DimensionIdRegistry
 {
@@ -19,7 +19,7 @@ public final class DimensionIdRegistry
 	 */
 	public static final int registerId(String stringId)
 	{
-		int id = ModRegister.dimensionIdAcquirer.nextId(stringId);
+		int id = NAPIModRegister.dimensionIdAcquirer.nextId(stringId);
 		idMap.put(stringId, id);
 		return id;
 	}

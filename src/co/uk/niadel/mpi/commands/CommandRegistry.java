@@ -11,8 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.RecommendedMethod;
 
 /**
- * Used to add commands. I don't think Forge does this at all, so plus for N-API :D. If it does, though, it's incredibly well hidden,
- * even for Forge.
+ * Used to add commands. Much easier than FML's using the server starting event.
  * @author Niadel
  *
  */
@@ -24,21 +23,15 @@ public final class CommandRegistry extends ServerCommandManager
 	public Map<String, ICommand> commandMap = getCommands();
 	
 	/**
-	 * The map of commands from mods.
-	 */
-	public static Map<String, ICommand> modCommandMap = new HashMap<>();
-	
-	/**
 	 * Registers the command so you don't have to edit the base file. Is somewhat complex as
 	 * the register method isn't static.
-	 * @param command
+	 * @param command The command to register.
 	 */
-	public static void registerCommand(ICommand command, String commandName)
+	public static void registerModCommand(ICommand command)
 	{
 		//The check here stops an NPE.
 		if (MCData.isServerSide())
 		{
-			modCommandMap.put(commandName, command);
 			((ServerCommandManager) MinecraftServer.getServer().getCommandManager()).registerCommand(command);
 		}
 	}
@@ -62,43 +55,11 @@ public final class CommandRegistry extends ServerCommandManager
 		
 		return commands;
 	}
-	
-	/**
-	 * Returns all commands from mods.
-	 * @return returnedCommands
-	 */
-	public ICommand[] getModCommands()
-	{
-		ICommand[] allCommands = getAllCommands();
-		ICommand[] returnedCommands = new ICommand[1000];
-		
-		for (ICommand command : allCommands)
-		{
-			if (!modCommandMap.containsValue(command))
-			{
-				returnedCommands[returnedCommands.length] = command;
-			}
-		}
-		
-		return returnedCommands;
-	}
-	
-	/**
-	 * Gets commands from mods as a Map. This is the more recommended method as you can
-	 * do more with maps.
-	 * 
-	 * @return modCommandMap
-	 */
-	@RecommendedMethod
-	public static Map<String, ICommand> getModCommandsMap()
-	{
-		return modCommandMap;
-	}
-	
+
 	/**
 	 * Checks to see if a command is in the whole list.
-	 * @param testedCommand
-	 * @return
+	 * @param testedCommand The command to check to see if it exists.
+	 * @return Whether or not the command exists.
 	 */
 	public boolean isCommandInList(ICommand testedCommand)
 	{
@@ -117,22 +78,5 @@ public final class CommandRegistry extends ServerCommandManager
 		
 		//Should be put in an else block, but that causes an error for some stupid reason.
 		return false;
-	}
-	
-	/**
-	 * Gets whether or not the specified command is in the mods list.
-	 * @param testedCommand
-	 * @return
-	 */
-	public boolean isCommandInModsList(ICommand testedCommand)
-	{
-		if (modCommandMap.containsValue(testedCommand))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 	}
 }
