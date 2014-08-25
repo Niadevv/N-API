@@ -96,6 +96,6 @@ public final class MCData
 	 */
 	public static final String getNAPIRegisterClass()
 	{
-		return "co.uk.niadel.mpi.modhandler.ModRegister";
+		return "co.uk.niadel.mpi.modhandler.NAPIModRegister";
 	}
 }

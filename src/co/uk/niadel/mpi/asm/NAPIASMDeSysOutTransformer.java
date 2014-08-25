@@ -12,7 +12,7 @@ import java.io.IOException;
  * Gets rid of calls to System.out.println and System.err.println to encourage the use of a logger, as loggers allow us to know what
  * mod is "saying" what. This makes debugging with multiple mods installed MUCH easier.
  */
-public class NAPIDeSysOutTransformer implements IASMTransformer, Opcodes
+public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 {
 	@Override
 	public byte[] manipulateBytecodes(String className)

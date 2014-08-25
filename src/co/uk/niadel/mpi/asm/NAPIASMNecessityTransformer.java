@@ -497,7 +497,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					ln0.accept(methodNode);
 					methodNode.instructions.add(ln0);
 					methodNode.instructions.add(new LineNumberNode(108, ln0));
-					methodNode.instructions.add(new LdcInsnNode("co.uk.niadel.mpi.modhandler.ModRegister"));
+					methodNode.instructions.add(new LdcInsnNode("co.uk.niadel.mpi.modhandler.NAPIModRegister"));
 					methodNode.instructions.add(new InsnNode(ARETURN));
 					break;
 

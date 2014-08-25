@@ -79,7 +79,7 @@ public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 									methodNode.instructions.remove(instruction);
 									NAPILogHelper.logWarn("Found call to Runtime.exit()! DO NOT DO THIS! The call has been removed.");
 									NAPILogHelper.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
-									NAPILogHelper.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
+									NAPILogHelper.logWarn("If you need to exit the game because of an error, make a ModCrashReport.");
 								}
 							}
 						}

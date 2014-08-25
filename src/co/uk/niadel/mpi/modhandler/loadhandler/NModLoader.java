@@ -176,7 +176,7 @@ public class NModLoader extends URLClassLoader
 
 				loadUrl(mcModsDir.toURI().toURL());
 
-				initNAPIRegister((Class<? extends IAdvancedModRegister>) Class.forName(MCData.getNAPIRegisterClass()));
+				initNAPIRegister((Class<NAPIModRegister>)Class.forName(MCData.getNAPIRegisterClass()));
 
 				if (mcModsDir.listFiles() != null)
 				{
@@ -370,7 +370,7 @@ public class NModLoader extends URLClassLoader
 				//way due to the fact the annotation handler has to put load libraries as well as mods.
 				if (currHandler.getClass().getName() != AnnotationHandlerNAPI.class.getName())
 				{
-					loadMod(mod.getMainClass());
+					loadMod(mod);
 				}
 			}
 		}
