@@ -71,7 +71,7 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			NAPILogHelper.logError(e);
 			NAPILogHelper.logError("Unable to transform event handler class " + className + "!");
 		}
 

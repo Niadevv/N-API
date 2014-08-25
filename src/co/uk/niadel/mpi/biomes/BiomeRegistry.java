@@ -20,22 +20,22 @@ public final class BiomeRegistry
 	/**
 	 * The biomes added by mods that are generated next to biomes like deserts.
 	 */
-	static List<BiomeGenBase> newHotBiomes = new ArrayList<>();
+	private static List<BiomeGenBase> newHotBiomes = new ArrayList<>();
 
 	/**
 	 * The biomes added by mods that are generated next to biomes in the temperate category.
 	 */
-	static List<BiomeGenBase> newTemperateBiomes = new ArrayList<>();
+	private static List<BiomeGenBase> newTemperateBiomes = new ArrayList<>();
 
 	/**
 	 * The biomes added by mods that belong in the chilly category.
 	 */
-	static List<BiomeGenBase> newChillyBiomes = new ArrayList<>();
+	private static List<BiomeGenBase> newChillyBiomes = new ArrayList<>();
 
 	/**
 	 * The biomes added by mods that belong in the cold category.
 	 */
-	static List<BiomeGenBase> newColdBiomes = new ArrayList<>();
+	private static List<BiomeGenBase> newColdBiomes = new ArrayList<>();
 	
 	/**
 	 * Registers a biome.

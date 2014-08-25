@@ -71,25 +71,13 @@ public final class ClientRegistry
 
 	/**
 	 * Puts the specified render on the render map.
-	 * @param entityClass
-	 * @param render
-	 * @throws NoSuchFieldException
-	 * @throws SecurityException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 * @param entityClass The class of the Entity the render will render for.
+	 * @param render The render for entityClass.
 	 */
 	public static final void addRender(Class<? extends Entity> entityClass, Render render)
 	{
-		try
-		{
-			Map<Class<? extends Entity>, Render> renderMap = ReflectionManipulateValues.getValue(RenderManager.class, RenderManager.instance, "entityRenderMap");
-			renderMap.put(entityClass, render);
-		}
-		catch (SecurityException | IllegalArgumentException e)
-		{
-			NAPILogHelper.logError("Unable to add the render " + render.getClass().getName() + " for the entity class " + entityClass.getName() + "! Check the stack trace for details!");
-			e.printStackTrace();
-		}
+		Map<Class<? extends Entity>, Render> renderMap = ReflectionManipulateValues.getValue(RenderManager.class, RenderManager.instance, "entityRenderMap");
+		renderMap.put(entityClass, render);
 	}
 
 	/**

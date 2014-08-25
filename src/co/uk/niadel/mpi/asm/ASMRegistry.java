@@ -126,6 +126,7 @@ public final class ASMRegistry
 		}
 		catch (ClassNotFoundException e)
 		{
+			NAPILogHelper.logError(e);
 			e.printStackTrace();
 		}
 
@@ -266,12 +267,18 @@ public final class ASMRegistry
 
 	private static final void fixBadClasses()
 	{
-		NAPIASMClassFixingTransformer transformer = new NAPIASMClassFixingTransformer();
-
-		for (String badClass : badClasses)
+		try
 		{
-			transformer.manipulateBytecodes(badClass);
+			NAPIASMClassFixingTransformer transformer = new NAPIASMClassFixingTransformer();
 
+			for (String badClass : badClasses)
+			{
+				NModLoader.loadASMClass(Class.forName(badClass), transformer.manipulateBytecodes(badClass));
+			}
+		}
+		catch (ClassNotFoundException e)
+		{
+			NAPILogHelper.logError(e);
 		}
 	}
 

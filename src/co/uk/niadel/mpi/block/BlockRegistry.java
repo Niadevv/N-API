@@ -33,12 +33,11 @@ public final class BlockRegistry
 	public static final Map<String, Block> modFlammableBlocks = new HashMap<>();
 	
 	/**
-	 * Adds a standard block with the same method used in Block.java. I think you specify 
-	 * the namespace in the nonNumericId, but don't hold me to that. Handles numeric ids
+	 * Adds a standard block with the same method used in Block.java. Handles numeric ids
 	 * internally.
 	 *
-	 * @param nonNumericId
-	 * @param block
+	 * @param nonNumericId The string id of the block. Follow the vanilla convention of modid:block_name
+	 * @param block The block object itself.
 	 */
 	public static final void addBlock(String nonNumericId, Block block)
 	{
@@ -47,8 +46,8 @@ public final class BlockRegistry
 	
 	/**
 	 * Replaces a block with another block. May not work.
-	 * @param nonNumericId
-	 * @param newBlock
+	 * @param nonNumericId The string id of the block to remove.
+	 * @param newBlock The new Block to put in it's place.
 	 */
 	@TestFeature(firstAppearance = "1.0")
 	public static final void replaceBlock(String nonNumericId, Block newBlock)

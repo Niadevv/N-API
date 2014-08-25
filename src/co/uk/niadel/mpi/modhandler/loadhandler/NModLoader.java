@@ -56,16 +56,16 @@ public class NModLoader extends URLClassLoader
 	 * The Minecraft object.
 	 */
 	public static final Minecraft theMinecraft = Minecraft.getMinecraft();
-
-	/**
-	 * List of modids that have been found and are scheduled to be loaded/have been loaded.
-	 */
-	public static final ModList mods = new ModList();
 	
 	/**
 	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods.
 	 */
-	public static final List<String> forgeModids = new ArrayList<>();
+	public static final Map<String, String> forgeModids = new HashMap<>();
+
+	/**
+	 * List of mods that have been found and are scheduled to be loaded/have been loaded.
+	 */
+	public static final ModList mods = new ModList();
 
 	/**
 	 * The main Minecraft directory.
@@ -109,7 +109,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final boolean doesModExist(String modId)
 	{
-		return mods.contains(mods.getModContainerById(modId));
+		return mods.doesModExist(modId);
 	}
 	
 	/**

@@ -31,11 +31,11 @@ public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 			ClassNode classNode = new ClassNode();
 			classReader.accept(classNode, 0);
 
-			if (!(className.startsWith("net.minecraft")) && !(className.startsWith("scala")) && !className.startsWith("cpw") && !(className.startsWith("com.jcraft.jogg")))
+			if (!(className.startsWith("net.minecraft")) && !(className.startsWith("scala")) && !className.startsWith("cpw") && !(className.startsWith("com.jcraft.jogg") && !(className.startsWith("co.uk.niadel.mpi.util.ModCrashReport"))))
 			{
 				for (MethodNode methodNode : classNode.methods)
 				{
-					String allExceptionsThrown = "---";
+					String allExceptionsThrown = methodNode.exceptions == null ? "---" : "";
 
 					for (String exceptionThrown : methodNode.exceptions)
 					{
@@ -69,12 +69,14 @@ public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 									methodNode.instructions.remove(instruction);
 									NAPILogHelper.logWarn("Found call to Runtime.halt()! DO NOT DO THIS! The call has been removed.");
 									NAPILogHelper.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
+									NAPILogHelper.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
 								}
 								else if (actInsn.owner == "java/lang/Runtime" && actInsn.name == "exit")
 								{
 									methodNode.instructions.remove(instruction);
 									NAPILogHelper.logWarn("Found call to Runtime.exit()! DO NOT DO THIS! The call has been removed.");
 									NAPILogHelper.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
+									NAPILogHelper.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
 								}
 							}
 						}

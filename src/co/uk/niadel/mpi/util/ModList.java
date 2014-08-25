@@ -9,6 +9,7 @@ import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.modhandler.loadhandler.IModContainer;
 import co.uk.niadel.mpi.modhandler.loadhandler.Library;
 import co.uk.niadel.mpi.modhandler.loadhandler.Mod;
+import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 
 /**
  * A wrapper list around a list of mod containers (either Mod or Library at time of writing) for convenience.
@@ -21,6 +22,11 @@ public class ModList
 	 * The list the mods are stored in.
 	 */
 	public List<IModContainer> mods = new ArrayList<>();
+
+	/**
+	 * Modids and versions that belong to Forge.
+	 */
+	public Map<String, String> forgeModids = NModLoader.forgeModids;
 	
 	/**
 	 * Used in getContainerFromRegister.
@@ -161,6 +167,11 @@ public class ModList
 	public boolean contains(IModContainer object)
 	{
 		return mods.contains(object);
+	}
+
+	public boolean doesModExist(String modid)
+	{
+		return mods.contains(getModContainerById(modid)) || forgeModids.containsKey(modid);
 	}
 	
 	public Iterator<IModContainer> iterator()

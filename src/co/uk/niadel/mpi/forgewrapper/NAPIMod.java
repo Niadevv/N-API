@@ -28,17 +28,19 @@ import java.util.List;
 import java.util.Map.Entry;
 
 /**
- * Yes, I do know SOME Forge, but I have to ignore 500+ errors to do this :3.
+ * One of the entry points for N-API, this being for Forge. Yes, I do know SOME Forge, but I have to ignore 500+ errors to do this :3.
  * @author Niadel
  *
  */
-@Mod(modid = NAPIData.FORGE_MODID, version = NAPIData.FULL_VERSION, name = NAPIData.NAME, acceptedMinecraftVersions = NAPIData.MC_VERSION, guiFactory = "co.uk.niadel.mpi.forgewrapper.NAPIConfigGUIFactory")
+@Mod(modid = NAPIData.FORGE_MODID, version = NAPIData.FULL_VERSION, name = NAPIData.NAME, acceptedMinecraftVersions = NAPIData.MC_VERSION, guiFactory = NAPIData.FORGE_CONFIG_GUI_FACTORY)
 public final class NAPIMod
 {
 	/**
 	 * The Forge-version of the N-API config.
 	 */
 	public static Configuration napiConfiguration;
+
+	public static final String NAPI_CONFIG_CATEGORY = "n-api";
 
 	/**
 	 * The N-API INSTANCE. Not sure what this is used for, but it's tehre nonetheless.
@@ -97,7 +99,8 @@ public final class NAPIMod
 
 		while (modContainerIterator.hasNext())
 		{
-			NModLoader.forgeModids.add(modContainerIterator.next().getModId());
+			ModContainer next = modContainerIterator.next();
+			NModLoader.forgeModids.put(next.getModId(), next.getVersion());
 		}
 	}
 
@@ -109,7 +112,7 @@ public final class NAPIMod
 		//Make sure the ids exist.
 		for (Entry<String, String> currEntry : ModRegister.config.data.entrySet())
 		{
-			int currentForgeConfigValue = napiConfiguration.get("n-api", currEntry.getKey(), Integer.valueOf(currEntry.getValue())).getInt();
+			int currentForgeConfigValue = napiConfiguration.get(NAPI_CONFIG_CATEGORY, currEntry.getKey(), Integer.valueOf(currEntry.getValue())).getInt();
 
 			//If the Forge configuration value for this particular ID is not equal to the N-API ID
 			if (currentForgeConfigValue != Integer.valueOf(ModRegister.config.getConfigValue(currEntry.getValue())));

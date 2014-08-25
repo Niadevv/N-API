@@ -18,6 +18,6 @@ public final class AchievementRegistry
 	 */
 	public static void registerAchievement(Achievement theAchievement, Class<? extends Achievement> achievementClass)
 	{
-		ReflectionCallMethods.callMethod(achievementClass, "registerStat", new Object[] {theAchievement, achievementClass});
+		ReflectionCallMethods.callMethod(achievementClass, "registerStat", theAchievement, achievementClass);
 	}
 }

@@ -65,5 +65,7 @@ public interface NAPIData
 	/**
 	 * Fully qualified name of the standard N-API transformer.
 	 */
-	public static final String NAPI_ASM_TRANSFORMER = "co.uk.niadel.mpi.asm.NAPIASMTransformer";
+	public static final String NAPI_ASM_EVENT_TRANSFORMER = "co.uk.niadel.mpi.asm.NAPIASMEventHandlerTransformer";
+
+	public static final String FORGE_CONFIG_GUI_FACTORY = "co.uk.niadel.mpi.forgewrapper.NAPIConfigGUIFactory";
 }
