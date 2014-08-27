@@ -104,19 +104,6 @@ public final class MPIAnnotations
 	}
 	
 	/**
-	 * Marks a mod as being an unstable mod.
-	 * @author Niadel
-	 *
-	 */
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	public @interface UnstableMod
-	{
-		String specialMessage() default "Please do not use this on any of your important worlds, "
-				+ "as this mod could change drastically and break everything";
-	}
-	
-	/**
 	 * Like @UnstableMod, but only for Libraries.
 	 * @author Niadel
 	 */
@@ -127,19 +114,5 @@ public final class MPIAnnotations
 		String version();
 		String specialMessage() default "This library is likely to change frequently and mods based on this "
 				+ "library may break!";
-	}
-	
-	/**
-	 * Allows for a mod method that's important to be called something other than the default
-	 * preInit(), init(), and postInit(). loadPoint must be one of either preInit, init, or
-	 * postInit. ONLY HAVE ONE METHOD OF THE SPECIFIC LOAD POINT MARKED WITH THIS PER CLASS!
-	 * @author Niadel
-	 *
-	 */
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	public @interface LoadStateMethod 
-	{
-		String loadPoint();
 	}
 }

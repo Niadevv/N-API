@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 {
+	public static final NAPIASMModParsingTransformer modParser = new NAPIASMModParsingTransformer();
+
 	@Override
 	public byte[] manipulateBytecodes(String className)
 	{
@@ -25,8 +27,8 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 			ClassNode classNode = new ClassNode();
 			classReader.accept(classNode, 0);
 
-			String modid = null, version = null;
-			boolean library = false;
+			String modid = null, version = null, unstableWarnMessage = "";
+			boolean library = false, unstableMod = false;
 			Object mod = Class.forName(className).newInstance();
 
 			for (AnnotationNode annotationNode : classNode.visibleAnnotations)
@@ -39,11 +41,23 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 					version = (String) annotationValues.get(1);
 					library = (boolean) annotationValues.get(2);
 				}
+				else if (annotationNode.desc.contains("co/uk/niadel/mpi/annotations/UnstableMod"))
+				{
+					unstableMod = true;
+					unstableWarnMessage = (String) annotationNode.values.get(0);
+
+				}
 			}
 
 			if (modid != null && version != null)
 			{
+				if (unstableMod && unstableWarnMessage != "")
+				{
+					NAPILogHelper.logWarn("Found an unstable mod! Warning message from mod: " + unstableWarnMessage);
+				}
+
 				NModLoader.loadMod(new ModContainer(mod, modid, version, library));
+				modParser.manipulateBytecodes(className);
 			}
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)

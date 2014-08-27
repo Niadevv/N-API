@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import co.uk.niadel.mpi.annotations.IAnnotationHandler;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.*;
+import co.uk.niadel.mpi.annotations.UnstableMod;
 import co.uk.niadel.mpi.modhandler.IModRegister;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 
@@ -23,13 +24,6 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 			//Add it to the libraries list instead of the mods list.
 			shouldLoadAsLibrary = true;
 		}
-		else if (annotation.annotationType() == UnstableMod.class)
-		{
-			//Tell the user that the mod is unstable and could break stuff drastically
-			NAPILogHelper.log("[IMPORTANT] " + ((UnstableMod) annotation).specialMessage());
-			//Put it in the regular mods thing.
-			shouldLoadAsLibrary = false;
-		}
 		else if (annotation.annotationType() == UnstableLibrary.class)
 		{
 			//Tell the user that the library is unstable and mods using it could break
@@ -47,14 +41,14 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 			shouldLoadAsLibrary = false;
 		}*/
 
-		if (shouldLoadAsLibrary)
+		/*if (shouldLoadAsLibrary)
 		{
 			NModLoader.loadLibrary(modRegister);
 		}
 		else
 		{
-			NModLoader.loadMod(modRegister);
-		}
+			NModLoader.loadMod(new ModContainer(modRegister));
+		}*/
 	}
 
 	@Override
@@ -62,26 +56,7 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 	{
 		for (Annotation annotation : annotations)
 		{
-			if (annotation.annotationType() == LoadStateMethod.class)
-			{
-				switch (((LoadStateMethod) annotation).loadPoint())
-				{
-					case "preInit":
-						NModLoader.preInitMethods.put(modRegister, theMethod);
-						break;
-					
-					case "init":
-						NModLoader.initMethods.put(modRegister, theMethod);
-						break;
-					
-					case "postInit":
-						NModLoader.postInitMethods.put(modRegister, theMethod);
-						break;
-						
-					default:
-						throw new IllegalArgumentException("The annotation LoadStateMethod on method " + theMethod.getName() + " of register " + modRegister.getClass().getName() + " does not have a valid specified state of execution!");
-				}
-			}
+
 		}
 	}
 }

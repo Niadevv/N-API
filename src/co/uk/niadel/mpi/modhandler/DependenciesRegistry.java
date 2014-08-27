@@ -17,19 +17,19 @@ public final class DependenciesRegistry
 	/**
 	 * The dependencies that have been registered. Key is the register, value is the list of modid dependencies for the key.
 	 */
-	public static Map<IAdvancedModRegister, List<String>> dependenciesMap = new HashMap<>();
+	public static Map<Object, List<String>> dependenciesMap = new HashMap<>();
 
 	/**
 	 * Library dependencies. The second map is keyed by library id, and valued by the minimum version of the library.
 	 */
-	public static Map<IAdvancedModRegister, List<Map<String, String>>> libDependenciesMap = new HashMap<>();
+	public static Map<Object, List<Map<String, String>>> libDependenciesMap = new HashMap<>();
 
 	/**
 	 * Adds a single dependency.
 	 * @param register The register that will have the dependency.
 	 * @param dependency The dependency modid.
 	 */
-	public static final void addDependency(IAdvancedModRegister register, String dependency)
+	public static final void addDependency(Object register, String dependency)
 	{
 		if (!dependenciesMap.containsKey(register))
 		{
@@ -46,7 +46,7 @@ public final class DependenciesRegistry
 	 * @param register The register that will have the dependencies.
 	 * @param dependencies The dependencies to register.
 	 */
-	public static final void addDependencies(IAdvancedModRegister register, String... dependencies)
+	public static final void addDependencies(Object register, String... dependencies)
 	{
 		for (String dependency : dependencies)
 		{
@@ -60,7 +60,7 @@ public final class DependenciesRegistry
 	 * @param libId The modid of the library dependency.
 	 * @param minLibVersion The minimum version the library dependency has to be.
 	 */
-	public static final void addLibDependency(IAdvancedModRegister register, String libId, String minLibVersion)
+	public static final void addLibDependency(Object register, String libId, String minLibVersion)
 	{
 		if (!libDependenciesMap.containsKey(register))
 		{
@@ -82,7 +82,7 @@ public final class DependenciesRegistry
 	 * @param register The register to check.
 	 * @return Whether or not the specified register has any dependencies.
 	 */
-	public static final boolean doesRegisterHaveDependencies(IAdvancedModRegister register)
+	public static final boolean doesRegisterHaveDependencies(Object register)
 	{
 		return dependenciesMap.containsKey(register) || libDependenciesMap.containsKey(register);
 	}
@@ -93,11 +93,11 @@ public final class DependenciesRegistry
 	 * @return Whether or not the dependencies check was fully completed.
 	 */
 	@Internal
-	public static final boolean checkDependencies(IAdvancedModRegister registerToCheck)
+	public static final boolean checkDependencies(Object registerToCheck)
 	{
 		if (doesRegisterHaveDependencies(registerToCheck))
 		{
-			for (Map.Entry<IAdvancedModRegister, List<String>> dependencyEntry : dependenciesMap.entrySet())
+			for (Map.Entry<Object, List<String>> dependencyEntry : dependenciesMap.entrySet())
 			{
 				for (String dependency : dependencyEntry.getValue())
 				{

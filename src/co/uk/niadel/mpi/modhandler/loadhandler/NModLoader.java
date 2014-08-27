@@ -78,17 +78,17 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Methods to execute on preInit.
 	 */
-	public static final Map<IModRegister, Method> preInitMethods = new HashMap<>();
+	public static final Map<String, Method> preInitMethods = new HashMap<>();
 	
 	/**
 	 * Methods to execute on init.
 	 */
-	public static final Map<IModRegister, Method> initMethods = new HashMap<>();
+	public static final Map<String, Method> initMethods = new HashMap<>();
 	
 	/**
 	 * Methods to execute on postInit.
 	 */
-	public static final Map<IModRegister, Method> postInitMethods = new HashMap<>();
+	public static final Map<String, Method> postInitMethods = new HashMap<>();
 
 	/**
 	 * Whether or not N-API should initialise - False if the user's Java version is not 7.
@@ -474,15 +474,15 @@ public class NModLoader extends URLClassLoader
 				}
 			}
 
-			Iterator<Entry<IModRegister, Method>> methodsIterator = preInitMethods.entrySet().iterator();
+			Iterator<Entry<String, Method>> methodsIterator = preInitMethods.entrySet().iterator();
 
 			while (methodsIterator.hasNext())
 			{
-				Entry<IModRegister, Method> currMethod = methodsIterator.next();
+				Entry<String, Method> currMethod = methodsIterator.next();
 
 				try
 				{
-					currMethod.getValue().invoke(currMethod.getKey(), new Object[]{});
+					currMethod.getValue().invoke(currMethod.getKey(), new Object[] {});
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 				{
 					NAPILogHelper.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
@@ -514,26 +514,17 @@ public class NModLoader extends URLClassLoader
 		{
 			try
 			{
-				Iterator methodsIterator = initMethods.entrySet().iterator();
-				Iterator<IModRegister> objsIterator = initMethods.keySet().iterator();
+				Iterator<Entry<String, Method>> methodsIterator = initMethods.entrySet().iterator();
 
 				while (methodsIterator.hasNext())
 				{
-					((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[]{});
-				}
-
-				Iterator<IModContainer> modsIterator = mods.iterator();
-
-				while (modsIterator.hasNext())
-				{
-					IModRegister currRegister = modsIterator.next().getMainClass();
-
-					currRegister.modInit();
+					Entry<String, Method> nextMethod = methodsIterator.next();
+					nextMethod.getValue().invoke(Class.forName(nextMethod.getKey()).newInstance(), new Object[]{});
 				}
 
 				NAPILogHelper.log("Called all mod's modInit methods!");
 			}
-			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException e1)
 			{
 				NAPILogHelper.logError(e1);
 			}
@@ -549,26 +540,18 @@ public class NModLoader extends URLClassLoader
 		{
 			try
 			{
-				Iterator methodsIterator = postInitMethods.entrySet().iterator();
-				Iterator<IModRegister> objsIterator = postInitMethods.keySet().iterator();
+				Iterator<Entry<String, Method>> methodsIterator = postInitMethods.entrySet().iterator();
+				Iterator<String> objsIterator = postInitMethods.keySet().iterator();
 
 				while (methodsIterator.hasNext())
 				{
-					((Method) methodsIterator.next()).invoke(objsIterator.next(), new Object[]{});
+					Entry<String, Method> nextMethod = methodsIterator.next();
+					nextMethod.getValue().invoke(Class.forName(nextMethod.getKey()).newInstance(), new Object[]{});
 				}
 
-				Iterator<IModContainer> modsIterator = mods.iterator();
-
-				while (modsIterator.hasNext())
-				{
-					IModRegister currRegister = modsIterator.next().getMainClass();
-
-					currRegister.postModInit();
-					ClientRegistry.addAllEntityRenders();
-				}
-
-				NAPILogHelper.log("Finished calling all mod's register methods!");
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+				NAPILogHelper.log("Called all mod's postInit methods!");
+			}
+			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException e1)
 			{
 				NAPILogHelper.logError(e1);
 			}

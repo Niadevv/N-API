@@ -1,6 +1,8 @@
 package co.uk.niadel.mpi.modhandler;
 
+import co.uk.niadel.mpi.annotations.ASMTransformer;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.mpi.annotations.UnstableMod;
 import co.uk.niadel.mpi.asm.*;
 import co.uk.niadel.mpi.commands.CommandNAPI;
 import co.uk.niadel.mpi.commands.CommandRegistry;
@@ -25,7 +27,7 @@ import co.uk.niadel.mpi.annotations.ModRegister;
  * @author Niadel
  */
 @ModRegister(modId = NAPIData.MODID, version = NAPIData.VERSION)
-@Library(version = NAPIData.VERSION)
+@UnstableMod(warningMessage = "This is N-API alpha! N-API will likely change heavily before release, possibly breaking mods made with it!")
 @Internal
 public final class NAPIModRegister implements IAdvancedModRegister
 {
@@ -34,7 +36,28 @@ public final class NAPIModRegister implements IAdvancedModRegister
 	 */
 	public static final IdConfiguration config = new IdConfiguration("N-API.cfg");
 
+	/**
+	 * Used in event handlers for optimisation.
+	 */
 	public static final NAPIASMEventHandlerTransformer eventHandler = new NAPIASMEventHandlerTransformer();
+
+	/**
+	 * Adds event calls and other necessary edits to Minecraft.
+	 */
+	@ASMTransformer
+	public static final NAPIASMNecessityTransformer necessityTransformer = new NAPIASMNecessityTransformer();
+
+	/**
+	 * Gets rid of calls to System.exit(), Runtime.getRuntime().exit() and Runtime.getRuntime().halt().
+	 */
+	@ASMTransformer
+	public static final NAPIASMDeGameExitingTransformer deGameExitingTransformer = new NAPIASMDeGameExitingTransformer();
+
+	/**
+	 * Removes calls to System.out.println and System.err.println to encourage the use of loggers, which really help with debugging.
+	 */
+	@ASMTransformer
+	public static final NAPIASMDeSysOutTransformer deSysOutTransformer = new NAPIASMDeSysOutTransformer();
 	
 	/**
 	 * Used by the internal block and item registries in order to handle numeric ids.
@@ -59,7 +82,6 @@ public final class NAPIModRegister implements IAdvancedModRegister
 			PotionRegistry.registerPotion(Potion.potionTypes[i].getName(), Potion.potionTypes[i]);
 		}
 
-		EventFactory.registerEventHandler(new MPIEventHandler());
 		NAPIOreDict.addDefaultEntries();
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");
 		TileEntityRegistry.registerTileEntity(TileEntityMeasureStorer.class, "TileEntityTank");
@@ -90,9 +112,6 @@ public final class NAPIModRegister implements IAdvancedModRegister
 	{
 		//Tells the user (rather cheesily) that the N-API ASM transformer is being registered.
 		NAPILogHelper.log("REGISTERING N-API ASM TRANSFORMER! Transformers, roll out!");
-		ASMRegistry.registerTransformer(new NAPIASMNecessityTransformer());
-		ASMRegistry.registerTransformer(new NAPIASMDeGameExitingTransformer());
-		ASMRegistry.registerTransformer(new NAPIASMDeSysOutTransformer());
 		//Adds the Forge and FML classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
 		ASMRegistry.addASMClassExclusion("cpw.fml.mods");
 		ASMRegistry.addASMClassExclusion("net.minecraftforge");
@@ -114,6 +133,6 @@ public final class NAPIModRegister implements IAdvancedModRegister
 	@Override
 	public void registerEventHandlers()
 	{
-
+		EventFactory.registerEventHandler(new MPIEventHandler());
 	}
 }

@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 public final class VersionMarkingAnnotations
 {
 	/**
-	 * Marks a feature as an test feature.
+	 * Marks a feature as a test feature.
 	 * @author Niadel
 	 */
 	@Retention(RetentionPolicy.SOURCE)
