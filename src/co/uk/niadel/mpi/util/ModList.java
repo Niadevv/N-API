@@ -5,14 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import co.uk.niadel.mpi.modhandler.IModRegister;
-import co.uk.niadel.mpi.modhandler.loadhandler.IModContainer;
-import co.uk.niadel.mpi.modhandler.loadhandler.Library;
-import co.uk.niadel.mpi.modhandler.loadhandler.Mod;
-import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.mpi.modhandler.loadhandler.*;
 
 /**
- * A wrapper list around a list of mod containers (either Mod or Library at time of writing) for convenience.
+ * A wrapper list around a list of mod containers (generally ModContainer) for convenience.
  * @author Niadel
  *
  */
@@ -21,7 +17,7 @@ public class ModList implements Iterable<IModContainer>
 	/**
 	 * The list the mods are stored in.
 	 */
-	public List<IModContainer> mods = new ArrayList<>();
+	public Map<String, IModContainer> mods = new HashMap<>();
 
 	/**
 	 * Modids and versions that belong to Forge.
@@ -31,32 +27,32 @@ public class ModList implements Iterable<IModContainer>
 	/**
 	 * Used in getContainerFromRegister.
 	 */
-	public DoubleMap<IModRegister, IModContainer> containersToRegistersMap = new DoubleMap<>();
+	public DoubleMap<Object, IModContainer> containersToRegistersMap = new DoubleMap<>();
 	
 	/**
 	 * Adds a mod container.
-	 * @param mod
+	 * @param mod The mod container to add.
 	 */
 	public void addMod(IModContainer mod)
 	{
-		this.mods.add(mod);
+		this.addMod(mod, false);
 	}
 	
 	/**
 	 * Converts the specified mod register into either a Mod object or a Library object depending on
 	 * isLibrary.
-	 * @param mod
-	 * @param isLibrary
+	 * @param mod The mod container to add.
+	 * @param isLibrary Whether or not the container represents a library.
 	 */
 	public void addMod(IModContainer mod, boolean isLibrary)
 	{
 		if (!isLibrary)
 		{
-			this.mods.add(mod);
+			this.mods.put(mod.getModId(), mod);
 		}
 		else
 		{
-			this.mods.add(mod);
+			this.mods.put(mod.getModId(), mod);
 		}
 	}
 	
@@ -113,7 +109,7 @@ public class ModList implements Iterable<IModContainer>
 	 */
 	public IModContainer getModContainerById(String modId)
 	{
-		Iterator<IModContainer> modsIterator = this.mods.iterator();
+		Iterator<IModContainer> modsIterator = this.iterator();
 		
 		while (modsIterator.hasNext())
 		{
@@ -147,7 +143,7 @@ public class ModList implements Iterable<IModContainer>
 	 * Returns the underlying list of mod containers.
 	 * @return
 	 */
-	public List<IModContainer> getMods()
+	public Map<String, IModContainer> getMods()
 	{
 		return mods;
 	}
@@ -157,19 +153,27 @@ public class ModList implements Iterable<IModContainer>
 	 * @param register
 	 * @return
 	 */
-	public IModContainer getContainerFromRegister(IModRegister register)
+	public IModContainer getContainerFromRegister(Object register)
 	{
 		return containersToRegistersMap.get(register);
 	}
 	
 	public boolean contains(IModContainer object)
 	{
-		return mods.contains(object);
+		for (Map.Entry<String, IModContainer> entry : this.mods.entrySet())
+		{
+			if (entry.getValue() == entry)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public boolean doesModExist(String modid)
 	{
-		return mods.contains(getModContainerById(modid)) || forgeModids.containsKey(modid);
+		return this.contains(getModContainerById(modid)) || forgeModids.containsKey(modid);
 	}
 
 	/**
@@ -179,7 +183,14 @@ public class ModList implements Iterable<IModContainer>
 	@Override
 	public Iterator<IModContainer> iterator()
 	{
-		return mods.iterator();
+		List<IModContainer> theMods = new ArrayList<>();
+
+		for (Map.Entry<String, IModContainer> entry : this.mods.entrySet())
+		{
+			theMods.add(entry.getValue());
+		}
+
+		return theMods.iterator();
 	}
 
 	public boolean doesListContainLibrary(String modId)
@@ -203,9 +214,9 @@ public class ModList implements Iterable<IModContainer>
 	 * Gets the library containers in this list.
 	 * @return
 	 */
-	public List<Library> getLibraryContainers()
+	public List<IModContainer> getLibraryContainers()
 	{
-		List<Library> libsToReturn = new ArrayList<>();
+		List<IModContainer> libsToReturn = new ArrayList<>();
 		Iterator<IModContainer> modsIter = this.iterator();
 
 		while (modsIter.hasNext())
@@ -214,17 +225,17 @@ public class ModList implements Iterable<IModContainer>
 
 			if (nextMod.isLibrary())
 			{
-				libsToReturn.add((Library) nextMod);
+				libsToReturn.add(nextMod);
 			}
 		}
 
 		return libsToReturn;
 	}
 
-	public List<IModRegister> getLibraryRegisters()
+	public List<Object> getLibraryRegisters()
 	{
-		List<Library> libs = this.getLibraryContainers();
-		List<IModRegister> registersToReturn = new ArrayList<>();
+		List<IModContainer> libs = this.getLibraryContainers();
+		List<Object> registersToReturn = new ArrayList<>();
 
 		while (libs.iterator().hasNext())
 		{
@@ -234,9 +245,9 @@ public class ModList implements Iterable<IModContainer>
 		return registersToReturn;
 	}
 
-	public List<Mod> getModContainers()
+	public List<IModContainer> getModContainers()
 	{
-		List<Mod> modsToReturn = new ArrayList<>();
+		List<IModContainer> modsToReturn = new ArrayList<>();
 		Iterator<IModContainer> modsIter = this.iterator();
 
 		while (modsIter.hasNext())
@@ -245,17 +256,17 @@ public class ModList implements Iterable<IModContainer>
 
 			if (!nextMod.isLibrary())
 			{
-				modsToReturn.add((Mod) nextMod);
+				modsToReturn.add(nextMod);
 			}
 		}
 
 		return modsToReturn;
 	}
 
-	public List<IModRegister> getModRegisters()
+	public List<Object> getModRegisters()
 	{
-		List<Mod> libs = this.getModContainers();
-		List<IModRegister> registersToReturn = new ArrayList<>();
+		List<IModContainer> libs = this.getModContainers();
+		List<Object> registersToReturn = new ArrayList<>();
 
 		while (libs.iterator().hasNext())
 		{
@@ -263,5 +274,18 @@ public class ModList implements Iterable<IModContainer>
 		}
 
 		return registersToReturn;
+	}
+
+	public String getIdForRegister(Object register)
+	{
+		for (String id : mods.keySet())
+		{
+			if (mods.get(id) == register)
+			{
+				return id;
+			}
+		}
+
+		return "";
 	}
 }

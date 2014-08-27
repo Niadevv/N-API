@@ -148,7 +148,7 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 		if (newEvent.getClass() != currentEvent.getClass())
 		{
 			//Recall this transformer.
-			ASMRegistry.callASMTransformer(NAPIModRegister.eventHandler);
+			ASMRegistry.callASMTransformer(NAPIModRegister.asmEventHandler);
 		}
 	}
 }

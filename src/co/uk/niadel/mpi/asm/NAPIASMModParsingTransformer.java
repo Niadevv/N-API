@@ -1,6 +1,7 @@
 package co.uk.niadel.mpi.asm;
 
 import co.uk.niadel.mpi.annotations.EnumLoadState;
+import co.uk.niadel.mpi.events.EventFactory;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
@@ -103,6 +104,10 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 				{
 					ASMRegistry.registerTransformer((IASMTransformer) fieldNode.value);
 				}
+			}
+			else if (annotationNode.desc == "co/uk/niadel/mpi/annotations/EventHandler")
+			{
+				EventFactory.registerEventHandler(fieldNode.value);
 			}
 		}
 	}

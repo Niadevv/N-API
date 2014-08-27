@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
-import co.uk.niadel.mpi.modhandler.IModRegister;
 
 /**
  * Where you add annotations that are used by N-API MPIs or libraries to add Annotation
@@ -50,7 +49,7 @@ public final class AnnotationHandlerRegistry
 	 * @param register The register that owns method.
 	 */
 	@Internal
-	public static final void callAllMethodHandlers(Annotation[] annotations, Method method, IModRegister register)
+	public static final void callAllMethodHandlers(Annotation[] annotations, Method method, Object register)
 	{
 		for (IAnnotationHandler handler : methodAnnotationHandlers)
 		{

@@ -107,7 +107,7 @@ public final class DependenciesRegistry
 
 						if (dependencyContainer.isLibrary())
 						{
-							if (NModLoader.mods.compareContainerVersions(NModLoader.getModContainerByModId(registerToCheck.getModId()), dependencyContainer))
+							if (NModLoader.mods.compareContainerVersions(NModLoader.getModContainerByModId(NModLoader.mods.getIdForRegister(registerToCheck)), dependencyContainer))
 							{
 								continue;
 							}
@@ -128,7 +128,7 @@ public final class DependenciesRegistry
 				}
 			}
 
-			for (Map.Entry<IAdvancedModRegister, List<Map<String, String>>> libDepEntry : libDependenciesMap.entrySet())
+			for (Map.Entry<Object, List<Map<String, String>>> libDepEntry : libDependenciesMap.entrySet())
 			{
 				for (Map<String, String> libDependencyEntry : libDepEntry.getValue())
 				{
@@ -136,7 +136,7 @@ public final class DependenciesRegistry
 					{
 						if (NModLoader.doesLibraryExist(libDependencyEntry2.getKey()))
 						{
-							if (NModLoader.mods.checkVersions(NModLoader.getModContainerByModId(libDepEntry.getKey().getModId()), libDependencyEntry2.getValue()))
+							if (NModLoader.mods.checkVersions(NModLoader.getModContainerByModId(NModLoader.mods.getIdForRegister(registerToCheck)), libDependencyEntry2.getValue()))
 							{
 								continue;
 							}

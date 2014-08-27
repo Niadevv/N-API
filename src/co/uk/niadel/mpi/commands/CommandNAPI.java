@@ -2,7 +2,6 @@ package co.uk.niadel.mpi.commands;
 
 import co.uk.niadel.mpi.annotations.MPIAnnotations.Temprorary;
 import co.uk.niadel.mpi.modhandler.loadhandler.IModContainer;
-import co.uk.niadel.mpi.modhandler.loadhandler.Mod;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

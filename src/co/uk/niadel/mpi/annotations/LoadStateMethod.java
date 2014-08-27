@@ -15,5 +15,5 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 public @interface LoadStateMethod
 {
-	EnumLoadState loadState();
+	EnumLoadState value();
 }

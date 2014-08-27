@@ -3,7 +3,6 @@ package co.uk.niadel.mpi.modhandler.loadhandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
-import co.uk.niadel.mpi.modhandler.IModRegister;
 
 /**
  * Implemented by all mod containers. Mod containers basically wrap around mod objects and allow ease of acquisition of

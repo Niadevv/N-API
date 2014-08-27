@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.asm;
 
+import co.uk.niadel.mpi.modhandler.DependenciesRegistry;
 import co.uk.niadel.mpi.modhandler.loadhandler.ModContainer;
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.mpi.util.NAPILogHelper;
@@ -40,12 +41,13 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 					modid = (String) annotationValues.get(0);
 					version = (String) annotationValues.get(1);
 					library = (boolean) annotationValues.get(2);
+
+					DependenciesRegistry.addDependencies(mod, (String[]) annotationValues.get(3));
 				}
 				else if (annotationNode.desc.contains("co/uk/niadel/mpi/annotations/UnstableMod"))
 				{
 					unstableMod = true;
 					unstableWarnMessage = (String) annotationNode.values.get(0);
-
 				}
 			}
 

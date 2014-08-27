@@ -1,17 +1,20 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
 import co.uk.niadel.mpi.asm.ASMRegistry;
+import co.uk.niadel.mpi.asm.NAPIASMModLocatingTransformer;
 import co.uk.niadel.mpi.client.ClientRegistry;
 import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.init.Launch;
 import co.uk.niadel.mpi.modhandler.*;
 import co.uk.niadel.mpi.modhandler.NAPIModRegister;
+import co.uk.niadel.mpi.util.ModCrashReport;
 import co.uk.niadel.mpi.util.ModList;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -37,8 +40,6 @@ import co.uk.niadel.mpi.util.MCData;
  * This isn't actually as flexible as FML, but it does most of the same stuff. Flexibility may be improved in a later version of N-API.
  * It is worth noting that this is actually a LOT simpler than FML's loader, which spans a LOT of files.
  * 
- * TODO Remove the need of the ModID.modid file.
- * 
  * @author Niadel
  *
  */
@@ -49,6 +50,8 @@ public class NModLoader extends URLClassLoader
 	 * The NModLoader INSTANCE.
 	 */
 	public static final @Internal NModLoader INSTANCE = new NModLoader(new URL[0], getSystemClassLoader());
+
+	public static final @Internal NAPIASMModLocatingTransformer modLocatingTransformer = new NAPIASMModLocatingTransformer();
 
 	/**
 	 * The Minecraft object.
@@ -176,28 +179,29 @@ public class NModLoader extends URLClassLoader
 
 				loadUrl(mcModsDir.toURI().toURL());
 
-				initNAPIRegister((Class<NAPIModRegister>)Class.forName(MCData.getNAPIRegisterClass()));
+				initNAPIRegister();
 
 				if (mcModsDir.listFiles() != null)
 				{
 					for (File currFile : mcModsDir.listFiles())
 					{
-						if (!currFile.isDirectory())
+						if (currFile.isDirectory())
 						{
-							JarFile nextLoad = loadModAsJF(currFile);
-
-							if (nextLoad != null)
+							loadUrl(currFile.toURI().toURL());
+							loadClasses(currFile);
+						}
+						else
+						{
+							if (currFile.toPath().toString().endsWith(".jar") || currFile.toPath().toString().endsWith(".zip"))
 							{
-								//Just in case.
 								loadUrl(currFile.toURI().toURL());
-								loadClasses(nextLoad);
 							}
 						}
 					}
 
 					registerTransformers();
 				}
-			} catch (IOException | ClassNotFoundException | SecurityException | IllegalArgumentException e)
+			} catch (IOException | SecurityException | IllegalArgumentException e)
 			{
 				e.printStackTrace();
 				NAPILogHelper.logError(e);
@@ -214,49 +218,16 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void registerTransformers()
 	{
-		Iterator<IModContainer> modsObjectIterator = mods.iterator();
-		Iterator<Library> modsLibraryIterator = mods.getLibraryContainers().iterator();
-		
-		while (modsObjectIterator.hasNext())
-		{
-			IModContainer nextContainer = modsObjectIterator.next();
-
-			if (!nextContainer.isLibrary())
-			{
-				Mod nextMod = (Mod) nextContainer;
-
-				if (nextMod.isAdvancedRegister())
-				{
-					nextMod.registerTransformers();
-				}
-			}
-		}
-		
-		NAPILogHelper.log("Finished registering mod ASM transformers! Now loading library ASM transformers!");
-		
-		while (modsLibraryIterator.hasNext())
-		{
-			//Generics for the win!
-			Library nextLib = modsLibraryIterator.next();
-
-			if (nextLib.isAdvancedRegister())
-			{
-				nextLib.registerTransformers();
-			}
-		}
-		
-		NAPILogHelper.log("Finished loading all ASM transformers!");
 	}
 	
 	/**
-	 * Only ever used to load the N-API ModRegister, so the regular checks are ignored.
-	 * @param theClass The class that is loaded.
+	 * Initialises the N-API mod register.
 	 */
-	private static final void initNAPIRegister(Class<NAPIModRegister> theClass)
+	private static final void initNAPIRegister()
 	{
-		try
-		{
-			if (theClass == NAPIModRegister.class)
+		modLocatingTransformer.manipulateBytecodes("co.uk.niadel.mpi.modhandler.NAPIModRegister");
+
+			/*if (theClass == NAPIModRegister.class)
 			{
 				NAPIModRegister register = theClass.newInstance();
 
@@ -266,16 +237,7 @@ public class NModLoader extends URLClassLoader
 				register.preModInit();
 				register.modInit();
 				register.postModInit();
-			}
-		}
-		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InstantiationException e)
-		{
-            NAPILogHelper.logCritical("ERROR WHILST LOADING N-API MOD REGISTER!");
-			//Crash the game - Failure to load the N-API register can break a LOT of stuff.
-			CrashReport crashReport = CrashReport.makeCrashReport(e, "Loading N-API ModRegister");
-			crashReport.makeCategory("Initialising N-API");
-			throw new ReportedException(crashReport);
-		}
+			}*/
 	}
 
 	/**
@@ -304,37 +266,16 @@ public class NModLoader extends URLClassLoader
 	 * Loads the classes in the directory.
 	 * @param dir The directory to load the classes of.
 	 */
-	public static final void loadClasses(JarFile dir)
+	public static final void loadClasses(File dir)
 	{
 		try
 		{
-			String binaryName = getModBinaryName(dir);
-
-			if (binaryName != null)
-			{
-				if (binaryName.contains("mod_"))
-				{
-					NAPILogHelper.logWarn("The class with the binary name of " + binaryName + " has horrible naming practice. They should rename their class immediately!");
-				}
-
-				IModRegister binNameInstance = (IModRegister) Class.forName(binaryName).newInstance();
-
-				processAnnotations(new Mod(binNameInstance).setFileLocation(new File(mcModsDir.toPath() + dir.getName())));
-			}
+			loadUrl(dir.toURI().toURL());
 		}
-		catch (InstantiationException | ClassNotFoundException | IllegalAccessException e)
+		catch (MalformedURLException e)
 		{
 			NAPILogHelper.logError("Unable to load the classes for jar file " + dir.getName() + "!");
-			e.printStackTrace();
-
-			if (e instanceof ClassNotFoundException)
-			{
-				NAPILogHelper.logError("It would appear that the class specified by the jar file " + dir.getName() + "'s ModID.modid file is incorrect!");
-			}
-			else
-			{
-				NAPILogHelper.logError("It would appear that the jar file " + dir.getName() + "'s main mod class has a constructor with a parameter or is protected or private! DO NOT DO THIS!");
-			}
+			NAPILogHelper.logError(e);
 		}
 	}
 	
@@ -342,9 +283,9 @@ public class NModLoader extends URLClassLoader
 	 * Processes annotations, doing special things depending on annotations.
 	 * @param mod The mod to process the annotations of.
 	 */
-	public static final void processAnnotations(Mod mod)
+	public static final void processAnnotations(ModContainer mod)
 	{
-		IModRegister modRegister = mod.getMainClass();
+		Object modRegister = mod.getMainClass();
 		Annotation[] registerAnnotations = mod.getClassAnnotations();
 		Map<Method, Annotation[]> registerMethods = mod.getMethodAnnotations();
 
@@ -375,11 +316,11 @@ public class NModLoader extends URLClassLoader
 			}
 		}
 
-		NAPILogHelper.log("Finished processing annotations for the mod " + mod.modId + "!");
+		NAPILogHelper.log("Finished processing annotations for the mod " + mods.getContainerFromRegister(mod) + "!");
 	}
 	
 	/**
-	 * Converts an IModRegister into a Mod object and puts that Mod object into mods.
+	 * Converts an IModContainer into a Mod object and puts that Mod object into mods.
 	 * @param mod The mod to load.
 	 */
 	public static final void loadMod(IModContainer mod)
@@ -429,64 +370,30 @@ public class NModLoader extends URLClassLoader
 		{
 			ASMRegistry.invokeAllTransformers();
 
-			Iterator<Mod> modsIterator = mods.getModContainers().iterator();
-
-			while (modsIterator.hasNext())
-			{
-				IModContainer currContainer = modsIterator.next();
-
-				if (!currContainer.isLibrary())
-				{
-					Mod currMod = (Mod) currContainer;
-
-					if (currMod.isAdvancedRegister())
-					{
-						IAdvancedModRegister currRegister = (IAdvancedModRegister) currMod.getMainClass();
-
-						if (checkDependencies(currRegister))
-						{
-							currRegister.preModInit();
-						}
-					}
-				}
-			}
-
-			Iterator<Library> libraryIterator = mods.getLibraryContainers().iterator();
-
-			while (modsIterator.hasNext())
-			{
-				Library currLibContainer = libraryIterator.next();
-
-				if (currLibContainer.isAdvancedRegister())
-				{
-					IAdvancedModRegister currLibrary = (IAdvancedModRegister) currLibContainer.getMainClass();
-
-					if (checkDependencies(currLibrary))
-					{
-						currLibrary.preModInit();
-					}
-					else
-					{
-						NAPILogHelper.logError("The library " + currLibrary.getModId() + "'s dependency requirements were NOT met! Skipping it's loading!");
-						//Remove the library so it isn't put through the other phases of loading.
-						mods.getMods().remove(currLibrary);
-					}
-				}
-			}
-
+			Iterator<IModContainer> modsIterator = mods.iterator();
 			Iterator<Entry<String, Method>> methodsIterator = preInitMethods.entrySet().iterator();
 
-			while (methodsIterator.hasNext())
+			while (methodsIterator.hasNext() && modsIterator.hasNext())
 			{
 				Entry<String, Method> currMethod = methodsIterator.next();
+				Object nextMod = modsIterator.next().getMainClass();
 
-				try
+				if (checkDependencies(nextMod))
 				{
-					currMethod.getValue().invoke(currMethod.getKey(), new Object[] {});
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+					try
+					{
+						currMethod.getValue().invoke(currMethod.getKey(), new Object[]{});
+					}
+					catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+					{
+						NAPILogHelper.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
+						e.printStackTrace();
+					}
+				}
+				else
 				{
-					NAPILogHelper.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
-					e.printStackTrace();
+					//Remove the mod from loading.
+					mods.getMods().remove(currMethod.getKey());
 				}
 			}
 
@@ -500,7 +407,7 @@ public class NModLoader extends URLClassLoader
 	 * @param register The register to check the dependencies of.
 	 * @return Whether or not the register passed the checks.
 	 */
-	public static final boolean checkDependencies(IAdvancedModRegister register)
+	public static final boolean checkDependencies(Object register)
 	{
 		return DependenciesRegistry.checkDependencies(register);
 	}

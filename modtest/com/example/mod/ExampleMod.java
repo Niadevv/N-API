@@ -1,34 +1,35 @@
 package com.example.mod;
 
-import co.uk.niadel.mpi.modhandler.IModRegister;
+import co.uk.niadel.mpi.annotations.EnumLoadState;
+import co.uk.niadel.mpi.annotations.LoadStateMethod;
+import co.uk.niadel.mpi.annotations.ModRegister;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Test mod for N-API.
  */
-public class ExampleMod implements IModRegister
+@ModRegister(modId = "NIADEL_example_mod", version = "1.0")
+public class ExampleMod
 {
-	public String getVersion()
-	{
-		return "1.0";
-	}
+	public static final Logger logger = LogManager.getLogger("N-API Test mod");
 
-	public String getModId()
-	{
-		return "NIADEL_example_mod";
-	}
-
+	@LoadStateMethod(EnumLoadState.PREINIT)
 	public void preModInit()
 	{
-		System.out.println("PREINIT");
+		logger.log(Level.INFO, "PREINIT");
 	}
 
+	@LoadStateMethod(EnumLoadState.INIT)
 	public void modInit()
 	{
-		System.out.println("INIT");
+		logger.log(Level.INFO, "INIT");
 	}
 
+	@LoadStateMethod(EnumLoadState.POSTINIT)
 	public void postModInit()
 	{
-		System.out.println("POSTINIT");
+		logger.log(Level.INFO, "POSTINIT");
 	}
 }
