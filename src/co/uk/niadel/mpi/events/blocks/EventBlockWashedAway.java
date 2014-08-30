@@ -1,5 +1,6 @@
 package co.uk.niadel.mpi.events.blocks;
 
+import co.uk.niadel.mpi.annotations.VersionMarkingAnnotations.NYI;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
@@ -10,6 +11,7 @@ import net.minecraft.world.World;
  *
  * @author Niadel
  */
+@NYI(firstPresence = "0.0")
 public class EventBlockWashedAway
 {
 	/**

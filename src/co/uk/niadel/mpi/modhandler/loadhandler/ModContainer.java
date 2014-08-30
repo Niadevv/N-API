@@ -1,14 +1,15 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
-import co.uk.niadel.mpi.common.modinteraction.ModMessageChannel;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The mod container used with @ModRegister.
+ * A wrapper around a mod object to allow you to get data about a mod, like modid and version.
+ * Can be considered the "vanilla" mod container, but others are somewhat easy to implement.
+ *
+ * @author Niadel
  */
 public class ModContainer implements IModContainer
 {
@@ -17,6 +18,9 @@ public class ModContainer implements IModContainer
 	 */
 	public Object mod;
 
+	/**
+	 * The modid and the version of the mod in this container.
+	 */
 	public String modid, version;
 
 	/**
@@ -32,11 +36,13 @@ public class ModContainer implements IModContainer
 		this.isLibrary = (boolean) otherParams[0];
 	}
 
+	@Override
 	public boolean isLibrary()
 	{
 		return this.isLibrary;
 	}
 
+	@Override
 	public Map<Method, Annotation[]> getMethodAnnotations()
 	{
 		Map<Method, Annotation[]> methodAnnotations = new HashMap<>();
@@ -49,21 +55,25 @@ public class ModContainer implements IModContainer
 		return methodAnnotations;
 	}
 
+	@Override
 	public Annotation[] getClassAnnotations()
 	{
 		return getMainClass().getClass().getDeclaredAnnotations();
 	}
 
+	@Override
 	public Object getMainClass()
 	{
 		return mod;
 	}
 
+	@Override
 	public String getVersion()
 	{
 		return this.version;
 	}
 
+	@Override
 	public String getModId()
 	{
 		return this.modid;
