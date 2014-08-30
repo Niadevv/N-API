@@ -1,5 +1,7 @@
 package co.uk.niadel.mpi.modhandler.loadhandler;
 
+import co.uk.niadel.mpi.common.modinteraction.ModMessageChannel;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;

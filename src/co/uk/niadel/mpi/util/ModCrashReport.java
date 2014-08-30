@@ -60,7 +60,7 @@ public class ModCrashReport
 			"Crash reports! Now wasting multiple hours of modder's lives due to solving the bugs these have!",
 			"The Error has occurred! Player, you are NOT getting away!", //Another parody of a Mundus quote from Devil May Cry 1 in the final level before the final boss fight.
 			"Was it something I said?",
-			"The crash amount! IT'S NOT OVAR 9000!!!!!!!",
+			"The crash amount! IT'S NOT OVAR 9000!!!!!!!", //A lie.
 			"Over 9000 was a mistranslation. It was meant to say 8000. IT'S OVAR 8000!",
 			"FLIBBLE FLOBBLE!",
 			"Get your snacks!", //Etho reference.
@@ -69,10 +69,19 @@ public class ModCrashReport
 			"The story of my life.",
 			"Oh, my gumballs!", //Regular show reference.
 			"Hahahah NO!",
-			"Nowhere near as strange as Uncle Grandpa.",
+			"Still nowhere near as strange as Uncle Grandpa.", //MOAR OF DA TRUTH BRUDDA!
 			"1.8 is where the code is (MA MA MA MA MA MAA)!", //Reference to common YTP intro.
 			"i herd u liek crashz", //Reference to "I heard u liek mudkipz"
-			"Swedish Meatballs." //Reference to AnderZEL's Twitch new Subscriber message.
+			"Swedish Meatballs.", //Reference to AnderZEL's Twitch new Subscriber message.
+			"Shrek is love, Shrek is life. Shrek is not, however, this crash.",
+			"p15 r3p0r7 m3 70 7h3 m0d d3v :(", //1337 for pls report me to the mod dev :(
+			"I bet vanilla never had this problem.",
+			"This is bad news bears!",
+			"When in doubt, 42.", //Hitchhiker's Guide To The Galaxy reference.
+			"Um, er, hey! Over there! A distraction! *Runs off*",
+			"There there. Thine heart shalt go forth Donkey.", //Another poshification.
+			"The cake is a 37th Silly Comment",  //Solve it!
+			"EventFactory.fireEvent(new EventModCrash())"
 	};
 
 	/**
@@ -142,7 +151,7 @@ public class ModCrashReport
 		this.log.add("Minecraft Version: " + NAPIData.FULL_VERSION);
 		this.log.add("Running N-API Mods: ");
 
-		for (IModContainer mod : NModLoader.mods.getMods())
+		for (IModContainer mod : NModLoader.mods.getModContainers())
 		{
 			this.log.add("	ModId: " + mod.getModId() + " Version: " + mod.getVersion());
 		}

@@ -1,6 +1,7 @@
 package co.uk.niadel.mpi.common;
 
 import co.uk.niadel.mpi.asm.IASMTransformer;
+import co.uk.niadel.mpi.common.modinteraction.ModMessageNetwork;
 
 /**
  * Used to get info about the running version of N-API. Versioning follows Minecraft's
@@ -10,7 +11,7 @@ import co.uk.niadel.mpi.asm.IASMTransformer;
  * @author Niadel
  *
  */
-public interface NAPIData
+public class NAPIData
 {
 	/**
 	 * N-API's name.
@@ -69,7 +70,18 @@ public interface NAPIData
 	 */
 	public static final String NAPI_ASM_EVENT_TRANSFORMER = "co.uk.niadel.mpi.asm.NAPIASMEventHandlerTransformer";
 
+	/**
+	 * Fully qualified name of the N-API Forge Wrapper Config GUI factory.
+	 */
 	public static final String FORGE_CONFIG_GUI_FACTORY = "co.uk.niadel.mpi.forgewrapper.NAPIConfigGUIFactory";
 
-	public static final IASMTransformer[] dummyTransformerArray = new IASMTransformer[0];
+	/**
+	 * The "official" mod message network to send mod messages across.
+	 */
+	private static final ModMessageNetwork modMessageNetwork = new ModMessageNetwork();
+
+	public static final ModMessageNetwork getModMessageNetwork()
+	{
+		return modMessageNetwork;
+	}
 }

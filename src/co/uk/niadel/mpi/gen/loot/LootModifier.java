@@ -7,8 +7,7 @@ import net.minecraft.util.WeightedRandomChestContent;
 /**
  * The class that allows for adding loot to multiple loot chests.
  * 
- * TODO: Add Mineshaft loot adding, patch ComponentScatteredFeaturesPieces to add chest content
- * for all other than Jungle temple chests.
+ * TODO: Add Mineshaft loot adding, patch ComponentScatteredFeaturesPieces to add chest content for all other than Jungle temple chests.
  * @author Niadel
  *
  */

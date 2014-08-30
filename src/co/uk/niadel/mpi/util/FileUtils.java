@@ -1,13 +1,10 @@
 package co.uk.niadel.mpi.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
@@ -238,7 +235,7 @@ public final class FileUtils
 
 			PrintStream printStream2 = new PrintStream(theFile);
 
-			//Copy the temp file's contents to the original file.
+			//Copy the temprorary file's contents to the original file.
 			while (scanner2.hasNext())
 			{
 				printStream2.println(scanner2.nextLine());
@@ -250,8 +247,42 @@ public final class FileUtils
 		}
 		finally
 		{
-			//Delete the temp file as it is no longer needed.
+			//Delete the temprorary file as it is no longer needed.
 			tempFile.delete();
 		}
 	}
+
+	public static final void downloadFile(URL url, File out)
+	{
+		try
+		{
+			//May help users like me who don't have amazing luck with auto downloads - If it works for Minecraft it should work for me.
+			Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 8080));
+
+			//Borrowed from Minecraft's HttpUtil class. Deobfuscated so I don't get as yelled at :P.
+			HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection(proxy);
+			httpURLConnection.setRequestMethod("POST");
+			httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			httpURLConnection.setRequestProperty("Content-Length", "" + url.openStream().available());
+			httpURLConnection.setRequestProperty("Content-Language", "en-US");
+			httpURLConnection.setUseCaches(false);
+			httpURLConnection.setDoInput(true);
+			httpURLConnection.setDoOutput(false);
+			Scanner inputStream = new Scanner(new DataInputStream(httpURLConnection.getInputStream()));
+			FileOutputStream outputStream = new FileOutputStream(out);
+
+			while (inputStream.hasNext())
+			{
+				outputStream.write(inputStream.nextByte());
+			}
+
+			inputStream.close();
+			outputStream.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 }

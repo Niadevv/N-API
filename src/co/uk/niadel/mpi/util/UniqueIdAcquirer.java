@@ -46,7 +46,7 @@ public class UniqueIdAcquirer
 		{
 			int theId = UniqueNumberAcquirer.getFreeInt(this.excludedIds);
 
-			if (!NAPIModRegister.config.doesIdExist(theId))
+			if (!NAPIModRegister.config.doesIdExist(stringId))
 			{
 				NAPIModRegister.config.addId(stringId, theId);
 			}

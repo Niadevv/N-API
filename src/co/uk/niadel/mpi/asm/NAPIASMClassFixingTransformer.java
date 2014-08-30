@@ -6,6 +6,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class NAPIASMClassFixingTransformer implements IASMTransformer, Opcodes
 
 						//TODO Finish fixing.
 						methodNode = NAPIASMNecessityTransformer.constructMethodNode(ACC_PUBLIC, "<init>", "()V", null, null, classNode);
+						LabelNode l18 = new LabelNode();
 
 					}
 

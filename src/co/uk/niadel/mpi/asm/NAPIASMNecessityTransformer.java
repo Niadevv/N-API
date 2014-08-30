@@ -67,11 +67,11 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 	{
 		try
 		{
-			ClassNode cn = new ClassNode();
-			ClassReader cr = new ClassReader(className);
-			ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
-			FieldVisitor fv;
-			MethodVisitor mv;
+			ClassNode classNode = new ClassNode();
+			ClassReader classReader = new ClassReader(className);
+			ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
+			FieldVisitor fieldVisitor;
+			MethodVisitor methodVisitor;
 			MethodNode methodNode;
 
 			//Labels, because switch control structures are awkward with local variables.
@@ -90,15 +90,15 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 			Label l17;
 			LabelNode ln2;
 			ListIterator insnIterator;
-			cr.accept(cn, 0);
+			classReader.accept(classNode, 0);
 
 			switch (className)
 			{
 				//Adding INSTANCE field so that the ItemBaseModArmour works, adding event calls.
 				case "net.minecraft.item.Item":
-					cn.fields.add(new FieldNode(ACC_PUBLIC, "INSTANCE", null, null, null));
+					classNode.fields.add(new FieldNode(ACC_PUBLIC, "INSTANCE", null, null, null));
 
-					methodNode = constructMethodNode(ACC_PUBLIC, "<init>", "()V", null, null, cn);
+					methodNode = constructMethodNode(ACC_PUBLIC, "<init>", "()V", null, null, classNode);
 
 					deleteBytecodesOfMethod(methodNode);
 
@@ -126,10 +126,10 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					ln4 = new LabelNode();
 					ln4.accept(methodNode);
 
-					finishMethodNodeEdit(methodNode, cn);
+					finishMethodNodeEdit(methodNode, classNode);
 
 					//Add onEaten event call.
-					methodNode = constructMethodNode(ACC_PUBLIC, "onEaten", "(Lnet/minecraft/item/ItemStack)V", null, null, cn);
+					methodNode = constructMethodNode(ACC_PUBLIC, "onEaten", "(Lnet/minecraft/item/ItemStack)V", null, null, classNode);
 
 					deleteBytecodesOfMethod(methodNode);
 
@@ -154,9 +154,9 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					ln2.accept(methodNode);
 					methodNode.instructions.add(ln2);
 
-					finishMethodNodeEdit(methodNode, cn);
+					finishMethodNodeEdit(methodNode, classNode);
 
-					methodNode = constructMethodNode(ACC_PUBLIC, "onItemUse", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityPlayer;Lnet/minecraft/world/World;IIIIFFF)Z", null, null, cn);
+					methodNode = constructMethodNode(ACC_PUBLIC, "onItemUse", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityPlayer;Lnet/minecraft/world/World;IIIIFFF)Z", null, null, classNode);
 
 					deleteBytecodesOfMethod(methodNode);
 
@@ -178,60 +178,60 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 
 				//Obfuscated Item patching
 				case "abn":
-					cw.newField("abn", "INSTANCE", "Labn;");
-					fv = cw.visitField(ACC_PUBLIC, "INSTANCE", "Labn", null, null);
-					fv.visitEnd();
+					classWriter.newField("abn", "INSTANCE", "Labn;");
+					fieldVisitor = classWriter.visitField(ACC_PUBLIC, "INSTANCE", "Labn", null, null);
+					fieldVisitor.visitEnd();
 					break;
 
 				//Adding call to GUIHUDRegistry.callAllRenders in RenderItem.renderGameOverlay.
 				case "net.minecraft.client.renderer.entity.RenderItem":
-					mv = cw.visitMethod(ACC_PUBLIC, "renderGameOverlay", "(FZII)V", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "renderGameOverlay", "(FZII)V", null, null);
+					methodVisitor.visitCode();
 					l261 = new Label();
-					mv.visitLabel(l261);
-					mv.visitLineNumber(498, l261);
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lnet/minecraft/client/gui/GuiIngame;)V", false);
+					methodVisitor.visitLabel(l261);
+					methodVisitor.visitLineNumber(498, l261);
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lnet/minecraft/client/gui/GuiIngame;)V", false);
 					break;
 
 				//Obfuscated RenderItem patching
 				case "bnq":
-					mv = cw.visitMethod(ACC_PUBLIC, "a", "(FZII)V", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "a", "(FZII)V", null, null);
+					methodVisitor.visitCode();
 					l261 = new Label();
-					mv.visitLabel(l261);
-					mv.visitLineNumber(498, l261);
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lbah;)V", false);
+					methodVisitor.visitLabel(l261);
+					methodVisitor.visitLineNumber(498, l261);
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/client/GUIHUDRegistry", "callAllRenderers", "(Lbah;)V", false);
 					break;
 
 				//Add call to VillagePieceRegistry.addAllPieces in getStructureVillageWeightedPieceList
 				case "net.minecraft.world.gen.structure.StructureVillagePieces":
-					mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "getStructureVillageWeightedPieceList", "(Ljava/util/Random;I)Ljava/util/List;", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC + ACC_STATIC, "getStructureVillageWeightedPieceList", "(Ljava/util/Random;I)Ljava/util/List;", null, null);
+					methodVisitor.visitCode();
 					l10 = new Label();
-					mv.visitLabel(l10);
-					mv.visitLineNumber(54, l10);
-					mv.visitVarInsn(ALOAD, 2);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V", false);
+					methodVisitor.visitLabel(l10);
+					methodVisitor.visitLineNumber(54, l10);
+					methodVisitor.visitVarInsn(ALOAD, 2);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V", false);
 					break;
 
 				//Obfuscated StructureVillagePieces patching
 				case "avp":
-					mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "a", "(Ljava/util/Random;I)Ljava/util/List;", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC + ACC_STATIC, "a", "(Ljava/util/Random;I)Ljava/util/List;", null, null);
+					methodVisitor.visitCode();
 					l10 = new Label();
-					mv.visitLabel(l10);
-					mv.visitLineNumber(54, l10);
-					mv.visitVarInsn(ALOAD, 2);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V", false);
+					methodVisitor.visitLabel(l10);
+					methodVisitor.visitLineNumber(54, l10);
+					methodVisitor.visitVarInsn(ALOAD, 2);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/structures/VillagePieceRegistry", "addAllPieces", "(Ljava/util/ArrayList;)V", false);
 					break;
 
 				//Add calls to events. Oh, and fix for Forge renaming isClient.
 				case "net.minecraft.world.World":
 					if (MCData.isForge)
 					{
-						cn.fields.add(new FieldNode(ACC_PUBLIC, "isClient", null, null, null));
+						classNode.fields.add(new FieldNode(ACC_PUBLIC, "isClient", null, null, null));
 
 						methodNode = new MethodNode(ACC_PUBLIC, "<init>", "(Lnet/minecraft/world/storage/ISaveHandler;Ljava/lang/String;Lnet/minecraft/world/WorldProvider;Lnet/minecraft/world/WorldSettings;Lnet/minecraft/profiler/Profiler;)V", null, null);
 
@@ -256,183 +256,183 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 						methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "Lnet/minecraft/world/World", "isClient", "Z"));
 					}
 
-					mv = cw.visitMethod(ACC_PUBLIC, "spawnEntityInWorld", "(Lnet/minecraft/entity/Entity;)Z", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "spawnEntityInWorld", "(Lnet/minecraft/entity/Entity;)Z", null, null);
+					methodVisitor.visitCode();
 
 					//Add the event local variable for EventEntitySpawned.
 					l6 = new Label();
-					mv.visitLineNumber(1409, l6);
-					mv.visitFrame(F_SAME, 0, null, 0, null);
-					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntitySpawned");
-					mv.visitInsn(DUP);
-					mv.visitVarInsn(ALOAD, 1);
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntitySpawned", "<init>", "(Lnet/minecraft/entity/Entity;)V", false);
-					mv.visitVarInsn(ASTORE, 5);
+					methodVisitor.visitLineNumber(1409, l6);
+					methodVisitor.visitFrame(F_SAME, 0, null, 0, null);
+					methodVisitor.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntitySpawned");
+					methodVisitor.visitInsn(DUP);
+					methodVisitor.visitVarInsn(ALOAD, 1);
+					methodVisitor.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntitySpawned", "<init>", "(Lnet/minecraft/entity/Entity;)V", false);
+					methodVisitor.visitVarInsn(ASTORE, 5);
 
 					l9 = new Label();
-					mv.visitLineNumber(1420, l9);
-					mv.visitFrame(F_APPEND, 1, new Object[]{"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
-					mv.visitVarInsn(ALOAD, 5);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
+					methodVisitor.visitLineNumber(1420, l9);
+					methodVisitor.visitFrame(F_APPEND, 1, new Object[]{"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
+					methodVisitor.visitVarInsn(ALOAD, 5);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 
 
 					l12 = new Label();
-					mv.visitLabel(l12);
-					mv.visitLineNumber(1415, l12);
-					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned");
-					mv.visitInsn(DUP);
-					mv.visitVarInsn(ALOAD, 6);
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned", "<init>", "(Lnet/minecraft/entity/player/EntityPlayer;)V", false);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
+					methodVisitor.visitLabel(l12);
+					methodVisitor.visitLineNumber(1415, l12);
+					methodVisitor.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned");
+					methodVisitor.visitInsn(DUP);
+					methodVisitor.visitVarInsn(ALOAD, 6);
+					methodVisitor.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned", "<init>", "(Lnet/minecraft/entity/player/EntityPlayer;)V", false);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 
 					l15 = new Label();
-					mv.visitLineNumber(1423, l15);
-					mv.visitFrame(F_SAME, 0, null, 0, null);
-					mv.visitVarInsn(ALOAD, 5);
-					mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z", false);
+					methodVisitor.visitLineNumber(1423, l15);
+					methodVisitor.visitFrame(F_SAME, 0, null, 0, null);
+					methodVisitor.visitVarInsn(ALOAD, 5);
+					methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z", false);
 					break;
 
 				//Obfuscated World patching.
 				case "afn":
-					mv = cw.visitMethod(ACC_PUBLIC, "d", "(Lqn;)Z", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "d", "(Lqn;)Z", null, null);
+					methodVisitor.visitCode();
 
 					//Add the event local variable for EventEntitySpawned.
 					l6 = new Label();
-					mv.visitLineNumber(1409, l6);
-					mv.visitFrame(F_SAME, 0, null, 0, null);
-					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntitySpawned");
-					mv.visitInsn(DUP);
-					mv.visitVarInsn(ALOAD, 1);
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntitySpawned", "<init>", "(Lqn;)V", false);
-					mv.visitVarInsn(ASTORE, 5);
+					methodVisitor.visitLineNumber(1409, l6);
+					methodVisitor.visitFrame(F_SAME, 0, null, 0, null);
+					methodVisitor.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntitySpawned");
+					methodVisitor.visitInsn(DUP);
+					methodVisitor.visitVarInsn(ALOAD, 1);
+					methodVisitor.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntitySpawned", "<init>", "(Lqn;)V", false);
+					methodVisitor.visitVarInsn(ASTORE, 5);
 
 					l9 = new Label();
-					mv.visitLineNumber(1420, l9);
-					mv.visitFrame(F_APPEND, 1, new Object[]{"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
-					mv.visitVarInsn(ALOAD, 5);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
+					methodVisitor.visitLineNumber(1420, l9);
+					methodVisitor.visitFrame(F_APPEND, 1, new Object[]{"co/uk/niadel/mpi/events/EventCancellable"}, 0, null);
+					methodVisitor.visitVarInsn(ALOAD, 5);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 
 
 					l12 = new Label();
-					mv.visitLabel(l12);
-					mv.visitLineNumber(1415, l12);
-					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned");
-					mv.visitInsn(DUP);
-					mv.visitVarInsn(ALOAD, 6);
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned", "<init>", "(Lxl;)V", false);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
+					methodVisitor.visitLabel(l12);
+					methodVisitor.visitLineNumber(1415, l12);
+					methodVisitor.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned");
+					methodVisitor.visitInsn(DUP);
+					methodVisitor.visitVarInsn(ALOAD, 6);
+					methodVisitor.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventPlayerSpawned", "<init>", "(Lxl;)V", false);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 
 					l15 = new Label();
-					mv.visitLineNumber(1423, l15);
-					mv.visitFrame(F_SAME, 0, null, 0, null);
-					mv.visitVarInsn(ALOAD, 5);
-					mv.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z", false);
+					methodVisitor.visitLineNumber(1423, l15);
+					methodVisitor.visitFrame(F_SAME, 0, null, 0, null);
+					methodVisitor.visitVarInsn(ALOAD, 5);
+					methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "co/uk/niadel/mpi/events/EventCancellable", "isCancelled", "()Z", false);
 					break;
 
 				//Add EventFactory call to doExplosionA
 				case "net.minecraft.util.Explosion":
-					mv = cw.visitMethod(ACC_PUBLIC, "doExplosionA", "()V", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "doExplosionA", "()V", null, null);
+					methodVisitor.visitCode();
 
 					l79 = new Label();
-					mv.visitLineNumber(163, l79);
-					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventExplosion");
-					mv.visitInsn(DUP);
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "exploder", "Lnet/minecraft/entity/Entity;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "explosionX", "D");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "explosionY", "D");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "explosionZ", "D");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lnet/minecraft/entity/Entity;DDD)V", false);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
+					methodVisitor.visitLineNumber(163, l79);
+					methodVisitor.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventExplosion");
+					methodVisitor.visitInsn(DUP);
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "exploder", "Lnet/minecraft/entity/Entity;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "explosionX", "D");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "explosionY", "D");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/world/Explosion", "explosionZ", "D");
+					methodVisitor.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lnet/minecraft/entity/Entity;DDD)V", false);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
 				//Obfuscated Explosion patching.
 				case "agw":
-					mv = cw.visitMethod(ACC_PUBLIC, "a", "()V", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "a", "()V", null, null);
+					methodVisitor.visitCode();
 
 					l79 = new Label();
-					mv.visitLineNumber(163, l79);
-					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventExplosion");
-					mv.visitInsn(DUP);
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "agw", "exploder", "Lsa;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "agw", "explosionX", "D");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "agw", "explosionY", "D");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "agw", "explosionZ", "D");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lsa;DDD)V", false);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
+					methodVisitor.visitLineNumber(163, l79);
+					methodVisitor.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventExplosion");
+					methodVisitor.visitInsn(DUP);
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "agw", "exploder", "Lsa;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "agw", "explosionX", "D");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "agw", "explosionY", "D");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "agw", "explosionZ", "D");
+					methodVisitor.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventExplosion", "<init>", "(Lsa;DDD)V", false);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
 				//Adding the call to BiomeRegistry.registerAllBiomes.
 				case "net.minecraft.world.gen.layer.GenLayerBiome":
-					mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "initializeAllBiomeGenerators", "(JLnet/minecraft/world/WorldType;)[Lnet/minecraft/world/gen/layer/GenLayer;", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC + ACC_STATIC, "initializeAllBiomeGenerators", "(JLnet/minecraft/world/WorldType;)[Lnet/minecraft/world/gen/layer/GenLayer;", null, null);
+					methodVisitor.visitCode();
 
 					Label l52 = new Label();
-					mv.visitLabel(l52);
-					mv.visitLineNumber(107, l52);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/layers/GenLayerRegistry", "iterateLayers", "()[Lco/uk/niadel/mpi/gen/layers/IGenLayer;", false);
-					mv.visitInsn(POP);
+					methodVisitor.visitLabel(l52);
+					methodVisitor.visitLineNumber(107, l52);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/gen/layers/GenLayerRegistry", "iterateLayers", "()[Lco/uk/niadel/mpi/gen/layers/IGenLayer;", false);
+					methodVisitor.visitInsn(POP);
 					break;
 
 				case "net.minecraft.entity.EntityLiving":
-					mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Lnet/minecraft/world/World;)V", null, null);
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "<init>", "(Lnet/minecraft/world/World;)V", null, null);
 
 					l17 = new Label();
-					mv.visitLabel(l17);
-					mv.visitLineNumber(94, l17);
-					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit");
-					mv.visitInsn(DUP);
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitVarInsn(ALOAD, 1);
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "tasks", "Lnet/minecraft/entity/ai/EntityAITasks;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "targetTasks", "Lnet/minecraft/entity/ai/EntityAITasks;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "lookHelper", "Lnet/minecraft/entity/ai/EntityLookHelper;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "moveHelper", "Lnet/minecraft/entity/ai/EntityMoveHelper;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "jumpHelper", "Lnet/minecraft/entity/ai/EntityJumpHelper;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "bodyHelper", "Lnet/minecraft/entity/EntityBodyHelper;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "navigator", "Lnet/minecraft/pathfinding/PathNavigate;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "senses", "Lnet/minecraft/entity/ai/EntitySenses;");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit", "<init>", "(Lnet/minecraft/entity/EntityLiving;Lnet/minecraft/world/World;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityLookHelper;Lnet/minecraft/entity/ai/EntityMoveHelper;Lnet/minecraft/entity/ai/EntityJumpHelper;Lnet/minecraft/entity/EntityBodyHelper;Lnet/minecraft/pathfinding/PathNavigate;Lnet/minecraft/entity/ai/EntitySenses;)V", false);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
+					methodVisitor.visitLabel(l17);
+					methodVisitor.visitLineNumber(94, l17);
+					methodVisitor.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit");
+					methodVisitor.visitInsn(DUP);
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitVarInsn(ALOAD, 1);
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "tasks", "Lnet/minecraft/entity/ai/EntityAITasks;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "targetTasks", "Lnet/minecraft/entity/ai/EntityAITasks;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "lookHelper", "Lnet/minecraft/entity/ai/EntityLookHelper;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "moveHelper", "Lnet/minecraft/entity/ai/EntityMoveHelper;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "jumpHelper", "Lnet/minecraft/entity/ai/EntityJumpHelper;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "bodyHelper", "Lnet/minecraft/entity/EntityBodyHelper;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "navigator", "Lnet/minecraft/pathfinding/PathNavigate;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/EntityLiving", "senses", "Lnet/minecraft/entity/ai/EntitySenses;");
+					methodVisitor.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/entity/EventEntityLivingInit", "<init>", "(Lnet/minecraft/entity/EntityLiving;Lnet/minecraft/world/World;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityAITasks;Lnet/minecraft/entity/ai/EntityLookHelper;Lnet/minecraft/entity/ai/EntityMoveHelper;Lnet/minecraft/entity/ai/EntityJumpHelper;Lnet/minecraft/entity/EntityBodyHelper;Lnet/minecraft/pathfinding/PathNavigate;Lnet/minecraft/entity/ai/EntitySenses;)V", false);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
 				//Add call to Player events.
 				case "net.minecraft.entity.player.EntityPlayer":
-					mv = cw.visitMethod(ACC_PUBLIC, "stopUsingItem", "()V", null, null);
-					mv.visitCode();
+					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "stopUsingItem", "()V", null, null);
+					methodVisitor.visitCode();
 
 					l3 = new Label();
-					mv.visitLabel(l3);
-					mv.visitLineNumber(238, l3);
-					mv.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/items/EventItemStoppedUse");
-					mv.visitInsn(DUP);
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUse", "Lnet/minecraft/item/ItemStack;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "worldObj", "Lnet/minecraft/world/World;");
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitVarInsn(ALOAD, 0);
-					mv.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUseCount", "I");
-					mv.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemStoppedUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;I)V", false);
-					mv.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
+					methodVisitor.visitLabel(l3);
+					methodVisitor.visitLineNumber(238, l3);
+					methodVisitor.visitTypeInsn(NEW, "co/uk/niadel/mpi/events/items/EventItemStoppedUse");
+					methodVisitor.visitInsn(DUP);
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUse", "Lnet/minecraft/item/ItemStack;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "worldObj", "Lnet/minecraft/world/World;");
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitVarInsn(ALOAD, 0);
+					methodVisitor.visitFieldInsn(GETFIELD, "net/minecraft/entity/player/EntityPlayer", "itemInUseCount", "I");
+					methodVisitor.visitMethodInsn(INVOKESPECIAL, "co/uk/niadel/mpi/events/items/EventItemStoppedUse", "<init>", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;I)V", false);
+					methodVisitor.visitMethodInsn(INVOKESTATIC, "co/uk/niadel/mpi/events/EventFactory", "fireEvent", "(Lco/uk/niadel/mpi/events/IEvent;)V", false);
 					break;
 
 				case "net.minecraft.entity.EntityLivingBase":
@@ -581,16 +581,24 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 						methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/google/common/collect/Lists", "newArrayList", "()Ljava/util/ArrayList;", false));
 						methodNode.instructions.add(new InsnNode(RETURN));
 					}
+
+					break;
+
+				case "net.minecraft.block.BlockDynamicLiquid":
+					methodNode = constructMethodNode(ACC_PRIVATE, "func_149813_h", "(Lnet/minecraft/world/World;IIII)V", null, null, classNode);
+					//Instruction 58 = .setBlock call.
+					//Add event call after 59
+					finishMethodNodeEdit(methodNode, classNode);
 					break;
 
 				default:
 					//Not any of the correct classes, return the passed bytes.
-					return cw.toByteArray();
+					return classWriter.toByteArray();
 			}
 
 			NAPILogHelper.log("Transformed class " + className + "!");
 
-			return cw.toByteArray();
+			return classWriter.toByteArray();
 		}
 		catch (IOException e)
 		{

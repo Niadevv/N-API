@@ -94,7 +94,7 @@ public class Launch
 		}
 		else
 		{
-			NAPILogHelper.logCritical("Java version is not " + REQ_JAVA_VERSION_STRING + "! If you are using Java 6, for the love of god, update all ready!");
+			NAPILogHelper.logCritical("Java version is not " + REQ_JAVA_VERSION_STRING + " or later! If you are using Java 6 or earlier, for the love of god, update all ready!");
 			return false;
 		}
 	}

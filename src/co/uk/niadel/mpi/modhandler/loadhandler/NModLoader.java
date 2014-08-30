@@ -190,12 +190,9 @@ public class NModLoader extends URLClassLoader
 							loadUrl(currFile.toURI().toURL());
 							loadClasses(currFile);
 						}
-						else
+						else if (currFile.toPath().toString().endsWith(".jar") || currFile.toPath().toString().endsWith(".zip"))
 						{
-							if (currFile.toPath().toString().endsWith(".jar") || currFile.toPath().toString().endsWith(".zip"))
-							{
-								loadUrl(currFile.toURI().toURL());
-							}
+							loadUrl(currFile.toURI().toURL());
 						}
 					}
 
@@ -281,9 +278,9 @@ public class NModLoader extends URLClassLoader
 	
 	/**
 	 * Processes annotations, doing special things depending on annotations.
-	 * @param mod The mod to process the annotations of.
+	 * @param mod The mod container to process the annotations of.
 	 */
-	public static final void processAnnotations(ModContainer mod)
+	public static final void processAnnotations(IModContainer mod)
 	{
 		Object modRegister = mod.getMainClass();
 		Annotation[] registerAnnotations = mod.getClassAnnotations();
@@ -474,9 +471,9 @@ public class NModLoader extends URLClassLoader
 	 * @param bytes The bytes of theClass.
 	 */
 	@TestFeature(firstAppearance = "1.0")
-	public static final void loadASMClass(Class theClass, byte[] bytes)
+	public static final void loadTransformedClass(Class theClass, byte[] bytes)
 	{
 		NModLoader.defineClass(theClass.getName(), bytes);
-		NAPILogHelper.log("Loaded ASM class " + theClass.getName());
+		NAPILogHelper.log("Loaded ASM transformed class " + theClass.getName());
 	}
 }

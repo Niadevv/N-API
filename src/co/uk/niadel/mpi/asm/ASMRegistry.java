@@ -101,7 +101,7 @@ public final class ASMRegistry
 		{
 			for (String currClassName : allClasses)
 			{
-				if (!(currTransformer.getClass().getName() == NAPIASMNecessityTransformer.class.getName()) && !(currTransformer.getClass().getName() == NAPIASMEventHandlerTransformer.class.getName()))
+				if (!(currTransformer.getClass() == NAPIASMNecessityTransformer.class) && !(currTransformer.getClass() == NAPIASMEventHandlerTransformer.class) && !(currTransformer.getClass() == NAPIASMModLocatingTransformer.class))
 				{
 					if (!ASMRegistry.isClassExcluded(currClassName))
 					{
@@ -109,7 +109,7 @@ public final class ASMRegistry
 
 						if (transformedBytes != null)
 						{
-							NModLoader.loadASMClass(Class.forName(currClassName), transformedBytes);
+							NModLoader.loadTransformedClass(Class.forName(currClassName), transformedBytes);
 						}
 					}
 				}
@@ -119,7 +119,7 @@ public final class ASMRegistry
 
 					if (transformedBytes != null)
 					{
-						NModLoader.loadASMClass(Class.forName(currClassName), transformedBytes);
+						NModLoader.loadTransformedClass(Class.forName(currClassName), transformedBytes);
 					}
 				}
 			}
@@ -273,7 +273,7 @@ public final class ASMRegistry
 
 			for (String badClass : badClasses)
 			{
-				NModLoader.loadASMClass(Class.forName(badClass), transformer.manipulateBytecodes(badClass));
+				NModLoader.loadTransformedClass(Class.forName(badClass), transformer.manipulateBytecodes(badClass));
 			}
 		}
 		catch (ClassNotFoundException e)
@@ -284,6 +284,11 @@ public final class ASMRegistry
 
 	static
 	{
+		//Adds the Forge and FML classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
+		ASMRegistry.addASMClassExclusion("cpw.fml.mods");
+		ASMRegistry.addASMClassExclusion("net.minecraftforge");
+		ASMRegistry.addASMClassExclusion("net.minecraft.src.FMLRenderAccessLibrary");
+		fixBadClasses();
 		getAllLoadedClassNames();
 	}
 }

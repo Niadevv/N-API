@@ -118,9 +118,5 @@ public final class NAPIModRegister
 	{
 		//Tells the user (rather cheesily) that the N-API ASM transformer is being registered.
 		NAPILogHelper.log("REGISTERING N-API ASM TRANSFORMER! Transformers, roll out!");
-		//Adds the Forge and FML classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
-		ASMRegistry.addASMClassExclusion("cpw.fml.mods");
-		ASMRegistry.addASMClassExclusion("net.minecraftforge");
-		ASMRegistry.addASMClassExclusion("net.minecraft.src.FMLRenderAccessLibrary");
 	}
 }
