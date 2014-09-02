@@ -41,7 +41,7 @@ public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 					{
 						for (String exceptionThrown : methodNode.exceptions)
 						{
-							allExceptionsThrown = allExceptionsThrown + "," + exceptionThrown;
+							allExceptionsThrown += ("," + exceptionThrown);
 						}
 					}
 

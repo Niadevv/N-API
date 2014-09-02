@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 
 /**
  * Used for handling numeric ids like dimension ids and, up to 1.8, block and item ids.
+ *
+ * @author Niadel
  */
 public class IdConfiguration extends Configuration
 {
@@ -15,8 +17,8 @@ public class IdConfiguration extends Configuration
 	
 	/**
 	 * Adds an id to the config.
-	 * @param stringId
-	 * @param id
+	 * @param stringId The string id representation of id.
+	 * @param id The int id to add.
 	 */
 	public void addId(String stringId, int id)
 	{
@@ -28,18 +30,27 @@ public class IdConfiguration extends Configuration
 	
 	/**
 	 * Gets the int id of the specified alphanumeric id.
-	 * @param stringId
-	 * @return
+	 * @param stringId The string version of the numeric id.
+	 * @return The integer id of stringId.
 	 */
 	public int getId(String stringId)
 	{
-		return Integer.valueOf(getConfigValue(stringId));
+		String intId = getConfigValue(stringId);
+
+		if (intId != null)
+		{
+			return Integer.valueOf(getConfigValue(stringId));
+		}
+		else
+		{
+			return -1;
+		}
 	}
 	
 	/**
 	 * Gets whether or not the specified id exists.
-	 * @param stringId
-	 * @return
+	 * @param stringId The id version of the int id to test.
+	 * @return Whether or not there is an int id for stringId.
 	 */
 	public boolean doesIdExist(String stringId)
 	{

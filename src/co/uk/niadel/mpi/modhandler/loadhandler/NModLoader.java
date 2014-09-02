@@ -38,7 +38,8 @@ import co.uk.niadel.mpi.util.MCData;
 
 /**
  * This isn't actually as flexible as FML, but it does most of the same stuff. Flexibility may be improved in a later version of N-API.
- * It is worth noting that this is actually a LOT simpler than FML's loader, which spans a LOT of files.
+ * It is worth noting that this is actually a LOT simpler than FML's loader, which spans a LOT of files, but this one is almost entirely
+ * in one file. Well, the main loading code.
  * 
  * @author Niadel
  *
@@ -132,17 +133,7 @@ public class NModLoader extends URLClassLoader
 	{
 		INSTANCE.defineClass(className, bytes, 0, bytes.length);
 	}
-	
-	/**
-	 * Adds a URL into the class path.
-	 * @param url The url to add.
-	 */
-	@Internal
-	private void addUrl(URL url)
-	{
-		super.addURL(url);
-	}
-	
+
 	/**
 	 * Loads a URL into the class path.
 	 * @param url The url to add.
@@ -236,28 +227,6 @@ public class NModLoader extends URLClassLoader
 				register.postModInit();
 			}*/
 	}
-
-	/**
-	 * Gets the jar of the specified file after checking it.
-	 * @param file The file to load.
-	 * @return The jar file requested, or null if checks are not met.
-	 */
-	public static final JarFile loadModAsJF(File file)
-	{
-		if (file.getPath().endsWith(".jar") && !file.isDirectory())
-		{
-			try
-			{
-				return new JarFile(file);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-		return null;
-	}
 	
 	/**
 	 * Loads the classes in the directory.
@@ -336,26 +305,6 @@ public class NModLoader extends URLClassLoader
 	{
 		mods.addMod(mod, true);
 		NAPILogHelper.log("Loaded library " + mod.getModId() + "!");
-	}
-	
-	/**
-	 * Gets the mod id from the file ModID.modid in a file.
-	 * @param modJarFile The jar file of the mod to get the main class binary name of.
-	 * @return The mod's main class binary name.
-	 */
-	public static final String getModBinaryName(JarFile modJarFile)
-	{
-		try
-		{
-			Scanner scanner = new Scanner(modJarFile.getInputStream(modJarFile.getEntry("ModID.modid")));
-			return scanner.nextLine();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 	
 	/**

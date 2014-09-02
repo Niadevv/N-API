@@ -1,6 +1,5 @@
 package co.uk.niadel.mpi.common;
 
-import co.uk.niadel.mpi.asm.IASMTransformer;
 import co.uk.niadel.mpi.common.modinteraction.ModMessageNetwork;
 
 /**
@@ -11,7 +10,7 @@ import co.uk.niadel.mpi.common.modinteraction.ModMessageNetwork;
  * @author Niadel
  *
  */
-public class NAPIData
+public final class NAPIData
 {
 	/**
 	 * N-API's name.

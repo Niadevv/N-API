@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Niadel
  *
  */
-public class MPIEventHandler
+public final class MPIEventHandler
 {
 	@EventHandlerMethod
 	public void handleModDisplayEvent(EventDisplayModGUI event)
@@ -71,7 +71,7 @@ public class MPIEventHandler
 
 				if (throwable.canThrowItem(event.clickedItem, event.world, event.player))
 				{
-					//Borrowed, modified (mainly for optimisation purposes) and partially deobfuscated code from EntityThrowable
+					//Borrowed, modified (mainly for optimisation purposes/readabillity) and partially deobfuscated code from EntityThrowable
 					final float PI = (float) Math.PI;
 					final Entity thrownEntity = throwable.getThrownEntity(event.world, event.player);
 					thrownEntity.setLocationAndAngles(event.player.posX, event.player.posY + (double) event.player.getEyeHeight(), event.player.posZ, event.player.rotationYaw, event.player.rotationPitch);

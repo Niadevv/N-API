@@ -5,15 +5,12 @@ import co.uk.niadel.mpi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
 
 /**
- * Fixes classes otherwise unable to be passed as Strings without edits to the base code. Only operates in a Non-FML environment as,
- * helpfully, FML had this same issue and fixed it.
+ * Fixes classes otherwise unable to be passed as Strings without edits to the base code.
  */
 public class NAPIASMClassFixingTransformer implements IASMTransformer, Opcodes
 {
@@ -31,7 +28,7 @@ public class NAPIASMClassFixingTransformer implements IASMTransformer, Opcodes
 			switch (className)
 			{
 				case "net.minecraft.util.StringTranslate":
-					//FML already patches StringTranslate appropriately to fix the NPE that makes this class a bad class.
+					//Only operates in a Non-FML environment as, helpfully, FML had this same issue and fixed it.
 					if (!MCData.isForgeDominated())
 					{
 						/* TEMP Bytecode instructions to remind me of how to check if something's not null.
@@ -46,8 +43,8 @@ public class NAPIASMClassFixingTransformer implements IASMTransformer, Opcodes
 
 						//TODO Finish fixing.
 						methodNode = NAPIASMNecessityTransformer.constructMethodNode(ACC_PUBLIC, "<init>", "()V", null, null, classNode);
-						LabelNode l18 = new LabelNode();
-
+						methodNode.instructions.insert(methodNode.instructions.get(17), new JumpInsnNode(IFNULL, (LabelNode) methodNode.instructions.get(16)));
+						NAPIASMNecessityTransformer.finishMethodNodeEdit(methodNode, classNode);
 					}
 
 					break;

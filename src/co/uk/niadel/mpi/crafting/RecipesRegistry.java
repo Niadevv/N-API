@@ -79,9 +79,9 @@ public final class RecipesRegistry
 	
 	/**
 	 * Adds a furnace recipe, item version. Wrapper for an obfuscated method name.
-	 * @param inputItem
-	 * @param outputItem
-	 * @param xpGiven
+	 * @param inputItem The item that is smelted.
+	 * @param outputItem The item that should result from the smelting of inputItem.
+	 * @param xpGiven The xp given after the smelting.
 	 */
 	public static final void addFurnaceRecipe(Item inputItem, ItemStack outputItem, float xpGiven)
 	{
@@ -90,9 +90,9 @@ public final class RecipesRegistry
 	
 	/**
 	 * Adds a furnace recipe, block version. Wrapper for an obfuscated method name.
-	 * @param inputItem
-	 * @param outputItem
-	 * @param xpGiven
+	 * @param inputItem The item that is smelted.
+	 * @param outputItem The item that should result from the smelting of inputItem.
+	 * @param xpGiven The xp given after the smelting.
 	 */
 	public static final void addFurnaceRecipe(Block inputItem, ItemStack outputItem, float xpGiven)
 	{
@@ -160,12 +160,10 @@ public final class RecipesRegistry
 	
 	/**
 	 * Adds a recipe using the N-API Ore Dictionary system.
-	 * @param outputItem
-	 * @param craftingRecipe
-	 * @deprecated Soon ore dictionary stuff will be done automatically.
+	 * @param outputItem The item that should result from the recipe.
+	 * @param craftingRecipe The string varargs that represents the actual recipe.
 	 */
-	@TestFeature(firstAppearance = "1.0")
-	@Deprecated
+	@TestFeature(firstAppearance = "0.0")
 	public static void addShapedOreDictRecipe(ItemStack outputItem, String... craftingRecipe)
 	{	
 		for (int i = 2; i == craftingRecipe.length; i++)
@@ -199,8 +197,8 @@ public final class RecipesRegistry
 	
 	/**
 	 * Adds a shapeless Ore Dict recipe.
-	 * @param result
-	 * @param recipe
+	 * @param result The resulting item from this recipe.
+	 * @param recipe A string varargs of names that can either be strings that match OreDict values or the traditional combo.
 	 */
 	public static final void addShapelessOreDictRecipe(ItemStack result, String... recipe)
 	{

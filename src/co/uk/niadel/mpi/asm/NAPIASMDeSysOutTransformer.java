@@ -11,6 +11,8 @@ import java.io.IOException;
 /**
  * Gets rid of calls to System.out.println and System.err.println to encourage the use of a logger, as loggers allow us to know what
  * mod is "saying" what. This makes debugging with multiple mods installed MUCH easier.
+ *
+ * @author Niadel
  */
 public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 {
@@ -35,7 +37,7 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 					{
 						for (String exceptionThrown : method.exceptions)
 						{
-							allExceptionsThrown = allExceptionsThrown + "," + exceptionThrown;
+							allExceptionsThrown += ("," + exceptionThrown);
 						}
 					}
 
@@ -63,7 +65,7 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 											{
 												MethodInsnNode actInsn2 = (MethodInsnNode) nextInsn2;
 
-												if (actInsn2.getType() == INVOKEVIRTUAL && actInsn2.owner == "java/io/PrintStream" && actInsn2.name == "println")
+												if (actInsn2.getType() == INVOKEVIRTUAL && actInsn2.owner == "java/io/PrintStream" && (actInsn2.name == "println" || actInsn2.name == "printf"))
 												{
 													//Remove GETSTATIC
 													method.instructions.remove(instruction);
@@ -72,7 +74,7 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 													//Remove actual method call.
 													method.instructions.remove(nextInsn2);
 
-													NAPILogHelper.logWarn("Found call to System.out.println! DO NOT DO THIS! Use a logger instead! The call has been removed.");
+													NAPILogHelper.logWarn("Found call to System.out.println or System.out.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
 													NAPILogHelper.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
 												}
 											}
@@ -90,7 +92,7 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 											{
 												MethodInsnNode actInsn2 = (MethodInsnNode) nextInsn2;
 
-												if (actInsn2.getType() == INVOKEVIRTUAL && actInsn2.owner == "java/io/PrintStream" && actInsn2.name == "println")
+												if (actInsn2.getType() == INVOKEVIRTUAL && actInsn2.owner == "java/io/PrintStream" && (actInsn2.name == "println" || actInsn2.name == "printf"))
 												{
 													//Remove GETSTATIC
 													method.instructions.remove(instruction);
@@ -99,7 +101,7 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 													//Remove actual method call.
 													method.instructions.remove(nextInsn2);
 
-													NAPILogHelper.logWarn("Found call to System.err.println! DO NOT DO THIS! Use a logger instead! The call has been removed.");
+													NAPILogHelper.logWarn("Found call to System.err.println or System.err.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
 													NAPILogHelper.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
 												}
 											}

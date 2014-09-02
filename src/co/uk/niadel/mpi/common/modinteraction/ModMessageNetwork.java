@@ -10,8 +10,12 @@ import java.util.List;
  */
 public class ModMessageNetwork
 {
-	private List<ModMessageChannel> registeredChannels = new ArrayList<>();
+	private final List<ModMessageChannel> registeredChannels = new ArrayList<>();
 
+	/**
+	 * Registers a ModMessageChannel to this network.
+	 * @param channel The channel to register.
+	 */
 	public void registerChannel(ModMessageChannel channel)
 	{
 		this.registeredChannels.add(channel);

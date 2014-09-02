@@ -12,6 +12,8 @@ import java.io.IOException;
 
 /**
  * Optimises Event Handler data getting. Special as it is not actually registered and is called manually.
+ *
+ * @author Niadel
  */
 public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Opcodes
 {

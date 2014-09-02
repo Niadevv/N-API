@@ -11,19 +11,7 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.LdcInsnNode;
-import org.objectweb.asm.tree.LineNumberNode;
-import org.objectweb.asm.tree.LocalVariableNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
-import org.objectweb.asm.tree.VarInsnNode;
+import org.objectweb.asm.tree.*;
 import co.uk.niadel.mpi.common.NAPIData;
 import co.uk.niadel.mpi.util.MCData;
 
@@ -588,6 +576,20 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					methodNode = constructMethodNode(ACC_PRIVATE, "func_149813_h", "(Lnet/minecraft/world/World;IIII)V", null, null, classNode);
 					//Instruction 58 = .setBlock call.
 					//Add event call after 59
+					MethodInsnNode setBlockCall = (MethodInsnNode) methodNode.instructions.get(58);
+					LabelNode eventLabel = new LabelNode();
+					methodNode.instructions.insert(setBlockCall, eventLabel);
+					InsnList eventInstructions = new InsnList();
+					eventInstructions.add(new TypeInsnNode(NEW, "co/uk/niadel/events/blocks/EventBlockWashedAway"));
+					eventInstructions.add(new InsnNode(DUP));
+					eventInstructions.add(new VarInsnNode(ALOAD, 1));
+					eventInstructions.add(new VarInsnNode(ALOAD, 2));
+					eventInstructions.add(new VarInsnNode(ALOAD, 3));
+					eventInstructions.add(new VarInsnNode(ALOAD, 4));
+					eventInstructions.add(new VarInsnNode(ALOAD, 0));
+					eventInstructions.add(new MethodInsnNode(INVOKESPECIAL, "co/uk/niadel/mpi/EventBlockWashedAway", "<init>", "()V", false));
+					eventInstructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/EventFactory", "fireEvent", "()V", false));
+					methodNode.instructions.insert(eventLabel, eventInstructions);
 					finishMethodNodeEdit(methodNode, classNode);
 					break;
 

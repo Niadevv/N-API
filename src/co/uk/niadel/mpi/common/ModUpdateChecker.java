@@ -1,16 +1,23 @@
-package co.uk.niadel.mpi.util;
+package co.uk.niadel.mpi.common;
 
 import co.uk.niadel.mpi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.mpi.util.FileUtils;
+import co.uk.niadel.mpi.util.NAPILogHelper;
+import co.uk.niadel.mpi.util.ParseUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /**
  * Class that allows for ease of update checking.
+ *
+ * @author Niadel
  */
-public class UpdateChecker
+public class ModUpdateChecker
 {
 	/**
 	 * A URL to a .txt file containing the latest version on the first line.
@@ -32,7 +39,7 @@ public class UpdateChecker
 	 * @param latestUpdateFileUrl A URL to a .txt file containing the latest version on the first line.
 	 * @param modid The modid for the mod the update checker is for.
 	 */
-	public UpdateChecker(URL latestUpdateFileUrl, String modid)
+	public ModUpdateChecker(URL latestUpdateFileUrl, String modid)
 	{
 		this.latestUpdateFileUrl = latestUpdateFileUrl;
 		this.modid = modid;
@@ -47,21 +54,25 @@ public class UpdateChecker
 		try
 		{
 			File latestUpdateFile = downloadLatestUpdateFile();
-			String currModVersion = NModLoader.getModContainerByModId(this.modid).getVersion();
 
-			//Borrowed and modified code from ModList
-			int[] currentModVersion = ParseUtils.parseVersionNumber(currModVersion);
-			int[] latestVersionAvailable = ParseUtils.parseVersionNumber(new Scanner(latestUpdateFile).nextLine());
-
-			for (int i = 0; i == currentModVersion.length; i++)
+			if (latestUpdateFile != null)
 			{
-				if (currentModVersion[i] >= latestVersionAvailable[i])
+				String currModVersion = NModLoader.getModContainerByModId(this.modid).getVersion();
+
+				//Borrowed and modified code from ModList
+				int[] currentModVersion = ParseUtils.parseVersionNumber(currModVersion);
+				int[] latestVersionAvailable = ParseUtils.parseVersionNumber(new Scanner(latestUpdateFile).nextLine());
+
+				for (int i = 0; i == currentModVersion.length; i++)
 				{
-					continue;
-				}
-				else
-				{
-					return true;
+					if (currentModVersion[i] >= latestVersionAvailable[i])
+					{
+						continue;
+					}
+					else
+					{
+						return true;
+					}
 				}
 			}
 
@@ -82,9 +93,31 @@ public class UpdateChecker
 	 */
 	public File downloadLatestUpdateFile()
 	{
-		File modUpdateFile = new File(latestUpdateFiles, this.modid + ".txt");
-		FileUtils.downloadFile(this.latestUpdateFileUrl, modUpdateFile);
-		return modUpdateFile;
+		if (doesUserHaveInternet())
+		{
+			File modUpdateFile = new File(latestUpdateFiles, this.modid + ".txt");
+			FileUtils.downloadFile(this.latestUpdateFileUrl, modUpdateFile);
+			return modUpdateFile;
+		}
+
+		return null;
+	}
+
+	public boolean doesUserHaveInternet()
+	{
+		try
+		{
+			URL url = new URL("http://www.google.com");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+			connection.getContent();
+
+			return true;
+		}
+		catch (IOException e)
+		{
+			return false;
+		}
 	}
 
 	static

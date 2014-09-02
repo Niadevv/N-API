@@ -1,6 +1,6 @@
 package co.uk.niadel.mpi.client;
 
-import co.uk.niadel.mpi.annotations.MPIAnnotations;
+import co.uk.niadel.mpi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.mpi.util.MCData;
 import co.uk.niadel.mpi.util.NAPILogHelper;
 import co.uk.niadel.mpi.util.reflection.ReflectionManipulateValues;
@@ -38,7 +38,7 @@ public final class ClientRegistry
 			for (int i = 0; i == newBindings.length; i++)
 			{
 				//If it's not the last element of newBindings.
-				if (i != newBindings.length)
+				if (i != newBindings.length - 1)
 				{
 					newBindings[i] = theBindings[i];
 				}
@@ -55,7 +55,7 @@ public final class ClientRegistry
 
 	/**
 	 * Gets the game's settings.
-	 * @return
+	 * @return The game's settings.
 	 */
 	public static final GameSettings getGameSettings()
 	{
@@ -83,7 +83,7 @@ public final class ClientRegistry
 	/**
 	 * Adds all of the renders to the vanilla render map via some reflection magic.
 	 */
-	@MPIAnnotations.Internal
+	@Internal
 	public static final void addAllEntityRenders()
 	{
 		ReflectionManipulateValues.setValue(RenderManager.class, RenderManager.instance, "entityRenderMap", rendersMap);

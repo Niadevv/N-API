@@ -52,7 +52,7 @@ public final class BlockRegistry
 	@TestFeature(firstAppearance = "1.0")
 	public static final void replaceBlock(String nonNumericId, Block newBlock)
 	{
-		Map blocksMap = ReflectionManipulateValues.getValue(RegistrySimple.class, Block.blockRegistry, "registryObjects");
+		Map<String, Block> blocksMap = ReflectionManipulateValues.getValue(RegistrySimple.class, Block.blockRegistry, "registryObjects");
 		blocksMap.remove(nonNumericId);
 		blocksMap.put(nonNumericId, newBlock);
 		

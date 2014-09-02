@@ -11,7 +11,7 @@ import net.minecraft.world.World;
  *
  * @author Niadel
  */
-@NYI(firstPresence = "0.0")
+@NYI(firstPresence = "0.0", plannedCompletion = "Hopefully, next commit.")
 public class EventBlockWashedAway
 {
 	/**

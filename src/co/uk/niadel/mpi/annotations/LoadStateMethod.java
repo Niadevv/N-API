@@ -1,8 +1,6 @@
 package co.uk.niadel.mpi.annotations;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.*;
 
 /**
  * Allows for a mod method that's important to be called something other than the default
@@ -12,6 +10,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
 @Documented
 public @interface LoadStateMethod
 {
