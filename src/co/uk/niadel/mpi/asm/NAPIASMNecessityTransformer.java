@@ -580,6 +580,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					LabelNode eventLabel = new LabelNode();
 					methodNode.instructions.insert(setBlockCall, eventLabel);
 					InsnList eventInstructions = new InsnList();
+					eventInstructions.add(new LineNumberNode(188, eventLabel));
 					eventInstructions.add(new TypeInsnNode(NEW, "co/uk/niadel/events/blocks/EventBlockWashedAway"));
 					eventInstructions.add(new InsnNode(DUP));
 					eventInstructions.add(new VarInsnNode(ALOAD, 1));
