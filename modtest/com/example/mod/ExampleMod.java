@@ -1,14 +1,16 @@
 package com.example.mod;
 
-import co.uk.niadel.mpi.annotations.EnumLoadState;
-import co.uk.niadel.mpi.annotations.LoadStateMethod;
-import co.uk.niadel.mpi.annotations.ModRegister;
+import co.uk.niadel.napi.annotations.EnumLoadState;
+import co.uk.niadel.napi.annotations.LoadStateMethod;
+import co.uk.niadel.napi.annotations.ModRegister;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Test mod for N-API.
+ *
+ * @author Niadel
  */
 @ModRegister(modId = "NIADEL_example_mod", version = "1.0")
 public class ExampleMod
