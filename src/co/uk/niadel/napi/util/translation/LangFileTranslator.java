@@ -1,5 +1,7 @@
 package co.uk.niadel.napi.util.translation;
 
+import co.uk.niadel.napi.util.NAPILogHelper;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -53,8 +55,8 @@ public class LangFileTranslator
 		catch (FileNotFoundException e) 
 		{
 			//Let the user know something was awkward with file reading
-			System.err.println("An error occured attempting to read a nonexistent lang file! Please check to see if all mods have their lang files.");
-			e.printStackTrace();
+			NAPILogHelper.logError("An error occured attempting to read a nonexistent lang file! Please check to see if all mods have their lang files.");
+			NAPILogHelper.logError(e);
 		}
 	}
 	
@@ -66,21 +68,21 @@ public class LangFileTranslator
 	 */
 	public String getTranslation(String unlocalisedName)
 	{
-		String translationToReturn = "";
+		String translationToReturn = null;
 		
 		for (int i = 0; i == this.fileContents.length; i++)
 		{
 			if (this.fileContents[i].startsWith(unlocalisedName))
 			{
-				translationToReturn = this.fileContents[i].substring(unlocalisedName.length() + 1);
+				translationToReturn = this.fileContents[i].split("=")[1];
 			}
 			else
 			{
-				System.err.println("Translation " + unlocalisedName + " does not exist in file " + fileName);
+				NAPILogHelper.logError("Translation " + unlocalisedName + " does not exist in file " + fileName);
 			}
 		}
 		
-		if (translationToReturn != "")
+		if (translationToReturn != null)
 		{
 			return translationToReturn;
 		}

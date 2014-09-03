@@ -1,5 +1,7 @@
 package co.uk.niadel.napi.util.reflection;
 
+import co.uk.niadel.napi.util.NAPILogHelper;
+
 import java.lang.reflect.*;
 
 /**
@@ -27,7 +29,7 @@ public final class ReflectionManipulateValues
 		}
 		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
 		{
-			e.printStackTrace();
+			NAPILogHelper.logError(e);
 		}
 	}
 	
@@ -46,7 +48,7 @@ public final class ReflectionManipulateValues
 		}
 		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException e)
 		{
-			e.printStackTrace();
+			NAPILogHelper.logError(e);
 		}
 	}
 	
@@ -72,8 +74,7 @@ public final class ReflectionManipulateValues
 		}
 		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
 		{
-			//TEMP
-			e.printStackTrace();
+			NAPILogHelper.logError(e);
 		}
 	}
 	

@@ -1,5 +1,7 @@
 package co.uk.niadel.napi.util.reflection;
 
+import co.uk.niadel.napi.util.NAPILogHelper;
+
 import java.lang.reflect.*;
 
 
@@ -30,7 +32,7 @@ public final class ReflectionCallMethods
 		}
 		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 		{
-			e.printStackTrace();
+			NAPILogHelper.logError(e);
 		}
 	}
 	
@@ -50,7 +52,7 @@ public final class ReflectionCallMethods
 		}
 		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 		{
-			e.printStackTrace();
+			NAPILogHelper.logError(e);
 		}
 	}
 

@@ -284,7 +284,7 @@ public final class ASMRegistry
 
 	static
 	{
-		//Adds the Forge and FML classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
+		//Adds the Forge, FML, and N-API classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
 		ASMRegistry.addASMClassExclusion("cpw.fml.mods");
 		ASMRegistry.addASMClassExclusion("net.minecraftforge");
 		ASMRegistry.addASMClassExclusion("net.minecraft.src.FMLRenderAccessLibrary");
