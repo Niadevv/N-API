@@ -1,0 +1,18 @@
+Names:
+	N-API: The product.
+	The Author: Me, Niadel. Known as Puredarkness on minecraftforum.net.
+	Mojang: Swedish indie game developer company that has created Minecraft. Also known as Mojang AB.
+	The Game: Minecraft.
+	Forge: Either/the combination of MinecraftForge and/or FML, created by LexManos and cpw respectively.
+
+Distribution Rights:
+	Only The Author and Mojang can distribute N-API or give others the right to distribute/redistribute it. This applies to modified copies of N-API as well. 
+	However, you can use this in your modpacks if you so choose, only if the distribution is unmodified. If you want to use a modified version of N-API in your
+	modpack, contact The Author and give The Author details of the modified N-API version. You can find the legitimate locations/distributors in the README.txt
+	file or, better yet, at https://github.com/Niadel/N-API as that will be updated much more often than the README.txt. 
+
+Usage Rights:
+	You may use N-API freely, as long as you don't redistribute it without permission. This includes, but is not limited to, extending
+	or implementing any of the classes/interfaces, calling any class's methods, using any of the enums, marking anything with an annotation, etc. You may also
+	use any mods with N-API, as long as they are compatible with N-API, Forge, and/or other mods and don't edit any of The Game's classes, unless it is merely via 
+	a bytecode manipulation library like ASM at runtime.
