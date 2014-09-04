@@ -97,7 +97,7 @@ public final class ReflectionManipulateValues
 		}
 		catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
+			NAPILogHelper.logError(e);
 		}
 		
 		return variable;
