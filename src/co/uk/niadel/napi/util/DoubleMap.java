@@ -11,8 +11,8 @@ import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
  * Note that it's a bit iffy when both keys are the same type.
  * @author Niadel
  *
- * @param <K>
- * @param <V>
+ * @param <K> The key value.
+ * @param <V> The value.
  */
 @TestFeature(firstAppearance = "1.0")
 public class DoubleMap<K, V>
@@ -29,8 +29,8 @@ public class DoubleMap<K, V>
 	
 	public void put(K key, V value)
 	{
-		map1.put(new Entry(key, true), new Entry(value, false));
-		map2.put(new Entry(value, false), new Entry(key, true));
+		map1.put(new Entry<>(key, true), new Entry<>(value, false));
+		map2.put(new Entry<>(value, false), new Entry<>(key, true));
 	}
 	
 	public <R> R get(Object getValue)
@@ -64,7 +64,7 @@ public class DoubleMap<K, V>
 	@SuppressWarnings("hiding")
 	public class Entry<V>
 	{
-		public Object theEntry;
+		public V theEntry;
 		public boolean isKey;
 		
 		public Entry(V entry)
@@ -74,7 +74,8 @@ public class DoubleMap<K, V>
 		
 		public Entry(V entry, boolean isKey)
 		{
-			theEntry = entry;
+			this.theEntry = entry;
+			this.isKey = isKey;
 		}
 		
 		public String toString()
@@ -89,7 +90,7 @@ public class DoubleMap<K, V>
 		
 		public V getObject()
 		{
-			return (V) theEntry;
+			return this.theEntry;
 		}
 	}
 }

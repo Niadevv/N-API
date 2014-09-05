@@ -91,7 +91,7 @@ public final class ByteManipulationUtils
 		try
 		{
 			DummyClassLoader loader = new DummyClassLoader(ByteManipulationUtils.class.getClassLoader());
-			Class<? extends X> tempClass = (Class<? extends X>) loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
+			Class<X> tempClass = (Class<X>) loader.dummyDefineClass(null, bytesToConvert, 0, bytesToConvert.length);
 			return tempClass.newInstance();
 		}
 		catch (InstantiationException | IllegalAccessException e)
