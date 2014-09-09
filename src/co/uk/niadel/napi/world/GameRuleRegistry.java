@@ -18,7 +18,8 @@ public final class GameRuleRegistry
 	/**
 	 * Adds a game rule.
 	 * @param gameRuleName The name of the game rule.
-	 * @param defaultValue The default value of the gamerule.
+	 * @param defaultValue The default value of the gamerule. Generally either true or false but 1.8 introduced a gamerule that takes
+	 *                     a numeric parameter.
 	 */
 	public static final void addGameRule(String gameRuleName, String defaultValue)
 	{

@@ -598,7 +598,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					return classWriter.toByteArray();
 			}
 
-			NAPILogHelper.log("Transformed class " + className + "!");
+			NAPILogHelper.instance.log("Transformed class " + className + "!");
 
 			return classWriter.toByteArray();
 		}
