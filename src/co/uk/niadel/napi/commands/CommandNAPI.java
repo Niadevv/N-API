@@ -43,6 +43,6 @@ public class CommandNAPI extends CommandBase
 	@Override
 	public String getCommandUsage(ICommandSender sender)
 	{
-		return "NO.COMMAND.USAGE.YET";
+		return "/N-API <listmods/modcount>"; /* TODO make this translatable */
 	}
 }
