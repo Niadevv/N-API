@@ -38,7 +38,7 @@ public final class OreDictConverter implements IConverter
 			for (ItemStack item : items)
 			{
 				OreDictionary.registerOre(entryName, item);
-				NAPILogHelper.log("Registered Forge Ore Dict entry " + entryName + ".");
+				NAPILogHelper.instance.log("Registered Forge Ore Dict entry " + entryName + ".");
 			}
 		}
 	}

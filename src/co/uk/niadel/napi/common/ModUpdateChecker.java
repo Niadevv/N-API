@@ -1,7 +1,7 @@
 package co.uk.niadel.napi.common;
 
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
-import co.uk.niadel.napi.util.FileUtils;
+import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import co.uk.niadel.napi.util.ParseUtils;
 
@@ -79,8 +79,8 @@ public class ModUpdateChecker
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.logError("There was an unexpected error checking for the latest version! The game will assume that the latest version is downloaded!");
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError("There was an unexpected error checking for the latest version! The game will assume that the latest version is downloaded!");
+			NAPILogHelper.instance.logError(e);
 		}
 
 		return false;

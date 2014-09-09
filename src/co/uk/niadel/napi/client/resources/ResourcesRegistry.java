@@ -2,7 +2,7 @@ package co.uk.niadel.napi.client.resources;
 
 import java.util.HashSet;
 import java.util.Set;
-import co.uk.niadel.napi.util.reflection.ReflectionManipulateValues;
+import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 import net.minecraft.client.resources.DefaultResourcePack;
 
 /**

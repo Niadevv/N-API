@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
-import co.uk.niadel.napi.util.FileUtils;
+import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
 @TestFeature(stable = false, firstAppearance = "1.0")
@@ -72,16 +72,16 @@ public class Configuration
 
 			if (modsConfigs.isDirectory())
 			{
-				NAPILogHelper.log("Created config directory " + modsConfigs.toPath().toString());
+				NAPILogHelper.instance.log("Created config directory " + modsConfigs.toPath().toString());
 			}
 			else
 			{
-				NAPILogHelper.logError("Created config, but for some reason it's a file >:O");
+				NAPILogHelper.instance.logError("Created config, but for some reason it's a file >:O");
 			}
 		}
 		else
 		{
-			NAPILogHelper.log("Config directory already exists!");
+			NAPILogHelper.instance.log("Config directory already exists!");
 		}
 
 		if (!configFile.exists())
@@ -89,11 +89,11 @@ public class Configuration
 			try
 			{
 				configFile.createNewFile();
-				NAPILogHelper.log("Created config file " + configFile.toPath().toString());
+				NAPILogHelper.instance.log("Created config file " + configFile.toPath().toString());
 			}
 			catch (IOException e)
 			{
-				NAPILogHelper.logError("Could not create config file " + configFile.toPath().toString() + "!");
+				NAPILogHelper.instance.logError("Could not create config file " + configFile.toPath().toString() + "!");
 				e.printStackTrace();
 			}
 		}
@@ -121,7 +121,7 @@ public class Configuration
 		}
 		catch (FileNotFoundException e)
 		{
-			NAPILogHelper.logError("The file " + this.theConfig.getPath() + " does NOT exist!");
+			NAPILogHelper.instance.logError("The file " + this.theConfig.getPath() + " does NOT exist!");
 		}
 	}
 	
@@ -179,7 +179,7 @@ public class Configuration
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.logError("Error while updating config " + this.theConfig.getName() + "! Read stack trace for error!");
+			NAPILogHelper.instance.logError("Error while updating config " + this.theConfig.getName() + "! Read stack trace for error!");
 			e.printStackTrace();
 		}
 	}
@@ -243,13 +243,13 @@ public class Configuration
 			}
 			else
 			{
-				NAPILogHelper.logWarn("Config value " + valueName + " already exists in config file " + this.theConfig.toPath().toString() + "! Call to addConfigValue ignored!");
+				NAPILogHelper.instance.logWarn("Config value " + valueName + " already exists in config file " + this.theConfig.toPath().toString() + "! Call to addConfigValue ignored!");
 			}
 		}
 		catch (FileNotFoundException e)
 		{
-			NAPILogHelper.logError("[CONFIGERROR] The config MUST be created BEFORE adding any data.");
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError("[CONFIGERROR] The config MUST be created BEFORE adding any data.");
+			NAPILogHelper.instance.logError(e);
 		}
 	}
 	

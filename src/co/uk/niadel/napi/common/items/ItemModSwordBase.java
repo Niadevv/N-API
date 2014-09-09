@@ -20,7 +20,7 @@ public class ItemModSwordBase extends ItemSword
 	
 	public ItemModSwordBase(int damage, ModToolMaterial toolMaterial)
 	{
-		this(ToolMaterial.WOOD);
+		this(ToolMaterial.IRON);
 		this.toolMaterial = toolMaterial;
 		this.setMaxDamage(toolMaterial.maxUses);
 		this.damageDealt = damage + toolMaterial.damageVsEntity;
