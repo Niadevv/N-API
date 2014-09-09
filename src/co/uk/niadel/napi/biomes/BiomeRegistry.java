@@ -4,7 +4,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayerBiome;
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
-import co.uk.niadel.napi.util.reflection.ReflectionManipulateValues;
+import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 
 import java.util.ArrayList;
 import java.util.List;

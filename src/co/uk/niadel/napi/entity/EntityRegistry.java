@@ -1,7 +1,7 @@
 package co.uk.niadel.napi.entity;
 
 import co.uk.niadel.napi.modhandler.NAPIModRegister;
-import co.uk.niadel.napi.util.reflection.ReflectionManipulateValues;
+import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.IMob;

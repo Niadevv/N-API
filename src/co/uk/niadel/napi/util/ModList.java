@@ -157,7 +157,7 @@ public class ModList implements Iterable<IModContainer>
 	 */
 	public IModContainer getContainerFromRegister(Object register)
 	{
-		return containersToRegistersMap.get(register);
+		return (IModContainer) containersToRegistersMap.get(register);
 	}
 	
 	public boolean contains(IModContainer object)

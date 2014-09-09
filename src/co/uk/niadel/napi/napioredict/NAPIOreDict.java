@@ -95,12 +95,12 @@ public final class NAPIOreDict
 		if ((entryName.toLowerCase().contains("aluminum") || entryName.toLowerCase().contains("colored") || entryName.toLowerCase().contains("sulfur")) && oreDictEntries.get(entryName) == null)
 		{
 			System.out.println("NOTE: The Oredict value with the name " + entryName + " is null! As this is American spelling, I recommend that you try and use English spelling.");
-			NAPILogHelper.logWarn("Someone tried to get an oredict entry that was null and used American spelling! Value is " + entryName + ".");
+			NAPILogHelper.instance.logWarn("Someone tried to get an oredict entry that was null and used American spelling! Value is " + entryName + ".");
 		}
 		else if (oreDictEntries.get(entryName) == null)
 		{
 			System.out.println("The specified Oredict entry " + entryName + " is null! Using this value could cause a Null Pointer Exception.");
-			NAPILogHelper.logWarn("Someone got a null OreDict entry. Entry Name is " + entryName + ".");
+			NAPILogHelper.instance.logWarn("Someone got a null OreDict entry. Entry Name is " + entryName + ".");
 		}
 		
 		return (ItemStack[]) oreDictEntries.get(entryName).toArray();
@@ -116,7 +116,7 @@ public final class NAPIOreDict
 		if (oreDictFluidEntries.get(entryName) == null)
 		{
 			System.out.println("The specified Oredict Fluid entry " + entryName + " is null! Using this value could cause a Null Pointer Exception, which nobody likes.");
-			NAPILogHelper.logWarn("Someone got a null OreDict fluid entry. Entry Name is " + entryName + ".");
+			NAPILogHelper.instance.logWarn("Someone got a null OreDict fluid entry. Entry Name is " + entryName + ".");
 		}
 		
 		return (ModFluidMeasure[]) oreDictFluidEntries.get(entryName).toArray();

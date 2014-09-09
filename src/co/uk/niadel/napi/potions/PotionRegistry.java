@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.napi.annotations.MPIAnnotations.RecommendedMethod;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
-import co.uk.niadel.napi.util.reflection.ReflectionManipulateValues;
+import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 
 /**
  * Used to register Potions. This makes sure that you can have unlimited potions

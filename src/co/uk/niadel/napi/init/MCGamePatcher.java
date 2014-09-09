@@ -102,7 +102,7 @@ public class MCGamePatcher implements IASMTransformer, Opcodes
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 		}
 
 		return null;

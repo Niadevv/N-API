@@ -17,7 +17,7 @@ public final class VillagePieceRegistry
 	
 	/**
 	 * Adds a piece to the "To-Add" registry. Takes a PieceWeight for maximum control.
-	 * @param piece
+	 * @param piece The PieceWeight object for this village piece.
 	 */
 	public static final void addPiece(StructureVillagePieces.PieceWeight piece)
 	{

@@ -22,6 +22,12 @@ public class ObfedClassNames
 	public static final String STATLIST_REGISTER_STATS = "a";
 	public static final String BLOCKDYNAMICLIQUID = "akr";
 
+	/**
+	 * Not really needed as SRG params can be converted easily.
+	 * p_..._1_ = par1.
+	 * @param srgParam The string SRG parameter.
+	 * @return The parameter name obfuscated.
+	 */
 	public static final String convertParamToObfed(String srgParam)
 	{
 		String obfedParam = "";

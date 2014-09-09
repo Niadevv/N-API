@@ -35,14 +35,14 @@ import java.util.Map.Entry;
 public final class NAPIMod
 {
 	/**
-	 * The Forge-version of the N-API config.
+	 * The Forge-version of the N-API config. Used in the config GUI.
 	 */
 	public static Configuration napiConfiguration;
 
 	public static final String NAPI_CONFIG_CATEGORY = "n-api";
 
 	/**
-	 * The N-API INSTANCE. Not sure what this is used for, but it's tehre nonetheless.
+	 * The N-API INSTANCE. Not sure what this is used for, but it's there nonetheless.
 	 */
 	@Instance(NAPIData.FORGE_MODID)
 	public NAPIMod instance;

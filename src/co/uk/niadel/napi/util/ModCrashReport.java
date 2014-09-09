@@ -122,6 +122,7 @@ public class ModCrashReport extends CrashReport
 		this.log.add("Minecraft Version: " + NAPIData.FULL_VERSION);
 		this.log.add("Running N-API Mods: ");
 
+		//Logs the mods that are loaded in N-API.
 		for (IModContainer mod : NModLoader.mods.getModContainers())
 		{
 			this.log.add("	ModId: " + mod.getModId() + " Version: " + mod.getVersion());
@@ -129,6 +130,7 @@ public class ModCrashReport extends CrashReport
 
 		this.log.add("");
 
+		//Logs the mods that are loaded in FML.
 		if (MCData.isForgeDominated())
 		{
 			this.log.add("Game is running Forge as well as N-API. Forge mods:");

@@ -45,7 +45,7 @@ public final class ByteManipulationUtils
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.logError("Unable to convert " + objectToConvert.getClass().getName() + " to a byte array!");
+			NAPILogHelper.instance.logError("Unable to convert " + objectToConvert.getClass().getName() + " to a byte array!");
 			e.printStackTrace();
 		}
 
@@ -73,7 +73,7 @@ public final class ByteManipulationUtils
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.log("Error converting object " + theObject.getClass().getName() + " to an input stream!");
+			NAPILogHelper.instance.log("Error converting object " + theObject.getClass().getName() + " to an input stream!");
 			e.printStackTrace();
 		}
 
@@ -97,7 +97,7 @@ public final class ByteManipulationUtils
 		catch (InstantiationException | IllegalAccessException e)
 		{
 			e.printStackTrace();
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 		}
 		
 		return returnedObj;

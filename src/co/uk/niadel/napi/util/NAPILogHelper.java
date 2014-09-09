@@ -32,7 +32,7 @@ public class NAPILogHelper extends co.uk.niadel.commons.logging.Logger
 	 * Logs a standard message.
 	 * @param log The object to log.
 	 */
-	public static void log(Object log)
+	public void log(Object log)
 	{	
 		log(Level.INFO, log);
 	}

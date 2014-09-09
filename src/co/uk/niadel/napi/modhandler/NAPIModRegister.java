@@ -91,14 +91,14 @@ public final class NAPIModRegister
 		NAPIOreDict.addDefaultEntries();
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");
 		TileEntityRegistry.registerTileEntity(TileEntityMeasureStorer.class, "TileEntityTank");
-		NAPILogHelper.log("Finished Pre-Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
+		NAPILogHelper.instance.log("Finished Pre-Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
 	}
 
 	@LoadStateMethod(EnumLoadState.INIT)
 	public void modInit() 
 	{
 		CommandRegistry.registerModCommand(new CommandNAPI());
-		NAPILogHelper.log("Finished Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
+		NAPILogHelper.instance.log("Finished Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
 	}
 
 	@LoadStateMethod(EnumLoadState.POSTINIT)
@@ -115,6 +115,6 @@ public final class NAPIModRegister
 	public void registerTransformers()
 	{
 		//Tells the user (rather cheesily) that the N-API ASM transformer is being registered.
-		NAPILogHelper.log("REGISTERING N-API ASM TRANSFORMER! Transformers, roll out!");
+		NAPILogHelper.instance.log("REGISTERING N-API ASM TRANSFORMER! Transformers, roll out!");
 	}
 }

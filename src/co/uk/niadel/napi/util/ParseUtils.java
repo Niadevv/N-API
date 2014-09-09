@@ -23,8 +23,8 @@ public final class ParseUtils
 			catch (NumberFormatException e)
 			{
 				e.printStackTrace();
-				NAPILogHelper.logError(e);
-				NAPILogHelper.logError("The version " + version + " is not all numbers! It cannot be parsed!");
+				NAPILogHelper.instance.logError(e);
+				NAPILogHelper.instance.logError("The version " + version + " is not all numbers! It cannot be parsed!");
 			}
 			
 			return arrayToReturn;

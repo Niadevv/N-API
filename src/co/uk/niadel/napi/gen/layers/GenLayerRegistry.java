@@ -18,13 +18,13 @@ public final class GenLayerRegistry extends GenLayer
 	/**
 	 * Map that is indexed by a mod specific id.
 	 */
-	public static Map<String, GenLayer> modLayers = new HashMap<>();
+	public static Map<String, IGenLayer> modLayers = new HashMap<>();
 	
 	/**
 	 * Junk method made solely to satisfy Eclipse.
 	 * @param par1
 	 */
-	public GenLayerRegistry(long par1) 
+	private GenLayerRegistry(long par1)
 	{
 		super(par1);
 	}
@@ -34,7 +34,7 @@ public final class GenLayerRegistry extends GenLayer
 	 * @param modId
 	 * @param modGenLayer
 	 */
-	public static final void registerGenLayer(String modId, GenLayer modGenLayer)
+	public static final void registerGenLayer(String modId, IGenLayer modGenLayer)
 	{
 		modLayers.put(modId, modGenLayer);
 	}
@@ -50,13 +50,13 @@ public final class GenLayerRegistry extends GenLayer
 		
 		if (!modLayers.isEmpty())
 		{
-			Iterator layerIterator = modLayers.entrySet().iterator();
+			Iterator<Map.Entry<String, IGenLayer>> layerIterator = modLayers.entrySet().iterator();
 			int i = 0;
 			
 			while (layerIterator.hasNext())
 			{
 				i += 1;
-				IGenLayer currLayer = (IGenLayer) layerIterator.next();
+				IGenLayer currLayer = layerIterator.next().getValue();
 				layers[i] = currLayer;
 				currLayer.layerInit(seed, worldType);
 			}
@@ -66,7 +66,7 @@ public final class GenLayerRegistry extends GenLayer
 	}
 
 	@Override
-	public int[] getInts(int p_75904_1_, int p_75904_2_, int p_75904_3_, int p_75904_4_)
+	public int[] getInts(int par1, int par2, int par3, int par4)
 	{
 		NAPILogHelper.log("GenLayerRegistry.getInts called! Ignore this, you can blame GenLayer for having getInts as being abstract :P");
 		return null;

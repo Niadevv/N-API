@@ -34,7 +34,7 @@ public class Launch
 		}
 		else
 		{
-			NAPILogHelper.logCritical("JAVA VERSION IS NOT " + REQ_JAVA_VERSION_STRING + "! N-API WILL NOT RUN! If you wish to run N-API, use Java " + REQ_JAVA_VERSION_STRING + ".");
+			NAPILogHelper.instance.logCritical("JAVA VERSION IS NOT " + REQ_JAVA_VERSION_STRING + "! N-API WILL NOT RUN! If you wish to run N-API, use Java " + REQ_JAVA_VERSION_STRING + ".");
 		}
 	}
 
@@ -88,12 +88,12 @@ public class Launch
 	{
 		if (JavaChecker.isJavaVersionOrGreater(REQ_JAVA_VERSION))
 		{
-			NAPILogHelper.log("Java version is appropriate!");
+			NAPILogHelper.instance.log("Java version is appropriate!");
 			return true;
 		}
 		else
 		{
-			NAPILogHelper.logCritical("Java version is not " + REQ_JAVA_VERSION_STRING + " or later! If you are using Java 6 or earlier, for the love of god, update all ready!");
+			NAPILogHelper.instance.logCritical("Java version is not " + REQ_JAVA_VERSION_STRING + " or later! If you are using Java 6 or earlier, for the love of god, update all ready!");
 			return false;
 		}
 	}

@@ -54,11 +54,12 @@ public final class WorldProviderRegistry
 
 			if (e instanceof IllegalAccessException)
 			{
-				NAPILogHelper.logError("If your provider has a constructor, make it public!");
+				NAPILogHelper.instance.logError("If your provider has a constructor, make it public!");
 			}
-			else if (e instanceof InstantiationException)
+
+			if (e instanceof InstantiationException)
 			{
-				NAPILogHelper.logError("Please make sure your provider is NOT abstract and that your constructor does not take any args!");
+				NAPILogHelper.instance.logError("Please make sure your provider is NOT abstract and that your constructor does not take any args!");
 			}
 
 			//Default to avoid nasty errors Minecraft side.
@@ -68,8 +69,8 @@ public final class WorldProviderRegistry
 	
 	/**
 	 * Gets whether or not the provider with the specified id exists.
-	 * @param id
-	 * @return
+	 * @param id The id to check if a provider exists.
+	 * @return Whether or not a provider with id exists
 	 */
 	public static final boolean doesProviderExist(int id)
 	{

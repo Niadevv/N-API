@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.achievement;
 
-import co.uk.niadel.napi.util.reflection.ReflectionCallMethods;
+import co.uk.niadel.commons.reflection.ReflectionCallMethods;
 import net.minecraft.stats.Achievement;
 
 /**
