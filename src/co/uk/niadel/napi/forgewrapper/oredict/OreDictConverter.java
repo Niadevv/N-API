@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import co.uk.niadel.napi.napioredict.NAPIOreDict;
 import co.uk.niadel.napi.util.NAPILogHelper;
-import co.uk.niadel.napi.util.reflection.ReflectionManipulateValues;
+import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 
 /**
  * This is in charge of taking Forge Ore Dictionary entries to N-API Ore Dictionary entries.

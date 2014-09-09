@@ -12,6 +12,7 @@ public class NAPIConfigGUI extends GuiConfig
 {
 	public NAPIConfigGUI(GuiScreen parent)
 	{
-		super(parent, new ConfigElement(NAPIMod.napiConfiguration.getCategory("n-api")).getChildElements(), NAPIData.FORGE_MODID, false, false, GuiConfig.getAbridgedConfigPath(NAPIMod.napiConfiguration.toString()));
+		//Borrowed and slightly modified code from Minalien's tutorial, one to fix an IntelliJ warning.
+		super(parent, new ConfigElement<>(NAPIMod.napiConfiguration.getCategory("n-api")).getChildElements(), NAPIData.FORGE_MODID, false, false, GuiConfig.getAbridgedConfigPath(NAPIMod.napiConfiguration.toString()));
 	}
 }

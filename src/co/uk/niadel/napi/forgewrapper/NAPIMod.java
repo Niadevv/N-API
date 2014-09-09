@@ -114,7 +114,7 @@ public final class NAPIMod
 			int currentForgeConfigValue = napiConfiguration.get(NAPI_CONFIG_CATEGORY, currEntry.getKey(), Integer.valueOf(currEntry.getValue())).getInt();
 
 			//If the Forge configuration value for this particular ID is not equal to the N-API ID
-			if (currentForgeConfigValue != Integer.valueOf(NAPIModRegister.config.getConfigValue(currEntry.getValue())));
+			if (currentForgeConfigValue != Integer.valueOf(NAPIModRegister.config.getConfigValue(currEntry.getValue())))
 			{
 				NAPIModRegister.config.setConfigValue(currEntry.getKey(), String.valueOf(currentForgeConfigValue));
 			}

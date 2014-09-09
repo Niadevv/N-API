@@ -27,7 +27,7 @@ public final class EventHandlerForge
 {
 	/**
 	 * Was meant to be cancellable, but Forge's BlockBreakEvent doesn't allow cancelling u.u.
-	 * @param event
+	 * @param event Forge's BreakEvent class.
 	 */
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockEvent.BreakEvent event)
@@ -80,7 +80,8 @@ public final class EventHandlerForge
 		
 		if (despawnEvent.isCancelled())
 		{
-			//COUGH COUGH WRONG SPELLING OF CANCELLED COUGH COUGH #blamelex
+			//COUGH COUGH WRONG SPELLING OF CANCELLED COUGH COUGH #blamelex (Just kidding :P Not about the bad spelling, Cancelled is
+			// spelt with two ls)
 			//Also note that isCancelled is spelt correctly.
 			event.setCanceled(true);
 		}
