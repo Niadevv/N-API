@@ -1,9 +1,11 @@
 package co.uk.niadel.napi.util;
 
+import co.uk.niadel.commons.crash.CrashReport;
+import co.uk.niadel.commons.logging.Logger;
 import co.uk.niadel.napi.common.NAPIData;
 import co.uk.niadel.napi.modhandler.loadhandler.IModContainer;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
-import co.uk.niadel.napi.util.reflection.ReflectionCallMethods;
+import co.uk.niadel.commons.reflection.ReflectionCallMethods;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ModCrashReport
+public class ModCrashReport extends CrashReport
 {
 	public static final File crashesDir = new File(NModLoader.mcMainDir.toPath().toString() + "mod-crash-logs/");
 
@@ -96,40 +98,16 @@ public class ModCrashReport
 	public List<String> log = new ArrayList<>();
 
 	/**
-	 * Creates a mod crash log with special prefix information.
-	 * @param file The file to represent the crash log.
-	 * @param exception The error that the crash report is for.
+	 * @see co.uk.niadel.commons.crash.CrashReport#CrashReport(Throwable, boolean)
 	 */
-	private ModCrashReport(File file, Throwable exception)
+	private ModCrashReport(Throwable e, boolean crash)
 	{
-		try
-		{
-			this.reportFile = file;
-
-			if (!this.reportFile.exists())
-			{
-				file.createNewFile();
-			}
-
-			initCrashLog(exception);
-
-			this.filePrintStream = new PrintStream(this.reportFile);
-
-			for (String logSection : this.getLogText())
-			{
-				NAPILogHelper.logError(logSection);
-				this.filePrintStream.println(logSection);
-			}
-		}
-		catch (IOException e)
-		{
-			NAPILogHelper.logError(e);
-		}
+		super(e, "N-API", crash);
 	}
 
-	public static final ModCrashReport generateCrashReport(String modid, Throwable e)
+	public static final ModCrashReport generateCrashReport(Throwable e, boolean crash)
 	{
-		return new ModCrashReport(new File(crashesDir, modid + System.nanoTime() + ".txt"), e);
+		return new ModCrashReport(e, crash);
 	}
 	
 	public String[] getLogText()
@@ -137,13 +115,10 @@ public class ModCrashReport
 		return this.log.toArray(new String[this.log.size()]);
 	}
 
-	public void initCrashLog(Throwable e)
+	public void logReport(Logger logger)
 	{
-		Random random = new Random();
-		//Add the silly.
-		this.log.add(SILLIES[random.nextInt(SILLIES.length - 1)]);
-		StackTraceElement[] stackTraceElements = e.getStackTrace();
-		this.log.add("Time: " + (new SimpleDateFormat()).format(new Date()));
+		this.report.add(SILLIES[new Random().nextInt(SILLIES.length)]);
+		super.logReport(logger);
 		this.log.add("Minecraft Version: " + NAPIData.FULL_VERSION);
 		this.log.add("Running N-API Mods: ");
 
@@ -167,16 +142,6 @@ public class ModCrashReport
 		}
 
 		this.log.add("There has been an error that has caused the game to crash! The game is running under a modded environment, including N-API.");
-		this.log.add("Java version: " + System.getProperty("java.version"));
-		this.log.add("OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version"));
-		this.log.add("VM Info: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor"));
-
-		this.log.add("Stacktrace: ");
-
-		for (StackTraceElement element : stackTraceElements)
-		{
-			this.log.add(element.toString());
-		}
 	}
 
 	public void crash(boolean halt)

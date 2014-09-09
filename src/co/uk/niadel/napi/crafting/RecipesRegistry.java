@@ -12,7 +12,7 @@ import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.napi.napioredict.NAPIOreDict;
 import co.uk.niadel.napi.util.ArrayUtils;
-import co.uk.niadel.napi.util.DoubleMap;
+import co.uk.niadel.commons.datamanagement.DoubleMap;
 
 /**
  * Where to register your crafting and smelting recipes.
@@ -245,9 +245,9 @@ public final class RecipesRegistry
 	
 	/**
 	 * Uses N-API Ore Dict to add a smelting recipe with the output as a Block.
-	 * @param outputItem
-	 * @param oreDictName
-	 * @param xpGiven
+	 * @param outputItem The output block.
+	 * @param oreDictName The name of the item to smelt to get outputItem's oredictionary name.
+	 * @param xpGiven The xp given after the smelting.
 	 */
 	public static final void addOreDictSmeltingRecipe(Block outputItem, String oreDictName, float xpGiven)
 	{
@@ -259,7 +259,7 @@ public final class RecipesRegistry
 	
 	/**
 	 * Private as this can only otherwise be called by subclasses, and that's no fun. This adds multiple recipes.
-	 * @param craftingRecipeObject
+	 * @param craftingRecipeObject The CraftingManager to add.
 	 */
 	@Internal
 	private final void addNewModRecipesPrivate(CraftingManager craftingRecipeObject)
@@ -270,7 +270,7 @@ public final class RecipesRegistry
 	
 	/**
 	 * The above method, just static. This adds multiple recipes.
-	 * @param craftingRecipeObject
+	 * @param craftingRecipeObject The CraftingManager to add.
 	 */
 	public static final void addNewModRecipes(CraftingManager craftingRecipeObject)
 	{
@@ -284,16 +284,16 @@ public final class RecipesRegistry
 	 */
 	public static final Object[] getRecipe(ItemStack resultingItem)
 	{
-		return modRecipes.get(resultingItem);
+		return (Object[]) modRecipes.get(resultingItem);
 	}
 	
 	/**
 	 * Gets the result of the specified recipe.
-	 * @param recipe
-	 * @return
+	 * @param recipe The recipe to get the result of.
+	 * @return What results from the recipe.
 	 */
 	public static final ItemStack getRecipeResult(Object... recipe)
 	{
-		return modRecipes.get(recipe);
+		return (ItemStack) modRecipes.get(recipe);
 	}
 }

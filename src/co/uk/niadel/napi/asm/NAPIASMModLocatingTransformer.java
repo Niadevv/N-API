@@ -55,7 +55,7 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 			{
 				if (unstableMod && unstableWarnMessage != "")
 				{
-					NAPILogHelper.logWarn("Found an unstable mod! Warning message from mod: " + unstableWarnMessage);
+					NAPILogHelper.instance.logWarn("Found an unstable mod! Warning message from mod: " + unstableWarnMessage);
 				}
 
 				NModLoader.loadMod(new ModContainer(mod, modid, version, library));
@@ -66,15 +66,15 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 		{
 			if (e instanceof InstantiationException)
 			{
-				NAPILogHelper.logError("Class " + className + " could not be instantiated! If your register is abstract, make it non-abstract!");
+				NAPILogHelper.instance.logError("Class " + className + " could not be instantiated! If your register is abstract, make it non-abstract!");
 			}
 
 			if (e instanceof IllegalAccessException)
 			{
-				NAPILogHelper.logError("Class " + className + " could not be instantiated! If your register does have a constructor, which you shouldn't, make it public.");
+				NAPILogHelper.instance.logError("Class " + className + " could not be instantiated! If your register does have a constructor, which you shouldn't, make it public.");
 			}
 
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 		}
 
 		return null;

@@ -57,9 +57,9 @@ public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 								if (actInsn.owner == "java/lang/System" && actInsn.name == "exit")
 								{
 									methodNode.instructions.remove(instruction);
-									NAPILogHelper.logWarn("Found call to System.exit()! DO NOT DO THIS! The call has been removed.");
-									NAPILogHelper.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
-									NAPILogHelper.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
+									NAPILogHelper.instance.logWarn("Found call to System.exit()! DO NOT DO THIS! The call has been removed.");
+									NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
+									NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
 								}
 							}
 							else if (actInsn.getType() == INVOKEVIRTUAL)
@@ -67,16 +67,16 @@ public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 								if (actInsn.owner == "java/lang/Runtime" && actInsn.name == "halt")
 								{
 									methodNode.instructions.remove(instruction);
-									NAPILogHelper.logWarn("Found call to Runtime.halt()! DO NOT DO THIS! The call has been removed.");
-									NAPILogHelper.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
-									NAPILogHelper.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
+									NAPILogHelper.instance.logWarn("Found call to Runtime.halt()! DO NOT DO THIS! The call has been removed.");
+									NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
+									NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
 								}
 								else if (actInsn.owner == "java/lang/Runtime" && actInsn.name == "exit")
 								{
 									methodNode.instructions.remove(instruction);
-									NAPILogHelper.logWarn("Found call to Runtime.exit()! DO NOT DO THIS! The call has been removed.");
-									NAPILogHelper.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
-									NAPILogHelper.logWarn("If you need to exit the game because of an error, make a ModCrashReport.");
+									NAPILogHelper.instance.logWarn("Found call to Runtime.exit()! DO NOT DO THIS! The call has been removed.");
+									NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
+									NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, make a ModCrashReport.");
 								}
 							}
 						}

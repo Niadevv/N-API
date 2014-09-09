@@ -126,7 +126,7 @@ public final class ASMRegistry
 		}
 		catch (ClassNotFoundException e)
 		{
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 			e.printStackTrace();
 		}
 
@@ -177,7 +177,7 @@ public final class ASMRegistry
 
 			for (Class clazz : classesForPackage)
 			{
-				NAPILogHelper.log("Found class " + clazz.getName() + "!");
+				NAPILogHelper.instance.log("Found class " + clazz.getName() + "!");
 				allClasses.add(clazz.getName());
 			}
 		}
@@ -226,7 +226,7 @@ public final class ASMRegistry
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 			return null;
 		}
 	}
@@ -260,7 +260,7 @@ public final class ASMRegistry
 		}
 		catch (ClassNotFoundException e)
 		{
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 			return null;
 		}
 	}
@@ -278,7 +278,7 @@ public final class ASMRegistry
 		}
 		catch (ClassNotFoundException e)
 		{
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 		}
 	}
 

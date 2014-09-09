@@ -604,7 +604,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 			e.printStackTrace();
 		}
 

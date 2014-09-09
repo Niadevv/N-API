@@ -74,8 +74,8 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 													//Remove actual method call.
 													method.instructions.remove(nextInsn2);
 
-													NAPILogHelper.logWarn("Found call to System.out.println or System.out.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
-													NAPILogHelper.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
+													NAPILogHelper.instance.logWarn("Found call to System.out.println or System.out.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
+													NAPILogHelper.instance.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
 												}
 											}
 										}
@@ -101,8 +101,8 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 													//Remove actual method call.
 													method.instructions.remove(nextInsn2);
 
-													NAPILogHelper.logWarn("Found call to System.err.println or System.err.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
-													NAPILogHelper.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
+													NAPILogHelper.instance.logWarn("Found call to System.err.println or System.err.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
+													NAPILogHelper.instance.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
 												}
 											}
 										}

@@ -40,7 +40,7 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
 		{
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError(e);
 		}
 
 		return null;
@@ -78,7 +78,7 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 				}
 				catch (ClassNotFoundException | NoSuchMethodException e)
 				{
-					NAPILogHelper.logError(e);
+					NAPILogHelper.instance.logError(e);
 				}
 			}
 		}

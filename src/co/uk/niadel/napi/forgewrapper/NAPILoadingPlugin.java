@@ -11,7 +11,6 @@ import co.uk.niadel.napi.common.NAPIData;
  * @author Niadel
  *
  */
-@TransformerExclusions(/*TODO EXCLUSIONS FROM ASMRegistry*/)
 @Name(value = "N-API Forge Wrapper Access Transformer")
 @MCVersion(value = NAPIData.MC_VERSION)
 public final class NAPILoadingPlugin implements IFMLLoadingPlugin
@@ -25,7 +24,7 @@ public final class NAPILoadingPlugin implements IFMLLoadingPlugin
 	@Override
 	public String getModContainerClass()
 	{
-		return "co.uk.niadel.api.forgewrapper.NAPIMod";
+		return "co.uk.niadel.api.forgewrapper.NAPIModContainer";
 	}
 
 	@Override

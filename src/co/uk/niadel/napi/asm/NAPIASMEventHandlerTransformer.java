@@ -68,8 +68,8 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.logError(e);
-			NAPILogHelper.logError("Unable to transform event handler class " + className + "!");
+			NAPILogHelper.instance.logError(e);
+			NAPILogHelper.instance.logError("Unable to transform event handler class " + className + "!");
 		}
 
 		return null;
@@ -96,7 +96,7 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 		else
 		{
 			isValidMethod = false;
-			NAPILogHelper.logError("Method " + eventMethodNode.name + " in an event handler does not take an event as a parameter!");
+			NAPILogHelper.instance.logError("Method " + eventMethodNode.name + " in an event handler does not take an event as a parameter!");
 		}
 
 		if (isValidMethod)

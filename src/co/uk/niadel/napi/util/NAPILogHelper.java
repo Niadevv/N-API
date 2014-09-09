@@ -9,13 +9,20 @@ import org.apache.logging.log4j.Logger;
  * @author Niadel
  *
  */
-public class NAPILogHelper
+public class NAPILogHelper extends co.uk.niadel.commons.logging.Logger
 {
 	/**
 	 * The logger, this allows N-API to log things to the Development Console.
 	 */
 	public static Logger logger = LogManager.getLogger("N-API");
-	
+
+	public static NAPILogHelper instance = new NAPILogHelper();
+
+	private NAPILogHelper()
+	{
+		super("N-API");
+	}
+
 	public static void log(Level logLevel, Object logged)
 	{
 		logger.log(logLevel, logged);
@@ -34,7 +41,7 @@ public class NAPILogHelper
 	 * Logs an error.
 	 * @param error The error object to log.
 	 */
-	public static void logError(Object error)
+	public void logError(Object error)
 	{	
 		log(Level.ERROR, error);
 	}
@@ -43,7 +50,7 @@ public class NAPILogHelper
      * Logs a critical error.
      * @param critical The critical object to log.
      */
-    public static void logCritical(Object critical)
+    public void logCritical(Object critical)
     {
         log(Level.FATAL, critical);
     }
@@ -52,7 +59,7 @@ public class NAPILogHelper
 	 * Logs a warning.
 	 * @param warning The critical warning to log.
 	 */
-	public static void logWarn(Object warning)
+	public void logWarn(Object warning)
 	{	
 		log(Level.WARN, warning);
 	}
@@ -61,7 +68,7 @@ public class NAPILogHelper
 	 * Logs a message for debugging.
 	 * @param debugMessage The debug message to log.
 	 */
-	public static final void logDebug(Object debugMessage)
+	public final void logDebug(Object debugMessage)
 	{
 		log(Level.DEBUG, debugMessage);
 	}
