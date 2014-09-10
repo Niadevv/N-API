@@ -91,27 +91,32 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 
 					ln0 = new LabelNode();
 					ln0.accept(methodNode);
+					methodNode.instructions.add(ln0);
 					methodNode.instructions.add(new LineNumberNode(45, ln0));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 					methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false));
 					ln1 = new LabelNode();
 					ln1.accept(methodNode);
+					methodNode.instructions.add(ln1);
 					methodNode.instructions.add(new LineNumberNode(55, ln1));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 					methodNode.instructions.add(new VarInsnNode(BIPUSH, 64));
 					methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/item/Item", "maxStackSize", "I"));
 					ln2 = new LabelNode();
 					ln2.accept(methodNode);
+					methodNode.instructions.add(ln2);
 					methodNode.instructions.add(new LineNumberNode(80, ln2));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 					methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 					methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/item/Item", "INSTANCE", "Lnet/minecraft/item/Item"));
 					ln3 = new LabelNode();
 					ln3.accept(methodNode);
+					methodNode.instructions.add(ln3);
 					methodNode.instructions.add(new LineNumberNode(858, ln3));
 					methodNode.instructions.add(new InsnNode(RETURN));
 					ln4 = new LabelNode();
 					ln4.accept(methodNode);
+					methodNode.instructions.add(ln4);
 
 					finishMethodNodeEdit(methodNode, classNode);
 
@@ -149,6 +154,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 
 					ln0 = new LabelNode();
 					ln0.accept(methodNode);
+					methodNode.instructions.add(ln0);
 					methodNode.instructions.add(new LineNumberNode(458, ln0));
 					methodNode.instructions.add(new TypeInsnNode(NEW, "co/uk/niadel/napi/events/items/EventItemUse"));
 					methodNode.instructions.add(new InsnNode(DUP));
@@ -534,7 +540,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 				//Add patch to allow for more blocks to be added. LOTS more blocks to be added.
 				case "net.minecraft.util.ObjectIntIdentityMap":
 					//If the game is FML, FML changes the block registry to be that of it's own internal type, which most likely has
-					//This sort of thing already added. In that case, this ASM is useless as ObjectIntIdentityMap is not used,
+					//This sort of thing already added. In that case, this ASM code is useless as ObjectIntIdentityMap is not used,
 					//or if it is, FML more than likely has that covered.
 					if (!MCData.isForge)
 					{
@@ -549,11 +555,13 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 
 						ln0 = new LabelNode();
 						ln0.accept(methodNode);
+						methodNode.instructions.add(ln0);
 						methodNode.instructions.add(new LineNumberNode(10, ln0));
 						methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 						methodNode.instructions.add(new MethodInsnNode(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false));
 						ln1 = new LabelNode();
 						ln1.accept(methodNode);
+						methodNode.instructions.add(ln1);
 						methodNode.instructions.add(new LineNumberNode(12, ln1));
 						methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 						methodNode.instructions.add(new TypeInsnNode(NEW, "java/util/IdentityHashMap"));
@@ -563,6 +571,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 						methodNode.instructions.add(new FieldInsnNode(PUTFIELD, "net/minecraft/util/ObjectIntIdentityMap.field_148749_a", "Ljava/util/IdentityHashMap;", null));
 						ln2 = new LabelNode();
 						ln2.accept(methodNode);
+						methodNode.instructions.add(ln2);
 						methodNode.instructions.add(new LineNumberNode(13, ln2));
 						methodNode.instructions.add(new VarInsnNode(ALOAD, 0));
 						methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/google/common/collect/Lists", "newArrayList", "()Ljava/util/ArrayList;", false));
