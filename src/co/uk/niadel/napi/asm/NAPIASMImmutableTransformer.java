@@ -114,6 +114,23 @@ public class NAPIASMImmutableTransformer implements IASMTransformer, Opcodes
 							NAPILogHelper.instance.logWarn("Removed call to a potential setter reflection method from either an N-API or FML reflection helper class!");
 						}
 					}
+					else if (methodInsnNode.getOpcode() == INVOKEVIRTUAL)
+					{
+						if (methodInsnNode.owner.contains("Method"))
+						{
+							if (methodInsnNode.name == "set")
+							{
+								AbstractInsnNode prevInsn1, prevInsn2;
+
+								prevInsn1 = methodInsnNode.getPrevious();
+								prevInsn2 = prevInsn1.getPrevious();
+
+								methodNode.instructions.remove(prevInsn2);
+								methodNode.instructions.remove(prevInsn1);
+								methodNode.instructions.remove(insnNode);
+							}
+						}
+					}
 				}
 			}
 		}
