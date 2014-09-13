@@ -1,8 +1,8 @@
 package co.uk.niadel.napi.measuresmpi;
 
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
+import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
 
-@TestFeature(stable = false, firstAppearance = "1.0")
+@VersionMarkingAnnotations.Experimental(stable = false, firstAppearance = "1.0")
 /**
  * The base class for liquids like those seen in BuildCraft
  * @author Niadel

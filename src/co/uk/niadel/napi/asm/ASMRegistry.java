@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.napi.util.NAPILogHelper;
@@ -14,6 +15,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
  */
 public final class ASMRegistry 
 {
+	@Immutable
 	private static final List<String> badClasses = new ArrayList<>(Arrays.asList("net.minecraft.util.StringTranslate"));
 
 	/**

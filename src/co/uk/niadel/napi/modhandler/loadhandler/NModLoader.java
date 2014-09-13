@@ -1,5 +1,6 @@
 package co.uk.niadel.napi.modhandler.loadhandler;
 
+import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.init.Launch;
@@ -21,7 +22,6 @@ import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 import co.uk.niadel.napi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.napi.annotations.IAnnotationHandler;
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.napi.annotations.MPIAnnotations.*;
 import co.uk.niadel.napi.client.resources.ResourcesRegistry;
 import co.uk.niadel.napi.potions.PotionRegistry;
@@ -35,7 +35,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
  * @author Niadel
  *
  */
-@TestFeature(stable = false, firstAppearance = "1.0")
+@VersionMarkingAnnotations.Experimental(stable = false, firstAppearance = "1.0")
 public class NModLoader extends URLClassLoader
 {
 	/**
@@ -410,7 +410,7 @@ public class NModLoader extends URLClassLoader
 	 * @param theClass The class that was transformed to load.
 	 * @param bytes The bytes of theClass.
 	 */
-	@TestFeature(firstAppearance = "1.0")
+	@VersionMarkingAnnotations.Experimental(firstAppearance = "1.0")
 	public static final void loadTransformedClass(Class theClass, byte[] bytes)
 	{
 		NModLoader.defineClass(theClass.getName(), bytes);

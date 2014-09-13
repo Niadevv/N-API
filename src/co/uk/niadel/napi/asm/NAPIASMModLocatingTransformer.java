@@ -1,5 +1,6 @@
 package co.uk.niadel.napi.asm;
 
+import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.modhandler.DependenciesRegistry;
 import co.uk.niadel.napi.modhandler.loadhandler.ModContainer;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 {
+	@Immutable
 	public static final NAPIASMModParsingTransformer modParser = new NAPIASMModParsingTransformer();
 
 	@Override

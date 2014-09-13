@@ -1,8 +1,8 @@
 package co.uk.niadel.napi.measuresmpi;
 
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
+import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
 
-@TestFeature(stable = false, firstAppearance = "1.0")
+@VersionMarkingAnnotations.Experimental(stable = false, firstAppearance = "1.0")
 /**
  * Base for things like EU, RF, etc. Separate from ModFluidMeasure as that has to deal with liquid types and this doesn't.
  * @author Niadel

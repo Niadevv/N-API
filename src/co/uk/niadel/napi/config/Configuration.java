@@ -7,12 +7,13 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
+
+import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
-@TestFeature(stable = false, firstAppearance = "1.0")
+@VersionMarkingAnnotations.Experimental(stable = false, firstAppearance = "1.0")
 /**
  * Base for config files, these are relatively Forge-esque, down to the fact they're
  * in the same directory to avoid problems for people who have ID Mismatches and are 

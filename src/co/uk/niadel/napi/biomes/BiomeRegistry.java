@@ -1,15 +1,16 @@
 package co.uk.niadel.napi.biomes;
 
+import co.uk.niadel.napi.annotations.Immutable;
+import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayerBiome;
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@TestFeature(firstAppearance = "1.0")
+@VersionMarkingAnnotations.Experimental(firstAppearance = "1.0")
 /**
  * A system for registering biomes. At time of documenting, Forge has no obvious way of adding Biomes. 
  * This system is a more "brute force" method of adding biomes as it uses Reflection to "force" the biomes in.
@@ -20,22 +21,26 @@ public final class BiomeRegistry
 	/**
 	 * The biomes added by mods that are generated next to biomes like deserts.
 	 */
-	private static List<BiomeGenBase> newHotBiomes = new ArrayList<>();
+	@Immutable
+	private static final List<BiomeGenBase> newHotBiomes = new ArrayList<>();
 
 	/**
 	 * The biomes added by mods that are generated next to biomes in the temperate category.
 	 */
-	private static List<BiomeGenBase> newTemperateBiomes = new ArrayList<>();
+	@Immutable
+	private static final List<BiomeGenBase> newTemperateBiomes = new ArrayList<>();
 
 	/**
 	 * The biomes added by mods that belong in the chilly category.
 	 */
-	private static List<BiomeGenBase> newChillyBiomes = new ArrayList<>();
+	@Immutable
+	private static final List<BiomeGenBase> newChillyBiomes = new ArrayList<>();
 
 	/**
 	 * The biomes added by mods that belong in the cold category.
 	 */
-	private static List<BiomeGenBase> newColdBiomes = new ArrayList<>();
+	@Immutable
+	private static final List<BiomeGenBase> newColdBiomes = new ArrayList<>();
 	
 	/**
 	 * Registers a biome.

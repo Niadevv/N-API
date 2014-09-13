@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.napi.annotations.MPIAnnotations.RecommendedMethod;
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.TestFeature;
 import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 
 /**
@@ -17,7 +18,7 @@ import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
  * Potion here, and even extend other potions as long as they in turn extend Potion.
  * @author Niadel
  */
-@TestFeature(firstAppearance = "1.0")
+@VersionMarkingAnnotations.Experimental(firstAppearance = "1.0")
 public final class PotionRegistry
 {
 	/**

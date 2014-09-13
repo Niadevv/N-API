@@ -16,7 +16,7 @@ public final class VersionMarkingAnnotations
 	 */
 	@Retention(RetentionPolicy.SOURCE)
 	@Documented
-	public @interface TestFeature
+	public @interface Experimental
 	{
 		boolean stable() default false;
 		
