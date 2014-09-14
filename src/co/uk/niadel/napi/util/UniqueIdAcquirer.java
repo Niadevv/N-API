@@ -60,7 +60,7 @@ public class UniqueIdAcquirer
 		}
 		catch (FreeIdUnacquirableException e)
 		{
-			NAPILogHelper.logError("Error attempting to acquire an id!");
+			NAPILogHelper.instance.logError("Error attempting to acquire an id!");
 			e.printStackTrace();
 			return -1;
 		}

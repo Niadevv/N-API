@@ -46,12 +46,17 @@ public final class DependenciesRegistry
 	 * @param register The register that will have the dependencies.
 	 * @param dependencies The dependencies to register.
 	 */
-	public static final void addDependencies(Object register, String... dependencies)
+	public static final void addDependencies(Object register, List<String> dependencies)
 	{
 		for (String dependency : dependencies)
 		{
 			addDependency(register, dependency);
 		}
+	}
+
+	public static final void addDependencies(Object register, String... dependencies)
+	{
+		addDependencies(register, Arrays.asList(dependencies));
 	}
 
 	/**

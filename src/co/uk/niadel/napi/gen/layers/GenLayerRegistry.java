@@ -68,7 +68,7 @@ public final class GenLayerRegistry extends GenLayer
 	@Override
 	public int[] getInts(int par1, int par2, int par3, int par4)
 	{
-		NAPILogHelper.log("GenLayerRegistry.getInts called! Ignore this, you can blame GenLayer for having getInts as being abstract :P");
+		NAPILogHelper.instance.log("GenLayerRegistry.getInts called! Ignore this, you can blame GenLayer for having getInts as being abstract :P");
 		return null;
 	}
 }

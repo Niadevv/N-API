@@ -6,7 +6,7 @@ import java.util.Map;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
 import co.uk.niadel.napi.modhandler.NAPIModRegister;
 import co.uk.niadel.napi.util.MCData;
-import co.uk.niadel.napi.util.reflection.ReflectionCallMethods;
+import co.uk.niadel.commons.reflection.ReflectionCallMethods;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockFire;
@@ -14,7 +14,7 @@ import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.util.RegistrySimple;
-import co.uk.niadel.napi.util.reflection.ReflectionManipulateValues;
+import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 
 /**
  * Where you register blocks.

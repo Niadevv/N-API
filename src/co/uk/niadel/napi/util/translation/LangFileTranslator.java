@@ -55,8 +55,8 @@ public class LangFileTranslator
 		catch (FileNotFoundException e) 
 		{
 			//Let the user know something was awkward with file reading
-			NAPILogHelper.logError("An error occured attempting to read a nonexistent lang file! Please check to see if all mods have their lang files.");
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError("An error occured attempting to read a nonexistent lang file! Please check to see if all mods have their lang files.");
+			NAPILogHelper.instance.logError(e);
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class LangFileTranslator
 			}
 			else
 			{
-				NAPILogHelper.logError("Translation " + unlocalisedName + " does not exist in file " + fileName);
+				NAPILogHelper.instance.logError("Translation " + unlocalisedName + " does not exist in file " + fileName);
 			}
 		}
 		

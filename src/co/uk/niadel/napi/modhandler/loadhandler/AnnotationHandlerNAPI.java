@@ -19,7 +19,7 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 		if (annotation.annotationType() == UnstableLibrary.class)
 		{
 			//Tell the user that the library is unstable and mods using it could break
-			NAPILogHelper.log("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
+			NAPILogHelper.instance.log("[IMPORTANT] " + ((UnstableLibrary) annotation).specialMessage());
 		}
 	}
 

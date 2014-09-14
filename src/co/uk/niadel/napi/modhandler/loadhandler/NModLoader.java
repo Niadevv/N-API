@@ -156,7 +156,7 @@ public class NModLoader extends URLClassLoader
 				if (!mcModsDir.exists())
 				{
 					mcModsDir.mkdir();
-					NAPILogHelper.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
+					NAPILogHelper.instance.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 				}
 
 				loadUrl(mcModsDir.toURI().toURL());
@@ -183,7 +183,7 @@ public class NModLoader extends URLClassLoader
 			} catch (IOException | SecurityException | IllegalArgumentException e)
 			{
 				e.printStackTrace();
-				NAPILogHelper.logError(e);
+				NAPILogHelper.instance.logError(e);
 			}
 		}
 		else
@@ -231,8 +231,8 @@ public class NModLoader extends URLClassLoader
 		}
 		catch (MalformedURLException e)
 		{
-			NAPILogHelper.logError("Unable to load the classes for jar file " + dir.getName() + "!");
-			NAPILogHelper.logError(e);
+			NAPILogHelper.instance.logError("Unable to load the classes for jar file " + dir.getName() + "!");
+			NAPILogHelper.instance.logError(e);
 		}
 	}
 	
@@ -273,7 +273,7 @@ public class NModLoader extends URLClassLoader
 			}
 		}
 
-		NAPILogHelper.log("Finished processing annotations for the mod " + mods.getContainerFromRegister(mod) + "!");
+		NAPILogHelper.instance.log("Finished processing annotations for the mod " + mods.getContainerFromRegister(mod) + "!");
 	}
 	
 	/**
@@ -283,7 +283,7 @@ public class NModLoader extends URLClassLoader
 	public static final void loadMod(IModContainer mod)
 	{
 		mods.addMod(mod);
-		NAPILogHelper.log("Loaded mod " + mod.getModId() + "!");
+		NAPILogHelper.instance.log("Loaded mod " + mod.getModId() + "!");
 	}
 	
 	/**
@@ -295,7 +295,7 @@ public class NModLoader extends URLClassLoader
 	public static final void loadLibrary(IModContainer mod)
 	{
 		mods.addMod(mod, true);
-		NAPILogHelper.log("Loaded library " + mod.getModId() + "!");
+		NAPILogHelper.instance.log("Loaded library " + mod.getModId() + "!");
 	}
 	
 	/**
@@ -323,7 +323,7 @@ public class NModLoader extends URLClassLoader
 					}
 					catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 					{
-						NAPILogHelper.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
+						NAPILogHelper.instance.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
 						e.printStackTrace();
 					}
 				}
@@ -335,7 +335,7 @@ public class NModLoader extends URLClassLoader
 			}
 
 			ResourcesRegistry.addAllResourceDomains();
-			NAPILogHelper.log("Called all mod's modPreInit methods!");
+			NAPILogHelper.instance.log("Called all mod's modPreInit methods!");
 		}
 	}
 	
@@ -366,11 +366,11 @@ public class NModLoader extends URLClassLoader
 					nextMethod.getValue().invoke(Class.forName(nextMethod.getKey()).newInstance(), new Object[]{});
 				}
 
-				NAPILogHelper.log("Called all mod's modInit methods!");
+				NAPILogHelper.instance.log("Called all mod's modInit methods!");
 			}
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException e1)
 			{
-				NAPILogHelper.logError(e1);
+				NAPILogHelper.instance.logError(e1);
 			}
 		}
 	}
@@ -393,11 +393,11 @@ public class NModLoader extends URLClassLoader
 					nextMethod.getValue().invoke(Class.forName(nextMethod.getKey()).newInstance(), new Object[]{});
 				}
 
-				NAPILogHelper.log("Called all mod's postInit methods!");
+				NAPILogHelper.instance.log("Called all mod's postInit methods!");
 			}
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException e1)
 			{
-				NAPILogHelper.logError(e1);
+				NAPILogHelper.instance.logError(e1);
 			}
 
 			//Does the work of adding the potions to the Potion.potionTypes array. You know, just in case.
@@ -414,6 +414,6 @@ public class NModLoader extends URLClassLoader
 	public static final void loadTransformedClass(Class theClass, byte[] bytes)
 	{
 		NModLoader.defineClass(theClass.getName(), bytes);
-		NAPILogHelper.log("Loaded ASM transformed class " + theClass.getName());
+		NAPILogHelper.instance.log("Loaded ASM transformed class " + theClass.getName());
 	}
 }

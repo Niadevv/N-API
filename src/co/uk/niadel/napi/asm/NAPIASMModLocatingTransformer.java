@@ -1,6 +1,8 @@
 package co.uk.niadel.napi.asm;
 
 import co.uk.niadel.napi.annotations.Immutable;
+import co.uk.niadel.napi.annotations.ModRegister;
+import co.uk.niadel.napi.annotations.UnstableMod;
 import co.uk.niadel.napi.modhandler.DependenciesRegistry;
 import co.uk.niadel.napi.modhandler.loadhandler.ModContainer;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
@@ -11,6 +13,8 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,24 +36,25 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 
 			String modid = null, version = null, unstableWarnMessage = "";
 			boolean library = false, unstableMod = false;
-			Object mod = Class.forName(className).newInstance();
+			Class<?> modClass = Class.forName(className);
+			Object mod = modClass.newInstance();
 
 			for (AnnotationNode annotationNode : classNode.visibleAnnotations)
 			{
 				if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/ModRegister"))
 				{
-					List<Object> annotationValues = annotationNode.values;
+					//Apparently ASM can't get values in annotations (only the names of the values), so here I use reflection.
+					ModRegister modRegisterAnnotation = modClass.getAnnotation(ModRegister.class);
 
-					modid = (String) annotationValues.get(0);
-					version = (String) annotationValues.get(1);
-					library = (boolean) annotationValues.get(2);
-
-					DependenciesRegistry.addDependencies(mod, (String[]) annotationValues.get(3));
+					modid = modRegisterAnnotation.modId();
+					version = modRegisterAnnotation.version();
+					library = modRegisterAnnotation.isLibrary();
+					DependenciesRegistry.addDependencies(mod, modRegisterAnnotation.dependencies());
 				}
 				else if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/UnstableMod"))
 				{
 					unstableMod = true;
-					unstableWarnMessage = (String) annotationNode.values.get(0);
+					unstableWarnMessage = modClass.getAnnotation(UnstableMod.class).warningMessage();
 				}
 			}
 
