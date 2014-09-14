@@ -251,20 +251,27 @@ public final class ASMRegistry
 
 			File[] files = directory.listFiles();
 
-			for (File file : files)
+			if (files != null)
 			{
-				if (file.isDirectory() && !file.getName().contains("."))
+				for (File file : files)
 				{
-					classes.addAll(findClasses(file, packageName + "." + file.getName()));
-				}
-				else if (file.getName().endsWith(".class"))
-				{
-					if (!file.getName().contains("StringTranslate"))
+					if (file.isDirectory() && !file.getName().contains("."))
 					{
+						classes.addAll(findClasses(file, packageName + "." + file.getName()));
+					}
+					else if (file.getName().endsWith(".class"))
+					{
+						if (file.getName().contains("StringTranslate"))
+						{
+							NAPILogHelper.instance.logWarn("Attempted to Class.forName net.minecraft.util.StringTranslate! Attempting to do this causes an NPE, so it will be skipped!");
+							continue;
+						}
+
 						classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
 					}
 				}
 			}
+
 			return classes;
 		}
 		catch (ClassNotFoundException e)
@@ -296,12 +303,11 @@ public final class ASMRegistry
 
 	static
 	{
-		//Adds the Forge, FML, and N-API classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
 		if (!MCData.isForgeDominated())
 		{
 			ASMRegistry.addASMClassExclusion("net.minecraft.util.StringTranslate");
 		}
-
+		//Adds the Forge, FML, and N-API classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
 		ASMRegistry.addASMClassExclusion("cpw.fml.mods");
 		ASMRegistry.addASMClassExclusion("net.minecraftforge");
 		ASMRegistry.addASMClassExclusion("net.minecraft.src.FMLRenderAccessLibrary");

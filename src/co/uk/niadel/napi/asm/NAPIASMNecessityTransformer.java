@@ -602,6 +602,19 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					finishMethodNodeEdit(methodNode, classNode);
 					break;
 
+				//Adds the abillity to use Block Renders.
+				case "net.minecraft.client.renderer.RenderBlocks":
+					methodNode = constructMethodNode(ACC_PUBLIC, "renderBlockByRenderType", "(Lnet/minecraft/block/Block;III)Z", null, null, classNode);
+
+					AbstractInsnNode lineNumNode = methodNode.instructions.get(12);
+					InsnList insnList = new InsnList();
+					insnList.add(new VarInsnNode(ALOAD, 1));
+					insnList.add(new VarInsnNode(ALOAD, 2));
+					insnList.add(new VarInsnNode(ALOAD, 3));
+					insnList.add(new VarInsnNode(ALOAD, 4));
+					insnList.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/napi/common/client/BlockRenderingRegistry", "callAllRenderHandlers", "()V", false));
+					methodNode.instructions.insert(lineNumNode, insnList);
+
 				default:
 					//Not any of the correct classes, return the passed bytes.
 					return classWriter.toByteArray();
