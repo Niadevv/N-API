@@ -53,32 +53,34 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 	 */
 	public void parseMethod(MethodNode methodNode, String className, Object mod)
 	{
-		for (AnnotationNode annotationNode : methodNode.visibleAnnotations)
+		if (methodNode.visibleAnnotations != null)
 		{
-			if (annotationNode.desc == "co/uk/niadel/napi/annotations/LoadStateMethod")
+			for (AnnotationNode annotationNode : methodNode.visibleAnnotations)
 			{
-				try
+				if (annotationNode.desc == "co/uk/niadel/napi/annotations/LoadStateMethod")
 				{
-					Class<?> clazz = Class.forName(className);
+					try
+					{
+						Class<?> clazz = Class.forName(className);
 
-					EnumLoadState loadState = (EnumLoadState) annotationNode.values.get(0);
+						EnumLoadState loadState = (EnumLoadState) annotationNode.values.get(0);
 
-					if (loadState == EnumLoadState.PREINIT)
+						if (loadState == EnumLoadState.PREINIT)
+						{
+							NModLoader.preInitMethods.put(className, clazz.getDeclaredMethod(methodNode.name, clazz));
+						}
+						else if (loadState == EnumLoadState.INIT)
+						{
+							NModLoader.initMethods.put(className, clazz.getDeclaredMethod(methodNode.name, clazz));
+						}
+						else if (loadState == EnumLoadState.POSTINIT)
+						{
+							NModLoader.postInitMethods.put(className, clazz.getDeclaredMethod(methodNode.name, clazz));
+						}
+					} catch (ClassNotFoundException | NoSuchMethodException e)
 					{
-						NModLoader.preInitMethods.put(className, clazz.getDeclaredMethod(methodNode.name, clazz));
+						NAPILogHelper.instance.logError(e);
 					}
-					else if (loadState == EnumLoadState.INIT)
-					{
-						NModLoader.initMethods.put(className, clazz.getDeclaredMethod(methodNode.name, clazz));
-					}
-					else if (loadState == EnumLoadState.POSTINIT)
-					{
-						NModLoader.postInitMethods.put(className, clazz.getDeclaredMethod(methodNode.name, clazz));
-					}
-				}
-				catch (ClassNotFoundException | NoSuchMethodException e)
-				{
-					NAPILogHelper.instance.logError(e);
 				}
 			}
 		}
@@ -91,24 +93,27 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 	 */
 	public void parseField(FieldNode fieldNode, String className, Object mod) throws IOException
 	{
-		for (AnnotationNode annotationNode : fieldNode.visibleAnnotations)
+		if (fieldNode.visibleAnnotations != null)
 		{
-			if (annotationNode.desc == "co/uk/niadel/napi/annotations/ASMTransformer")
+			for (AnnotationNode annotationNode : fieldNode.visibleAnnotations)
 			{
-				String typeClassName = fieldNode.desc.replace("/", ".");
-
-				ClassReader typeReader = new ClassReader(typeClassName);
-				ClassNode classNode = new ClassNode();
-				typeReader.accept(classNode, 0);
-
-				if (classNode.interfaces.contains("co/uk/niadel/napi/asm/IASMTransformer") && fieldNode.value != null)
+				if (annotationNode.desc == "co/uk/niadel/napi/annotations/ASMTransformer")
 				{
-					ASMRegistry.registerTransformer((IASMTransformer) fieldNode.value);
+					String typeClassName = fieldNode.desc.replace("/", ".");
+
+					ClassReader typeReader = new ClassReader(typeClassName);
+					ClassNode classNode = new ClassNode();
+					typeReader.accept(classNode, 0);
+
+					if (classNode.interfaces.contains("co/uk/niadel/napi/asm/IASMTransformer") && fieldNode.value != null)
+					{
+						ASMRegistry.registerTransformer((IASMTransformer) fieldNode.value);
+					}
 				}
-			}
-			else if (annotationNode.desc == "co/uk/niadel/napi/annotations/EventHandler")
-			{
-				EventFactory.registerEventHandler(fieldNode.value);
+				else if (annotationNode.desc == "co/uk/niadel/napi/annotations/EventHandler")
+				{
+					EventFactory.registerEventHandler(fieldNode.value);
+				}
 			}
 		}
 	}

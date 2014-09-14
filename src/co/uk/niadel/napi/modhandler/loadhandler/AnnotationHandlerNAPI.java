@@ -24,8 +24,5 @@ public class AnnotationHandlerNAPI implements IAnnotationHandler
 	}
 
 	@Override
-	public void handleMethodAnnotations(Annotation[] annotations, Method theMethod, Object modRegister)
-	{
-
-	}
+	public void handleMethodAnnotations(Annotation[] annotations, Method theMethod, Object modRegister) {}
 }

@@ -8,6 +8,7 @@ import java.util.*;
 import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.napi.util.MCData;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
 /**
@@ -16,7 +17,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
 public final class ASMRegistry 
 {
 	@Immutable
-	private static final List<String> badClasses = new ArrayList<>(Arrays.asList("net.minecraft.util.StringTranslate"));
+	private static final List<String> badClasses = new ArrayList<>();
 
 	/**
 	 * All class names loaded.
@@ -179,8 +180,11 @@ public final class ASMRegistry
 
 			for (Class clazz : classesForPackage)
 			{
-				NAPILogHelper.instance.log("Found class " + clazz.getName() + "!");
-				allClasses.add(clazz.getName());
+				if (!isClassExcluded(clazz.getName()))
+				{
+					NAPILogHelper.instance.log("Found class " + clazz.getName() + "!");
+					allClasses.add(clazz.getName());
+				}
 			}
 		}
 	}
@@ -255,7 +259,10 @@ public final class ASMRegistry
 				}
 				else if (file.getName().endsWith(".class"))
 				{
-					classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+					if (!file.getName().contains("StringTranslate"))
+					{
+						classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+					}
 				}
 			}
 			return classes;
@@ -273,9 +280,12 @@ public final class ASMRegistry
 		{
 			NAPIASMClassFixingTransformer transformer = new NAPIASMClassFixingTransformer();
 
-			for (String badClass : badClasses)
+			if (!badClasses.isEmpty())
 			{
-				NModLoader.loadTransformedClass(Class.forName(badClass), transformer.manipulateBytecodes(badClass));
+				for (String badClass : badClasses)
+				{
+					NModLoader.loadTransformedClass(Class.forName(badClass), transformer.manipulateBytecodes(badClass));
+				}
 			}
 		}
 		catch (ClassNotFoundException e)
@@ -287,6 +297,11 @@ public final class ASMRegistry
 	static
 	{
 		//Adds the Forge, FML, and N-API classes to the excluded ASM list as it's a pretty bad idea to try to mess with Forge or FML.
+		if (!MCData.isForgeDominated())
+		{
+			ASMRegistry.addASMClassExclusion("net.minecraft.util.StringTranslate");
+		}
+
 		ASMRegistry.addASMClassExclusion("cpw.fml.mods");
 		ASMRegistry.addASMClassExclusion("net.minecraftforge");
 		ASMRegistry.addASMClassExclusion("net.minecraft.src.FMLRenderAccessLibrary");

@@ -11,6 +11,8 @@ import java.io.IOException;
 
 /**
  * Patches the game when launched from the Minecraft Launcher. Adds necessary calls to Bootstrap.
+ *
+ * @author Niadel
  */
 public class MCGamePatcher implements IASMTransformer, Opcodes
 {
