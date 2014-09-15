@@ -7,6 +7,10 @@ import java.util.*;
 
 import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.asm.transformers.NAPIASMClassFixingTransformer;
+import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
+import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
+import co.uk.niadel.napi.asm.transformers.NAPIASMNecessityTransformer;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.napi.util.MCData;
 import co.uk.niadel.napi.util.NAPILogHelper;

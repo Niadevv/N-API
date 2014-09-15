@@ -1,7 +1,7 @@
 package co.uk.niadel.napi.init;
 
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
-import co.uk.niadel.napi.asm.NAPIASMDeSysOutTransformer;
+import co.uk.niadel.napi.asm.transformers.NAPIASMDeSysOutTransformer;
 import net.minecraft.client.main.Main;
 
 /**

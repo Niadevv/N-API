@@ -1,5 +1,7 @@
-package co.uk.niadel.napi.asm;
+package co.uk.niadel.napi.asm.transformers;
 
+import co.uk.niadel.napi.asm.ASMRegistry;
+import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.events.IEvent;
 import co.uk.niadel.napi.modhandler.NAPIModRegister;
 import co.uk.niadel.napi.util.NAPILogHelper;

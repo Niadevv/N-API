@@ -1,8 +1,9 @@
-package co.uk.niadel.napi.asm;
+package co.uk.niadel.napi.asm.transformers;
 
 import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.ModRegister;
 import co.uk.niadel.napi.annotations.UnstableMod;
+import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.modhandler.DependenciesRegistry;
 import co.uk.niadel.napi.modhandler.loadhandler.ModContainer;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
@@ -13,9 +14,6 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Allows the @ModRegister annotation to do the equivalent of Forge's @Mod annotation.

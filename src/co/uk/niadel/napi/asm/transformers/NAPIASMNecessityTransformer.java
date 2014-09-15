@@ -1,9 +1,10 @@
-package co.uk.niadel.napi.asm;
+package co.uk.niadel.napi.asm.transformers;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;

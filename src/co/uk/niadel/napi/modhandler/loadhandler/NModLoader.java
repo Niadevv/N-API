@@ -2,7 +2,7 @@ package co.uk.niadel.napi.modhandler.loadhandler;
 
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
 import co.uk.niadel.napi.asm.ASMRegistry;
-import co.uk.niadel.napi.asm.NAPIASMModLocatingTransformer;
+import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.init.Launch;
 import co.uk.niadel.napi.modhandler.*;
 import co.uk.niadel.napi.util.ModList;

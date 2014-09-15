@@ -1,5 +1,6 @@
-package co.uk.niadel.napi.asm;
+package co.uk.niadel.napi.asm.transformers;
 
+import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.util.MCData;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;

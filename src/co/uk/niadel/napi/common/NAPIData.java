@@ -67,7 +67,7 @@ public final class NAPIData
 	/**
 	 * Fully qualified name of the standard N-API transformer.
 	 */
-	public static final String NAPI_ASM_EVENT_TRANSFORMER = "co.uk.niadel.napi.asm.NAPIASMEventHandlerTransformer";
+	public static final String NAPI_ASM_EVENT_TRANSFORMER = "co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer";
 
 	/**
 	 * Fully qualified name of the N-API Forge Wrapper Config GUI factory.

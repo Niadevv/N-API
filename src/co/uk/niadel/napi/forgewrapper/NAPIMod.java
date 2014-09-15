@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.forgewrapper;
 
-import co.uk.niadel.napi.asm.NAPIASMDeSysOutTransformer;
+import co.uk.niadel.napi.asm.transformers.NAPIASMDeSysOutTransformer;
 import co.uk.niadel.napi.common.IConverter;
 import co.uk.niadel.napi.forgewrapper.measuresmpi.MeasureConverter;
 import co.uk.niadel.napi.init.Launch;

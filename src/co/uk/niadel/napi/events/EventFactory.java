@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.uk.niadel.napi.asm.NAPIASMEventHandlerTransformer;
+import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
 import co.uk.niadel.napi.util.ArrayUtils;
 
 /**
