@@ -1,6 +1,7 @@
 package co.uk.niadel.napi.asm.transformers;
 
 import co.uk.niadel.napi.annotations.EnumLoadState;
+import co.uk.niadel.napi.annotations.LoadStateMethod;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.events.EventFactory;
@@ -65,7 +66,7 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 					{
 						Class<?> clazz = Class.forName(className);
 
-						EnumLoadState loadState = (EnumLoadState) annotationNode.values.get(0);
+						EnumLoadState loadState = clazz.getMethod(methodNode.name, new Class[] {}).getAnnotation(LoadStateMethod.class).value();
 
 						if (loadState == EnumLoadState.PREINIT)
 						{
@@ -79,7 +80,8 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 						{
 							NModLoader.postInitMethods.put(className, clazz.getDeclaredMethod(methodNode.name, clazz));
 						}
-					} catch (ClassNotFoundException | NoSuchMethodException e)
+					}
+					catch (ClassNotFoundException | NoSuchMethodException e)
 					{
 						NAPILogHelper.instance.logError(e);
 					}
