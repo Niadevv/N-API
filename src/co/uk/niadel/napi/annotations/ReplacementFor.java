@@ -5,7 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Deletes fields marked with this if a certain mod exists.
+ * Deletes fields marked with this if a certain mod exists (the mod with the modid specified in itemInModWithModId()).
+ *
+ * @author Niadel
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

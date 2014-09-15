@@ -2,10 +2,7 @@ package co.uk.niadel.napi.modhandler;
 
 import co.uk.niadel.napi.annotations.*;
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
-import co.uk.niadel.napi.asm.transformers.NAPIASMDeGameExitingTransformer;
-import co.uk.niadel.napi.asm.transformers.NAPIASMDeSysOutTransformer;
-import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
-import co.uk.niadel.napi.asm.transformers.NAPIASMNecessityTransformer;
+import co.uk.niadel.napi.asm.transformers.*;
 import co.uk.niadel.napi.commands.CommandNAPI;
 import co.uk.niadel.napi.commands.CommandRegistry;
 import co.uk.niadel.napi.entity.tileentity.TileEntityMeasureStorer;
@@ -67,6 +64,20 @@ public final class NAPIModRegister
 	@SuppressWarnings("unused")
 	@EventHandler
 	public static final MPIEventHandler eventHandler = new MPIEventHandler();
+
+	/**
+	 * Implements functionality for the @ReplacementFor annotation and some others.
+	 */
+	@SuppressWarnings("unused")
+	@ASMTransformer
+	public static final NAPIASMOptionalsTransformer optionalsTransformer = new NAPIASMOptionalsTransformer();
+
+	/**
+	 * Adds functionality for the @Immutable annotation.
+	 */
+	@SuppressWarnings("unused")
+	@ASMTransformer
+	public static final NAPIASMImmutableTransformer immutablesTransformer = new NAPIASMImmutableTransformer();
 
 	/**
 	 * Used by the internal block and item registries in order to handle numeric ids.
