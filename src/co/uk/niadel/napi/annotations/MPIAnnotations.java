@@ -90,13 +90,13 @@ public final class MPIAnnotations
 	
 	/**
 	 * Marks a mod as being a library. Only used if the mod is a library that doesn't change
-	 * anything or just adds methods and classes to interact with other mods. N-API's internal register
-	 * has this annotation.
+	 * anything or just adds methods and classes to interact with other mods.
 	 * @author Niadel
-	 *
+	 * @deprecated The library system is mainly gone now, and this is a left over thing.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented
+	@Deprecated
 	public @interface Library
 	{
 		String version();
@@ -105,9 +105,11 @@ public final class MPIAnnotations
 	/**
 	 * Like @UnstableMod, but only for Libraries.
 	 * @author Niadel
+	 * @deprecated Use @UnstableMod instead.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented
+	@Deprecated
 	public @interface UnstableLibrary
 	{
 		String version();

@@ -14,5 +14,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface UnstableMod
 {
 	String warningMessage() default "Please do not use this on any of your important worlds, "
-			+ "as this mod could change drastically and break everything. If you must, make backups!";
+			+ "as this mod could change drastically and break all the things. If you must, make backups!";
 }
