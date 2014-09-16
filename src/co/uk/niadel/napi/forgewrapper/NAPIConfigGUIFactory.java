@@ -17,17 +17,27 @@ public class NAPIConfigGUIFactory implements IModGuiFactory
 	}
 
 	@Override
-	public Class<? extends GuiScreen> mainConfigGuiClass() {
-		return NAPIConfigGUI.class;
+	public Class<? extends GuiScreen> mainConfigGuiClass()
+	{
+		if (Boolean.valueOf(System.getProperty("napi.disableForgeCFG", "false")))
+		{
+			return NAPIConfigGUI.class;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	@Override
-	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
+	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories()
+	{
 		return null;
 	}
 
 	@Override
-	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element)
+	{
 		return null;
 	}
 }
