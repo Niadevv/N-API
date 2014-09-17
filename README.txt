@@ -70,5 +70,5 @@ to my knowledge, don't worry CPW.
 - Whatever motivated me to work on N-API as long as I have so far, because this is my most/longest developed project to date.
 - The makers of The Legend Of Zelda's music, the makers of Sonic the Hedgehog's music, and other game music composers that I've
 forgotten for making awesome music that I mainly listen to while developing N-API (primarily the first two listed).
-- The MCP, for their amazing work for the modding community, without which N-API would not exist, and neither would Forge or
+- The MCP team, for their amazing work for the modding community, without which N-API would not exist, and neither would Forge or
 any other modding APIs, most likely.
