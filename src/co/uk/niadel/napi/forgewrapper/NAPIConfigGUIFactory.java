@@ -1,5 +1,6 @@
 package co.uk.niadel.napi.forgewrapper;
 
+import co.uk.niadel.napi.util.NAPILogHelper;
 import cpw.mods.fml.client.IModGuiFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -12,7 +13,8 @@ import java.util.Set;
 public class NAPIConfigGUIFactory implements IModGuiFactory
 {
 	@Override
-	public void initialize(Minecraft minecraftInstance) {
+	public void initialize(Minecraft minecraftInstance)
+	{
 
 	}
 
@@ -25,6 +27,7 @@ public class NAPIConfigGUIFactory implements IModGuiFactory
 		}
 		else
 		{
+			NAPILogHelper.instance.logWarn("The N-API Forge Wrapper's config GUI is disabled! If you are in a mod pack and want this Config GUI, talk to the mod pack author. If you disabled it yourself, ignore this.");
 			return null;
 		}
 	}

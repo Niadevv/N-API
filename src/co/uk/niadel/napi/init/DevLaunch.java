@@ -12,7 +12,7 @@ import java.util.List;
  * Used to launch N-API with special initialisations and stuff. Significantly better than the default MCP Start.java as it adds the 1.7.10
  * added args.
  */
-public class Launch
+public class DevLaunch
 {
 	public static final List<String> args = new ArrayList<>();
 

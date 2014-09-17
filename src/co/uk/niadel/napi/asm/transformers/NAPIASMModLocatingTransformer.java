@@ -71,12 +71,12 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 		{
 			if (e instanceof InstantiationException)
 			{
-				NAPILogHelper.instance.logError("Class " + className + " could not be instantiated! If your register is abstract, make it non-abstract!");
+				NAPILogHelper.instance.logError("Class " + className + " could not be instantiated! If your register is abstract, make it so it is not!");
 			}
 
 			if (e instanceof IllegalAccessException)
 			{
-				NAPILogHelper.instance.logError("Class " + className + " could not be instantiated! If your register does have a constructor, which you shouldn't, make it public.");
+				NAPILogHelper.instance.logError("Class " + className + " could not be instantiated! If your register does have a constructor, which you probably shouldn't, make it public.");
 			}
 
 			NAPILogHelper.instance.logError(e);

@@ -265,6 +265,8 @@ public final class ASMRegistry
 					}
 					else if (file.getName().endsWith(".class"))
 					{
+						NAPILogHelper.instance.log(file.getPath() + " and " + file.getName());
+
 						if (file.getName().contains("StringTranslate"))
 						{
 							NAPILogHelper.instance.logWarn("Attempted to Class.forName net.minecraft.util.StringTranslate! Attempting to do this causes an NPE, so it will be skipped!");

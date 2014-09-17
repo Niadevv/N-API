@@ -3,7 +3,7 @@ package co.uk.niadel.napi.forgewrapper;
 import co.uk.niadel.napi.asm.transformers.NAPIASMDeSysOutTransformer;
 import co.uk.niadel.napi.common.IConverter;
 import co.uk.niadel.napi.forgewrapper.measuresmpi.MeasureConverter;
-import co.uk.niadel.napi.init.Launch;
+import co.uk.niadel.napi.init.DevLaunch;
 import co.uk.niadel.napi.modhandler.NAPIModRegister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -54,7 +54,7 @@ public final class NAPIMod
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		if (Launch.checkJavaVersion())
+		if (DevLaunch.checkJavaVersion())
 		{
 			NAPIASMDeSysOutTransformer.setEnabled();
 			napiConfiguration = new Configuration(event.getSuggestedConfigurationFile());
@@ -73,7 +73,7 @@ public final class NAPIMod
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		if (Launch.checkJavaVersion())
+		if (DevLaunch.checkJavaVersion())
 		{
 			NModLoader.callAllInits();
 		}
@@ -82,7 +82,7 @@ public final class NAPIMod
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		if (Launch.checkJavaVersion())
+		if (DevLaunch.checkJavaVersion())
 		{
 			NModLoader.callAllPostInits();
 			measureConverter.convert();
