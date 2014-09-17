@@ -12,7 +12,7 @@ Distribution Rights:
 	file or, better yet, at https://github.com/Niadel/N-API as that will be updated much more often than the README.txt. 
 
 Usage Rights:
-	You may use N-API freely, as long as you don't redistribute it without permission. This includes, but is not limited to, extending
+	You may use N-API freely, as long as you don't redistribute it without permission. This includes, but freedom of use is not limited to:	extending
 	or implementing any of the classes/interfaces, calling any class's methods, using any of the enums, marking anything with an annotation, etc. You may also
 	use any mods with N-API, as long as they are compatible with N-API, Forge, and/or other mods and don't edit any of The Game's classes, unless it is merely via 
 	a bytecode manipulation library like ASM at runtime.
