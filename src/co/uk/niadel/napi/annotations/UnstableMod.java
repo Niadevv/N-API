@@ -1,8 +1,6 @@
 package co.uk.niadel.napi.annotations;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.*;
 
 /**
  * Marks a mod as being an unstable mod.
@@ -11,6 +9,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Target(ElementType.TYPE)
 public @interface UnstableMod
 {
 	String warningMessage() default "Please do not use this on any of your important worlds, "

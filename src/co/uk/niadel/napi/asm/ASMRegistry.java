@@ -1,8 +1,8 @@
 package co.uk.niadel.napi.asm;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.instrument.Instrumentation;
 import java.net.URL;
 import java.util.*;
 
@@ -16,6 +16,8 @@ import co.uk.niadel.napi.asm.transformers.NAPIASMNecessityTransformer;
 import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
 import co.uk.niadel.napi.util.MCData;
 import co.uk.niadel.napi.util.NAPILogHelper;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.ClassNode;
 
 /**
  * Where your register stuff to do with ASM in N-API.
@@ -254,6 +256,7 @@ public final class ASMRegistry
 		try
 		{
 			List<Class> classes = new ArrayList<>();
+			List<String> classesScheduledForReloading = new ArrayList<>();
 
 			if (!directory.exists())
 			{
@@ -274,6 +277,9 @@ public final class ASMRegistry
 					{
 						NAPILogHelper.instance.log("Found class " + file.getName().replace(".class", "") + "!");
 
+						String classFilePackage = ClassDiscoveryPredicates.getPackageOfClassFile(file);
+
+						/*
 						if (file.getName().contains("StringTranslate") || file.getName().contains("StatCollector") || file.getName().contains("TextureUtil") || file.getName().contains("CraftingManager"))
 						{
 							NAPILogHelper.instance.logWarn("Attempted to Class.forName a bad class! Attempting to do this causes an NPE, so it will be skipped!");
@@ -282,6 +288,31 @@ public final class ASMRegistry
 						else
 						{
 							classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+						}*/
+
+						if (classDiscoveryPredicates.isClassLoadable(file))
+						{
+							classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+
+							if (classesScheduledForReloading.contains(classFilePackage))
+							{
+								classesScheduledForReloading.remove(classFilePackage);
+							}
+						}
+						else
+						{
+							classesScheduledForReloading.add(classFilePackage);
+						}
+					}
+				}
+
+				while (!classesScheduledForReloading.isEmpty())
+				{
+					for (String classNotLoaded : classesScheduledForReloading)
+					{
+						if (classDiscoveryPredicates.isClassLoadable(classNotLoaded))
+						{
+							classes.add(Class.forName(classNotLoaded));
 						}
 					}
 				}
@@ -327,8 +358,6 @@ public final class ASMRegistry
 	{
 		public ValueExpandableMap<String, String> classToPredicatesMap = new ValueExpandableMap<>();
 
-		public static final List<String> commonPackagePrefixes = new ArrayList<>(Arrays.asList("com", "co", "net", "org"));
-
 		public ClassDiscoveryPredicates()
 		{
 			this.addClassPredicate("net.minecraft.entity.monster.EntityEnderman", "net.minecraft.init.Blocks");
@@ -349,26 +378,28 @@ public final class ASMRegistry
 		{
 			if (clazz.getName().endsWith(".class"))
 			{
-				List<String> separatedFilePathList = Arrays.asList(clazz.getPath().split(File.separator));
-
-				if (separatedFilePathList.contains("net") || separatedFilePathList.contains("com") || separatedFilePathList.contains("co") || separatedFilePathList.contains("org"))
-				{
-					int numOfPackageStarters = 0;
-
-					for (String packagePart : separatedFilePathList)
-					{
-						for (String packagePrefix : commonPackagePrefixes)
-						{
-							if (packagePart == packagePrefix)
-							{
-								numOfPackageStarters++;
-							}
-						}
-					}
-				}
+				String packageOfClassFile = getPackageOfClassFile(clazz);
+				return isClassLoadable(packageOfClassFile);
 			}
 
 			return false;
+		}
+
+		public static final String getPackageOfClassFile(File classFile)
+		{
+			try
+			{
+				ClassReader classFileReader = new ClassReader(new FileInputStream(classFile));
+				ClassNode classNode = new ClassNode();
+				classFileReader.accept(classNode, 0);
+				return classNode.name.replace("/", ".");
+			}
+			catch (IOException e)
+			{
+				NAPILogHelper.instance.logError(e);
+			}
+
+			return null;
 		}
 	}
 
