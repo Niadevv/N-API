@@ -46,8 +46,8 @@ public class NAPIASMClassFixingTransformer implements IASMTransformer, Opcodes
 						methodNode = NAPIASMNecessityTransformer.constructMethodNode(ACC_PUBLIC, "<init>", "()V", null, null, classNode);
 						methodNode.instructions.insert(methodNode.instructions.get(17), new JumpInsnNode(IFNULL, (LabelNode) methodNode.instructions.get(16)));
 
-
 						NAPIASMNecessityTransformer.finishMethodNodeEdit(methodNode, classNode);
+						return classWriter.toByteArray();
 					}
 
 					break;

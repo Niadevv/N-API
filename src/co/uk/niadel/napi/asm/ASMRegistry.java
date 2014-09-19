@@ -2,9 +2,11 @@ package co.uk.niadel.napi.asm;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.instrument.Instrumentation;
 import java.net.URL;
 import java.util.*;
 
+import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.napi.asm.transformers.NAPIASMClassFixingTransformer;
@@ -22,6 +24,11 @@ public final class ASMRegistry
 {
 	@Immutable
 	private static final List<String> badClasses = new ArrayList<>();
+
+	/**
+	 * VERY important to load ASM classes correctly.
+	 */
+	public static final ClassDiscoveryPredicates classDiscoveryPredicates = new ClassDiscoveryPredicates();
 
 	/**
 	 * All class names loaded.
@@ -186,7 +193,7 @@ public final class ASMRegistry
 			{
 				if (!isClassExcluded(clazz.getName()))
 				{
-					NAPILogHelper.instance.log("Found class " + clazz.getName() + "!");
+					NAPILogHelper.instance.log("Loading class " + clazz.getName() + "!");
 					allClasses.add(clazz.getName());
 				}
 			}
@@ -265,15 +272,17 @@ public final class ASMRegistry
 					}
 					else if (file.getName().endsWith(".class"))
 					{
-						NAPILogHelper.instance.log(file.getPath() + " and " + file.getName());
+						NAPILogHelper.instance.log("Found class " + file.getName().replace(".class", "") + "!");
 
-						if (file.getName().contains("StringTranslate"))
+						if (file.getName().contains("StringTranslate") || file.getName().contains("StatCollector") || file.getName().contains("TextureUtil") || file.getName().contains("CraftingManager"))
 						{
-							NAPILogHelper.instance.logWarn("Attempted to Class.forName net.minecraft.util.StringTranslate! Attempting to do this causes an NPE, so it will be skipped!");
+							NAPILogHelper.instance.logWarn("Attempted to Class.forName a bad class! Attempting to do this causes an NPE, so it will be skipped!");
 							continue;
 						}
-
-						classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+						else
+						{
+							classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+						}
 					}
 				}
 			}
@@ -287,6 +296,10 @@ public final class ASMRegistry
 		}
 	}
 
+	/**
+	 * @deprecated Will be replaced by the Predicates system.
+	 */
+	@Deprecated
 	private static final void fixBadClasses()
 	{
 		try
@@ -304,6 +317,58 @@ public final class ASMRegistry
 		catch (ClassNotFoundException e)
 		{
 			NAPILogHelper.instance.logError(e);
+		}
+	}
+
+	/**
+	 * Used to avoid NPEs when finding class names.
+	 */
+	public static class ClassDiscoveryPredicates
+	{
+		public ValueExpandableMap<String, String> classToPredicatesMap = new ValueExpandableMap<>();
+
+		public static final List<String> commonPackagePrefixes = new ArrayList<>(Arrays.asList("com", "co", "net", "org"));
+
+		public ClassDiscoveryPredicates()
+		{
+			this.addClassPredicate("net.minecraft.entity.monster.EntityEnderman", "net.minecraft.init.Blocks");
+			this.addClassPredicate("net.minecraft.util.StatCollector", "net.minecraft.util.StringTranslate");
+		}
+
+		public void addClassPredicate(String className, String predicateClassName)
+		{
+			this.classToPredicatesMap.put(className, predicateClassName);
+		}
+
+		public boolean isClassLoadable(String className)
+		{
+			return allClasses.containsAll(this.classToPredicatesMap.get(className));
+		}
+
+		public boolean isClassLoadable(File clazz)
+		{
+			if (clazz.getName().endsWith(".class"))
+			{
+				List<String> separatedFilePathList = Arrays.asList(clazz.getPath().split(File.separator));
+
+				if (separatedFilePathList.contains("net") || separatedFilePathList.contains("com") || separatedFilePathList.contains("co") || separatedFilePathList.contains("org"))
+				{
+					int numOfPackageStarters = 0;
+
+					for (String packagePart : separatedFilePathList)
+					{
+						for (String packagePrefix : commonPackagePrefixes)
+						{
+							if (packagePart == packagePrefix)
+							{
+								numOfPackageStarters++;
+							}
+						}
+					}
+				}
+			}
+
+			return false;
 		}
 	}
 

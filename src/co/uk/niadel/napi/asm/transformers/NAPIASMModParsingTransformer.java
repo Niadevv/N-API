@@ -94,6 +94,7 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 	 * Parses a field for annotations.
 	 * @param fieldNode The field node.
 	 * @param className The name of the class that the field belongs to.
+	 * @param mod The mod object that is being parsed by this transformer.
 	 */
 	public void parseField(FieldNode fieldNode, String className, Object mod) throws IOException
 	{
