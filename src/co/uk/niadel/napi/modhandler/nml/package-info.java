@@ -1,6 +1,6 @@
 /**
- * All of the relevant classes for loading the mods from the mods folder, and giving IModRegister classes their functionality.
- * By far the most complex part of N-API.
+ * NML, short for N-API Mod Loader in the style of FML, but only consists of loading code and is small as a result.
+ * Handles the main filesytem loading.
  *
  * @author Niadel
  */
