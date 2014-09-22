@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.common;
 
-import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.napi.modhandler.nml.NModLoader;
 import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import co.uk.niadel.napi.util.ParseUtils;
@@ -106,15 +106,18 @@ public class ModUpdateChecker
 	{
 		try
 		{
+			//Try to connect to dummy URL.
 			URL url = new URL("http://www.google.com");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
 			connection.getContent();
 
+			//Able to get content, user has internet.
 			return true;
 		}
 		catch (IOException e)
 		{
+			//Unable to connect, user has no internet connection.
 			return false;
 		}
 	}

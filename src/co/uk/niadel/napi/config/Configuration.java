@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
-import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.napi.modhandler.nml.NModLoader;
 import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
 

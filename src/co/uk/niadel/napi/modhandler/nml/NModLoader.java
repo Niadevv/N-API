@@ -1,6 +1,6 @@
-package co.uk.niadel.napi.modhandler.loadhandler;
+package co.uk.niadel.napi.modhandler.nml;
 
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
+import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.*;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.init.DevLaunch;
@@ -35,7 +35,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
  * @author Niadel
  *
  */
-@VersionMarkingAnnotations.Experimental(stable = false, firstAppearance = "1.0")
+@Experimental(stable = false, firstAppearance = "1.0")
 public class NModLoader extends URLClassLoader
 {
 	/**
@@ -159,6 +159,8 @@ public class NModLoader extends URLClassLoader
 					NAPILogHelper.instance.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 				}
 
+				NAPILogHelper.instance.log("Loading /assets/minecraft/lang/en_US.lang! This is purely to prevent an error with ASM class getting!");
+				loadUrl(new File("/assets/minecraft/lang/en_US.lang").toURI().toURL());
 				loadUrl(mcModsDir.toURI().toURL());
 
 				initNAPIRegister();
@@ -410,7 +412,7 @@ public class NModLoader extends URLClassLoader
 	 * @param theClass The class that was transformed to load.
 	 * @param bytes The bytes of theClass.
 	 */
-	@VersionMarkingAnnotations.Experimental(firstAppearance = "1.0")
+	@Experimental(firstAppearance = "1.0")
 	public static final void loadTransformedClass(Class theClass, byte[] bytes)
 	{
 		NModLoader.defineClass(theClass.getName(), bytes);

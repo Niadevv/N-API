@@ -3,14 +3,12 @@ package co.uk.niadel.napi.util;
 import co.uk.niadel.commons.crash.CrashReport;
 import co.uk.niadel.commons.logging.Logger;
 import co.uk.niadel.napi.common.NAPIData;
-import co.uk.niadel.napi.modhandler.loadhandler.IModContainer;
-import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.napi.modhandler.nml.IModContainer;
+import co.uk.niadel.napi.modhandler.nml.NModLoader;
 import co.uk.niadel.commons.reflection.ReflectionCallMethods;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ModCrashReport extends CrashReport

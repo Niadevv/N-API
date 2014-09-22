@@ -13,7 +13,7 @@ import co.uk.niadel.napi.asm.transformers.NAPIASMClassFixingTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMNecessityTransformer;
-import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.napi.modhandler.nml.NModLoader;
 import co.uk.niadel.napi.util.MCData;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
@@ -21,6 +21,8 @@ import org.objectweb.asm.tree.ClassNode;
 
 /**
  * Where your register stuff to do with ASM in N-API.
+ *
+ * @author Niadel
  */
 public final class ASMRegistry 
 {
@@ -371,7 +373,7 @@ public final class ASMRegistry
 
 		public boolean isClassLoadable(String className)
 		{
-			return allClasses.containsAll(this.classToPredicatesMap.get(className));
+			return ASMRegistry.allClasses.containsAll(this.classToPredicatesMap.get(className) != null ? this.classToPredicatesMap.get(className) : new ArrayList<>());
 		}
 
 		public boolean isClassLoadable(File clazz)

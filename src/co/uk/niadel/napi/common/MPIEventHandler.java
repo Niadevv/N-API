@@ -72,7 +72,7 @@ public final class MPIEventHandler
 				if (throwable.canThrowItem(event.clickedItem, event.world, event.player))
 				{
 					//Borrowed, modified (mainly for optimisation purposes/readabillity) and partially deobfuscated code from EntityThrowable
-					final float PI = (float) Math.PI;
+					float PI = (float) Math.PI;
 					final Entity thrownEntity = throwable.getThrownEntity(event.world, event.player);
 					thrownEntity.setLocationAndAngles(event.player.posX, event.player.posY + (double) event.player.getEyeHeight(), event.player.posZ, event.player.rotationYaw, event.player.rotationPitch);
 					thrownEntity.posX -= (double)(MathHelper.cos(thrownEntity.rotationYaw / 180.0F * PI) * 0.16F);
@@ -80,11 +80,11 @@ public final class MPIEventHandler
 					thrownEntity.posZ -= (double)(MathHelper.sin(thrownEntity.rotationYaw / 180.0F * PI) * 0.16F);
 					thrownEntity.setPosition(thrownEntity.posX, thrownEntity.posY, thrownEntity.posZ);
 					thrownEntity.yOffset = 0.0F;
-					final float CONSTANT = 0.4F;
-					final float COSVALUE = MathHelper.cos(thrownEntity.rotationPitch / 180.0F * PI);
-					thrownEntity.motionX = (double)(-MathHelper.sin(thrownEntity.rotationYaw / 180.0F * PI) * COSVALUE * CONSTANT);
-					thrownEntity.motionZ = (double)(MathHelper.cos(thrownEntity.rotationYaw / 180.0F * PI) * COSVALUE * CONSTANT);
-					thrownEntity.motionY = (double)(-MathHelper.sin((thrownEntity.rotationPitch) / 180.0F * PI) * CONSTANT);
+					float constant = 0.4F;
+					float cosValue = MathHelper.cos(thrownEntity.rotationPitch / 180.0F * PI);
+					thrownEntity.motionX = (double)(-MathHelper.sin(thrownEntity.rotationYaw / 180.0F * PI) * cosValue * constant);
+					thrownEntity.motionZ = (double)(MathHelper.cos(thrownEntity.rotationYaw / 180.0F * PI) * cosValue * constant);
+					thrownEntity.motionY = (double)(-MathHelper.sin((thrownEntity.rotationPitch) / 180.0F * PI) * cosValue);
 
 					event.world.spawnEntityInWorld(thrownEntity);
 				}
@@ -108,7 +108,7 @@ public final class MPIEventHandler
 				e.printStackTrace();
 			}
 		}
-		else if (event.itemStack.getItem() instanceof IWrenchable && !event.world.isClient)
+		else if (event.world.getBlock(event.x, event.y, event.z) instanceof IWrenchable && event.itemStack.getItem() instanceof IWrench && !event.world.isClient)
 		{
 			((IWrenchable) event.itemStack.getItem()).onWrench(event.itemStack, event.clicker, event.world, event.world.getBlock(event.x, event.y, event.z), event.x, event.y, event.z, event.side);
 		}

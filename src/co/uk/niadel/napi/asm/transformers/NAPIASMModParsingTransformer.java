@@ -5,7 +5,7 @@ import co.uk.niadel.napi.annotations.LoadStateMethod;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.events.EventFactory;
-import co.uk.niadel.napi.modhandler.loadhandler.NModLoader;
+import co.uk.niadel.napi.modhandler.nml.NModLoader;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
