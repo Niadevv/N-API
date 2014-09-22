@@ -4,7 +4,6 @@ import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.*;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.init.DevLaunch;
-import co.uk.niadel.napi.modhandler.*;
 import co.uk.niadel.napi.util.ModList;
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +50,7 @@ public class NModLoader extends URLClassLoader
 	public static final Minecraft theMinecraft = Minecraft.getMinecraft();
 	
 	/**
-	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods.
+	 * A list of modids belonging to Forge mods, added so N-API mods can test for Forge mods. Keyed by modid and valued by version.
 	 */
 	public static final Map<String, String> forgeModids = new HashMap<>();
 
@@ -244,7 +243,7 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void processAnnotations(IModContainer mod)
 	{
-		Object modRegister = mod.getMainClass();
+		Object modRegister = mod.getMod();
 		Annotation[] registerAnnotations = mod.getClassAnnotations();
 		Map<Method, Annotation[]> registerMethods = mod.getMethodAnnotations();
 
@@ -315,7 +314,7 @@ public class NModLoader extends URLClassLoader
 			while (methodsIterator.hasNext() && modsIterator.hasNext())
 			{
 				Entry<String, Method> currMethod = methodsIterator.next();
-				Object nextMod = modsIterator.next().getMainClass();
+				Object nextMod = modsIterator.next().getMod();
 
 				if (checkDependencies(nextMod))
 				{

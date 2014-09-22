@@ -47,7 +47,7 @@ public class ModContainer implements IModContainer
 	{
 		Map<Method, Annotation[]> methodAnnotations = new HashMap<>();
 
-		for (Method method : getMainClass().getClass().getDeclaredMethods())
+		for (Method method : getMod().getClass().getDeclaredMethods())
 		{
 			methodAnnotations.put(method, method.getAnnotations());
 		}
@@ -58,11 +58,11 @@ public class ModContainer implements IModContainer
 	@Override
 	public Annotation[] getClassAnnotations()
 	{
-		return getMainClass().getClass().getDeclaredAnnotations();
+		return getMod().getClass().getDeclaredAnnotations();
 	}
 
 	@Override
-	public Object getMainClass()
+	public Object getMod()
 	{
 		return mod;
 	}

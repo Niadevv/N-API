@@ -1,4 +1,4 @@
-package co.uk.niadel.napi.modhandler;
+package co.uk.niadel.napi.modhandler.nml;
 
 import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.napi.modhandler.nml.IModContainer;

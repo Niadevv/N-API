@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * Implemented by all mod containers. Mod containers basically wrap around mod objects and allow ease of acquisition of
- * data about the container.
+ * data about the container. Using this and NModLoader, it could be possible to make a mod without using the @ModRegister system.
  *
  * @author Niadel
  */
@@ -14,9 +14,9 @@ public interface IModContainer
 {
 	/**
 	 * Should return the IModRegister that this container contains.
-	 * @return
+	 * @return The mod object.
 	 */
-	public Object getMainClass();
+	public Object getMod();
 	
 	/**
 	 * Should get this container's mod's id.
@@ -32,13 +32,13 @@ public interface IModContainer
 	
 	/**
 	 * Should get this container's mod's annotations.
-	 * @return
+	 * @return The annotations of the mod's class.
 	 */
 	public Annotation[] getClassAnnotations();
 	
 	/**
 	 * Should return this container's mod's methods and their annotations.
-	 * @return
+	 * @return A map keyed by a method and keyed by the annotations of the method.
 	 */
 	public Map<Method, Annotation[]> getMethodAnnotations();
 

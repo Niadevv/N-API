@@ -138,7 +138,7 @@ public class ModList implements Iterable<IModContainer>
 	 */
 	public Object getModById(String modId)
 	{
-		return getModContainerById(modId).getMainClass();
+		return getModContainerById(modId).getMod();
 	}
 	
 	/**
@@ -241,7 +241,7 @@ public class ModList implements Iterable<IModContainer>
 
 		while (libs.iterator().hasNext())
 		{
-			registersToReturn.add(libs.iterator().next().getMainClass());
+			registersToReturn.add(libs.iterator().next().getMod());
 		}
 
 		return registersToReturn;
@@ -272,7 +272,7 @@ public class ModList implements Iterable<IModContainer>
 
 		while (libs.iterator().hasNext())
 		{
-			registersToReturn.add(libs.iterator().next().getMainClass());
+			registersToReturn.add(libs.iterator().next().getMod());
 		}
 
 		return registersToReturn;

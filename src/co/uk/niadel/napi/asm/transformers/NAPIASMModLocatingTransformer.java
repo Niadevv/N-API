@@ -4,7 +4,7 @@ import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.ModRegister;
 import co.uk.niadel.napi.annotations.UnstableMod;
 import co.uk.niadel.napi.asm.IASMTransformer;
-import co.uk.niadel.napi.modhandler.DependenciesRegistry;
+import co.uk.niadel.napi.modhandler.nml.DependenciesRegistry;
 import co.uk.niadel.napi.modhandler.nml.ModContainer;
 import co.uk.niadel.napi.modhandler.nml.NModLoader;
 import co.uk.niadel.napi.util.NAPILogHelper;

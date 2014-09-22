@@ -193,4 +193,9 @@ public final class NAPIOreDict
 
 		return "";
 	}
+
+	static
+	{
+		addDefaultEntries();
+	}
 }

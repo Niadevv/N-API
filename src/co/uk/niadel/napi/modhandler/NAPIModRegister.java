@@ -30,11 +30,13 @@ public final class NAPIModRegister
 	/**
 	 * This is used in handling numeric ids.
 	 */
+	@Internal
 	public static final IdConfiguration config = new IdConfiguration("N-API.cfg");
 
 	/**
 	 * Used in event handlers for optimisation. Not registered as it is called internally by EventFactory.
 	 */
+	@Immutable
 	public static final NAPIASMEventHandlerTransformer asmEventHandler = new NAPIASMEventHandlerTransformer();
 
 	/**
@@ -42,6 +44,7 @@ public final class NAPIModRegister
 	 */
 	@SuppressWarnings("unused")
 	@ASMTransformer
+	@Immutable
 	public static final NAPIASMNecessityTransformer necessityTransformer = new NAPIASMNecessityTransformer();
 
 	/**
@@ -49,6 +52,7 @@ public final class NAPIModRegister
 	 */
 	@SuppressWarnings("unused")
 	@ASMTransformer
+	@Immutable
 	public static final NAPIASMDeGameExitingTransformer deGameExitingTransformer = new NAPIASMDeGameExitingTransformer();
 
 	/**
@@ -56,6 +60,7 @@ public final class NAPIModRegister
 	 */
 	@SuppressWarnings("unused")
 	@ASMTransformer
+	@Immutable
 	public static final NAPIASMDeSysOutTransformer deSysOutTransformer = new NAPIASMDeSysOutTransformer();
 
 	/**
@@ -77,21 +82,25 @@ public final class NAPIModRegister
 	 */
 	@SuppressWarnings("unused")
 	@ASMTransformer
+	@Immutable
 	public static final NAPIASMImmutableTransformer immutablesTransformer = new NAPIASMImmutableTransformer();
 
 	/**
 	 * Used by the internal block and item registries in order to handle numeric ids.
 	 */
+	@Immutable
 	public static final UniqueIdAcquirer idAcquirer = new UniqueIdAcquirer(2268);
 	
 	/**
 	 * Used by the internal entity registries to handle numeric ids.
 	 */
+	@Immutable
 	public static final UniqueIdAcquirer entityIdAcquirer = new UniqueIdAcquirer(300);
 
 	/**
 	 * Used by the DimensionIdRegistry to get a unique dimension id.
 	 */
+	@Immutable
 	public static final UniqueIdAcquirer dimensionIdAcquirer = new UniqueIdAcquirer(2);
 
 	@LoadStateMethod(EnumLoadState.PREINIT)
@@ -102,7 +111,6 @@ public final class NAPIModRegister
 			PotionRegistry.registerPotion(Potion.potionTypes[i].getName(), Potion.potionTypes[i]);
 		}
 
-		NAPIOreDict.addDefaultEntries();
 		TileEntityRegistry.registerTileEntity(TileEntityWire.class, "TileEntityWire");
 		TileEntityRegistry.registerTileEntity(TileEntityMeasureStorer.class, "TileEntityTank");
 		NAPILogHelper.instance.log("Finished Pre-Initialising Minecraft N-API version " + NAPIData.FULL_VERSION + "!");
@@ -119,16 +127,5 @@ public final class NAPIModRegister
 	public void postModInit() 
 	{
 	
-	}
-
-	public void registerDependencies()
-	{
-
-	}
-
-	public void registerTransformers()
-	{
-		//Tells the user (rather cheesily) that the N-API ASM transformer is being registered.
-		NAPILogHelper.instance.log("REGISTERING N-API ASM TRANSFORMER! Transformers, roll out!");
 	}
 }
