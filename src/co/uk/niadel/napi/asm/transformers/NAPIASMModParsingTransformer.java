@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.asm.transformers;
 
-import co.uk.niadel.napi.annotations.EnumLoadState;
+import co.uk.niadel.napi.modhandler.nml.EnumLoadState;
 import co.uk.niadel.napi.annotations.LoadStateMethod;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.IASMTransformer;

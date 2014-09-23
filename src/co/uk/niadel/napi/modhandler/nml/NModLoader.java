@@ -34,9 +34,14 @@ import co.uk.niadel.napi.util.NAPILogHelper;
  * @author Niadel
  *
  */
-@Experimental(stable = false, firstAppearance = "1.0")
+@Experimental(firstAppearance = "0.0")
 public class NModLoader extends URLClassLoader
 {
+	/**
+	 * What load state the loader is in. Changes as it loads.
+	 */
+	private static EnumLoadState loadState = EnumLoadState.NONE;
+
 	/**
 	 * The NModLoader INSTANCE.
 	 */
@@ -158,10 +163,6 @@ public class NModLoader extends URLClassLoader
 					NAPILogHelper.instance.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 				}
 
-				NAPILogHelper.instance.log("Loading /assets/minecraft/lang/en_US.lang! This is purely to prevent an error with ASM class getting!");
-				loadUrl(new File("/assets/minecraft/lang/en_US.lang").toURI().toURL());
-				loadUrl(mcModsDir.toURI().toURL());
-
 				initNAPIRegister();
 
 				if (mcModsDir.listFiles() != null)
@@ -178,10 +179,9 @@ public class NModLoader extends URLClassLoader
 							loadUrl(currFile.toURI().toURL());
 						}
 					}
-
-					registerTransformers();
 				}
-			} catch (IOException | SecurityException | IllegalArgumentException e)
+			}
+			catch (IOException | SecurityException | IllegalArgumentException e)
 			{
 				e.printStackTrace();
 				NAPILogHelper.instance.logError(e);
@@ -191,13 +191,6 @@ public class NModLoader extends URLClassLoader
 		{
 			shouldInit = false;
 		}
-	}
-	
-	/**
-	 * Calls all mod register's registerTransformers() method.
-	 */
-	public static final void registerTransformers()
-	{
 	}
 	
 	/**
@@ -304,8 +297,9 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllPreInits()
 	{
-		if (shouldInit)
+		if (shouldInit && loadState == EnumLoadState.NONE)
 		{
+			loadState = EnumLoadState.PREINIT;
 			ASMRegistry.invokeAllTransformers();
 
 			Iterator<IModContainer> modsIterator = mods.iterator();
@@ -355,8 +349,10 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllInits()
 	{
-		if (shouldInit)
+		if (shouldInit && loadState == EnumLoadState.PREINIT)
 		{
+			loadState = EnumLoadState.INIT;
+
 			try
 			{
 				Iterator<Entry<String, Method>> methodsIterator = initMethods.entrySet().iterator();
@@ -381,12 +377,13 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void callAllPostInits()
 	{
-		if (shouldInit)
+		if (shouldInit && loadState == EnumLoadState.INIT)
 		{
+			loadState = EnumLoadState.POSTINIT;
+
 			try
 			{
 				Iterator<Entry<String, Method>> methodsIterator = postInitMethods.entrySet().iterator();
-				Iterator<String> objsIterator = postInitMethods.keySet().iterator();
 
 				while (methodsIterator.hasNext())
 				{
@@ -404,6 +401,17 @@ public class NModLoader extends URLClassLoader
 			//Does the work of adding the potions to the Potion.potionTypes array. You know, just in case.
 			PotionRegistry.addAllPotions();
 		}
+
+		loadState = EnumLoadState.FINISHED;
+	}
+
+	/**
+	 * Gets the current load state.
+	 * @return The current load state.
+	 */
+	public static final EnumLoadState getLoadState()
+	{
+		return loadState;
 	}
 	
 	/**

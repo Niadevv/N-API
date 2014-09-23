@@ -76,10 +76,15 @@ public final class EntityRegistry extends EntityList
 	
 	/**
 	 * Adds a spawn to the specified biomes.
-	 * @param spawn
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupCount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupCount The largest number of mobs there can be in a group of mobs spawned.
 	 */
-	public static final void addMonsterSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomesToAddTo)
+	public static final void addMonsterSpawn(Class<? extends Entity> spawnClazz, int chance, int minGroupCount, int maxGroupCount, BiomeGenBase... biomesToAddTo)
 	{
+		BiomeGenBase.SpawnListEntry spawn = constructSpawnEntryFromArgs(spawnClazz, chance, minGroupCount, maxGroupCount);
+
 		if (!(biomesToAddTo.length == 0))
 		{
 			try 
@@ -106,17 +111,22 @@ public final class EntityRegistry extends EntityList
 		}
 		else
 		{
-			addMonsterSpawnToAll(spawn);
+			addMonsterSpawnToAll(spawnClazz, chance, minGroupCount, maxGroupCount);
 		}
 	}
 	
 	/**
 	 * Adds a passive spawn to the specified biomes.
-	 * @param spawn
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupCount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupCount The largest number of mobs there can be in a group of mobs spawned.
 	 * @param biomesToAddTo
 	 */
-	public static final void addPassiveSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomesToAddTo)
+	public static final void addPassiveSpawn(Class<? extends Entity> spawnClazz, int chance, int minGroupCount, int maxGroupCount, BiomeGenBase... biomesToAddTo)
 	{
+		BiomeGenBase.SpawnListEntry spawn = constructSpawnEntryFromArgs(spawnClazz, chance, minGroupCount, maxGroupCount);
+
 		if (!(biomesToAddTo.length == 0))
 		{
 			try 
@@ -142,17 +152,22 @@ public final class EntityRegistry extends EntityList
 		}
 		else
 		{
-			addPassiveSpawnToAll(spawn);
+			addPassiveSpawnToAll(spawnClazz, chance, minGroupCount, maxGroupCount);
 		}
 	}
 	
 	/**
 	 * Adds a squid-like spawn to the specified biomes.
-	 * @param spawn
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupCount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupCount The largest number of mobs there can be in a group of mobs spawned.
 	 * @param biomes
 	 */
-	public static final void addWaterSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomes)
+	public static final void addWaterSpawn(Class<? extends Entity> spawnClazz, int chance, int minGroupCount, int maxGroupCount, BiomeGenBase... biomes)
 	{
+		BiomeGenBase.SpawnListEntry spawn = constructSpawnEntryFromArgs(spawnClazz, chance, minGroupCount, maxGroupCount);
+
 		if (!(biomes.length == 0))
 		{
 			for (int i = 0; i == biomes.length; i++)
@@ -168,17 +183,22 @@ public final class EntityRegistry extends EntityList
 		}
 		else
 		{
-			addWaterSpawnToAll(spawn);
+			addWaterSpawnToAll(spawnClazz, chance, minGroupCount, maxGroupCount);
 		}
 	}
 	
 	/**
 	 * Adds a bat-like spawn to the specified biomes.
-	 * @param spawn
-	 * @param biomes
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupCount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupCount The largest number of mobs there can be in a group of mobs spawned.
+	 * @param biomes The biomes to make this mob spawn in.
 	 */
-	public static final void addCaveSpawn(BiomeGenBase.SpawnListEntry spawn, BiomeGenBase... biomes)
+	public static final void addCaveSpawn(Class<? extends Entity> spawnClazz, int chance, int minGroupCount, int maxGroupCount, BiomeGenBase... biomes)
 	{
+		BiomeGenBase.SpawnListEntry spawn = constructSpawnEntryFromArgs(spawnClazz, chance, minGroupCount, maxGroupCount);
+
 		if (!(biomes.length == 0))
 		{
 			for (int i = 0; i == biomes.length; i++)
@@ -194,18 +214,23 @@ public final class EntityRegistry extends EntityList
 		}
 		else
 		{
-			addCaveSpawnToAll(spawn);
+			addCaveSpawnToAll(spawnClazz, chance, minGroupCount, maxGroupCount);
 		}
 	}
 	
 	/**
 	 * Adds a monster spawn to all of the biomes.
-	 * @param spawn
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupCount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupCount The largest number of mobs there can be in a group of mobs spawned.
 	 */
-	public static final void addMonsterSpawnToAll(BiomeGenBase.SpawnListEntry spawn)
+	public static final void addMonsterSpawnToAll(Class<? extends Entity> spawnClazz, int chance, int minGroupCount, int maxGroupCount)
 	{
 		try 
 		{
+			BiomeGenBase.SpawnListEntry spawn = constructSpawnEntryFromArgs(spawnClazz, chance, minGroupCount, maxGroupCount);
+
 			if (spawn.entityClass.newInstance() instanceof IMob)
 			{
 				for (int i = 0; i == biomes.length; i++)
@@ -222,12 +247,17 @@ public final class EntityRegistry extends EntityList
 	
 	/**
 	 * Adds a passive mob spawn to all biomes.
-	 * @param spawn
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupCount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupCount The largest number of mobs there can be in a group of mobs spawned.
 	 */
-	public static final void addPassiveSpawnToAll(BiomeGenBase.SpawnListEntry spawn)
+	public static final void addPassiveSpawnToAll(Class<? extends Entity> spawnClazz, int chance, int minGroupCount, int maxGroupCount)
 	{
 		try 
 		{
+			BiomeGenBase.SpawnListEntry spawn = constructSpawnEntryFromArgs(spawnClazz, chance, minGroupCount, maxGroupCount);
+
 			if (spawn.entityClass.newInstance() instanceof IAnimals)
 			{
 				for (int i = 0; i == biomes.length; i++)
@@ -244,25 +274,44 @@ public final class EntityRegistry extends EntityList
 	
 	/**
 	 * Adds a squid-like spawn to all biomes.
-	 * @param spawn
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupCount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupCount The largest number of mobs there can be in a group of mobs spawned.
 	 */
-	public static final void addWaterSpawnToAll(BiomeGenBase.SpawnListEntry spawn)
+	public static final void addWaterSpawnToAll(Class<? extends Entity> spawnClazz, int chance, int minGroupCount, int maxGroupCount)
 	{
 		for (int i = 0; i == biomes.length; i++)
 		{
-			biomes[i].spawnableWaterCreatureList.add(spawn);
+			biomes[i].spawnableWaterCreatureList.add(constructSpawnEntryFromArgs(spawnClazz, chance, minGroupCount, maxGroupCount));
 		}
 	}
 	
 	/**
 	 * Adds a bat-like spawn to all biomes.
-	 * @param spawn
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupCount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupCount The largest number of mobs there can be in a group of mobs spawned.
 	 */
-	public static final void addCaveSpawnToAll(BiomeGenBase.SpawnListEntry spawn)
+	public static final void addCaveSpawnToAll(Class<? extends Entity> spawnClazz, int chance, int minGroupCount, int maxGroupCount)
 	{
 		for (int i = 0; i == biomes.length; i++)
 		{
-			biomes[i].spawnableCaveCreatureList.add(spawn);
+			biomes[i].spawnableCaveCreatureList.add(constructSpawnEntryFromArgs(spawnClazz, chance, minGroupCount, maxGroupCount));
 		}
+	}
+
+	/**
+	 * Constructs a spawn list entry from the specified args.
+	 * @param spawnClazz The class of the entity that is to be spawned when the entry is registered.
+	 * @param chance The chance the entity has of spawning.
+	 * @param minGroupAmount The smallest number of mobs there can be in a group of mobs spawned.
+	 * @param maxGroupAmount The largest number of mobs there can be in a group of mobs spawned.
+	 * @return The spawn list entry for the args.
+	 */
+	private static final BiomeGenBase.SpawnListEntry constructSpawnEntryFromArgs(Class<? extends Entity> spawnClazz, int chance, int minGroupAmount, int maxGroupAmount)
+	{
+		return new BiomeGenBase.SpawnListEntry(spawnClazz, chance, minGroupAmount, maxGroupAmount);
 	}
 }

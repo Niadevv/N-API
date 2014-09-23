@@ -1,5 +1,7 @@
 package co.uk.niadel.napi.annotations;
 
+import co.uk.niadel.napi.modhandler.nml.EnumLoadState;
+
 import java.lang.annotation.*;
 
 /**
