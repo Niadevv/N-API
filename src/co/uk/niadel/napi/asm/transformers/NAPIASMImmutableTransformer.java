@@ -10,7 +10,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Allows for the @Immutable annotation to work.
@@ -24,7 +23,7 @@ public class NAPIASMImmutableTransformer implements IASMTransformer, Opcodes
 	 * field in itself.
 	 */
 	@Immutable
-	static final ValueExpandableMap<String, FieldNode> immmutableFields = new ValueExpandableMap<>();
+	static final ValueExpandableMap<String, FieldNode> immutableFields = new ValueExpandableMap<>();
 
 	@Override
 	public byte[] manipulateBytecodes(String className)
@@ -54,7 +53,7 @@ public class NAPIASMImmutableTransformer implements IASMTransformer, Opcodes
 			{
 				if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/Immutable"))
 				{
-					immmutableFields.put(classNode.name, fieldNode);
+					immutableFields.put(classNode.name, fieldNode);
 				}
 			}
 		}
@@ -73,7 +72,7 @@ public class NAPIASMImmutableTransformer implements IASMTransformer, Opcodes
 				{
 					FieldInsnNode setFieldInsn = (FieldInsnNode) insnNode;
 
-					if (immmutableFields.containsKey(setFieldInsn.owner))
+					if (immutableFields.containsKey(setFieldInsn.owner))
 					{
 						methodNode.instructions.remove(insnNode);
 						//Remove load from before the method call to prevent issues.
