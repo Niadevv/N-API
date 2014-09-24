@@ -258,12 +258,7 @@ public class NModLoader extends URLClassLoader
 					currHandler.handleAnnotation(annotation, modRegister);
 				}
 
-				//This check is because AnnotationHandlerNAPI has to manually load the class in a different
-				//way due to the fact the annotation handler has to put load libraries as well as mods.
-				if (currHandler.getClass().getName() != AnnotationHandlerNAPI.class.getName())
-				{
-					loadMod(mod);
-				}
+				loadMod(mod);
 			}
 		}
 
