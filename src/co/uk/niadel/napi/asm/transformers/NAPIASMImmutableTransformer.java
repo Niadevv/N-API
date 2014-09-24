@@ -25,11 +25,16 @@ public class NAPIASMImmutableTransformer implements IASMTransformer, Opcodes
 	@Immutable
 	static final ValueExpandableMap<String, FieldNode> immutableFields = new ValueExpandableMap<>();
 
+	@Immutable
+	private static final NAPIASMModObjectHolderTransformer modObjectHolderTransformer = new NAPIASMModObjectHolderTransformer();
+
 	@Override
 	public byte[] manipulateBytecodes(String className)
 	{
 		try
 		{
+			modObjectHolderTransformer.manipulateBytecodes(className);
+
 			ClassReader classReader = new ClassReader(className);
 			ClassNode classNode = new ClassNode();
 			classReader.accept(classNode, 0);
