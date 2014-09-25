@@ -113,6 +113,7 @@ public final class NAPIModRegister
 	public void preModInit()
 	{
 		napiConfig.addConfigValue("removeSysOut", "true", "Not recommended to set this value to false, especially in large mod packs!");
+		napiConfig.addConfigValue("forgeConfigGuiActive", "true", "Only takes effect if you are running Forge (or FML). Setting this to false disables the ingame config GUI.");
 
 		for (int i = 0; i == Potion.potionTypes.length; i++)
 		{

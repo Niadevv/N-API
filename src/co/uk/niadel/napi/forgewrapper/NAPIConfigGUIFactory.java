@@ -1,5 +1,6 @@
 package co.uk.niadel.napi.forgewrapper;
 
+import co.uk.niadel.napi.modhandler.NAPIModRegister;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import cpw.mods.fml.client.IModGuiFactory;
 import net.minecraft.client.Minecraft;
@@ -21,13 +22,13 @@ public class NAPIConfigGUIFactory implements IModGuiFactory
 	@Override
 	public Class<? extends GuiScreen> mainConfigGuiClass()
 	{
-		if (Boolean.valueOf(System.getProperty("napi.disableForgeCFG", "false")))
+		if (Boolean.valueOf(NAPIModRegister.napiConfig.getConfigValue("forgeConfigGuiActive", "true")))
 		{
 			return NAPIConfigGUI.class;
 		}
 		else
 		{
-			NAPILogHelper.instance.logWarn("The N-API Forge Wrapper's idConfig GUI is disabled! If you are in a mod pack and want this Config GUI, talk to the mod pack author. If you disabled it yourself, ignore this.");
+			NAPILogHelper.instance.logWarn("The N-API Forge Wrapper's config GUI is disabled! If you are in a mod pack and want this Config GUI, talk to the mod pack author. If you disabled it yourself, ignore this.");
 			return null;
 		}
 	}

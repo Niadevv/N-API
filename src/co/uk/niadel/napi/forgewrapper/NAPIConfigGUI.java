@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 
 /**
- * The idConfig GUI for N-API.
+ * The config GUI for N-API.
  */
 public class NAPIConfigGUI extends GuiConfig
 {
