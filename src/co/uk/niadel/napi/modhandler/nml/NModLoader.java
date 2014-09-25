@@ -6,6 +6,8 @@ import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.init.DevLaunch;
 import co.uk.niadel.napi.util.ModList;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -29,7 +31,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
 /**
  * This isn't actually as flexible as FML, but it does most of the same stuff. Flexibility may be improved in a later version of N-API.
  * It is worth noting that this is actually a LOT simpler than FML's loader, which spans a LOT of files, but this one is almost entirely
- * in one file. Well, the main loading code.
+ * in one file. Well, the main loading code, anyways.
  * 
  * @author Niadel
  *
@@ -167,17 +169,33 @@ public class NModLoader extends URLClassLoader
 
 				if (mcModsDir.listFiles() != null)
 				{
-					for (File currFile : mcModsDir.listFiles())
+					File[] jarFiles = mcModsDir.listFiles(new FilenameFilter()
 					{
-						if (currFile.isDirectory())
+						@Override
+						public boolean accept(File dir, String name)
 						{
-							loadUrl(currFile.toURI().toURL());
-							loadClasses(currFile);
+							return name.endsWith(".jar") || name.endsWith(".zip");
 						}
-						else if (currFile.toPath().toString().endsWith(".jar") || currFile.toPath().toString().endsWith(".zip"))
+					});
+
+					File[] directories = mcModsDir.listFiles(new FileFilter()
+					{
+						@Override
+						public boolean accept(File pathname)
 						{
-							loadUrl(currFile.toURI().toURL());
+							return pathname.isDirectory();
 						}
+					});
+
+					for (File modFile : jarFiles)
+					{
+						loadUrl(modFile.toURI().toURL());
+						loadClasses(modFile);
+					}
+
+					for (File directory : directories)
+					{
+						loadUrl(directory.toURI().toURL());
 					}
 				}
 			}
@@ -199,18 +217,6 @@ public class NModLoader extends URLClassLoader
 	private static final void initNAPIRegister()
 	{
 		modLocatingTransformer.manipulateBytecodes("co.uk.niadel.napi.modhandler.NAPIModRegister");
-
-			/*if (theClass == NAPIModRegister.class)
-			{
-				NAPIModRegister register = theClass.newInstance();
-
-				register.registerEventHandlers();
-				register.registerTransformers();
-				processAnnotations(new Mod(register.getModId(), register.getVersion(), register));
-				register.preModInit();
-				register.modInit();
-				register.postModInit();
-			}*/
 	}
 	
 	/**

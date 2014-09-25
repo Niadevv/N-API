@@ -19,7 +19,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
 import co.uk.niadel.napi.util.UniqueIdAcquirer;
 
 /**
- * The N-API register. The MPI parts are sorted out here.
+ * The N-API register. The API parts are sorted out here.
  * 
  * @author Niadel
  */
