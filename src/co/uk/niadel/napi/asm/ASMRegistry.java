@@ -1,6 +1,7 @@
 package co.uk.niadel.napi.asm;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -265,7 +266,14 @@ public final class ASMRegistry
 				return classes;
 			}
 
-			File[] files = directory.listFiles();
+			File[] files = directory.listFiles(new FileFilter()
+			{
+				@Override
+				public boolean accept(File pathname)
+				{
+					return pathname.getName().endsWith(".class") || pathname.isDirectory();
+				}
+			});
 
 			if (files != null)
 			{
@@ -315,6 +323,7 @@ public final class ASMRegistry
 						if (classDiscoveryPredicates.isClassLoadable(classNotLoaded))
 						{
 							classes.add(Class.forName(classNotLoaded));
+							classesScheduledForReloading.remove(classNotLoaded);
 						}
 					}
 				}
@@ -364,6 +373,7 @@ public final class ASMRegistry
 		{
 			this.addClassPredicate("net.minecraft.entity.monster.EntityEnderman", "net.minecraft.init.Blocks");
 			this.addClassPredicate("net.minecraft.util.StatCollector", "net.minecraft.util.StringTranslate");
+			this.addClassPredicate("net.minecraft.util.StringTranslate", "net.minecraft.client.Minecraft");
 		}
 
 		public void addClassPredicate(String className, String predicateClassName)
