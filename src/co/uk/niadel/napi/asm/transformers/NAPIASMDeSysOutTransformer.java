@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 {
-	private static boolean shouldRun = Boolean.valueOf(NAPIModRegister.napiConfig.getConfigValue("removeSysOut", "false"));
+	private static boolean shouldRun = Boolean.valueOf(NAPIModRegister.napiConfig.getConfigValue("removeSysOut", "true"));
 
 	@Override
 	public byte[] manipulateBytecodes(String className)
