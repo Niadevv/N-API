@@ -18,19 +18,19 @@ import co.uk.niadel.napi.util.NAPILogHelper;
 /**
  * Base for Config files, these are relatively Forge-esque, down to the fact they're
  * in the same directory to avoid problems for people who have ID Mismatches and are 
- * used to Forge idConfig methods. However, parsing is manual.
+ * used to Forge config methods. However, parsing is manual.
  * 
  * @author Niadel
  */
 public class Configuration 
 {
 	/**
-	 * The mods idConfig directory.
+	 * The mods config directory.
 	 */
 	public static File modConfigsDir = new File(NModLoader.mcMainDir, "config/").getAbsoluteFile();
 	
 	/**
-	 * This file, the idConfig.
+	 * This file, the config.
 	 */
 	public File theConfig;
 	
@@ -40,8 +40,8 @@ public class Configuration
 	public Map<String, String> data = new HashMap<>();
 	
 	/**
-	 * Creates the new idConfig with the pre-added data.
-	 * @param configName The name of the idConfig to generate.
+	 * Creates the new config with the pre-added data.
+	 * @param configName The name of the config to generate.
 	 * @param data Extra data to add.
 	 */
 	public Configuration(String configName, String[] data)
@@ -51,8 +51,8 @@ public class Configuration
 	}
 
 	/**
-	 * Creates a new idConfig.
-	 * @param configName The name of the idConfig to generate.
+	 * Creates a new config.
+	 * @param configName The name of the config to generate.
 	 */
 	public Configuration(String configName)
 	{
@@ -60,9 +60,9 @@ public class Configuration
 	}
 	
 	/**
-	 * Generates a new idConfig file.
-	 * @param configName The name of the idConfig to generate.
-	 * @return The generated idConfig file.
+	 * Generates a new config file.
+	 * @param configName The name of the config to generate.
+	 * @return The generated config file.
 	 */
 	public File generateNewConfig(String configName)
 	{
@@ -91,11 +91,11 @@ public class Configuration
 			try
 			{
 				configFile.createNewFile();
-				NAPILogHelper.instance.log("Created idConfig file " + configFile.toPath().toString());
+				NAPILogHelper.instance.log("Created config file " + configFile.toPath().toString());
 			}
 			catch (IOException e)
 			{
-				NAPILogHelper.instance.logError("Could not create idConfig file " + configFile.toPath().toString() + "!");
+				NAPILogHelper.instance.logError("Could not create config file " + configFile.toPath().toString() + "!");
 				e.printStackTrace();
 			}
 		}
@@ -104,7 +104,7 @@ public class Configuration
 	}
 	
 	/**
-	 * Adds lines to a the idConfig file.
+	 * Adds lines to a the config file.
 	 *
 	 * @param data The lines of data to add.
 	 */
@@ -128,7 +128,7 @@ public class Configuration
 	}
 	
 	/**
-	 * Updates data in the idConfig.
+	 * Updates data in the config.
 	 */
 	public final void updateConfig()
 	{
@@ -165,7 +165,7 @@ public class Configuration
 				{
 					String currLine = configScanner.nextLine();
 
-					//Check is to allow for comments in the idConfig. Allows both Python and Java one line comments.
+					//Check is to allow for comments in the config. Allows both Python and Java one line comments.
 					if (!currLine.startsWith("#") && !currLine.startsWith("//"))
 					{
 						if (currLine.contains("="))
@@ -184,7 +184,7 @@ public class Configuration
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.instance.logError("Error while updating idConfig " + this.theConfig.getName() + "! Read stack trace for error!");
+			NAPILogHelper.instance.logError("Error while updating config " + this.theConfig.getName() + "! Read stack trace for error!");
 			e.printStackTrace();
 		}
 	}
@@ -202,8 +202,8 @@ public class Configuration
 	}
 
 	/**
-	 * Gets a idConfig value, but if the idConfig key does not exist, the value is created and the default value is returned.
-	 * @param configValue The key in the idConfig.
+	 * Gets a config value, but if the config key does not exist, the value is created and the default value is returned.
+	 * @param configValue The key in the config.
 	 * @param defaultValue The default value to return if configValue does not exist.
 	 * @return The value that is of configValue, or defaultValue if the value does not exist.
 	 */
@@ -233,7 +233,7 @@ public class Configuration
 	}
 
 	/**
-	 * Adds an option to the idConfig file.
+	 * Adds an option to the config file.
 	 * @param valueName
 	 * @param defaultValue
 	 */
@@ -259,18 +259,18 @@ public class Configuration
 			}
 			else
 			{
-				NAPILogHelper.instance.logWarn("Config value " + valueName + " already exists in idConfig file " + this.theConfig.toPath().toString() + "! Call to addConfigValue ignored!");
+				NAPILogHelper.instance.logWarn("Config value " + valueName + " already exists in config file " + this.theConfig.toPath().toString() + "! Call to addConfigValue ignored!");
 			}
 		}
 		catch (FileNotFoundException e)
 		{
-			NAPILogHelper.instance.logError("[CONFIGERROR] The idConfig MUST be created BEFORE adding any data.");
+			NAPILogHelper.instance.logError("[CONFIGERROR] The config MUST be created BEFORE adding any data.");
 			NAPILogHelper.instance.logError(e);
 		}
 	}
 	
 	/**
-	 * Adds multiple lines of data to the idConfig. Each value in valueNames will be put in with
+	 * Adds multiple lines of data to the config. Each value in valueNames will be put in with
 	 * the same value at the value's index in defaultValues. In other words:
 	 * 
 	 * <p>[1,2,3,4] valueNames
@@ -298,7 +298,7 @@ public class Configuration
 	}
 	
 	/**
-	 * Gets whether the idConfig option specified exists.
+	 * Gets whether the config option specified exists.
 	 * @param value
 	 * @return
 	 */
