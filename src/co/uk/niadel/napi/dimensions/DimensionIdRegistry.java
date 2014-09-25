@@ -8,7 +8,7 @@ import co.uk.niadel.napi.modhandler.NAPIModRegister;
 public final class DimensionIdRegistry
 {
 	/**
-	 * Keyed by the dimension's name and valued by the int id. Used in the N-API config.
+	 * Keyed by the dimension's name and valued by the int id. Used in the N-API idConfig.
 	 */
 	public static final Map<String, Integer> idMap = new HashMap<>();
 	

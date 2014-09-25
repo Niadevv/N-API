@@ -64,7 +64,7 @@ public final class EntityRegistry extends EntityList
 	{
 		stringIdToClassMap.remove(entityId);
 		classToStringIdMap.remove(entityClass);
-		numericIdToClassMap.remove(NAPIModRegister.config.getId(entityId));
+		numericIdToClassMap.remove(NAPIModRegister.idConfig.getId(entityId));
 		classToNumericIdMap.remove(entityClass);
 		stringIdToNumericIdMap.remove(entityId);
 		ReflectionManipulateValues.setValue(EntityList.class, null, "stringToClassMapping", stringIdToClassMap);

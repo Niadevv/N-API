@@ -5,6 +5,7 @@ import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
 import co.uk.niadel.napi.asm.transformers.*;
 import co.uk.niadel.napi.commands.CommandNAPI;
 import co.uk.niadel.napi.commands.CommandRegistry;
+import co.uk.niadel.napi.config.Configuration;
 import co.uk.niadel.napi.entity.tileentity.TileEntityMeasureStorer;
 import co.uk.niadel.napi.modhandler.nml.EnumLoadState;
 import net.minecraft.potion.Potion;
@@ -31,7 +32,12 @@ public final class NAPIModRegister
 	 * This is used in handling numeric ids.
 	 */
 	@Internal
-	public static final IdConfiguration config = new IdConfiguration("N-API.cfg");
+	public static final IdConfiguration idConfig = new IdConfiguration("N-API-ids.cfg");
+
+	/**
+	 * This is the actual config for things like removing sysout calls and other stuff.
+	 */
+	public static final Configuration napiConfig = new Configuration("N-API.cfg");
 
 	/**
 	 * Used in event handlers for optimisation. Not registered as it is called internally by EventFactory.
@@ -106,6 +112,8 @@ public final class NAPIModRegister
 	@LoadStateMethod(EnumLoadState.PREINIT)
 	public void preModInit()
 	{
+		napiConfig.addConfigValue("removeSysOut", "true", "Not recommended to set this value to false, especially in large mod packs!");
+
 		for (int i = 0; i == Potion.potionTypes.length; i++)
 		{
 			PotionRegistry.registerPotion(Potion.potionTypes[i].getName(), Potion.potionTypes[i]);

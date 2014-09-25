@@ -25,7 +25,7 @@ public class BlockPortalBase extends Block
 	
 	/**
 	 * Used when registering the block, instead of setting it with a specified id, it gets a free id from DimensionIdRegistry.
-	 * @param dimensionIdString The String id, used in the N-API config.
+	 * @param dimensionIdString The String id, used in the N-API idConfig.
 	 * @return This object for use in constructing.
 	 */
 	protected Block setFreeDimensionId(String dimensionIdString)

@@ -36,7 +36,7 @@ import java.util.Map.Entry;
 public final class NAPIMod
 {
 	/**
-	 * The Forge-version of the N-API config. Used in the config GUI.
+	 * The Forge-version of the N-API idConfig. Used in the idConfig GUI.
 	 */
 	public static Configuration napiConfiguration;
 
@@ -111,14 +111,14 @@ public final class NAPIMod
 	public static final void updateConfig()
 	{
 		//Make sure the ids exist.
-		for (Entry<String, String> currEntry : NAPIModRegister.config.data.entrySet())
+		for (Entry<String, String> currEntry : NAPIModRegister.idConfig.data.entrySet())
 		{
 			int currentForgeConfigValue = napiConfiguration.get(NAPI_CONFIG_CATEGORY, currEntry.getKey(), Integer.valueOf(currEntry.getValue())).getInt();
 
 			//If the Forge configuration value for this particular ID is not equal to the N-API ID
-			if (currentForgeConfigValue != Integer.valueOf(NAPIModRegister.config.getConfigValue(currEntry.getValue())))
+			if (currentForgeConfigValue != Integer.valueOf(NAPIModRegister.idConfig.getConfigValue(currEntry.getValue())))
 			{
-				NAPIModRegister.config.setConfigValue(currEntry.getKey(), String.valueOf(currentForgeConfigValue));
+				NAPIModRegister.idConfig.setConfigValue(currEntry.getKey(), String.valueOf(currentForgeConfigValue));
 			}
 		}
 	}

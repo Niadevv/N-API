@@ -16,7 +16,7 @@ public class IdConfiguration extends Configuration
 	}
 	
 	/**
-	 * Adds an id to the config.
+	 * Adds an id to the idConfig.
 	 * @param stringId The string id representation of id.
 	 * @param id The int id to add.
 	 */

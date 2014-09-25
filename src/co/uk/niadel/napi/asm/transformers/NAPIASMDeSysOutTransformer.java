@@ -1,6 +1,7 @@
 package co.uk.niadel.napi.asm.transformers;
 
 import co.uk.niadel.napi.asm.IASMTransformer;
+import co.uk.niadel.napi.modhandler.NAPIModRegister;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -17,7 +18,7 @@ import java.io.IOException;
  */
 public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 {
-	private static boolean shouldRun = false;
+	private static boolean shouldRun = Boolean.valueOf(NAPIModRegister.napiConfig.getConfigValue("removeSysOut", "false"));
 
 	@Override
 	public byte[] manipulateBytecodes(String className)

@@ -36,7 +36,7 @@ public class UniqueIdAcquirer
 	}
 	
 	/**
-	 * Gets the next free id. If the id for the string id already exists in the config, it will return that instead.
+	 * Gets the next free id. If the id for the string id already exists in the idConfig, it will return that instead.
 	 * @param stringId The id to get a unique int id for.
 	 * @return A unique id, or the id that is for the specified stringId.
 	 */
@@ -46,13 +46,13 @@ public class UniqueIdAcquirer
 		{
 			int theId = UniqueNumberAcquirer.getFreeInt(this.excludedIds);
 
-			if (!NAPIModRegister.config.doesIdExist(stringId))
+			if (!NAPIModRegister.idConfig.doesIdExist(stringId))
 			{
-				NAPIModRegister.config.addId(stringId, theId);
+				NAPIModRegister.idConfig.addId(stringId, theId);
 			}
 			else
 			{
-				return NAPIModRegister.config.getId(stringId);
+				return NAPIModRegister.idConfig.getId(stringId);
 			}
 
 			this.excludedIds[excludedIds.length] = theId;

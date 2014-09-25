@@ -27,7 +27,7 @@ public class NAPIConfigGUIFactory implements IModGuiFactory
 		}
 		else
 		{
-			NAPILogHelper.instance.logWarn("The N-API Forge Wrapper's config GUI is disabled! If you are in a mod pack and want this Config GUI, talk to the mod pack author. If you disabled it yourself, ignore this.");
+			NAPILogHelper.instance.logWarn("The N-API Forge Wrapper's idConfig GUI is disabled! If you are in a mod pack and want this Config GUI, talk to the mod pack author. If you disabled it yourself, ignore this.");
 			return null;
 		}
 	}
