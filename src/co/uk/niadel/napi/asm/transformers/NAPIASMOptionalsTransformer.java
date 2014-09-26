@@ -14,7 +14,7 @@ import org.objectweb.asm.tree.FieldNode;
 import java.io.IOException;
 
 /**
- * Gives functionality for annotations like ReplacementFor and other annotations that only do something when certain mods exist/don't exist.
+ * Gives functionality for annotations like @ReplacementFor and other annotations that only do something when certain mods exist/don't exist.
  *
  * @author Niadel
  */

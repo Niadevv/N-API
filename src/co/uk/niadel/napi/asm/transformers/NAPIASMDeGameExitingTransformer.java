@@ -29,7 +29,7 @@ public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 			ClassNode classNode = new ClassNode();
 			classReader.accept(classNode, 0);
 
-			if (!(className.startsWith("net.minecraft")) && !(className.startsWith("scala")) && !className.startsWith("cpw") && !(className.startsWith("com.jcraft.jogg") && !(className.startsWith("co.uk.niadel.napi.util.ModCrashReport"))))
+			if (!(className.startsWith("net.minecraft")) && !(className.startsWith("scala")) && !className.startsWith("cpw") && !(className.startsWith("com.jcraft.jogg") && !(className.startsWith("co.uk.niadel.napi.util.ModCrashReport")) && !(className.startsWith("java"))))
 			{
 				for (MethodNode methodNode : classNode.methods)
 				{
