@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.Experimental;
 import co.uk.niadel.napi.modhandler.nml.NModLoader;
 import co.uk.niadel.commons.io.FileUtils;

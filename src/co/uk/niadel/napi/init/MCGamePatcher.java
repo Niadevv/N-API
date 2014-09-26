@@ -51,13 +51,13 @@ public class MCGamePatcher implements IASMTransformer, Opcodes
 					l3 = new LabelNode();
 					l3.accept(methodNode);
 					methodNode.instructions.add(new LineNumberNode(399, l3));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/nml/NModLoader", "loadModsFromDir", "()V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/napi/nml/NModLoader", "loadModsFromDir", "()V", false));
 					//NModLoader.callAllPreInits();
 					l4 = new LabelNode();
 					l4.accept(methodNode);
 					methodNode.instructions.add(l4);
 					methodNode.instructions.add(new LineNumberNode(400, l4));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/nml/NModLoader", "callAllPreInits", "()V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/napi/nml/NModLoader", "callAllPreInits", "()V", false));
 					//Block.registerBlocks();
 					l5 = new LabelNode();
 					l5.accept(methodNode);
@@ -83,7 +83,7 @@ public class MCGamePatcher implements IASMTransformer, Opcodes
 					l9.accept(methodNode);
 					methodNode.instructions.add(l9);
 					methodNode.instructions.add(new LineNumberNode(406, l9));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/modhandler/nml/NModLoader", "callAllInits", "()V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/napi/modhandler/nml/NModLoader", "callAllInits", "()V", false));
 					l10 = new LabelNode();
 					l10.accept(methodNode);
 					methodNode.instructions.add(l10);
@@ -93,7 +93,7 @@ public class MCGamePatcher implements IASMTransformer, Opcodes
 					l11.accept(methodNode);
 					methodNode.instructions.add(l11);
 					methodNode.instructions.add(new LineNumberNode(408, l11));
-					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/mpi/modhandler/nml/NModloader", "callAllPostInits", "()V", false));
+					methodNode.instructions.add(new MethodInsnNode(INVOKESTATIC, "co/uk/niadel/napi/modhandler/nml/NModloader", "callAllPostInits", "()V", false));
 					methodNode.instructions.add(l1);
 					methodNode.instructions.add(new LineNumberNode(409, l1));
 //					methodNode.instructions.add(new FrameNode(F_SAME, 0, null, 0, null));

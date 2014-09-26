@@ -21,6 +21,7 @@ public class ObfedClassNames
 	public static final String STATLIST = "pp";
 	public static final String STATLIST_REGISTER_STATS = "a";
 	public static final String BLOCKDYNAMICLIQUID = "akr";
+	public static final String RENDERITEM = "bny";
 
 	/**
 	 * Not really needed as SRG params can be converted easily.

@@ -1,7 +1,7 @@
 package co.uk.niadel.napi.modhandler;
 
 import co.uk.niadel.napi.annotations.*;
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.asm.transformers.*;
 import co.uk.niadel.napi.commands.CommandNAPI;
 import co.uk.niadel.napi.commands.CommandRegistry;

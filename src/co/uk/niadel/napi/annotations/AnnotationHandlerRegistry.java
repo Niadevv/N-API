@@ -4,11 +4,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
 
 /**
- * Where you add annotations that are used by N-API MPIs or libraries to add Annotation
- * functionality.
+ * Where you add annotations that are used by N-API or libraries to add Annotation
+ * functionality without the complexity of ASM. More performance heavy, however, and you only have read access to the annotation.
+ * For this reason I recommend using ASM. All of N-API's annotation based code was moved to ASM a LONG time ago.
  * @author Niadel
  *
  */

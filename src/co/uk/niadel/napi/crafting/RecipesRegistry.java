@@ -10,7 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.napioredict.NAPIOreDict;
 import co.uk.niadel.napi.util.ArrayUtils;
 import co.uk.niadel.commons.datamanagement.DoubleMap;

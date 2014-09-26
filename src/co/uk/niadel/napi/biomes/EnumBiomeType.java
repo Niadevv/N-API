@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.biomes;
 
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.annotations.Internal;
 
 /**
  * Only really used by BiomeRegistry, but is required to register any biome.

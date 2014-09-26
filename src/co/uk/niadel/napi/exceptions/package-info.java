@@ -4,4 +4,4 @@
 @Internal
 package co.uk.niadel.napi.exceptions;
 
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.annotations.Internal;

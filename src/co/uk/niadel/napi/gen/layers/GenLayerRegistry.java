@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.layer.GenLayer;
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
 /**

@@ -48,7 +48,7 @@ public class ModCrashReport extends CrashReport
 			"Crash logs from mods! Now with quotes from out of nowhere characters from Sonic parodies starring zombies!",
 			"You didn't hear it from me, but Dinnerbone's skin is based on Jamie Hyneman from the Mythbusters! Or at least it looks like it is...", //Note on how Dinnerbone's skin is likely based on one of the Mythbusters.
 			"Am I the only person on Earth who doesn't like Cake unless it's not actually made out of cake?", //Note on how I don't actually like cake and everyone else seems to.
-			"OMG U SHUD SUB 2 MAH CHANNUL I MAKE DAYLEE MINECRAFT STUFF HURRDEHURR <- People, don't do this. Especially not on a Direwolf20 or Etho video.", //Mocking people who advertise their channels on other people's videos, especially famous people's videos like Direwolf20's or Etho's.
+			"OMG U SHUD SUB 2 MAH CHANNUL I MAKE DAYLEE MINECRAFT STUFF HURRDEHURR <- People, don't do this. Especially not on a Direwolf20 or Etho video. If you do that you suck.", //Mocking people who advertise their channels on other people's videos, especially famous people's videos like Direwolf20's or Etho's.
 			"KA-BOOOOOOOOOOOOOOOOOOOOOOOOOOOOMMMM!!!",
 			"We appear to be having technical difficulties, we apologise for the inconvenience.", //Common message when errors occur.
 			"We apologise for the inconvenience.", //God's final message to his creation. Hitchiker's Guide To The Galaxy reference.
@@ -68,7 +68,7 @@ public class ModCrashReport extends CrashReport
 			"Still nowhere near as strange as Uncle Grandpa.", //MOAR OF DA TRUTH BRUDDA!
 			"1.8 is where the code is (MA MA MA MA MA MAA)!", //Reference to common YTP intro.
 			"i herd u liek crashz", //Reference to "I heard u liek mudkipz"
-			"Swedish Meatballs.", //Reference to AnderZEL's Twitch new Subscriber message.
+			"Swedish Meatballs, with added crash sauce.", //Reference to AnderZEL's Twitch new Subscriber message.
 			"Shrek is love, Shrek is life. Shrek is not, however, this crash.",
 			"p15 r3p0r7 m3 70 7h3 m0d d3v :(", //1337 for pls report me to the mod dev :(
 			"I bet vanilla never had this problem.",
@@ -77,7 +77,17 @@ public class ModCrashReport extends CrashReport
 			"Um, er, hey! Over there! A distraction! *Runs off*",
 			"There there. Thine heart shalt go forth Donkey.", //Another poshification.
 			"The cake is a 37th Silly Comment",  //Solve it!
-			"EventFactory.fireEvent(new EventModCrash())"
+			"EventFactory.fireEvent(new EventModCrash())",
+			"Antoine! >:|", //Sonic SatAM reference anyone?
+			"Crash Minecraft! (Like a boss!)",
+			"I love it when a crash comes together.",
+			NModLoader.doesModExist("NIADEL_example_mod") ? "I see you have the N-API example mod. I hope it wasn't that doing it." : "I <3 Ternary Operators :3",
+			"I hope this isn't related to me finding Sonic SatAM to be somewhat entertaining :P!",
+			"Live and learn! Standing on the edge of tomorrow! Live and learn! Someone has to fix a buuu-uu-u-ug! ... Hope they find their waa-ay!",
+			"HUE HUE HUE!",
+			"When in doubt, Chaos Emeralds.",
+			"#@#@#@#@#\n\tSpecial Silly is special\n#@#@#@#@#",
+			"CRAAASHEEEHAAAASHEEEHASH!"
 	};
 
 	/**
@@ -113,6 +123,7 @@ public class ModCrashReport extends CrashReport
 		return this.log.toArray(new String[this.log.size()]);
 	}
 
+	@Override
 	public void logReport(Logger logger)
 	{
 		this.report.add(SILLIES[new Random().nextInt(SILLIES.length)]);

@@ -9,6 +9,8 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Gets rid of calls to System.out.println and System.err.println to encourage the use of a logger, as loggers allow us to know what
@@ -32,8 +34,9 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 				ClassNode classNode = new ClassNode();
 				classReader.accept(classNode, 0);
 
-				//Yup. I'm allowing it to catch my own uses of System.out.println.
-				if (!className.contains("net.minecraft.") && !className.startsWith("java"))
+				//Yup. I'm allowing it to catch my own uses of System.out.println. It'll stop me from being a hypocrite
+				//dev. Only in N-API though.
+				if (!className.contains("net.minecraft.") && !className.startsWith("java") && !isClassExternalLibrary(className))
 				{
 					for (MethodNode method : classNode.methods)
 					{
@@ -135,5 +138,40 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 	public static final void setEnabled()
 	{
 		shouldRun = true;
+	}
+
+	public static final boolean isClassExternalLibrary(String className)
+	{
+		ArrayList<String> externalLibs = new ArrayList<>(Arrays.asList(
+				"com.mojang",
+				"argo",
+				"org.bouncycastle",
+				"com.jcraft",
+				"paulscode.sound",
+				"org.apache",
+				"com.google",
+				"com.ibm.icu",
+				"net.java.games",
+				"net.minecraft.launchwrapper",
+				"joptsimple",
+				"org.lwjgl",
+				"LZMA",
+				"io.netty",
+				"assets.realms",
+				"gnu.trove",
+				"tv.twitch",
+				"javax.vecmath",
+				"co.uk.niadel.commons"
+		));
+
+		for (String externalLib : externalLibs)
+		{
+			if (className.startsWith(externalLib))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

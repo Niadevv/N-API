@@ -6,7 +6,7 @@ import java.util.List;
 
 import co.uk.niadel.napi.util.MCData;
 import net.minecraft.client.gui.GuiIngame;
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.annotations.Internal;
 
 public final class GUIHUDRegistry
 {

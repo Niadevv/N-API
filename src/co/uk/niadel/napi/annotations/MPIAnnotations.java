@@ -48,16 +48,7 @@ public final class MPIAnnotations
 	{
 		String todo() default "Undefined";
 	}
-	
-	/**
-	 * Marks an annotation as being internal and not to use.
-	 * @author Niadel
-	 *
-	 */
-	@Retention(RetentionPolicy.SOURCE)
-	@Documented
-	public @interface Internal {}
-	
+
 	/**
 	 * Tells the user that they should super this method in subclasses.
 	 * @author Niadel

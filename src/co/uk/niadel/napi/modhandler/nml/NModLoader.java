@@ -1,5 +1,6 @@
 package co.uk.niadel.napi.modhandler.nml;
 
+import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.*;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
@@ -23,7 +24,6 @@ import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 import co.uk.niadel.napi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.napi.annotations.IAnnotationHandler;
-import co.uk.niadel.napi.annotations.MPIAnnotations.*;
 import co.uk.niadel.napi.client.resources.ResourcesRegistry;
 import co.uk.niadel.napi.potions.PotionRegistry;
 import co.uk.niadel.napi.util.NAPILogHelper;
@@ -47,7 +47,8 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * The NModLoader INSTANCE.
 	 */
-	public static final @Internal NModLoader INSTANCE = new NModLoader(new URL[0], getSystemClassLoader());
+	public static final @Internal
+	NModLoader INSTANCE = new NModLoader(new URL[0], getSystemClassLoader());
 
 	public static final @Internal NAPIASMModLocatingTransformer modLocatingTransformer = new NAPIASMModLocatingTransformer();
 
@@ -169,7 +170,7 @@ public class NModLoader extends URLClassLoader
 
 				if (mcModsDir.listFiles() != null)
 				{
-					File[] jarFiles = mcModsDir.listFiles(new FilenameFilter()
+					File[] modFiles = mcModsDir.listFiles(new FilenameFilter()
 					{
 						@Override
 						public boolean accept(File dir, String name)
@@ -187,7 +188,7 @@ public class NModLoader extends URLClassLoader
 						}
 					});
 
-					for (File modFile : jarFiles)
+					for (File modFile : modFiles)
 					{
 						loadUrl(modFile.toURI().toURL());
 						loadClasses(modFile);
@@ -214,6 +215,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Initialises the N-API mod register.
 	 */
+	@Internal
 	private static final void initNAPIRegister()
 	{
 		modLocatingTransformer.manipulateBytecodes("co.uk.niadel.napi.modhandler.NAPIModRegister");

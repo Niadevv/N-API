@@ -1,8 +1,6 @@
 package co.uk.niadel.napi.modhandler.nml;
 
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
-import co.uk.niadel.napi.modhandler.nml.IModContainer;
-import co.uk.niadel.napi.modhandler.nml.NModLoader;
+import co.uk.niadel.napi.annotations.Internal;
 
 import java.util.Arrays;
 import java.util.HashMap;

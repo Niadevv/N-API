@@ -9,7 +9,7 @@ import java.util.*;
 
 import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Immutable;
-import co.uk.niadel.napi.annotations.MPIAnnotations.Internal;
+import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.asm.transformers.NAPIASMClassFixingTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;

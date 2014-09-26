@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import co.uk.niadel.napi.asm.IASMTransformer;
+import co.uk.niadel.napi.init.ObfedClassNames;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -171,9 +172,9 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					break;
 
 				//Obfuscated Item patching
-				case "abn":
-					classWriter.newField("abn", "INSTANCE", "Labn;");
-					fieldVisitor = classWriter.visitField(ACC_PUBLIC, "INSTANCE", "Labn", null, null);
+				case ObfedClassNames.ITEM:
+					classWriter.newField(ObfedClassNames.ITEM, "INSTANCE", "L" + ObfedClassNames.ITEM + ";");
+					fieldVisitor = classWriter.visitField(ACC_PUBLIC, "INSTANCE", "L" + ObfedClassNames.ITEM, null, null);
 					fieldVisitor.visitEnd();
 					break;
 
@@ -189,7 +190,7 @@ public class NAPIASMNecessityTransformer implements IASMTransformer, Opcodes
 					break;
 
 				//Obfuscated RenderItem patching
-				case "bnq":
+				case ObfedClassNames.RENDERITEM:
 					methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "a", "(FZII)V", null, null);
 					methodVisitor.visitCode();
 					l261 = new Label();
