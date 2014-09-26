@@ -9,6 +9,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.MethodNode;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -63,12 +65,50 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 					{
 						internalFields.put(annotation.owningPackage(), classNode);
 					}
+
+					break;
+				}
+			}
+
+			for (MethodNode methodNode : classNode.methods)
+			{
+				for (AnnotationNode annotationNode : classNode.visibleAnnotations)
+				{
+					if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/Internal"))
+					{
+						Internal annotation = Class.forName(className).getAnnotation(Internal.class);
+
+						if (!annotation.documentationOnly())
+						{
+							internalFields.put(annotation.owningPackage(), methodNode);
+						}
+
+						break;
+					}
+				}
+			}
+
+			for (FieldNode fieldNode : classNode.fields)
+			{
+				for (AnnotationNode annotationNode : classNode.visibleAnnotations)
+				{
+					if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/Internal"))
+					{
+						Internal annotation = Class.forName(className).getAnnotation(Internal.class);
+
+						if (!annotation.documentationOnly())
+						{
+							internalFields.put(annotation.owningPackage(), fieldNode);
+						}
+
+						break;
+					}
 				}
 			}
 		}
 		catch (ClassNotFoundException impossibru)
 		{
-			//Should NEVER, EVER happen. EVAR!
+			//Should NEVER, EVER happen.
 			NAPILogHelper.instance.logError("Impossibru error! KAAAAAABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOMMMMMMMMMMMMM!!!!!!!!!");
 			NAPILogHelper.instance.logError(impossibru);
 		}
