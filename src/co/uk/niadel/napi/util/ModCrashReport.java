@@ -81,13 +81,21 @@ public class ModCrashReport extends CrashReport
 			"Antoine! >:|", //Sonic SatAM reference anyone?
 			"Crash Minecraft! (Like a boss!)",
 			"I love it when a crash comes together.",
-			NModLoader.doesModExist("NIADEL_example_mod") ? "I see you have the N-API example mod. I hope it wasn't that doing it." : "I <3 Ternary Operators :3",
+			NModLoader.doesModExist("NIADEL_example_mod") ? "I see you have the N-API example mod. I hope it wasn't that doing it." : "I <3 Ternary Operators :3", //OOOH Special Ternary Silly :D
 			"I hope this isn't related to me finding Sonic SatAM to be somewhat entertaining :P!",
 			"Live and learn! Standing on the edge of tomorrow! Live and learn! Someone has to fix a buuu-uu-u-ug! ... Hope they find their waa-ay!",
-			"HUE HUE HUE!",
+			"HOY HOY!",
 			"When in doubt, Chaos Emeralds.",
 			"#@#@#@#@#\n\tSpecial Silly is special\n#@#@#@#@#",
-			"CRAAASHEEEHAAAASHEEEHASH!"
+			"CRAAASHEEEHAAAASHEEEHASH!", //Dragonball Z reference.
+			"That crash is a spy!",
+			"User: I wanted a crashless game! Game: Crashless game? *Pause* THIS! IS! MODS! *Gives user crash* - User = You, Game = Game",
+			"FALCAWN CRASH!",
+			"It's a note from a mod! Dear unfortunate user, the bugs and I have crashed your modded game! The answer is in the stacktrace - I dare ya to find it if you can!",
+			"Strange unexplained crash? Must be aliens.",
+			"I'm not saying it's a crash, but it's probably a crash.",
+			"IMA CAUSIN' A CRASH! ModCrashReport.generateCrashReport(new RuntimeException(\"Crashing for some reason\"), true).crash(false)",
+			"*Comedic remark here*"
 	};
 
 	/**
