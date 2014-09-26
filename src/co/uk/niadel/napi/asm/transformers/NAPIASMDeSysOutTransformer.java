@@ -161,7 +161,8 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 				"gnu.trove",
 				"tv.twitch",
 				"javax.vecmath",
-				"co.uk.niadel.commons"
+				"co.uk.niadel.commons",
+				"org.objectweb.asm"
 		));
 
 		for (String externalLib : externalLibs)
