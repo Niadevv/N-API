@@ -71,6 +71,7 @@ public final class DependenciesRegistry
 	{
 		if (!libDependenciesMap.containsKey(register))
 		{
+			addDependency(register, libId);
 			Map<String, String> tempMap = new HashMap<>();
 			tempMap.put(libId, minLibVersion);
 
