@@ -16,14 +16,13 @@ public final class DependenciesRegistry
 	/**
 	 * The dependencies that have been registered. Key is the register, value is the list of modid dependencies for the key.
 	 *
-	 * TODO: Maybe make it a ValueExpandableMap?
 	 */
 	public static ValueExpandableMap<Object, String> dependenciesMap = new ValueExpandableMap<>();
 
 	/**
-	 * Library dependencies. The second map is keyed by library id, and valued by the minimum version of the library.
+	 * Library dependencies. The external map is keyed by the mod object, and valued by the second map.
+	 * The second map is keyed by library id, and valued by the minimum version of the library.
 	 *
-	 * TODO: Maybe make it a ValueExpandableMap?
 	 */
 	public static ValueExpandableMap<Object, Map<String, String>> libDependenciesMap = new ValueExpandableMap<>();
 
@@ -92,13 +91,17 @@ public final class DependenciesRegistry
 	 */
 	public static final boolean doesRegisterHaveDependencies(Object register)
 	{
-		return dependenciesMap.containsKey(register) || libDependenciesMap.containsKey(register);
+		return dependenciesMap.containsKey(register) || doesRegisterHaveLibDependencies(register);
+	}
+
+	public static final boolean doesRegisterHaveLibDependencies(Object register)
+	{
+		return libDependenciesMap.containsKey(register);
 	}
 
 	/**
 	 * Checks the dependencies of the specified register.
 	 *
-	 * TODO: Cleanup and optimise code.
 	 * @param registerToCheck The mod register to check the dependencies of.
 	 * @return Whether or not the dependencies check was fully completed.
 	 */
@@ -115,13 +118,25 @@ public final class DependenciesRegistry
 					{
 						return false;
 					}
-					else
-					{
-						IModContainer modDependencyContainer = NModLoader.getModContainerByModId(dependency);
+				}
+			}
 
-						if (!modDependencyContainer.isLibrary() && NModLoader.mods.compareContainerVersions(NModLoader.getModContainerByModId(NModLoader.mods.getIdForRegister(registerToCheck)), modDependencyContainer))
+			if (doesRegisterHaveLibDependencies(registerToCheck))
+			{
+				for (Object dependencyKey : libDependenciesMap.keySet())
+				{
+					List<Map<String, String>> libDependencies = libDependenciesMap.get(dependencyKey);
+
+					for (Map<String, String> libDependency : libDependencies)
+					{
+						for (String libDependencyName : libDependency.keySet())
 						{
-							return false;
+							String libDependencyMinVersion = libDependency.get(libDependencyName);
+
+							if (!NModLoader.mods.checkVersions(NModLoader.getModContainerByModId(libDependencyName), libDependencyMinVersion))
+							{
+								return false;
+							}
 						}
 					}
 				}
