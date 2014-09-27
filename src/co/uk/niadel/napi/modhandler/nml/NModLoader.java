@@ -47,9 +47,11 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * The NModLoader INSTANCE.
 	 */
-	public static final @Internal
-	NModLoader INSTANCE = new NModLoader(new URL[0], getSystemClassLoader());
+	public static final @Internal NModLoader INSTANCE = new NModLoader(new URL[0], getSystemClassLoader());
 
+	/**
+	 * This handles finding the @ModRegister annotation and loading the mod itself.
+	 */
 	public static final @Internal NAPIASMModLocatingTransformer modLocatingTransformer = new NAPIASMModLocatingTransformer();
 
 	/**

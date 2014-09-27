@@ -1,5 +1,6 @@
 package co.uk.niadel.napi.modhandler.nml;
 
+import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Internal;
 
 import java.util.Arrays;
@@ -8,19 +9,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Used for adding dependencies.
+ * Used for handling dependencies.
  */
 public final class DependenciesRegistry
 {
 	/**
 	 * The dependencies that have been registered. Key is the register, value is the list of modid dependencies for the key.
+	 *
+	 * TODO: Maybe make it a ValueExpandableMap?
 	 */
-	public static Map<Object, List<String>> dependenciesMap = new HashMap<>();
+	public static ValueExpandableMap<Object, String> dependenciesMap = new ValueExpandableMap<>();
 
 	/**
 	 * Library dependencies. The second map is keyed by library id, and valued by the minimum version of the library.
+	 *
+	 * TODO: Maybe make it a ValueExpandableMap?
 	 */
-	public static Map<Object, List<Map<String, String>>> libDependenciesMap = new HashMap<>();
+	public static ValueExpandableMap<Object, Map<String, String>> libDependenciesMap = new ValueExpandableMap<>();
 
 	/**
 	 * Adds a single dependency.
@@ -31,7 +36,7 @@ public final class DependenciesRegistry
 	{
 		if (!dependenciesMap.containsKey(register))
 		{
-			dependenciesMap.put(register, Arrays.asList(dependency));
+			dependenciesMap.put(register, dependency);
 		}
 		else
 		{
@@ -70,7 +75,7 @@ public final class DependenciesRegistry
 			Map<String, String> tempMap = new HashMap<>();
 			tempMap.put(libId, minLibVersion);
 
-			libDependenciesMap.put(register, Arrays.asList(tempMap));
+			libDependenciesMap.put(register, tempMap);
 		}
 		else
 		{
@@ -92,6 +97,8 @@ public final class DependenciesRegistry
 
 	/**
 	 * Checks the dependencies of the specified register.
+	 *
+	 * TODO: Cleanup and optimise code.
 	 * @param registerToCheck The mod register to check the dependencies of.
 	 * @return Whether or not the dependencies check was fully completed.
 	 */
@@ -100,55 +107,19 @@ public final class DependenciesRegistry
 	{
 		if (doesRegisterHaveDependencies(registerToCheck))
 		{
-			for (Map.Entry<Object, List<String>> dependencyEntry : dependenciesMap.entrySet())
+			for (Object dependencyKey : dependenciesMap.keySet())
 			{
-				for (String dependency : dependencyEntry.getValue())
+				for (String dependency : dependenciesMap.get(dependencyKey))
 				{
-					if (NModLoader.doesModExist(dependency) || NModLoader.doesLibraryExist(dependency))
-					{
-						IModContainer dependencyContainer = NModLoader.getModContainerByModId(dependency);
-
-						if (dependencyContainer.isLibrary())
-						{
-							if (NModLoader.mods.compareContainerVersions(NModLoader.getModContainerByModId(NModLoader.mods.getIdForRegister(registerToCheck)), dependencyContainer))
-							{
-								continue;
-							}
-							else
-							{
-								return false;
-							}
-						}
-						else
-						{
-							continue;
-						}
-					}
-					else
+					if (!NModLoader.doesModExist(dependency))
 					{
 						return false;
 					}
-				}
-			}
-
-			for (Map.Entry<Object, List<Map<String, String>>> libDepEntry : libDependenciesMap.entrySet())
-			{
-				for (Map<String, String> libDependencyEntry : libDepEntry.getValue())
-				{
-					for (Map.Entry<String, String> libDependencyEntry2 : libDependencyEntry.entrySet())
+					else
 					{
-						if (NModLoader.doesLibraryExist(libDependencyEntry2.getKey()))
-						{
-							if (NModLoader.mods.checkVersions(NModLoader.getModContainerByModId(NModLoader.mods.getIdForRegister(registerToCheck)), libDependencyEntry2.getValue()))
-							{
-								continue;
-							}
-							else
-							{
-								return false;
-							}
-						}
-						else
+						IModContainer modDependencyContainer = NModLoader.getModContainerByModId(dependency);
+
+						if (!modDependencyContainer.isLibrary() && NModLoader.mods.compareContainerVersions(NModLoader.getModContainerByModId(NModLoader.mods.getIdForRegister(registerToCheck)), modDependencyContainer))
 						{
 							return false;
 						}

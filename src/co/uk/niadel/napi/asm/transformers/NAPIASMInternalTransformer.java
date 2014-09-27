@@ -116,6 +116,9 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 
 	public void removeInternalUsages(String className, ClassNode classNode)
 	{
+		for (MethodNode methodNode : classNode.methods)
+		{
 
+		}
 	}
 }
