@@ -33,14 +33,7 @@ public final class DependenciesRegistry
 	 */
 	public static final void addDependency(Object register, String dependency)
 	{
-		if (!dependenciesMap.containsKey(register))
-		{
-			dependenciesMap.put(register, dependency);
-		}
-		else
-		{
-			dependenciesMap.get(register).add(dependency);
-		}
+		dependenciesMap.put(register, dependency);
 	}
 
 	/**
@@ -79,6 +72,7 @@ public final class DependenciesRegistry
 		}
 		else
 		{
+			addDependency(register, libId);
 			HashMap<String, String> tempMap = new HashMap<>();
 			tempMap.put(libId, minLibVersion);
 			libDependenciesMap.get(register).add(tempMap);

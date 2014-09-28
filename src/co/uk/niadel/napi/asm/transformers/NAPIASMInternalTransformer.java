@@ -3,18 +3,14 @@ package co.uk.niadel.napi.asm.transformers;
 import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.asm.IASMTransformer;
+import co.uk.niadel.napi.util.ModCrashReport;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AnnotationNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.*;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Gets rid of calls to methods and usage of methods outside of the package the method that the @Internal marks.
@@ -108,9 +104,8 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 		}
 		catch (ClassNotFoundException impossibru)
 		{
-			//Should NEVER, EVER happen.
-			NAPILogHelper.instance.logError("Impossibru error! KAAAAAABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOMMMMMMMMMMMMM!!!!!!!!!");
-			NAPILogHelper.instance.logError(impossibru);
+			//Some serious **** has happened to let this happen, crash.
+			ModCrashReport.generateCrashReport(impossibru, true);
 		}
 	}
 
@@ -118,7 +113,18 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 	{
 		for (MethodNode methodNode : classNode.methods)
 		{
-
+			for (AbstractInsnNode insnNode : methodNode.instructions.toArray())
+			{
+				if (insnNode instanceof MethodInsnNode)
+				{
+					handleMethodCall(className, methodNode, (MethodInsnNode) insnNode);
+				}
+			}
 		}
+	}
+
+	public void handleMethodCall(String className, MethodNode methodNode, MethodInsnNode methodInsnNode)
+	{
+
 	}
 }
