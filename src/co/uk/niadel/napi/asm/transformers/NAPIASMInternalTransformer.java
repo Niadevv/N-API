@@ -125,6 +125,9 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 
 	public void handleMethodCall(String className, MethodNode methodNode, MethodInsnNode methodInsnNode)
 	{
+		if (internalFields.keySet().contains(methodInsnNode.owner.replace("/", ".")))
+		{
 
+		}
 	}
 }

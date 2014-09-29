@@ -10,7 +10,7 @@ import java.util.*;
 import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.Internal;
-import co.uk.niadel.napi.asm.transformers.NAPIASMClassFixingTransformer;
+import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.Experimental;
 import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMNecessityTransformer;
@@ -25,11 +25,9 @@ import org.objectweb.asm.tree.ClassNode;
  *
  * @author Niadel
  */
+@Experimental(firstAppearance = "0.0")
 public final class ASMRegistry 
 {
-	@Immutable
-	private static final List<String> badClasses = new ArrayList<>();
-
 	/**
 	 * VERY important to load ASM classes correctly.
 	 */
@@ -74,7 +72,7 @@ public final class ASMRegistry
 	}
 
 	/**
-	 * Adds a class to exclude from transforming. You can add important MPI classes to this.
+	 * Adds a class to exclude from transforming. You can add important API classes to this.
 	 * @param excludedName The name to exclude.
 	 */
 	public static final void addASMClassExclusion(String excludedName)
@@ -180,7 +178,7 @@ public final class ASMRegistry
 				}*/
 	}
 
-	/**
+	/*
 	 * Gets all of the classes loaded and puts them in allClasses.
 	 */
 	@Internal
@@ -206,13 +204,13 @@ public final class ASMRegistry
 	}
 
 	//Next two methods are borrowed code from http://www.dzone.com/snippets/get-all-classes-within-package
-	/*
-	Changes from original code:
-		Fixing the formatting to my style
-		Getting rid of the assert statements
-		Getting rid of unecessary Types in the instantiated generic types.
-		Adding a try-catch instead of doing what I USED to do and make the method's throws declaration include the error.
-	*/
+	//
+	//Changes from original code:
+	//	Fixing the formatting to my style
+	//	Getting rid of the assert statements
+	//	Getting rid of unecessary Types in the instantiated generic types.
+	//	Adding a try-catch instead of doing what I USED to do and make the method's throws declaration include the error.
+	//
 	@Internal
 	private static final Class[] getClassesForPackage(String packageName)
 	{
@@ -289,16 +287,6 @@ public final class ASMRegistry
 
 						String classFilePackage = ClassDiscoveryPredicates.getPackageOfClassFile(file);
 
-						/*
-						if (file.getName().contains("StringTranslate") || file.getName().contains("StatCollector") || file.getName().contains("TextureUtil") || file.getName().contains("CraftingManager"))
-						{
-							NAPILogHelper.instance.logWarn("Attempted to Class.forName a bad class! Attempting to do this causes an NPE, so it will be skipped!");
-							continue;
-						}
-						else
-						{
-							classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
-						}*/
 
 						if (classDiscoveryPredicates.isClassLoadable(file))
 						{
@@ -316,7 +304,7 @@ public final class ASMRegistry
 					}
 				}
 
-				while (!classesScheduledForReloading.isEmpty())
+				if (!classesScheduledForReloading.isEmpty())
 				{
 					for (String classNotLoaded : classesScheduledForReloading)
 					{
@@ -338,42 +326,28 @@ public final class ASMRegistry
 		}
 	}
 
-	/**
-	 * @deprecated Will be replaced by the Predicates system.
-	 */
-	@Deprecated
-	private static final void fixBadClasses()
-	{
-		try
-		{
-			NAPIASMClassFixingTransformer transformer = new NAPIASMClassFixingTransformer();
-
-			if (!badClasses.isEmpty())
-			{
-				for (String badClass : badClasses)
-				{
-					NModLoader.loadTransformedClass(Class.forName(badClass), transformer.manipulateBytecodes(badClass));
-				}
-			}
-		}
-		catch (ClassNotFoundException e)
-		{
-			NAPILogHelper.instance.logError(e);
-		}
-	}
-
-	/**
-	 * Used to avoid NPEs when finding class names.
-	 */
+	//
+	 // Used to avoid NPEs when finding class names.
+	//
 	public static class ClassDiscoveryPredicates
 	{
 		public ValueExpandableMap<String, String> classToPredicatesMap = new ValueExpandableMap<>();
+
+		public List<String> blacklistedClasses = new ArrayList<>();
 
 		public ClassDiscoveryPredicates()
 		{
 			this.addClassPredicate("net.minecraft.entity.monster.EntityEnderman", "net.minecraft.init.Blocks");
 			this.addClassPredicate("net.minecraft.util.StatCollector", "net.minecraft.util.StringTranslate");
 			this.addClassPredicate("net.minecraft.util.StringTranslate", "net.minecraft.client.Minecraft");
+//			this.addClassPredicate("net.minecraft");
+			//Temprorary until I can find the class that needs to be loaded before this.
+			this.addClassPredicate("net.minecraft.client.renderer.texture.TextureUtil", "net.minecraft.client.Minecraft");
+		}
+
+		public void addBlackListedClass(String className)
+		{
+			this.blacklistedClasses.add(className);
 		}
 
 		public void addClassPredicate(String className, String predicateClassName)
@@ -383,7 +357,7 @@ public final class ASMRegistry
 
 		public boolean isClassLoadable(String className)
 		{
-			return ASMRegistry.allClasses.containsAll(this.classToPredicatesMap.get(className) != null ? this.classToPredicatesMap.get(className) : new ArrayList<>());
+			return !blacklistedClasses.contains(className) && ASMRegistry.allClasses.containsAll(this.classToPredicatesMap.get(className) != null ? this.classToPredicatesMap.get(className) : new ArrayList<>());
 		}
 
 		public boolean isClassLoadable(File clazz)
@@ -426,7 +400,6 @@ public final class ASMRegistry
 		ASMRegistry.addASMClassExclusion("net.minecraftforge");
 		ASMRegistry.addASMClassExclusion("net.minecraft.src.FMLRenderAccessLibrary");
 		ASMRegistry.addASMClassExclusion("co.uk.niadel.napi");
-		fixBadClasses();
-		getAllLoadedClassNames();
+//		getAllLoadedClassNames();
 	}
 }
