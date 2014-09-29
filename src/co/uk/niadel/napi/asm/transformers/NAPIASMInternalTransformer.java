@@ -2,6 +2,7 @@ package co.uk.niadel.napi.asm.transformers;
 
 import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Internal;
+import co.uk.niadel.napi.asm.ASMUtils;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.util.ModCrashReport;
 import co.uk.niadel.napi.util.NAPILogHelper;
@@ -104,7 +105,7 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 		}
 		catch (ClassNotFoundException impossibru)
 		{
-			//Some serious **** has happened to let this happen, crash.
+			//Some serious **** has happened for this to occur, crash.
 			ModCrashReport.generateCrashReport(impossibru, true);
 		}
 	}
@@ -125,9 +126,25 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 
 	public void handleMethodCall(String className, MethodNode methodNode, MethodInsnNode methodInsnNode)
 	{
-		if (internalFields.keySet().contains(methodInsnNode.owner.replace("/", ".")))
-		{
+		String methodCalledOwner = methodInsnNode.owner.replace("/", ".");
 
+		if (internalFields.keySet().contains(methodCalledOwner))
+		{
+			if (className == methodCalledOwner)
+			{
+				return;
+			}
+			else if (internalFields.get(methodCalledOwner) instanceof ClassNode)
+			{
+				int numberOfInsnsToRemove = ASMUtils.getNumOfParamsInMethod(methodInsnNode.desc);
+				methodNode.instructions.remove(methodInsnNode);
+
+				//Remove the previous ALOAD/ILOADs.
+				for (int i = 1; i == numberOfInsnsToRemove; i++)
+				{
+					methodNode.instructions.remove(methodNode.instructions.get(methodNode.instructions.indexOf(methodInsnNode) - i));
+				}
+			}
 		}
 	}
 }

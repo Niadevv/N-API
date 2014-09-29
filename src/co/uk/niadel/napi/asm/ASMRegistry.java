@@ -8,7 +8,6 @@ import java.net.URL;
 import java.util.*;
 
 import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
-import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.Experimental;
 import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
@@ -28,6 +27,8 @@ import org.objectweb.asm.tree.ClassNode;
 @Experimental(firstAppearance = "0.0")
 public final class ASMRegistry 
 {
+	private static final boolean DEBUG = true;
+
 	/**
 	 * VERY important to load ASM classes correctly.
 	 */
@@ -264,6 +265,7 @@ public final class ASMRegistry
 				return classes;
 			}
 
+			//Filters out non .class and folders. Mainly for optimisation.
 			File[] files = directory.listFiles(new FileFilter()
 			{
 				@Override
@@ -287,7 +289,6 @@ public final class ASMRegistry
 
 						String classFilePackage = ClassDiscoveryPredicates.getPackageOfClassFile(file);
 
-
 						if (classDiscoveryPredicates.isClassLoadable(file))
 						{
 							classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
@@ -299,6 +300,7 @@ public final class ASMRegistry
 						}
 						else
 						{
+							NAPILogHelper.instance.log("Predicates for class " + classFilePackage + " are NOT be loaded! Being postponed until after the rest!");
 							classesScheduledForReloading.add(classFilePackage);
 						}
 					}
@@ -340,8 +342,6 @@ public final class ASMRegistry
 			this.addClassPredicate("net.minecraft.entity.monster.EntityEnderman", "net.minecraft.init.Blocks");
 			this.addClassPredicate("net.minecraft.util.StatCollector", "net.minecraft.util.StringTranslate");
 			this.addClassPredicate("net.minecraft.util.StringTranslate", "net.minecraft.client.Minecraft");
-//			this.addClassPredicate("net.minecraft");
-			//Temprorary until I can find the class that needs to be loaded before this.
 			this.addClassPredicate("net.minecraft.client.renderer.texture.TextureUtil", "net.minecraft.client.Minecraft");
 		}
 
@@ -389,6 +389,14 @@ public final class ASMRegistry
 		}
 	}
 
+	private static final void debug(Object debug)
+	{
+		if (DEBUG)
+		{
+			NAPILogHelper.instance.log(debug);
+		}
+	}
+
 	static
 	{
 		if (!MCData.isForgeDominated())
@@ -400,6 +408,6 @@ public final class ASMRegistry
 		ASMRegistry.addASMClassExclusion("net.minecraftforge");
 		ASMRegistry.addASMClassExclusion("net.minecraft.src.FMLRenderAccessLibrary");
 		ASMRegistry.addASMClassExclusion("co.uk.niadel.napi");
-//		getAllLoadedClassNames();
+		getAllLoadedClassNames();
 	}
 }
