@@ -120,6 +120,10 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 				{
 					handleMethodCall(className, methodNode, (MethodInsnNode) insnNode);
 				}
+				else if (insnNode instanceof FieldInsnNode)
+				{
+					handleFieldUsage(className, methodNode, (FieldInsnNode) insnNode);
+				}
 			}
 		}
 	}
@@ -132,6 +136,7 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 		{
 			if (className == methodCalledOwner)
 			{
+				//It's safe as this is the class that owns the method.
 				return;
 			}
 			else if (internalFields.get(methodCalledOwner) instanceof ClassNode)
@@ -146,5 +151,10 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 				}
 			}
 		}
+	}
+
+	public void handleFieldUsage(String className, MethodNode methodNode, FieldInsnNode fieldInsnNode)
+	{
+
 	}
 }
