@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
- * Used for handling numeric ids like dimension ids and, up to 1.8, block and item ids.
+ * Used for handling numeric ids like dimension ids and block and item ids.
  *
  * @author Niadel
  */

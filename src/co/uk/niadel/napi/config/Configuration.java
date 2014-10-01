@@ -14,7 +14,6 @@ import co.uk.niadel.napi.modhandler.nml.NModLoader;
 import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
-@Experimental(stable = false, firstAppearance = "1.0")
 /**
  * Base for Config files, these are relatively Forge-esque, down to the fact they're
  * in the same directory to avoid problems for people who have ID Mismatches and are 
@@ -22,6 +21,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
  * 
  * @author Niadel
  */
+@Experimental(stable = false, firstAppearance = "1.0")
 public class Configuration 
 {
 	/**
