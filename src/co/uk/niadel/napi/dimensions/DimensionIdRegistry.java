@@ -14,8 +14,8 @@ public final class DimensionIdRegistry
 	
 	/**
 	 * Registers an id.
-	 * @param stringId
-	 * @return
+	 * @param stringId The id to register the dimension internally.
+	 * @return The integer id of the dimension, uniqueified by N-API.
 	 */
 	public static final int registerId(String stringId)
 	{
@@ -24,6 +24,11 @@ public final class DimensionIdRegistry
 		return id;
 	}
 
+	/**
+	 * Gets the integer id for the dimension with the string id passed.
+	 * @param stringId The string id to get the int id of.
+	 * @return The integer id for the dimension with the string id passed.
+	 */
 	public static final int getIdForString(String stringId)
 	{
 		return idMap.get(stringId);

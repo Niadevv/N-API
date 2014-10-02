@@ -12,7 +12,7 @@ import co.uk.niadel.napi.common.NAPIData;
 import co.uk.niadel.napi.forgewrapper.eventhandling.EventHandlerFML;
 import co.uk.niadel.napi.forgewrapper.eventhandling.EventHandlerForge;
 import co.uk.niadel.napi.forgewrapper.oredict.OreDictConverter;
-import co.uk.niadel.napi.modhandler.nml.NModLoader;
+import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.napi.util.MCData;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;

@@ -7,7 +7,7 @@ import co.uk.niadel.napi.commands.CommandNAPI;
 import co.uk.niadel.napi.commands.CommandRegistry;
 import co.uk.niadel.napi.config.Configuration;
 import co.uk.niadel.napi.entity.tileentity.TileEntityMeasureStorer;
-import co.uk.niadel.napi.modhandler.nml.EnumLoadState;
+import co.uk.niadel.napi.nml.EnumLoadState;
 import net.minecraft.potion.Potion;
 import co.uk.niadel.napi.common.MPIEventHandler;
 import co.uk.niadel.napi.common.NAPIData;

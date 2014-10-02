@@ -4,4 +4,4 @@
  *
  * @author Niadel
  */
-package co.uk.niadel.napi.modhandler.nml;
+package co.uk.niadel.napi.nml;

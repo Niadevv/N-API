@@ -13,7 +13,7 @@ import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.Experimental;
 import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMNecessityTransformer;
-import co.uk.niadel.napi.modhandler.nml.NModLoader;
+import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.napi.util.MCData;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import co.uk.niadel.commons.datamanagement.DoubleMap;
-import co.uk.niadel.napi.modhandler.nml.*;
+import co.uk.niadel.napi.nml.*;
 
 /**
  * A wrapper list around a list of mod containers (generally ModContainer) for convenience.

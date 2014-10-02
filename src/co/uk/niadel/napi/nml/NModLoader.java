@@ -1,4 +1,4 @@
-package co.uk.niadel.napi.modhandler.nml;
+package co.uk.niadel.napi.nml;
 
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.*;

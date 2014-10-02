@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.common;
 
-import co.uk.niadel.napi.modhandler.nml.NModLoader;
+import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import co.uk.niadel.napi.util.ParseUtils;

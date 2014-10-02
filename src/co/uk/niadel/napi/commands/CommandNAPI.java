@@ -1,8 +1,8 @@
 package co.uk.niadel.napi.commands;
 
 import co.uk.niadel.napi.annotations.MPIAnnotations.Temprorary;
-import co.uk.niadel.napi.modhandler.nml.IModContainer;
-import co.uk.niadel.napi.modhandler.nml.NModLoader;
+import co.uk.niadel.napi.nml.IModContainer;
+import co.uk.niadel.napi.nml.NModLoader;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;

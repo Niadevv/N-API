@@ -1,4 +1,4 @@
-package co.uk.niadel.napi.modhandler.nml;
+package co.uk.niadel.napi.nml;
 
 /**
  * Used in @LoadStateMethod and the loader.

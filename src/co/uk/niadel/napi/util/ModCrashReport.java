@@ -3,8 +3,8 @@ package co.uk.niadel.napi.util;
 import co.uk.niadel.commons.crash.CrashReport;
 import co.uk.niadel.commons.logging.Logger;
 import co.uk.niadel.napi.common.NAPIData;
-import co.uk.niadel.napi.modhandler.nml.IModContainer;
-import co.uk.niadel.napi.modhandler.nml.NModLoader;
+import co.uk.niadel.napi.nml.IModContainer;
+import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.commons.reflection.ReflectionCallMethods;
 
 import java.io.File;

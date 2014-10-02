@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.Experimental;
-import co.uk.niadel.napi.modhandler.nml.NModLoader;
+import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
@@ -21,7 +21,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
  * 
  * @author Niadel
  */
-@Experimental(stable = false, firstAppearance = "1.0")
+@Experimental(stable = false, firstAppearance = "0.0")
 public class Configuration 
 {
 	/**
@@ -312,7 +312,7 @@ public class Configuration
 	 * @param configValue
 	 * @param newValue
 	 */
-	@Internal
+	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
 	public final void setConfigValue(String configValue, String newValue)
 	{
 		data.remove(configValue);

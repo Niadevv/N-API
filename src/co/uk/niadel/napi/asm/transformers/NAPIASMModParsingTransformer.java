@@ -1,11 +1,11 @@
 package co.uk.niadel.napi.asm.transformers;
 
-import co.uk.niadel.napi.modhandler.nml.EnumLoadState;
+import co.uk.niadel.napi.nml.EnumLoadState;
 import co.uk.niadel.napi.annotations.LoadStateMethod;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.events.EventFactory;
-import co.uk.niadel.napi.modhandler.nml.NModLoader;
+import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;

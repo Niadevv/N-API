@@ -1,4 +1,4 @@
-package co.uk.niadel.napi.modhandler.nml;
+package co.uk.niadel.napi.nml;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
