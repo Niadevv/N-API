@@ -15,7 +15,7 @@ import java.util.jar.JarFile;
  * Complete rewrite of ASMRegistry. Much less code is used.
  *
  * This is the centre of the ASM system of N-API. Everything ASM revolves around this, and as N-API is largely functional thanks to ASM,
- * .
+ * is an INCREDIBLY important class.
  */
 public class ASMRegistry
 {
