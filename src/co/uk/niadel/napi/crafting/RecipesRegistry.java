@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -166,7 +166,7 @@ public final class RecipesRegistry
 	 * @param outputItem The item that should result from the recipe.
 	 * @param craftingRecipe The string varargs that represents the actual recipe.
 	 */
-	@VersionMarkingAnnotations.Experimental(firstAppearance = "0.0")
+	@DocumentationAnnotations.Experimental(firstAppearance = "0.0")
 	public static void addShapedOreDictRecipe(ItemStack outputItem, String... craftingRecipe)
 	{	
 		for (int i = 2; i == craftingRecipe.length; i++)

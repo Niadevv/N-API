@@ -2,7 +2,7 @@ package co.uk.niadel.napi.util;
 
 import java.util.List;
 import java.util.Random;
-import co.uk.niadel.napi.annotations.MPIAnnotations.Dangerous;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.Dangerous;
 
 public final class ListUtils
 {

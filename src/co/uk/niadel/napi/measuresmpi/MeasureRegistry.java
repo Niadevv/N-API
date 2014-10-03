@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.measuresmpi;
 
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.NYI;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.NYI;
 
 import java.util.ArrayList;
 import java.util.List;

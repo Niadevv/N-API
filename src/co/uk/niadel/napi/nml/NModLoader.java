@@ -1,7 +1,7 @@
 package co.uk.niadel.napi.nml;
 
+import co.uk.niadel.napi.annotations.DocumentationAnnotations;
 import co.uk.niadel.napi.annotations.Internal;
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.*;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.init.DevLaunch;
@@ -36,7 +36,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
  * @author Niadel
  *
  */
-@Experimental(firstAppearance = "0.0")
+@DocumentationAnnotations.Experimental(firstAppearance = "0.0")
 public class NModLoader extends URLClassLoader
 {
 	/**
@@ -52,7 +52,7 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * This handles finding the @ModRegister annotation and loading the mod itself.
 	 */
-	public static final @Internal NAPIASMModLocatingTransformer modLocatingTransformer = new NAPIASMModLocatingTransformer();
+	private static final @Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false) NAPIASMModLocatingTransformer modLocatingTransformer = new NAPIASMModLocatingTransformer();
 
 	/**
 	 * The Minecraft object.
@@ -172,6 +172,7 @@ public class NModLoader extends URLClassLoader
 
 				if (mcModsDir.listFiles() != null)
 				{
+					//List of .jars/.zips, filtered with a FilenameFilter.
 					File[] modFiles = mcModsDir.listFiles(new FilenameFilter()
 					{
 						@Override
@@ -181,6 +182,7 @@ public class NModLoader extends URLClassLoader
 						}
 					});
 
+					//List of directories in the mods folder.
 					File[] directories = mcModsDir.listFiles(new FileFilter()
 					{
 						@Override
@@ -200,6 +202,8 @@ public class NModLoader extends URLClassLoader
 					{
 						loadUrl(directory.toURI().toURL());
 					}
+
+					ASMRegistry.callASMTransformer(modLocatingTransformer);
 				}
 			}
 			catch (IOException | SecurityException | IllegalArgumentException e)
@@ -422,7 +426,7 @@ public class NModLoader extends URLClassLoader
 	 * @param theClass The class that was transformed to load.
 	 * @param bytes The bytes of theClass.
 	 */
-	@Experimental(firstAppearance = "1.0")
+	@DocumentationAnnotations.Experimental(firstAppearance = "1.0")
 	public static final void loadTransformedClass(Class theClass, byte[] bytes)
 	{
 		NModLoader.defineClass(theClass.getName(), bytes);

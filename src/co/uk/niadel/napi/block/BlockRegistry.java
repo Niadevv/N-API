@@ -3,7 +3,7 @@ package co.uk.niadel.napi.block;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations;
 import co.uk.niadel.napi.modhandler.NAPIModRegister;
 import co.uk.niadel.napi.util.MCData;
 import co.uk.niadel.commons.reflection.ReflectionCallMethods;
@@ -49,7 +49,7 @@ public final class BlockRegistry
 	 * @param nonNumericId The string id of the block to remove.
 	 * @param newBlock The new Block to put in it's place.
 	 */
-	@VersionMarkingAnnotations.Experimental(firstAppearance = "1.0")
+	@DocumentationAnnotations.Experimental(firstAppearance = "1.0")
 	public static final void replaceBlock(String nonNumericId, Block newBlock)
 	{
 		Map<String, Block> blocksMap = ReflectionManipulateValues.getValue(RegistrySimple.class, Block.blockRegistry, "registryObjects");

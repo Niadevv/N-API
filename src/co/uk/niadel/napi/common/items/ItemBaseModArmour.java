@@ -5,7 +5,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import co.uk.niadel.napi.annotations.MPIAnnotations.RecommendedMethod;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.RecommendedMethod;
 import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
 
 /**

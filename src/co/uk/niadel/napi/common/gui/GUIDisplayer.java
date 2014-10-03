@@ -3,7 +3,7 @@ package co.uk.niadel.napi.common.gui;
 import co.uk.niadel.napi.events.EventFactory;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
-import co.uk.niadel.napi.annotations.MPIAnnotations.ShouldSuperInSubclasses;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.ShouldSuperInSubclasses;
 import co.uk.niadel.napi.events.client.EventDisplayModGUI;
 
 /**

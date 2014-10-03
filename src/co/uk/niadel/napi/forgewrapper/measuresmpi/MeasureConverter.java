@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.forgewrapper.measuresmpi;
 
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.NYI;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.NYI;
 import co.uk.niadel.napi.common.IConverter;
 import net.minecraftforge.fluids.Fluid;
 

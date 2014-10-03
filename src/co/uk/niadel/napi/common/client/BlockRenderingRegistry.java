@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.common.client;
 
-import co.uk.niadel.napi.annotations.MPIAnnotations.Temprorary;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.Temprorary;
 import net.minecraft.block.Block;
 
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-import co.uk.niadel.napi.annotations.MPIAnnotations.Dangerous;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.Dangerous;
 import co.uk.niadel.napi.dimensions.DimensionIdRegistry;
 
 public class BlockPortalBase extends Block

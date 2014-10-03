@@ -9,9 +9,10 @@ import java.util.*;
 
 import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Internal;
-import co.uk.niadel.napi.annotations.VersionMarkingAnnotations.Experimental;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.Experimental;
 import co.uk.niadel.napi.asm.transformers.NAPIASMEventHandlerTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
+import co.uk.niadel.napi.asm.transformers.NAPIASMModParsingTransformer;
 import co.uk.niadel.napi.asm.transformers.NAPIASMNecessityTransformer;
 import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.napi.util.MCData;
@@ -68,7 +69,10 @@ public final class ASMRegistry
 	{
 		for (IASMTransformer currTransformer : asmTransformers)
 		{
-			callASMTransformer(currTransformer);
+			if (!(currTransformer instanceof NAPIASMModLocatingTransformer) || !(currTransformer instanceof NAPIASMModParsingTransformer))
+			{
+				callASMTransformer(currTransformer);
+			}
 		}
 	}
 
@@ -285,7 +289,7 @@ public final class ASMRegistry
 					}
 					else if (file.getName().endsWith(".class"))
 					{
-						NAPILogHelper.instance.log("Found class " + file.getName().replace(".class", "") + "!");
+						debug("Found class " + file.getName().replace(".class", "") + "!");
 
 						String classFilePackage = ClassDiscoveryPredicates.getPackageOfClassFile(file);
 
@@ -300,7 +304,7 @@ public final class ASMRegistry
 						}
 						else
 						{
-							NAPILogHelper.instance.log("Predicates for class " + classFilePackage + " are NOT be loaded! Being postponed until after the rest!");
+							debug("Predicates for class " + classFilePackage + " are NOT be loaded! Being postponed until after the rest!");
 							classesScheduledForReloading.add(classFilePackage);
 						}
 					}
@@ -328,9 +332,9 @@ public final class ASMRegistry
 		}
 	}
 
-	//
-	 // Used to avoid NPEs when finding class names.
-	//
+	/**
+	 * Used to avoid NPEs when finding class names.
+	 */
 	public static class ClassDiscoveryPredicates
 	{
 		public ValueExpandableMap<String, String> classToPredicatesMap = new ValueExpandableMap<>();

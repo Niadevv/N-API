@@ -7,13 +7,28 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Useful for mods with MPIs of their own but still mainly use
- * N-API. Most of these are documentation Annotations. Only a handful are currently used at runtime.
+ * Annotations with no actual purpose beyond documentation.
  * 
  * @author Niadel
  */
-public final class MPIAnnotations 
+public final class DocumentationAnnotations
 {
+	/**
+	 * Marks a feature as a test feature.
+	 * @author Niadel
+	 */
+	@Retention(RetentionPolicy.SOURCE)
+	@Documented
+	public @interface Experimental
+	{
+		boolean stable() default false;
+
+		/**
+		 * First mod version this feature appeared.
+		 */
+		String firstAppearance();
+	}
+
 	/**
 	 * Marks a method as being the recommended method to use.
 	 * @author Niadel
@@ -72,5 +87,43 @@ public final class MPIAnnotations
 	public @interface Temprorary
 	{
 		String versionToBeRemoved() default "Soon!";
+	}
+
+	/**
+	 * Records a feature's first appearance in a stable release version.
+	 * @author Niadel
+	 *
+	 */
+	@Retention(RetentionPolicy.SOURCE)
+	@Documented
+	public @interface FirstStableRelease
+	{
+		String firstStableRelease();
+	}
+
+	/**
+	 * Marks a feature as not being added quite yet.
+	 * @author Niadel
+	 *
+	 */
+	@Retention(RetentionPolicy.SOURCE)
+	@Documented
+	public @interface NYI
+	{
+		String firstPresence();
+		String plannedCompletion() default "Soon!";
+	}
+
+	/**
+	 * Marks a feature as being not finished.
+	 * @author Niadel
+	 *
+	 */
+	@Retention(RetentionPolicy.SOURCE)
+	@Documented
+	public @interface NotCompleted
+	{
+		String firstPresence();
+		String plannedCompletion() default "Soon!";
 	}
 }

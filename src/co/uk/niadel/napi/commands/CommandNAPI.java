@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.commands;
 
-import co.uk.niadel.napi.annotations.MPIAnnotations.Temprorary;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.Temprorary;
 import co.uk.niadel.napi.nml.IModContainer;
 import co.uk.niadel.napi.nml.NModLoader;
 import net.minecraft.command.CommandBase;
