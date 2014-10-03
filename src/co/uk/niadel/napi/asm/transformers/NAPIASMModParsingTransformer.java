@@ -46,7 +46,7 @@ public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 			NAPILogHelper.instance.logError(e);
 		}
 
-		return null;
+		return bytes;
 	}
 
 	/**

@@ -16,6 +16,8 @@ import java.util.jar.JarFile;
  *
  * This is the centre of the ASM system of N-API. Everything ASM revolves around this, and as N-API is largely functional thanks to ASM,
  * is an INCREDIBLY important class.
+ *
+ * @author Niadel
  */
 public class ASMRegistry
 {
@@ -90,6 +92,18 @@ public class ASMRegistry
 				classToBytesMap.put(entry.getKey(), bytes);
 				NModLoader.defineClass(entry.getKey(), bytes);
 			}
+		}
+	}
+
+	public static final void callASMTransformerForClass(IASMTransformer transformer, String clazz)
+	{
+		if (!isClassExcluded(clazz))
+		{
+			byte[] bytes = transformer.manipulateBytecodes(clazz, classToBytesMap.get(clazz));
+
+			classToBytesMap.remove(clazz);
+			classToBytesMap.put(clazz, bytes);
+			NModLoader.defineClass(clazz, bytes);
 		}
 	}
 

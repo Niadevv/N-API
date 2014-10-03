@@ -5,6 +5,7 @@ import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.init.DevLaunch;
+import co.uk.niadel.napi.proxy.ProxyRegistry;
 import co.uk.niadel.napi.util.ModList;
 import java.io.File;
 import java.io.FileFilter;
@@ -225,7 +226,7 @@ public class NModLoader extends URLClassLoader
 	@Internal
 	private static final void initNAPIRegister()
 	{
-		modLocatingTransformer.manipulateBytecodes("co.uk.niadel.napi.modhandler.NAPIModRegister");
+		ASMRegistry.callASMTransformerForClass(modLocatingTransformer, "co.uk.niadel.napi.modhandler.NAPIModRegister");
 	}
 	
 	/**
@@ -337,6 +338,7 @@ public class NModLoader extends URLClassLoader
 				}
 			}
 
+			ProxyRegistry.executeProxies();
 			ResourcesRegistry.addAllResourceDomains();
 			NAPILogHelper.instance.log("Called all mod's modPreInit methods!");
 		}
