@@ -63,7 +63,15 @@ public class ASMRegistry
 	 */
 	public static final boolean isClassExcluded(String className)
 	{
-		return blacklistedClasses.contains(className);
+		for (String clazz : blacklistedClasses)
+		{
+			if (className.startsWith(clazz))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -74,11 +82,14 @@ public class ASMRegistry
 	{
 		for (Entry<String, byte[]> entry : classToBytesMap.entrySet())
 		{
-			byte[] bytes = transformer.manipulateBytecodes(entry.getKey(), entry.getValue());
+			if (!isClassExcluded(entry.getKey()))
+			{
+				byte[] bytes = transformer.manipulateBytecodes(entry.getKey(), entry.getValue());
 
-			classToBytesMap.remove(entry.getKey());
-			classToBytesMap.put(entry.getKey(), bytes);
-			NModLoader.defineClass(entry.getKey(), bytes);
+				classToBytesMap.remove(entry.getKey());
+				classToBytesMap.put(entry.getKey(), bytes);
+				NModLoader.defineClass(entry.getKey(), bytes);
+			}
 		}
 	}
 
@@ -155,5 +166,8 @@ public class ASMRegistry
 	static
 	{
 		discoverClasses();
+		addASMClassExclusion("cpw.fml.mods"); //TODO Remove in 1.8 as cpw.fml.mods is moved to net.minecraftforge.fml in 1.8.
+		addASMClassExclusion("net.minecraftforge");
+		addASMClassExclusion("co.uk.niadel.napi");
 	}
 }
