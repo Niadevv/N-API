@@ -1,5 +1,12 @@
 package co.uk.niadel.napi.asm;
 
+import co.uk.niadel.napi.util.NAPILogHelper;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.ClassNode;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -37,5 +44,23 @@ public class ASMUtils
 		}
 
 		return paramsInMethod;
+	}
+
+	public static final String getPackageOfClass(File clazz)
+	{
+		try
+		{
+			ClassReader classReader = new ClassReader(new FileInputStream(clazz));
+			ClassNode classNode = new ClassNode();
+			classReader.accept(classNode, 0);
+
+			return classNode.name;
+		}
+		catch (IOException e)
+		{
+			NAPILogHelper.instance.logError(e);
+		}
+
+		return "";
 	}
 }

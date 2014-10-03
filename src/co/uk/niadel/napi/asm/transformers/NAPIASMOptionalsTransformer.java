@@ -21,43 +21,41 @@ import java.io.IOException;
 public class NAPIASMOptionalsTransformer implements IASMTransformer, Opcodes
 {
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
+	{
+		ClassReader classReader = new ClassReader(bytes);
+		ClassNode classNode = new ClassNode();
+		classReader.accept(classNode, 0);
+
+		for (FieldNode fieldNode : classNode.fields)
+		{
+			handleField(fieldNode, classNode, className);
+		}
+
+		return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
+	}
+
+	public void handleField(FieldNode fieldNode, ClassNode classNode, String className)
 	{
 		try
 		{
-			ClassReader classReader = new ClassReader(className);
-			ClassNode classNode = new ClassNode();
-			classReader.accept(classNode, 0);
-
-			for (FieldNode fieldNode : classNode.fields)
+			for (AnnotationNode annotationNode : fieldNode.visibleAnnotations)
 			{
-				handleField(fieldNode, classNode, className);
-			}
-
-			return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
-		}
-		catch (IOException | ClassNotFoundException e)
-		{
-			NAPILogHelper.instance.logError(e);
-		}
-
-		return null;
-	}
-
-	public void handleField(FieldNode fieldNode, ClassNode classNode, String className) throws ClassNotFoundException
-	{
-		for (AnnotationNode annotationNode : fieldNode.visibleAnnotations)
-		{
-			if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/ReplacementFor"))
-			{
-				ReplacementFor annotation = Class.forName(className).getAnnotation(ReplacementFor.class);
-
-				if (NModLoader.doesModExist(annotation.itemInModWithModId()))
+				if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/ReplacementFor"))
 				{
-					//The mod that the field is a replacement for an item in exists, remove the field.
-					classNode.fields.remove(fieldNode);
+					ReplacementFor annotation = Class.forName(className).getAnnotation(ReplacementFor.class);
+
+					if (NModLoader.doesModExist(annotation.itemInModWithModId()))
+					{
+						//The mod that the field is a replacement for an item in exists, remove the field.
+						classNode.fields.remove(fieldNode);
+					}
 				}
 			}
+		}
+		catch (ClassNotFoundException e)
+		{
+			NAPILogHelper.instance.logError(e);
 		}
 	}
 }

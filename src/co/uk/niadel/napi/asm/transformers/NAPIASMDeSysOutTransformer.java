@@ -23,96 +23,93 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 	private static boolean shouldRun = Boolean.valueOf(NAPIModRegister.napiConfig.getConfigValue("removeSysOut", "true"));
 
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
 		if (shouldRun)
 		{
 			//Could be way more optimised, but I'll save that for later.
-			try
+			ClassReader classReader = new ClassReader(bytes);
+			ClassNode classNode = new ClassNode();
+			classReader.accept(classNode, 0);
+
+			//Yup. I'm allowing it to catch my own uses of System.out.println. It'll stop me from being a hypocrite
+			//dev. Only in N-API though.
+			if (!className.contains("net.minecraft.") && !className.startsWith("java") && !isClassExternalLibrary(className))
 			{
-				ClassReader classReader = new ClassReader(className);
-				ClassNode classNode = new ClassNode();
-				classReader.accept(classNode, 0);
-
-				//Yup. I'm allowing it to catch my own uses of System.out.println. It'll stop me from being a hypocrite
-				//dev. Only in N-API though.
-				if (!className.contains("net.minecraft.") && !className.startsWith("java") && !isClassExternalLibrary(className))
+				for (MethodNode method : classNode.methods)
 				{
-					for (MethodNode method : classNode.methods)
+					String allExceptionsThrown = method.exceptions == null ? "---" : "";
+
+					if (method.exceptions != null)
 					{
-						String allExceptionsThrown = method.exceptions == null ? "---" : "";
-
-						if (method.exceptions != null)
+						for (String exceptionThrown : method.exceptions)
 						{
-							for (String exceptionThrown : method.exceptions)
-							{
-								allExceptionsThrown += ("," + exceptionThrown);
-							}
+							allExceptionsThrown += ("," + exceptionThrown);
 						}
+					}
 
-						for (int i = 0; i == method.instructions.size(); i++)
+					for (int i = 0; i == method.instructions.size(); i++)
+					{
+						AbstractInsnNode instruction = method.instructions.get(i);
+
+						if (instruction instanceof FieldInsnNode)
 						{
-							AbstractInsnNode instruction = method.instructions.get(i);
+							FieldInsnNode actInsn = (FieldInsnNode) instruction;
 
-							if (instruction instanceof FieldInsnNode)
+							if (actInsn.getType() == GETSTATIC)
 							{
-								FieldInsnNode actInsn = (FieldInsnNode) instruction;
-
-								if (actInsn.getType() == GETSTATIC)
+								if (actInsn.owner.contains("java/lang/System"))
 								{
-									if (actInsn.owner.contains("java/lang/System"))
+									if (actInsn.name == "out")
 									{
-										if (actInsn.name == "out")
+										AbstractInsnNode nextInsn = method.instructions.get(i + 1);
+
+										if (nextInsn instanceof LdcInsnNode)
 										{
-											AbstractInsnNode nextInsn = method.instructions.get(i + 1);
+											AbstractInsnNode nextInsn2 = method.instructions.get(i + 2);
 
-											if (nextInsn instanceof LdcInsnNode)
+											if (nextInsn2 instanceof MethodInsnNode)
 											{
-												AbstractInsnNode nextInsn2 = method.instructions.get(i + 2);
+												MethodInsnNode actInsn2 = (MethodInsnNode) nextInsn2;
 
-												if (nextInsn2 instanceof MethodInsnNode)
+												if (actInsn2.getType() == INVOKEVIRTUAL && actInsn2.owner == "java/io/PrintStream" && (actInsn2.name == "println" || actInsn2.name == "printf"))
 												{
-													MethodInsnNode actInsn2 = (MethodInsnNode) nextInsn2;
+													//Remove GETSTATIC
+													method.instructions.remove(instruction);
+													//Remove LDC
+													method.instructions.remove(nextInsn);
+													//Remove actual method call.
+													method.instructions.remove(nextInsn2);
 
-													if (actInsn2.getType() == INVOKEVIRTUAL && actInsn2.owner == "java/io/PrintStream" && (actInsn2.name == "println" || actInsn2.name == "printf"))
-													{
-														//Remove GETSTATIC
-														method.instructions.remove(instruction);
-														//Remove LDC
-														method.instructions.remove(nextInsn);
-														//Remove actual method call.
-														method.instructions.remove(nextInsn2);
-
-														NAPILogHelper.instance.logWarn("Found call to System.out.println or System.out.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
-														NAPILogHelper.instance.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
-													}
+													NAPILogHelper.instance.logWarn("Found call to System.out.println or System.out.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
+													NAPILogHelper.instance.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
 												}
 											}
 										}
-										else if (actInsn.name == "err")
+									}
+									else if (actInsn.name == "err")
+									{
+										AbstractInsnNode nextInsn = method.instructions.get(i + 1);
+
+										if (nextInsn instanceof LdcInsnNode)
 										{
-											AbstractInsnNode nextInsn = method.instructions.get(i + 1);
+											AbstractInsnNode nextInsn2 = method.instructions.get(i + 2);
 
-											if (nextInsn instanceof LdcInsnNode)
+											if (nextInsn2 instanceof MethodInsnNode)
 											{
-												AbstractInsnNode nextInsn2 = method.instructions.get(i + 2);
+												MethodInsnNode actInsn2 = (MethodInsnNode) nextInsn2;
 
-												if (nextInsn2 instanceof MethodInsnNode)
+												if (actInsn2.getType() == INVOKEVIRTUAL && actInsn2.owner == "java/io/PrintStream" && (actInsn2.name == "println" || actInsn2.name == "printf"))
 												{
-													MethodInsnNode actInsn2 = (MethodInsnNode) nextInsn2;
+													//Remove GETSTATIC
+													method.instructions.remove(instruction);
+													//Remove LDC
+													method.instructions.remove(nextInsn);
+													//Remove actual method call.
+													method.instructions.remove(nextInsn2);
 
-													if (actInsn2.getType() == INVOKEVIRTUAL && actInsn2.owner == "java/io/PrintStream" && (actInsn2.name == "println" || actInsn2.name == "printf"))
-													{
-														//Remove GETSTATIC
-														method.instructions.remove(instruction);
-														//Remove LDC
-														method.instructions.remove(nextInsn);
-														//Remove actual method call.
-														method.instructions.remove(nextInsn2);
-
-														NAPILogHelper.instance.logWarn("Found call to System.err.println or System.err.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
-														NAPILogHelper.instance.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
-													}
+													NAPILogHelper.instance.logWarn("Found call to System.err.println or System.err.printf! DO NOT DO THIS! Use a logger instead! The call has been removed.");
+													NAPILogHelper.instance.logWarn("Offending caller is method " + method.name + " with description " + method.desc + " that throws exceptions " + allExceptionsThrown + " in class " + className);
 												}
 											}
 										}
@@ -122,14 +119,10 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 						}
 					}
 				}
-
-				return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
-
 			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+
+			return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
+
 		}
 
 		return null;

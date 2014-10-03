@@ -21,77 +21,68 @@ import java.util.ListIterator;
 public class NAPIASMDeGameExitingTransformer implements IASMTransformer, Opcodes
 {
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
-		try
+		ClassReader classReader = new ClassReader(bytes);
+		ClassNode classNode = new ClassNode();
+		classReader.accept(classNode, 0);
+
+		if (!(className.startsWith("net.minecraft")) && !(className.startsWith("scala")) && !className.startsWith("cpw") && !(className.startsWith("com.jcraft.jogg") && !(className.startsWith("co.uk.niadel.napi.util.ModCrashReport")) && !(className.startsWith("java"))))
 		{
-			ClassReader classReader = new ClassReader(className);
-			ClassNode classNode = new ClassNode();
-			classReader.accept(classNode, 0);
-
-			if (!(className.startsWith("net.minecraft")) && !(className.startsWith("scala")) && !className.startsWith("cpw") && !(className.startsWith("com.jcraft.jogg") && !(className.startsWith("co.uk.niadel.napi.util.ModCrashReport")) && !(className.startsWith("java"))))
+			for (MethodNode methodNode : classNode.methods)
 			{
-				for (MethodNode methodNode : classNode.methods)
+				String allExceptionsThrown = methodNode.exceptions == null ? "---" : "";
+
+				if (methodNode.exceptions != null)
 				{
-					String allExceptionsThrown = methodNode.exceptions == null ? "---" : "";
-
-					if (methodNode.exceptions != null)
+					for (String exceptionThrown : methodNode.exceptions)
 					{
-						for (String exceptionThrown : methodNode.exceptions)
-						{
-							allExceptionsThrown += ("," + exceptionThrown);
-						}
+						allExceptionsThrown += ("," + exceptionThrown);
 					}
+				}
 
-					ListIterator<AbstractInsnNode> insnIterator = methodNode.instructions.iterator();
+				ListIterator<AbstractInsnNode> insnIterator = methodNode.instructions.iterator();
 
-					while (insnIterator.hasNext())
+				while (insnIterator.hasNext())
+				{
+					AbstractInsnNode instruction = insnIterator.next();
+
+					if (instruction instanceof MethodInsnNode)
 					{
-						AbstractInsnNode instruction = insnIterator.next();
+						MethodInsnNode actInsn = (MethodInsnNode) instruction;
 
-						if (instruction instanceof MethodInsnNode)
+						if (actInsn.getType() == INVOKESTATIC)
 						{
-							MethodInsnNode actInsn = (MethodInsnNode) instruction;
-
-							if (actInsn.getType() == INVOKESTATIC)
+							if (actInsn.owner == "java/lang/System" && actInsn.name == "exit")
 							{
-								if (actInsn.owner == "java/lang/System" && actInsn.name == "exit")
-								{
-									methodNode.instructions.remove(instruction);
-									NAPILogHelper.instance.logWarn("Found call to System.exit()! DO NOT DO THIS! The call has been removed.");
-									NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
-									NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
-								}
+								methodNode.instructions.remove(instruction);
+								NAPILogHelper.instance.logWarn("Found call to System.exit()! DO NOT DO THIS! The call has been removed.");
+								NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
+								NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
 							}
-							else if (actInsn.getType() == INVOKEVIRTUAL)
+						}
+						else if (actInsn.getType() == INVOKEVIRTUAL)
+						{
+							if (actInsn.owner == "java/lang/Runtime" && actInsn.name == "halt")
 							{
-								if (actInsn.owner == "java/lang/Runtime" && actInsn.name == "halt")
-								{
-									methodNode.instructions.remove(instruction);
-									NAPILogHelper.instance.logWarn("Found call to Runtime.halt()! DO NOT DO THIS! The call has been removed.");
-									NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
-									NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
-								}
-								else if (actInsn.owner == "java/lang/Runtime" && actInsn.name == "exit")
-								{
-									methodNode.instructions.remove(instruction);
-									NAPILogHelper.instance.logWarn("Found call to Runtime.exit()! DO NOT DO THIS! The call has been removed.");
-									NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
-									NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, make a ModCrashReport.");
-								}
+								methodNode.instructions.remove(instruction);
+								NAPILogHelper.instance.logWarn("Found call to Runtime.halt()! DO NOT DO THIS! The call has been removed.");
+								NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
+								NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, crash the game or make a ModCrashReport.");
+							}
+							else if (actInsn.owner == "java/lang/Runtime" && actInsn.name == "exit")
+							{
+								methodNode.instructions.remove(instruction);
+								NAPILogHelper.instance.logWarn("Found call to Runtime.exit()! DO NOT DO THIS! The call has been removed.");
+								NAPILogHelper.instance.logWarn("Offending caller is method " + methodNode.name + " with description " + methodNode.desc + " which throws " + allExceptionsThrown + " in class " + className + "!");
+								NAPILogHelper.instance.logWarn("If you need to exit the game because of an error, make a ModCrashReport.");
 							}
 						}
 					}
 				}
 			}
-
-			return new ClassWriter(classReader, 0).toByteArray();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
 		}
 
-		return null;
+		return new ClassWriter(classReader, 0).toByteArray();
 	}
 }

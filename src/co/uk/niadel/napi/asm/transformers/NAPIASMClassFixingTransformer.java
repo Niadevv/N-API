@@ -16,22 +16,20 @@ import java.io.IOException;
 public class NAPIASMClassFixingTransformer implements IASMTransformer, Opcodes
 {
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
-		try
-		{
-			ClassReader classReader = new ClassReader(className);
-			ClassNode classNode = new ClassNode();
-			classReader.accept(classNode, 0);
-			ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES);
-			MethodNode methodNode = null;
+		ClassReader classReader = new ClassReader(bytes);
+		ClassNode classNode = new ClassNode();
+		classReader.accept(classNode, 0);
+		ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES);
+		MethodNode methodNode = null;
 
-			switch (className)
-			{
-				case "net.minecraft.util.StringTranslate":
-					//Only operates in a Non-FML environment as, helpfully, FML had this same issue and fixed it.
-					if (!MCData.isForgeDominated())
-					{
+		switch (className)
+		{
+			case "net.minecraft.util.StringTranslate":
+				//Only operates in a Non-FML environment as, helpfully, FML had this same issue and fixed it.
+				if (!MCData.isForgeDominated())
+				{
 						/* TEMP Bytecode instructions to remind me of how to check if something's not null.
 						StringTranslate.<init>
 						ALOAD 4
@@ -42,25 +40,20 @@ public class NAPIASMClassFixingTransformer implements IASMTransformer, Opcodes
     					IF_ICMPNE L10
 						 */
 
-						//TODO Finish fixing.
-						methodNode = NAPIASMNecessityTransformer.constructMethodNode(ACC_PUBLIC, "<init>", "()V", null, null, classNode);
-						methodNode.instructions.insert(methodNode.instructions.get(17), new JumpInsnNode(IFNULL, (LabelNode) methodNode.instructions.get(16)));
+					//TODO Finish fixing.
+					methodNode = NAPIASMNecessityTransformer.constructMethodNode(ACC_PUBLIC, "<init>", "()V", null, null, classNode);
+					methodNode.instructions.insert(methodNode.instructions.get(17), new JumpInsnNode(IFNULL, (LabelNode) methodNode.instructions.get(16)));
 
-						NAPIASMNecessityTransformer.finishMethodNodeEdit(methodNode, classNode);
-						return classWriter.toByteArray();
-					}
-
-					break;
-
-				default:
+					NAPIASMNecessityTransformer.finishMethodNodeEdit(methodNode, classNode);
 					return classWriter.toByteArray();
-			}
-		}
-		catch (IOException e)
-		{
-			NAPILogHelper.instance.logError(e);
+				}
+
+				break;
+
+			default:
+				return classWriter.toByteArray();
 		}
 
-		return null;
+		return bytes;
 	}
 }

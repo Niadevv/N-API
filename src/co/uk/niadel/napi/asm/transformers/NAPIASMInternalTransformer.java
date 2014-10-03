@@ -27,25 +27,16 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 	private static final ValueExpandableMap<String, Object> internalFields = new ValueExpandableMap<>();
 
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
-		try
-		{
-			ClassReader classReader = new ClassReader(className);
-			ClassNode classNode = new ClassNode();
-			classReader.accept(classNode, 0);
+		ClassReader classReader = new ClassReader(bytes);
+		ClassNode classNode = new ClassNode();
+		classReader.accept(classNode, 0);
 
-			scanForInternals(className, classNode);
-			removeInternalUsages(className, classNode);
+		scanForInternals(className, classNode);
+		removeInternalUsages(className, classNode);
 
-			return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
-		}
-		catch (IOException e)
-		{
-			NAPILogHelper.instance.logError(e);
-		}
-
-		return null;
+		return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
 	}
 
 	public void scanForInternals(String className, ClassNode classNode)

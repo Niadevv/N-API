@@ -24,11 +24,11 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 	public static final NAPIASMModParsingTransformer modParser = new NAPIASMModParsingTransformer();
 
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
 		try
 		{
-			ClassReader classReader = new ClassReader(className);
+			ClassReader classReader = new ClassReader(bytes);
 			ClassNode classNode = new ClassNode();
 			classReader.accept(classNode, 0);
 
@@ -67,7 +67,7 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 				modParser.manipulateBytecodes(className);
 			}
 		}
-		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)
 		{
 			if (e instanceof InstantiationException)
 			{
@@ -82,6 +82,6 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 			NAPILogHelper.instance.logError(e);
 		}
 
-		return null;
+		return bytes;
 	}
 }

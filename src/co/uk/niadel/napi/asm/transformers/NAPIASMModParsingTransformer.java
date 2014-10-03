@@ -22,7 +22,7 @@ import java.io.IOException;
 public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 {
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
 		try
 		{

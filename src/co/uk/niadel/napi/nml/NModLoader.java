@@ -124,6 +124,7 @@ public class NModLoader extends URLClassLoader
 		return mods.doesListContainLibrary(modId);
 	}
 
+	@Override
 	public final Package[] getPackages()
 	{
 		return super.getPackages();

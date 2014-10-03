@@ -31,78 +31,70 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 	}
 
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
+	{
+		ClassReader classReader = new ClassReader(bytes);
+		ClassNode classNode = new ClassNode();
+		classReader.accept(classNode, 0);
+		MethodNode eventMethodNode = null;
+		int currentIteration = 0;
+
+		//If the class is an event handler.
+		if (classNode.interfaces.contains("co/uk/niadel/napi/events/IEventHandler"))
+		{
+			for (MethodNode methodNode : classNode.methods)
+			{
+				for (AnnotationNode annotationNode : methodNode.visibleAnnotations)
+				{
+					if (annotationNode.desc.contains("co/uk/niadel/events/EventHandlerMethod"))
+					{
+						currentIteration++;
+						eventMethodNode = addEventHandlerCall(methodNode, currentIteration);
+					}
+				}
+			}
+
+			if (eventMethodNode != null)
+			{
+				//Add the return instruction.
+				LabelNode labelNode = new LabelNode();
+				labelNode.accept(eventMethodNode);
+				eventMethodNode.instructions.add(new LineNumberNode(108 + currentIteration, labelNode));
+				eventMethodNode.instructions.add(new InsnNode(RETURN));
+			}
+		}
+
+		return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
+	}
+
+	private MethodNode addEventHandlerCall(MethodNode eventMethodNode, int currentIteration)
 	{
 		try
 		{
-			ClassReader classReader = new ClassReader(className);
-			ClassNode classNode = new ClassNode();
-			classReader.accept(classNode, 0);
-			MethodNode eventMethodNode = null;
-			int currentIteration = 0;
+			ClassReader evFacClassReader = new ClassReader("co.uk.niadel.napi.events.EventFactory");
+			ClassNode evFacClassNode = new ClassNode();
+			evFacClassReader.accept(evFacClassNode, 0);
+			MethodNode evFacMethodNode = null;
 
-			//If the class is an event handler.
-			if (classNode.interfaces.contains("co/uk/niadel/napi/events/IEventHandler"))
+			//TEMPNOTE .desc for parameters
+			String eventMethodParam = eventMethodNode.desc.substring(1, eventMethodNode.desc.length() - 2);
+			boolean isValidMethod = true;
+
+			if (eventMethodParam.startsWith("L"))
 			{
-				for (MethodNode methodNode : classNode.methods)
+				if (!(eventMethodParam.replace("/", ".").replace("L", "").replace(";", "") == currentEvent.getClass().getName()))
 				{
-					for (AnnotationNode annotationNode : methodNode.visibleAnnotations)
-					{
-						if (annotationNode.desc.contains("co/uk/niadel/events/EventHandlerMethod"))
-						{
-							currentIteration++;
-							eventMethodNode = addEventHandlerCall(methodNode, currentIteration);
-						}
-					}
-				}
-
-				if (eventMethodNode != null)
-				{
-					//Add the return instruction.
-					LabelNode labelNode = new LabelNode();
-					labelNode.accept(eventMethodNode);
-					eventMethodNode.instructions.add(new LineNumberNode(108 + currentIteration, labelNode));
-					eventMethodNode.instructions.add(new InsnNode(RETURN));
+					isValidMethod = false;
 				}
 			}
-
-			return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
-		}
-		catch (IOException e)
-		{
-			NAPILogHelper.instance.logError(e);
-			NAPILogHelper.instance.logError("Unable to transform event handler class " + className + "!");
-		}
-
-		return null;
-	}
-
-	private MethodNode addEventHandlerCall(MethodNode eventMethodNode, int currentIteration) throws IOException
-	{
-		ClassReader evFacClassReader = new ClassReader("co.uk.niadel.napi.events.EventFactory");
-		ClassNode evFacClassNode = new ClassNode();
-		evFacClassReader.accept(evFacClassNode, 0);
-		MethodNode evFacMethodNode = null;
-
-		//TEMPNOTE .desc for parameters
-		String eventMethodParam = eventMethodNode.desc.substring(1, eventMethodNode.desc.length() - 2);
-		boolean isValidMethod = true;
-
-		if (eventMethodParam.startsWith("L"))
-		{
-			if (!(eventMethodParam.replace("/", ".").replace("L", "").replace(";", "") == currentEvent.getClass().getName()))
+			else
 			{
 				isValidMethod = false;
+				NAPILogHelper.instance.logError("Method " + eventMethodNode.name + " in an event handler does not take an event as a parameter!");
 			}
-		}
-		else
-		{
-			isValidMethod = false;
-			NAPILogHelper.instance.logError("Method " + eventMethodNode.name + " in an event handler does not take an event as a parameter!");
-		}
 
-		if (isValidMethod)
-		{
+			if (isValidMethod)
+			{
 			/*
 		 	* Add:
 		 	* 	public static final void callEventHandlers()
@@ -111,37 +103,42 @@ public final class NAPIASMEventHandlerTransformer implements IASMTransformer, Op
 		 	* 	}
 		 	*/
 
-			String paramAsType = eventMethodParam.replace("L", "").replace(";", "");
+				String paramAsType = eventMethodParam.replace("L", "").replace(";", "");
 
-			//Get the method node if it already exists.
-			boolean methodFound = false;
+				//Get the method node if it already exists.
+				boolean methodFound = false;
 
-			for (MethodNode currMethod : evFacClassNode.methods)
-			{
-				//Check it's the exact method.
-				if (currMethod.name.contains("callAllEventHandlers") && currMethod.access == ACC_PUBLIC + ACC_STATIC + ACC_FINAL && currMethod.desc == "()V" && currMethod.signature == null && currMethod.exceptions == null)
+				for (MethodNode currMethod : evFacClassNode.methods)
 				{
-					evFacMethodNode = currMethod;
-					methodFound = true;
+					//Check it's the exact method.
+					if (currMethod.name.contains("callAllEventHandlers") && currMethod.access == ACC_PUBLIC + ACC_STATIC + ACC_FINAL && currMethod.desc == "()V" && currMethod.signature == null && currMethod.exceptions == null)
+					{
+						evFacMethodNode = currMethod;
+						methodFound = true;
+					}
 				}
-			}
 
-			//Otherwise, create it.
-			if (!methodFound)
-			{
-				evFacMethodNode = new MethodNode(ACC_PUBLIC + ACC_STATIC + ACC_FINAL, "callAllEventHandlers", "()V", null, null);
-			}
+				//Otherwise, create it.
+				if (!methodFound)
+				{
+					evFacMethodNode = new MethodNode(ACC_PUBLIC + ACC_STATIC + ACC_FINAL, "callAllEventHandlers", "()V", null, null);
+				}
 
-			//Add the instructions themselves.
-			LabelNode labelNode = new LabelNode();
-			labelNode.accept(evFacMethodNode);
-			evFacMethodNode.instructions.add(new LineNumberNode(107 + currentIteration, labelNode));
-			evFacMethodNode.instructions.add(new TypeInsnNode(NEW, paramAsType));
-			evFacMethodNode.instructions.add(new InsnNode(DUP));
-			evFacMethodNode.instructions.add(new FieldInsnNode(GETSTATIC, "co/uk/niadel/napi/asm/NAPIASMEventHandlerTransformer", "currentEvent", "Lco/uk/niadel/napi/events/IEvent"));
-			evFacMethodNode.instructions.add(new TypeInsnNode(CHECKCAST, paramAsType));
-			evFacMethodNode.instructions.add(new MethodInsnNode(INVOKEVIRTUAL, paramAsType, eventMethodNode.name, "(" + eventMethodParam + ")V", false));
-			return evFacMethodNode;
+				//Add the instructions themselves.
+				LabelNode labelNode = new LabelNode();
+				labelNode.accept(evFacMethodNode);
+				evFacMethodNode.instructions.add(new LineNumberNode(107 + currentIteration, labelNode));
+				evFacMethodNode.instructions.add(new TypeInsnNode(NEW, paramAsType));
+				evFacMethodNode.instructions.add(new InsnNode(DUP));
+				evFacMethodNode.instructions.add(new FieldInsnNode(GETSTATIC, "co/uk/niadel/napi/asm/NAPIASMEventHandlerTransformer", "currentEvent", "Lco/uk/niadel/napi/events/IEvent"));
+				evFacMethodNode.instructions.add(new TypeInsnNode(CHECKCAST, paramAsType));
+				evFacMethodNode.instructions.add(new MethodInsnNode(INVOKEVIRTUAL, paramAsType, eventMethodNode.name, "(" + eventMethodParam + ")V", false));
+				return evFacMethodNode;
+			}
+		}
+		catch (IOException e)
+		{
+			NAPILogHelper.instance.logError(e);
 		}
 
 		return null;

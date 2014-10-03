@@ -18,48 +18,39 @@ import java.io.IOException;
 public class NAPIASMModObjectHolderTransformer implements IASMTransformer
 {
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
-		try
+		ClassReader classReader = new ClassReader(bytes);
+		ClassNode classNode = new ClassNode();
+		classReader.accept(classNode, 0);
+
+		boolean hadMethods = false;
+
+		for (AnnotationNode annotation : classNode.visibleAnnotations)
 		{
-			ClassReader classReader = new ClassReader(className);
-			ClassNode classNode = new ClassNode();
-			classReader.accept(classNode, 0);
-
-			boolean hadMethods = false;
-
-			for (AnnotationNode annotation : classNode.visibleAnnotations)
+			if (annotation.desc.contains("co/uk/niadel/napi/annotations/ModObjectHolder"))
 			{
-				if (annotation.desc.contains("co/uk/niadel/napi/annotations/ModObjectHolder"))
+				if (!classNode.methods.isEmpty())
 				{
-					if (!classNode.methods.isEmpty())
-					{
-						classNode.methods.removeAll(classNode.methods);
-						hadMethods = true;
-					}
+					classNode.methods.removeAll(classNode.methods);
+					hadMethods = true;
+				}
 
-					//Makes all of the fields immutable by adding them to the Immutable transformer's list of fields to make immutable.
-					for (FieldNode fieldNode : classNode.fields)
-					{
-						NAPIASMImmutableTransformer.immutableFields.put(className, fieldNode);
-					}
+				//Makes all of the fields immutable by adding them to the Immutable transformer's list of fields to make immutable.
+				for (FieldNode fieldNode : classNode.fields)
+				{
+					NAPIASMImmutableTransformer.immutableFields.put(className, fieldNode);
 				}
 			}
-
-			if (hadMethods)
-			{
-				return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
-			}
-			else
-			{
-				return null;
-			}
 		}
-		catch (IOException e)
+
+		if (hadMethods)
 		{
-			NAPILogHelper.instance.logError(e);
+			return new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS + ClassWriter.COMPUTE_FRAMES).toByteArray();
 		}
-
-		return null;
+		else
+		{
+			return bytes;
+		}
 	}
 }

@@ -29,25 +29,16 @@ public class NAPIASMImmutableTransformer implements IASMTransformer, Opcodes
 	private static final NAPIASMModObjectHolderTransformer modObjectHolderTransformer = new NAPIASMModObjectHolderTransformer();
 
 	@Override
-	public byte[] manipulateBytecodes(String className)
+	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
-		try
-		{
-			modObjectHolderTransformer.manipulateBytecodes(className);
+		modObjectHolderTransformer.manipulateBytecodes(className, bytes);
 
-			ClassReader classReader = new ClassReader(className);
-			ClassNode classNode = new ClassNode();
-			classReader.accept(classNode, 0);
+		ClassReader classReader = new ClassReader(bytes);
+		ClassNode classNode = new ClassNode();
+		classReader.accept(classNode, 0);
 
-			this.findImmutables(classNode);
-			return this.removeImmutableFieldPuts(classNode, classReader);
-		}
-		catch (IOException e)
-		{
-			NAPILogHelper.instance.logError(e);
-		}
-
-		return null;
+		this.findImmutables(classNode);
+		return this.removeImmutableFieldPuts(classNode, classReader);
 	}
 
 	private void findImmutables(ClassNode classNode)
