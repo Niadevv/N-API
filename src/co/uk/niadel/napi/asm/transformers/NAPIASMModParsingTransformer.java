@@ -17,7 +17,7 @@ import org.objectweb.asm.tree.MethodNode;
 import java.io.IOException;
 
 /**
- * Parses mod registers for info and stuff. Mainly used for the @LoadStateMethod annotation.
+ * Parses mod registers for info and stuff. Mainly used for the @LoadStateMethod, @ASMTransformer and @EventHandler annotations.
  */
 public class NAPIASMModParsingTransformer implements IASMTransformer, Opcodes
 {

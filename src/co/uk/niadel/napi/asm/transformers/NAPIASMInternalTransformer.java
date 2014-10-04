@@ -146,6 +146,6 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 
 	public void handleFieldUsage(String className, MethodNode methodNode, FieldInsnNode fieldInsnNode)
 	{
-
+		String owner = fieldInsnNode.owner.replace("/", ".");
 	}
 }

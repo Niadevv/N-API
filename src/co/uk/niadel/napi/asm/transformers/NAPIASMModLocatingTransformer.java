@@ -3,6 +3,7 @@ package co.uk.niadel.napi.asm.transformers;
 import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.annotations.ModRegister;
 import co.uk.niadel.napi.annotations.UnstableMod;
+import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.nml.DependenciesRegistry;
 import co.uk.niadel.napi.nml.ModContainer;
@@ -14,6 +15,9 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Allows the @ModRegister annotation to do the equivalent of Forge's @Mod annotation.
@@ -36,6 +40,7 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 			boolean library = false, unstableMod = false;
 			Class<?> modClass = Class.forName(className);
 			Object mod = modClass.newInstance();
+			List<String> dependencies = new ArrayList<>();
 
 			for (AnnotationNode annotationNode : classNode.visibleAnnotations)
 			{
@@ -47,6 +52,7 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 					modid = modRegisterAnnotation.modId();
 					version = modRegisterAnnotation.version();
 					library = modRegisterAnnotation.isLibrary();
+					dependencies = Arrays.asList(modRegisterAnnotation.dependencies());
 					DependenciesRegistry.addDependencies(mod, modRegisterAnnotation.dependencies());
 				}
 				else if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/UnstableMod"))
@@ -63,8 +69,8 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 					NAPILogHelper.instance.logWarn("Found an unstable mod! Warning message from mod: " + unstableWarnMessage);
 				}
 
-				NModLoader.loadMod(new ModContainer(mod, modid, version, library));
-				modParser.manipulateBytecodes(className);
+				NModLoader.loadMod(new ModContainer(mod, modid, version, dependencies.toArray(new String[dependencies.size()]), library));
+				ASMRegistry.callASMTransformerForClass(modParser, className);
 			}
 		}
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)

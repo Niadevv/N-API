@@ -43,4 +43,6 @@ public interface IModContainer
 	public Map<Method, Annotation[]> getMethodAnnotations();
 
 	public boolean isLibrary();
+
+	public String[] getDependencies();
 }

@@ -28,11 +28,14 @@ public class ModContainer implements IModContainer
 	 */
 	public boolean isLibrary;
 
-	public ModContainer(Object mod, String modid, String version, Object... otherParams)
+	public String[] dependencies;
+
+	public ModContainer(Object mod, String modid, String version, String[] dependencies, Object... otherParams)
 	{
 		this.mod = mod;
 		this.modid = modid;
 		this.version = version;
+		this.dependencies = dependencies;
 		this.isLibrary = (boolean) otherParams[0];
 	}
 
@@ -77,5 +80,11 @@ public class ModContainer implements IModContainer
 	public String getModId()
 	{
 		return this.modid;
+	}
+
+	@Override
+	public String[] getDependencies()
+	{
+		return this.dependencies;
 	}
 }
