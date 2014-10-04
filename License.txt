@@ -1,7 +1,7 @@
 Names:
 	N-API: The product.
 	The Author: Me, Niadel. Known as Puredarkness on minecraftforum.net.
-	Mojang: Swedish indie game developer company that has created Minecraft. Also known as Mojang AB.
+	Mojang: Microsoft owned Swedish game developer company that has created Minecraft. Also known as Mojang AB.
 	The Game: Minecraft.
 	Forge: Either/the combination of MinecraftForge and/or FML, created by LexManos and cpw respectively.
 
@@ -16,3 +16,12 @@ Usage Rights:
 	or implementing any of the classes/interfaces, calling any class's methods, using any of the enums, marking anything with an annotation, etc. You may also
 	use any mods with N-API, as long as they are compatible with N-API, Forge, and/or other mods and don't edit any of The Game's classes, unless it is merely via 
 	a bytecode manipulation library like ASM at runtime.
+
+IMPORTANT:
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
