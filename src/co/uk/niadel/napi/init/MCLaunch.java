@@ -1,6 +1,7 @@
 package co.uk.niadel.napi.init;
 
 import co.uk.niadel.napi.annotations.Internal;
+import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMDeSysOutTransformer;
 import net.minecraft.client.main.Main;
 
@@ -16,7 +17,7 @@ public class MCLaunch
 	{
 		assert DevLaunch.checkJavaVersion();
 		NAPIASMDeSysOutTransformer.setEnabled();
-		mcGamePatcher.manipulateBytecodes(ObfedClassNames.BOOTSTRAP);
+		ASMRegistry.callASMTransformerForClass(mcGamePatcher, ObfedClassNames.BOOTSTRAP);
 		Main.main(args);
 	}
 }
