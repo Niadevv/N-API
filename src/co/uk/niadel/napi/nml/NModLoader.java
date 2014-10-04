@@ -4,6 +4,7 @@ import co.uk.niadel.napi.annotations.DocumentationAnnotations;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
+import co.uk.niadel.napi.common.NAPIData;
 import co.uk.niadel.napi.init.DevLaunch;
 import co.uk.niadel.napi.proxy.ProxyRegistry;
 import co.uk.niadel.napi.util.ModList;
@@ -202,7 +203,27 @@ public class NModLoader extends URLClassLoader
 
 					for (File directory : directories)
 					{
-						loadUrl(directory.toURI().toURL());
+						if (directory.getName() == NAPIData.MC_VERSION)
+						{
+							//For allowing specific mods to load for a certain version.
+							File[] versionSpecificModFiles = directory.listFiles(new FilenameFilter()
+							{
+								@Override
+								public boolean accept(File dir, String name)
+								{
+									return name.endsWith(".jar") || name.endsWith(".zip");
+								}
+							});
+
+							for (File modFile : versionSpecificModFiles)
+							{
+								loadUrl(modFile.toURI().toURL());
+							}
+						}
+						else
+						{
+							loadUrl(directory.toURI().toURL());
+						}
 					}
 
 					ASMRegistry.callASMTransformer(modLocatingTransformer);

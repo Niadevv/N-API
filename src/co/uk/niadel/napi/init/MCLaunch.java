@@ -7,10 +7,12 @@ import net.minecraft.client.main.Main;
 
 /**
  * Patches then launches Minecraft.
+ *
+ * @author Niadel
  */
 public class MCLaunch
 {
-	@Internal
+	@Internal(owningPackage = "co.uk.niadel.napi.init", documentationOnly = false)
 	private static final MCGamePatcher mcGamePatcher = new MCGamePatcher();
 
 	public static void main(String[] args)
