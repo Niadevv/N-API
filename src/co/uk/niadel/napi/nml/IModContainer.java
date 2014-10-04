@@ -1,5 +1,6 @@
 package co.uk.niadel.napi.nml;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -45,4 +46,6 @@ public interface IModContainer
 	public boolean isLibrary();
 
 	public String[] getDependencies();
+
+	public File getLocationInFilesystem();
 }

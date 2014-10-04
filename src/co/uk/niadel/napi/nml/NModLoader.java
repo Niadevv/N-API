@@ -1,9 +1,10 @@
 package co.uk.niadel.napi.nml;
 
-import co.uk.niadel.napi.annotations.DocumentationAnnotations;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.*;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
+import co.uk.niadel.napi.common.MCHooks;
 import co.uk.niadel.napi.common.NAPIData;
 import co.uk.niadel.napi.init.DevLaunch;
 import co.uk.niadel.napi.proxy.ProxyRegistry;
@@ -38,7 +39,7 @@ import co.uk.niadel.napi.util.NAPILogHelper;
  * @author Niadel
  *
  */
-@DocumentationAnnotations.Experimental(firstAppearance = "0.0")
+@Experimental(firstAppearance = "0.0")
 public class NModLoader extends URLClassLoader
 {
 	/**
@@ -307,19 +308,8 @@ public class NModLoader extends URLClassLoader
 	public static final void loadMod(IModContainer mod)
 	{
 		mods.addMod(mod);
+		MCHooks.addResourcePacksToDefault(new NMLResourcePack(mod));
 		NAPILogHelper.instance.log("Loaded mod " + mod.getModId() + "!");
-	}
-	
-	/**
-	 * Adds the mod to mods.
-	 * @param mod The mod to load the library of.
-	 * @deprecated Use loadMod and pass it a ModContainer object, instead of the old Mod or Library.
-	 */
-	@Deprecated
-	public static final void loadLibrary(IModContainer mod)
-	{
-		mods.addMod(mod, true);
-		NAPILogHelper.instance.log("Loaded library " + mod.getModId() + "!");
 	}
 	
 	/**
@@ -450,7 +440,7 @@ public class NModLoader extends URLClassLoader
 	 * @param theClass The class that was transformed to load.
 	 * @param bytes The bytes of theClass.
 	 */
-	@DocumentationAnnotations.Experimental(firstAppearance = "1.0")
+	@Experimental(firstAppearance = "1.0")
 	public static final void loadTransformedClass(Class theClass, byte[] bytes)
 	{
 		NModLoader.defineClass(theClass.getName(), bytes);
