@@ -1,1 +1,2 @@
 napi.commands.napi.usage=/N-API [listmods/modcount]
+napi.commands.napi.modcount.success=N-API Mods Count:
