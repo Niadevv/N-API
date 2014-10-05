@@ -40,7 +40,7 @@ public class ModContainer implements IModContainer
 		this.version = version;
 		this.dependencies = dependencies;
 		this.isLibrary = (boolean) otherParams[0];
-		this.locationInFileSystem = (File) otherParams[1];
+		this.locationInFileSystem = otherParams[1] != null ? (File) otherParams[1] : null;
 	}
 
 	@Override

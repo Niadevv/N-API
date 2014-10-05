@@ -6,7 +6,9 @@ import co.uk.niadel.napi.asm.ASMRegistry;
 import co.uk.niadel.napi.asm.transformers.NAPIASMModLocatingTransformer;
 import co.uk.niadel.napi.common.MCHooks;
 import co.uk.niadel.napi.common.NAPIData;
+import co.uk.niadel.napi.common.NAPIModContainer;
 import co.uk.niadel.napi.init.DevLaunch;
+import co.uk.niadel.napi.modhandler.NAPIModRegister;
 import co.uk.niadel.napi.proxy.ProxyRegistry;
 import co.uk.niadel.napi.util.ModList;
 import java.io.File;
@@ -73,7 +75,12 @@ public class NModLoader extends URLClassLoader
 	public static final ModList mods = new ModList();
 
 	/**
-	 * The main Minecraft directory.
+	 * The running directory, or the %appdata% directory.
+	 */
+	public static final File appDataDir = new File(".");
+
+	/**
+	 * The main Minecraft directory of this profile.
 	 */
 	public static final File mcMainDir = new File(theMinecraft.mcDataDir.getAbsolutePath().substring(0, theMinecraft.mcDataDir.getAbsolutePath().length() - 1));
 	
@@ -245,10 +252,11 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * Initialises the N-API mod register.
 	 */
-	@Internal
+	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
 	private static final void initNAPIRegister()
 	{
 		ASMRegistry.callASMTransformerForClass(modLocatingTransformer, "co.uk.niadel.napi.modhandler.NAPIModRegister");
+		NModLoader.loadMod(new NAPIModContainer(new NAPIModRegister()));
 	}
 	
 	/**
@@ -409,7 +417,7 @@ public class NModLoader extends URLClassLoader
 				while (methodsIterator.hasNext())
 				{
 					Entry<String, Method> nextMethod = methodsIterator.next();
-					nextMethod.getValue().invoke(Class.forName(nextMethod.getKey()).newInstance(), new Object[]{});
+					nextMethod.getValue().invoke(Class.forName(nextMethod.getKey()).newInstance(), new Object[] {});
 				}
 
 				NAPILogHelper.instance.log("Called all mod's postInit methods!");

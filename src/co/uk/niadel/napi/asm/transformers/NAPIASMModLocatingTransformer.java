@@ -69,7 +69,7 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 					NAPILogHelper.instance.logWarn("Found an unstable mod! Warning message from mod: " + unstableWarnMessage);
 				}
 
-				NModLoader.loadMod(new ModContainer(mod, modid, version, dependencies.toArray(new String[dependencies.size()]), library));
+				//NModLoader.loadMod(new ModContainer(mod, modid, version, dependencies.toArray(new String[dependencies.size()]), library));
 				ASMRegistry.callASMTransformerForClass(modParser, className);
 			}
 		}
