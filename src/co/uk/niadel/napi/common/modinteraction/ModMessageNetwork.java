@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Messages sent between mods are sent along this "network".
+ * Messages sent between mods are sent along this "network". A mod that is comprised of seperate mod files can create a new one
+ * of these if they wish for the mods to 'talk' to each other.
  *
  * @author Niadel
  */

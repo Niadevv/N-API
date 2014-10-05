@@ -6,6 +6,7 @@ import co.uk.niadel.napi.nml.NModLoader;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 
 import java.util.Iterator;
 
@@ -36,7 +37,7 @@ public class CommandNAPI extends CommandBase
 		}
 		else if (commandArgs[0].equalsIgnoreCase("modcount"))
 		{
-			sender.addChatMessage(new ChatComponentText("N-API Mods Count: " + String.valueOf(NModLoader.mods.getModCount())));
+			sender.addChatMessage(new ChatComponentText(new ChatComponentTranslation("napi.commands.napi.modcount.success").getFormattedText() + String.valueOf(NModLoader.mods.getModCount())));
 		}
 	}
 
