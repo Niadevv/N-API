@@ -77,7 +77,9 @@ public class NModLoader extends URLClassLoader
 	/**
 	 * The running directory, or the %appdata% directory.
 	 */
-	public static final File appDataDir = new File(".");
+	public static final File appDataDir = new File(new File(".").getPath() + "/");
+
+	public static final File libDir = new File(appDataDir.getPath() + "libraries/");
 
 	/**
 	 * The main Minecraft directory of this profile.

@@ -15,6 +15,6 @@ public class NAPIModContainer extends ModContainer
 {
 	public NAPIModContainer(NAPIModRegister mod)
 	{
-		super(mod, NAPIData.MODID, NAPIData.VERSION, new String[0], true, new File(NModLoader.appDataDir.toPath().toString() + "/lib/" + NAPIData.FULL_VERSION + ".jar"));
+		super(mod, NAPIData.MODID, NAPIData.VERSION, null, true, new File(NModLoader.libDir.getPath() + NAPIData.PATH_TO_NAPI_LIB));
 	}
 }

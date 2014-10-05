@@ -3,6 +3,8 @@ package co.uk.niadel.napi.nml;
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,7 @@ public class ModContainer implements IModContainer
 		this.mod = mod;
 		this.modid = modid;
 		this.version = version;
-		this.dependencies = dependencies;
+		this.dependencies = dependencies != null ? dependencies : Collections.emptyList().toArray(new String[1]);
 		this.isLibrary = (boolean) otherParams[0];
 		this.locationInFileSystem = otherParams[1] != null ? (File) otherParams[1] : null;
 	}

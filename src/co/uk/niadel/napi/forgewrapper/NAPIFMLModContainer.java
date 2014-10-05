@@ -12,9 +12,9 @@ import java.util.Collections;
  *
  * @author Niadel
  */
-public class NAPIModContainer extends DummyModContainer
+public class NAPIFMLModContainer extends DummyModContainer
 {
-	public NAPIModContainer()
+	public NAPIFMLModContainer()
 	{
 		super(new ModMetadata());
 		ModMetadata metadata = getMetadata();

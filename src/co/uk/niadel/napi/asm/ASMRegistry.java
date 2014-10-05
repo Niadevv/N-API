@@ -4,8 +4,10 @@ import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.jar.JarEntry;
@@ -84,7 +86,7 @@ public class ASMRegistry
 	{
 		for (Entry<String, byte[]> entry : classToBytesMap.entrySet())
 		{
-			if (!isClassExcluded(entry.getKey()))
+			if (!isClassExcluded(entry.getKey()) && entry.getValue().length > 0)
 			{
 				byte[] bytes = transformer.manipulateBytecodes(entry.getKey(), entry.getValue());
 
@@ -143,6 +145,8 @@ public class ASMRegistry
 						{
 							classes.add(jarFileEnumeration.nextElement().getName());
 						}
+
+						NModLoader.loadUrl(new File(classPathEntry).toURI().toURL());
 					}
 					else
 					{
@@ -153,22 +157,27 @@ public class ASMRegistry
 
 			for (String clazz : classes)
 			{
-				List<Byte> bytes = new ArrayList<>();
-				Scanner classScanner = new Scanner(NModLoader.class.getResourceAsStream(clazz));
-
-				while (classScanner.hasNextByte())
+				if (!clazz.endsWith("/"))
 				{
-					bytes.add(classScanner.nextByte());
+					InputStream classStream = NModLoader.class.getResourceAsStream(clazz);
+
+					if (classStream != null)
+					{
+						Scanner classScanner = new Scanner(NModLoader.class.getResourceAsStream(clazz));
+						byte[] bytes = new byte[1000000];
+
+						for (int i = 0; classScanner.hasNextByte(); i++)
+						{
+							bytes[i] = classScanner.nextByte();
+						}
+
+						classToBytesMap.put(clazz, bytes);
+					}
+					else
+					{
+						NAPILogHelper.instance.logWarn("InputStream for " + clazz + " is null!");
+					}
 				}
-
-				byte[] actBytes = new byte[bytes.size()];
-
-				for (int i = 0; i == bytes.size(); i++)
-				{
-					actBytes[i] = bytes.get(i);
-				}
-
-				classToBytesMap.put(clazz, actBytes);
 			}
 		}
 		catch (IOException e)

@@ -1,5 +1,6 @@
 package co.uk.niadel.napi.common;
 
+import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.common.modinteraction.ModMessageNetwork;
 
 /**
@@ -43,7 +44,7 @@ public final class NAPIData
 	public static final String BUGFIX_VERSION = "0";
 	
 	/**
-	 * The purely numeric version of N-API. Only used in ModRegister.
+	 * The purely numeric version of N-API.
 	 */
 	public static final String VERSION = MAJOR_VERSION + "." + MINOR_VERSION + "." + BUGFIX_VERSION;
 	
@@ -75,8 +76,14 @@ public final class NAPIData
 	public static final String FORGE_CONFIG_GUI_FACTORY = "co.uk.niadel.napi.forgewrapper.NAPIConfigGUIFactory";
 
 	/**
+	 * From libraries in .minecraft folder to the .jar of the N-API library.
+	 */
+	public static final String PATH_TO_NAPI_LIB = "co/uk/niadel/napi/napi/" + VERSION + "/" + FULL_VERSION + ".jar";
+
+	/**
 	 * The "official" mod message network to send mod messages across.
 	 */
+	@Immutable
 	private static final ModMessageNetwork modMessageNetwork = new ModMessageNetwork();
 
 	public static final ModMessageNetwork getModMessageNetwork()
