@@ -15,16 +15,14 @@ Installation (The good bit :D):
 There is no current way to install N-API beyond the WIP N-API Installer currently on my Github.
 
 CONTRIBUTING TO N-API:
-======================
+---------------------
 
 If you didn't know, I'm the only developer for N-API, at least at the time of writing. I have no plans for that to change. However, because I'm the only developer, additions and changes happen a lot slower than with, say, Forge, which has, what 4 people working on it, all with a lot more time and dedication to it. But do you know the benefits of open source? Others can contribute - and, let's face it - Even if it wasn't open source, it'd only take a decompiler to get the rough source :P. Anyways, here's the list of ways you can contribute:
 
 Letting me know about bugs and feature requests:
 -----------------------------------------------
 
-It's quite simple really, just make an issue. However, please keep it to one bug/feature an issue, and make sure your bug/feature request
-hasn't been submitted before. Unless, of course, it's an issue that's cropped up again, then in which case, mark it as being a reopened
-issue. Basically, Minecraft Forum's Suggestions section suggestion rule
+It's quite simple really, just make an issue. However, please keep it to one bug/feature an issue, and make sure your bug/feature request hasn't been submitted before. Unless, of course, it's an issue that's cropped up again, then in which case, mark it as being a reopened issue. Basically, Minecraft Forum's Suggestions section suggestion rule
 
 Adding Features to N-API:
 ------------------------
