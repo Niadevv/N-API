@@ -25,13 +25,13 @@ import co.uk.niadel.napi.util.UniqueIdAcquirer;
  */
 @ModRegister(modId = NAPIData.MODID, version = NAPIData.VERSION)
 @UnstableMod(warningMessage = "This is N-API alpha! N-API will likely change heavily before release, possibly breaking mods made with it!")
-@Internal
+@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
 public final class NAPIModRegister
 {
 	/**
 	 * This is used in handling numeric ids.
 	 */
-	@Internal
+	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
 	public static final IdConfiguration idConfig = new IdConfiguration("N-API-ids.cfg");
 
 	/**

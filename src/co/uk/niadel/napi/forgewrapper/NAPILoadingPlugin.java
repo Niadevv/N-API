@@ -24,7 +24,7 @@ public final class NAPILoadingPlugin implements IFMLLoadingPlugin
 	@Override
 	public String getModContainerClass()
 	{
-		return "co.uk.niadel.api.forgewrapper.NAPIModContainer";
+		return "co.uk.niadel.api.forgewrapper.NAPIFMLModContainer";
 	}
 
 	@Override
