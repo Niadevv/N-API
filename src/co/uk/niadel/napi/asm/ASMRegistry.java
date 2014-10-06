@@ -163,7 +163,7 @@ public class ASMRegistry
 
 					if (classStream != null)
 					{
-						Scanner classScanner = new Scanner(NModLoader.class.getResourceAsStream(clazz));
+						Scanner classScanner = new Scanner(classStream);
 						byte[] bytes = new byte[1000000];
 
 						for (int i = 0; classScanner.hasNextByte(); i++)

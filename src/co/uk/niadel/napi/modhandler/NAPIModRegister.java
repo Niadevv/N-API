@@ -74,6 +74,7 @@ public final class NAPIModRegister
 	 */
 	@SuppressWarnings("unused")
 	@EventHandler
+	@Immutable
 	public static final MPIEventHandler eventHandler = new MPIEventHandler();
 
 	/**
@@ -81,6 +82,7 @@ public final class NAPIModRegister
 	 */
 	@SuppressWarnings("unused")
 	@ASMTransformer
+	@Immutable
 	public static final NAPIASMOptionalsTransformer optionalsTransformer = new NAPIASMOptionalsTransformer();
 
 	/**
