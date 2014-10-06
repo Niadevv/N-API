@@ -5,29 +5,27 @@ At time of writing, N-API is still a WIP. Mods using N-API may break (package na
 certain features) and may still break after N-API is fully released.
 
 Legitimate Distributors:
-========================
+-----------------------
 	https://github.com/Niadel/N-API - source code.
 	There are no binary distributions at this point in time.
 
 Installation (The good bit :D):
-===============================
+-------------------------------
 
 There is no current way to install N-API beyond the WIP N-API Installer currently on my Github.
 
 CONTRIBUTING TO N-API:
-======================
+---------------------
 
 If you didn't know, I'm the only developer for N-API, at least at the time of writing. I have no plans for that to change. However, because I'm the only developer, additions and changes happen a lot slower than with, say, Forge, which has, what 4 people working on it, all with a lot more time and dedication to it. But do you know the benefits of open source? Others can contribute - and, let's face it - Even if it wasn't open source, it'd only take a decompiler to get the rough source :P. Anyways, here's the list of ways you can contribute:
 
 Letting me know about bugs and feature requests:
-================================================
+-----------------------------------------------
 
-It's quite simple really, just make an issue. However, please keep it to one bug/feature an issue, and make sure your bug/feature request
-hasn't been submitted before. Unless, of course, it's an issue that's cropped up again, then in which case, mark it as being a reopened
-issue. Basically, Minecraft Forum's Suggestions section suggestion rule
+It's quite simple really, just make an issue. However, please keep it to one bug/feature an issue, and make sure your bug/feature request hasn't been submitted before. Unless, of course, it's an issue that's cropped up again, then in which case, mark it as being a reopened issue. Basically, Minecraft Forum's Suggestions section suggestion rule
 
 Adding Features to N-API:
-=========================
+------------------------
 
 Again, it's somewhat simple. Just make a pull request, explaining all of your changes and the feature. Of course, you will have to realise that, if I do accept it, I may make changes to your code if I feel it's untidy or could be optimised. I also may fix it's formatting to suit my personal style. BTW, it's this:
 
@@ -60,7 +58,7 @@ I think I lied when I said it was somewhat simple :3 Just keep to these guidelin
 
 
 CREDITS:
-========
+--------
 - Gradle, for not letting me download more than a few dependencies, thus making me unable to use Forge as of 1.7.2 and
 prompting me to make N-API.
 - My fingers, for putting up with the 100,000+ lines of code added over the course of N-API's development.
