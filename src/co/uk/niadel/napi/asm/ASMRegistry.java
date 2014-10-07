@@ -4,10 +4,7 @@ import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.jar.JarEntry;
@@ -136,7 +133,7 @@ public class ASMRegistry
 			{
 				if ((!classPathEntry.contains("Java" + File.separator + "jdk-") && !classPathEntry.contains("jre")))
 				{
-					if (classPathEntry.endsWith(".jar"))
+					if (classPathEntry.endsWith(".jar") && !classPathEntry.endsWith("/") && !(classPathEntry.equals("")))
 					{
 						JarFile jarFile = new JarFile(classPathEntry);
 						Enumeration<JarEntry> jarFileEnumeration = jarFile.entries();
@@ -157,21 +154,37 @@ public class ASMRegistry
 
 			for (String clazz : classes)
 			{
-				if (!clazz.endsWith("/"))
+				if (!clazz.endsWith("/") && !(clazz.equals("")))
 				{
-					InputStream classStream = NModLoader.getNMLResourceAsStream(clazz);
+					InputStream rawClassStream = NModLoader.getNMLResourceAsStream(clazz);
 
-					if (classStream != null)
+					if (rawClassStream != null)
 					{
+						BufferedInputStream classStream = new BufferedInputStream(rawClassStream);
 						Scanner classScanner = new Scanner(classStream);
-						byte[] bytes = new byte[1000000];
 
-						for (int i = 0; classScanner.hasNextByte(); i++)
+						List<Byte> bytes = new ArrayList<>();
+
+						while (classScanner.hasNextByte())
 						{
-							bytes[i] = classScanner.nextByte();
+							bytes.add(classScanner.nextByte());
 						}
 
-						classToBytesMap.put(clazz, bytes);
+						if (bytes.size() > 5)
+						{
+							byte[] actBytes = new byte[bytes.size()];
+
+							for (int i = 0; i == bytes.size(); i++)
+							{
+								actBytes[i] = bytes.get(i);
+							}
+
+							classToBytesMap.put(clazz, actBytes);
+						}
+						else
+						{
+							NAPILogHelper.instance.logError("Bytes gotten for the NML resource " + clazz + " has issues being read?");
+						}
 					}
 					else
 					{

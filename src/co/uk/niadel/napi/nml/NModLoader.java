@@ -72,7 +72,7 @@ public class NModLoader extends URLClassLoader
 	public static final ModList mods = new ModList();
 
 	/**
-	 * The running directory, or the %appdata% directory.
+	 * The running directory, or the %appdata%/.minecraft directory.
 	 */
 	public static final File appDataDir = new File(new File(".").getPath() + "/");
 
