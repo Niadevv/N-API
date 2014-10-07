@@ -6,8 +6,8 @@ certain features) and may still break after N-API is fully released.
 
 Legitimate Distributors:
 -----------------------
-	https://github.com/Niadel/N-API - source code.
-	There are no binary distributions at this point in time.
+- https://github.com/Niadel/N-API - source code.
+- There are no binary distributions at this point in time.
 
 Installation (The good bit :D):
 -------------------------------
@@ -62,7 +62,8 @@ CREDITS:
 - Gradle, for not letting me download more than a few dependencies, thus making me unable to use Forge as of 1.7.2 and
 prompting me to make N-API.
 - My fingers, for putting up with the 100,000+ lines of code added over the course of N-API's development.
-- Anyone who has made a suggestion for a future or submitting a Issue on the N-API Github.
+- Anyone who has made a suggestion for a future or submitting a Issue on the N-API Github, or made a pull request. You've all in
+some way helped me :D
 - FML, for being a major inspiration and who's source has helped me in times of need. By the way, I didn't copy paste any code from FML
 to my knowledge, don't worry CPW.
 - Whatever motivated me to work on N-API as long as I have so far, because this is my most/longest developed project to date.
