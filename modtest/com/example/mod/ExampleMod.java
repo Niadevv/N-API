@@ -1,6 +1,6 @@
 package com.example.mod;
 
-import co.uk.niadel.napi.modhandler.nml.EnumLoadState;
+import co.uk.niadel.napi.nml.EnumLoadState;
 import co.uk.niadel.napi.annotations.LoadStateMethod;
 import co.uk.niadel.napi.annotations.ModRegister;
 import org.apache.logging.log4j.Level;
