@@ -1,27 +1,21 @@
-Names:
-	N-API: The product.
-	The Author: Me, Niadel. Known as Puredarkness on minecraftforum.net.
-	Mojang: Swedish indie game developer company that has created Minecraft. Also known as Mojang AB.
-	The Game: Minecraft.
-	Forge: Either/the combination of MinecraftForge and/or FML, created by LexManos and cpw respectively.
+The MIT License (MIT)
 
-Distribution Rights:
-	Only The Author and Mojang can distribute N-API or give others the right to distribute/redistribute it. This applies to modified copies of N-API as well. 
-	However, you can use this in your modpacks if you so choose, only if the distribution is unmodified. If you want to use a modified version of N-API in your
-	modpack, contact The Author and give The Author details of the modified N-API version. You can find the legitimate locations/distributors in the README.txt
-	file or, better yet, at https://github.com/Niadel/N-API as that will be updated much more often than the README.txt. 
+Copyright (c) 2014 {{{fullname}}}
 
-Usage Rights:
-	You may use N-API freely, as long as you don't redistribute it without permission. This includes, but freedom of use is not limited to:	extending
-	or implementing any of the classes/interfaces, calling any class's methods, using any of the enums, marking anything with an annotation, etc. You may also
-	use any mods with N-API, as long as they are compatible with N-API, Forge, and/or other mods and don't edit any of The Game's classes, unless it is merely via 
-	a bytecode manipulation library like ASM at runtime.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-IMPORTANT:
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
