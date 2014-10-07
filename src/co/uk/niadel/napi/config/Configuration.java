@@ -81,10 +81,6 @@ public class Configuration
 				NAPILogHelper.instance.logError("Created config, but for some reason it's a file >:O");
 			}
 		}
-		else
-		{
-			NAPILogHelper.instance.log("Config directory already exists!");
-		}
 
 		if (!configFile.exists())
 		{
