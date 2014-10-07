@@ -131,16 +131,23 @@ public class ASMRegistry
 
 			for (String classPathEntry : classPath)
 			{
-				if ((!classPathEntry.contains("Java" + File.separator + "jdk-") && !classPathEntry.contains("jre")))
+				if ((!classPathEntry.contains("Java" + File.separator + "jdk") && !classPathEntry.contains("jre")))
 				{
-					if (classPathEntry.endsWith(".jar") && !classPathEntry.endsWith("/") && !(classPathEntry.equals("")))
+					if (classPathEntry.endsWith(".jar"))
 					{
 						JarFile jarFile = new JarFile(classPathEntry);
 						Enumeration<JarEntry> jarFileEnumeration = jarFile.entries();
 
 						while (jarFileEnumeration.hasMoreElements())
 						{
-							classes.add(jarFileEnumeration.nextElement().getName());
+							String nextName = jarFileEnumeration.nextElement().getName();
+
+							//Cull unnecessary names. Should free up some space in memory.
+							if (!nextName.endsWith("/") && !(nextName.equals("")) && !nextName.contains("META-INF"))
+							{
+								classes.add(nextName);
+								NModLoader.loadUrl(new File(classPathEntry + "!/" + nextName).toURI().toURL());
+							}
 						}
 
 						NModLoader.loadUrl(new File(classPathEntry).toURI().toURL());
