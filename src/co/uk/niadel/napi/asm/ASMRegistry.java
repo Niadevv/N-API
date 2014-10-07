@@ -122,7 +122,7 @@ public class ASMRegistry
 	}
 
 	/**
-	 * Loads and gets the bytes of classes directly from the file.
+	 * Loads and gets the bytes of classes directly from the class files, compared to the old 'in memory' method.
 	 */
 	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
 	private static final void discoverClasses()
@@ -159,7 +159,7 @@ public class ASMRegistry
 			{
 				if (!clazz.endsWith("/"))
 				{
-					InputStream classStream = NModLoader.class.getResourceAsStream(clazz);
+					InputStream classStream = NModLoader.getNMLResourceAsStream(clazz);
 
 					if (classStream != null)
 					{

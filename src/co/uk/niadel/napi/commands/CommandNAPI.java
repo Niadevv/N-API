@@ -12,6 +12,8 @@ import java.util.Iterator;
 
 /**
  * Command for getting infos about N-API from in game.
+ *
+ * @author Niadel
  */
 @Temprorary(versionToBeRemoved = "The version I add a mods list GUI.")
 public class CommandNAPI extends CommandBase

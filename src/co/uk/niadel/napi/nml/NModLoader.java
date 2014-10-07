@@ -11,10 +11,8 @@ import co.uk.niadel.napi.init.DevLaunch;
 import co.uk.niadel.napi.modhandler.NAPIModRegister;
 import co.uk.niadel.napi.proxy.ProxyRegistry;
 import co.uk.niadel.napi.util.ModList;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FilenameFilter;
-import java.io.IOException;
+
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,7 +27,6 @@ import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 import co.uk.niadel.napi.annotations.AnnotationHandlerRegistry;
 import co.uk.niadel.napi.annotations.IAnnotationHandler;
-import co.uk.niadel.napi.client.resources.ResourcesRegistry;
 import co.uk.niadel.napi.potions.PotionRegistry;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
@@ -145,6 +142,21 @@ public class NModLoader extends URLClassLoader
 	public static final void defineClass(String className, byte[] bytes)
 	{
 		INSTANCE.defineClass(className, bytes, 0, bytes.length);
+	}
+
+	public static final InputStream getNMLResourceAsStream(String resource)
+	{
+		URL resourceFound = INSTANCE.getResource(resource);
+
+		try
+		{
+			return resourceFound != null ? resourceFound.openStream() : null;
+		}
+		catch (IOException e)
+		{
+			NAPILogHelper.instance.logError(e);
+			return null;
+		}
 	}
 
 	/**
@@ -360,7 +372,6 @@ public class NModLoader extends URLClassLoader
 			}
 
 			ProxyRegistry.executeProxies();
-			ResourcesRegistry.addAllResourceDomains();
 			NAPILogHelper.instance.log("Called all mod's modPreInit methods!");
 		}
 	}
