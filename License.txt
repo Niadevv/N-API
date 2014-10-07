@@ -1,7 +1,7 @@
 Names:
-	N-API: The product that this license covers.
+	N-API: The product.
 	The Author: Me, Niadel. Known as Puredarkness on minecraftforum.net.
-	Mojang: Microsoft owned Swedish game developer company that has created Minecraft. Also known as Mojang AB.
+	Mojang: Swedish indie game developer company that has created Minecraft. Also known as Mojang AB.
 	The Game: Minecraft.
 	Forge: Either/the combination of MinecraftForge and/or FML, created by LexManos and cpw respectively.
 
@@ -12,13 +12,16 @@ Distribution Rights:
 	file or, better yet, at https://github.com/Niadel/N-API as that will be updated much more often than the README.txt. 
 
 Usage Rights:
-	You may use N-API freely, even distribute it, as long as you don't sell a copy of it, modified or otherwise. This includes,
-	but freedom of use is not limited to: extending or implementing any of the classes/interfaces, calling any class's methods,
-	using any of the enums, marking  anything with an annotation, etc. You may also use any mods with N-API, as long as they
-	are compatible with N-API, Forge, and/or other mods and don't edit any of The Game's classes, unless it is merely via a
-	bytecode manipulation library like ASM at runtime.
+	You may use N-API freely, as long as you don't redistribute it without permission. This includes, but freedom of use is not limited to:	extending
+	or implementing any of the classes/interfaces, calling any class's methods, using any of the enums, marking anything with an annotation, etc. You may also
+	use any mods with N-API, as long as they are compatible with N-API, Forge, and/or other mods and don't edit any of The Game's classes, unless it is merely via 
+	a bytecode manipulation library like ASM at runtime.
 
 IMPORTANT:
-    N-API is provided as it is when you download it, with no warranty AT ALL whatsoever, whether it may be express or implied. The Author
-    can not be held responsible for any claim, damages to your system or any unmentioned liability due to the use of or in connection of
-    N-API or any of it's mods. If issues come from the use of an N-API mod, direct the blame towards them.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
