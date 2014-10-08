@@ -13,6 +13,8 @@ import co.uk.niadel.napi.annotations.Internal;
 
 /**
  * The registry for structures.
+ *
+ * @author Niadel
  */
 public final class StructureRegistry
 {
@@ -57,20 +59,18 @@ public final class StructureRegistry
 	/**
 	 * Generates all Map Feature dependant structures. I have no idea what par1 or par2
 	 * does, you'll have to check MC's source. They're probably chunk coords.
-	 * @param provider The provider to generate the strucutres in.
+	 * @param provider The provider to generate the structures in.
 	 * @param worldObj The world object for provider.
-	 * @param par1 I have no idea.
-	 * @param par2 I have no idea.
+	 * @param par1 Likely the chunk coord x.
+	 * @param par2 Likely the chunk coord y.
 	 * @param blocks An array of blocks to generate in.
 	 */
-	@Internal
+	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
 	public static void generateAllMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)
 	{
-		Iterator<MapGenStructure> structureIterator = mapFDependantStructures.iterator();
-		
-		while (structureIterator.hasNext())
+		for (MapGenStructure mapGenStructure : mapFDependantStructures)
 		{
-			structureIterator.next().func_151539_a(provider, worldObj, par1, par2, blocks);
+			mapGenStructure.func_151539_a(provider, worldObj, par1, par2, blocks);
 		}
 	}
 	
@@ -78,14 +78,12 @@ public final class StructureRegistry
 	 * Generates all non-Map Feature dependant structures. Params are the same as
 	 * @see StructureRegistry#generateAllMapFDependantStructures
 	 */
-	@Internal
+	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
 	public static void generateAllNonMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)
 	{
-		Iterator<MapGenStructure> structureIterator = nonMapFDependantStructures.iterator();
-		
-		while (structureIterator.hasNext())
+		for (MapGenStructure structure : nonMapFDependantStructures)
 		{
-			structureIterator.next().func_151539_a(provider, worldObj, par1, par2, blocks);
+			structure.func_151539_a(provider, worldObj, par1, par2, blocks);
 		}
 	}
 }
