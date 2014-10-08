@@ -57,20 +57,19 @@ public final class StructureRegistry
 	}
 	
 	/**
-	 * Generates all Map Feature dependant structures. I have no idea what par1 or par2
-	 * does, you'll have to check MC's source. They're probably chunk coords.
+	 * Generates all Map Feature dependant structures.
 	 * @param provider The provider to generate the structures in.
 	 * @param worldObj The world object for provider.
-	 * @param par1 Likely the chunk coord x.
-	 * @param par2 Likely the chunk coord y.
+	 * @param chunkCoordX Likely the chunk coord x.
+	 * @param chunkCoordY Likely the chunk coord y.
 	 * @param blocks An array of blocks to generate in.
 	 */
 	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
-	public static void generateAllMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)
+	public static void generateAllMapFDependantStructures(IChunkProvider provider, World worldObj, int chunkCoordX, int chunkCoordY, Block[] blocks)
 	{
 		for (MapGenStructure mapGenStructure : mapFDependantStructures)
 		{
-			mapGenStructure.func_151539_a(provider, worldObj, par1, par2, blocks);
+			mapGenStructure.func_151539_a(provider, worldObj, chunkCoordX, chunkCoordY, blocks);
 		}
 	}
 	
