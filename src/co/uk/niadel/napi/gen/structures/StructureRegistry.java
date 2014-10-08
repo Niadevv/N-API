@@ -35,10 +35,10 @@ public final class StructureRegistry
 	public static Map<Class, String> ioStructureInformation = new HashMap<>();
 	
 	/**
-	 * Adds a stucture that will always generate.
+	 * Adds a structure that will always generate, regardless of whether or not Map Features is enabled or disabled.
 	 * @param structure The structure object to generate.
 	 * @param structureClass The class of structure.
-	 * @param shortStructId The shortened structure id of structureClass, I recommend to do something like "YOU_your_mod:SSid" for compatibility.
+	 * @param shortStructId The shortened structure id of structureClass, I recommend to do something like "YOU_your_modid:SSid" for compatibility.
 	 */
 	public static void addNonMapFDependantStructure(MapGenStructure structure, Class structureClass, String shortStructId)
 	{
@@ -64,7 +64,7 @@ public final class StructureRegistry
 	 * @param chunkCoordY Likely the chunk coord y.
 	 * @param blocks An array of blocks to generate in.
 	 */
-	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
+	@Internal
 	public static void generateAllMapFDependantStructures(IChunkProvider provider, World worldObj, int chunkCoordX, int chunkCoordY, Block[] blocks)
 	{
 		for (MapGenStructure mapGenStructure : mapFDependantStructures)
@@ -77,7 +77,7 @@ public final class StructureRegistry
 	 * Generates all non-Map Feature dependant structures. Params are the same as
 	 * @see StructureRegistry#generateAllMapFDependantStructures
 	 */
-	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
+	@Internal
 	public static void generateAllNonMapFDependantStructures(IChunkProvider provider, World worldObj, int par1, int par2, Block[] blocks)
 	{
 		for (MapGenStructure structure : nonMapFDependantStructures)
