@@ -40,7 +40,7 @@ public class ModContainer implements IModContainer
 		this.mod = mod;
 		this.modid = modid;
 		this.version = version;
-		this.dependencies = dependencies != null ? dependencies : Collections.emptyList().toArray(new String[1]);
+		this.dependencies = dependencies != null ? dependencies : new String[1];
 		this.isLibrary = (boolean) otherParams[0];
 		this.locationInFileSystem = otherParams[1] != null ? (File) otherParams[1] : null;
 	}

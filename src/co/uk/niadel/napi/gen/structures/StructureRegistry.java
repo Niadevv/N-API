@@ -36,7 +36,7 @@ public final class StructureRegistry
 	 * Adds a stucture that will always generate.
 	 * @param structure The structure object to generate.
 	 * @param structureClass The class of structure.
-	 * @param shortStructId The shortened structure id of structureClass, I recommend to do something like "YOU_your_mod:SSid" for compatabillity.
+	 * @param shortStructId The shortened structure id of structureClass, I recommend to do something like "YOU_your_mod:SSid" for compatibility.
 	 */
 	public static void addNonMapFDependantStructure(MapGenStructure structure, Class structureClass, String shortStructId)
 	{

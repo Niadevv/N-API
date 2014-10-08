@@ -8,24 +8,23 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Gets rid of calls to System.out.println and System.err.println to encourage the use of a logger, as loggers allow us to know what
- * mod is "saying" what. This makes debugging with multiple mods installed MUCH easier.
+ * mod is "saying" what. This makes debugging with multiple mods installed MUCH easier, assuming people actually use the logger.
  *
  * @author Niadel
  */
 public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 {
-	private static boolean shouldRun = Boolean.valueOf(NAPIModRegister.napiConfig.getConfigValue("removeSysOut", "true"));
+	private static boolean SHOULD_RUN = Boolean.valueOf(NAPIModRegister.napiConfig.getConfigValue("removeSysOut", "true"));
 
 	@Override
 	public byte[] manipulateBytecodes(String className, byte[] bytes)
 	{
-		if (shouldRun)
+		if (SHOULD_RUN)
 		{
 			//Could be way more optimised, but I'll save that for later.
 			ClassReader classReader = new ClassReader(bytes);
@@ -130,7 +129,7 @@ public class NAPIASMDeSysOutTransformer implements IASMTransformer, Opcodes
 
 	public static final void setEnabled()
 	{
-		shouldRun = true;
+		SHOULD_RUN = true;
 	}
 
 	public static final boolean isClassExternalLibrary(String className)

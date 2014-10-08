@@ -56,27 +56,20 @@ public class BlockWireBase extends Block implements ITileEntityProvider, IMeasur
 	}
 	
 	/**
-	 * Can be overriden to add or reduce the wire types it can connect to.
+	 * Can be overridden to add or reduce the wire types it can connect to.
 	 * @param block
 	 * @return
 	 */
 	public boolean canTransferToBlock(Block block, int direction)
 	{
-		if (block instanceof IMeasureTransferer)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return block instanceof IMeasureTransferer;
 	}
 	
 	/**
 	 * Called when a block is connected to.
 	 * @param block
 	 * @param direction
-	 * @return Whether or not this block connected sucessfully. 
+	 * @return Whether or not this block connected successfully.
 	 */
 	public void onConnect(Block block, int direction) {}
 

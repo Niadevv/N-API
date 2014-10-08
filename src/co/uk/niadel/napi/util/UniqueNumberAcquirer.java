@@ -22,8 +22,9 @@ public final class UniqueNumberAcquirer
                 Random random = new Random();
                 int triedInt = random.nextInt();
 
-                if (!ArrayUtils.doesArrayContainValueInt(excludedIds, triedInt)) {
-                    hasFoundId = true;
+                if (!ArrayUtils.doesArrayContainValueInt(excludedIds, triedInt))
+				{
+					hasFoundId = true;
                     return triedInt;
                 }
             }

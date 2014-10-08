@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.commands;
 
-import co.uk.niadel.napi.annotations.DocumentationAnnotations.Temprorary;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.Temporary;
 import co.uk.niadel.napi.nml.IModContainer;
 import co.uk.niadel.napi.nml.NModLoader;
 import net.minecraft.command.CommandBase;
@@ -15,7 +15,7 @@ import java.util.Iterator;
  *
  * @author Niadel
  */
-@Temprorary(versionToBeRemoved = "The version I add a mods list GUI.")
+@Temporary(versionToBeRemoved = "The version I add a mods list GUI.")
 public class CommandNAPI extends CommandBase
 {
 	@Override

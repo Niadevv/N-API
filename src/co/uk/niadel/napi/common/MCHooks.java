@@ -1,6 +1,7 @@
 package co.uk.niadel.napi.common;
 
 import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
+import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.util.MCData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
@@ -16,6 +17,10 @@ import java.util.List;
  */
 public class MCHooks
 {
+	/**
+	 * Gets the list of resource packs that are loaded by default via reflection.
+	 * @return The list of resource packs that are loaded by default via reflection.
+	 */
 	public static final List<IResourcePack> getDefaultResourcePacks()
 	{
 		if (MCData.isClientSide())
@@ -29,6 +34,7 @@ public class MCHooks
 		}
 	}
 
+	@Internal(owningPackage = "co.uk.niadel.napi", documentationOnly = false)
 	public static final void addResourcePacksToDefault(IResourcePack resourcePack)
 	{
 		if (MCData.isClientSide())

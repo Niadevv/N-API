@@ -62,19 +62,19 @@ public final class BlockRegistry
 	/**
 	 * Makes a block burnable by fire.
 	 * @param block The block that will be set to burn.
-	 * @param flammabillity How easily this block catches fire. Higher this is = more likely.
+	 * @param flammability How easily this block catches fire. Higher this is = more likely.
 	 * @param chanceToNotBurn How likely this block is to be destroyed. Higher this is = less likely it is to be destroyed.
 	 */
-	public static final void addFlammableBlock(Block block, int flammabillity, int chanceToNotBurn)
+	public static final void addFlammableBlock(Block block, int flammability, int chanceToNotBurn)
 	{
 		if (!MCData.isForge)
 		{
-			ReflectionCallMethods.callMethod(BlockFire.class, "func_149842_a", Block.getIdFromBlock(block), flammabillity, chanceToNotBurn);
+			ReflectionCallMethods.callMethod(BlockFire.class, "func_149842_a", Block.getIdFromBlock(block), flammability, chanceToNotBurn);
 		}
 		else
 		{
-			//Forge compat.
-			ReflectionCallMethods.callMethod(BlockFire.class, "setFireInfo", block, flammabillity, chanceToNotBurn);
+			//Forge compatibility.
+			ReflectionCallMethods.callMethod(BlockFire.class, "setFireInfo", block, flammability, chanceToNotBurn);
 		}
 	}
 

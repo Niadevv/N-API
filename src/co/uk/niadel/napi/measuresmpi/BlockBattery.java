@@ -11,7 +11,7 @@ import net.minecraft.block.material.Material;
 public class BlockBattery extends BlockHasEnergy
 {
 	/**
-	 * How much the measure recieved in .charge() is reduced by before the measure is actually incremented.
+	 * How much the measure received in .charge() is reduced by before the measure is actually incremented.
 	 */
 	public int resistance;
 

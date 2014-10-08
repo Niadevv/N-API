@@ -11,7 +11,7 @@ import net.minecraft.stats.Achievement;
 public final class AchievementRegistry
 {
 	/**
-	 * Registers an acheivement.
+	 * Registers an achievement.
 	 * @param theAchievement The achievement itself.
 	 * @param achievementClass The class of the achievement.
 	 */

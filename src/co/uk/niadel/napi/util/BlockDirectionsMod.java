@@ -1,7 +1,7 @@
 package co.uk.niadel.napi.util;
 
 /**
- * List of directions as ints used in common.block, as an interface for easy use.
+ * List of directions as integers used in common.block, as an interface for easy use.
  * @author Niadel
  *
  */

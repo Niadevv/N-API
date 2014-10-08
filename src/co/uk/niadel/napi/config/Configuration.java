@@ -135,7 +135,6 @@ public class Configuration
 				Scanner configScanner;
 
 				configScanner = new Scanner(this.theConfig);
-				PrintStream configWriter;
 
 				int lineCount = 0;
 
@@ -269,9 +268,9 @@ public class Configuration
 	 * Adds multiple lines of data to the config. Each value in valueNames will be put in with
 	 * the same value at the value's index in defaultValues. In other words:
 	 * 
-	 * <p>[1,2,3,4] valueNames
-	 * <p> &nbsp|&nbsp |&nbsp |&nbsp |
-	 * <p> \/\/\/\/
+	 * <p>[1,2,3,4] valueNames </p>
+	 * <p> &nbsp|&nbsp |&nbsp |&nbsp | </p>
+	 * <p> \/\/\/\/</p>
 	 * <p>[1,2,3,4] defaultValues</p>
 	 * 
 	 * <!---It looks better in the Javadoc, don't worry. Huh, I remember much more HTML than I thought I did.-->
@@ -295,8 +294,8 @@ public class Configuration
 	
 	/**
 	 * Gets whether the config option specified exists.
-	 * @param value
-	 * @return
+	 * @param value The value to test.
+	 * @return Whether or not the config option value exists.
 	 */
 	public final boolean doesConfigValueExist(String value)
 	{

@@ -84,7 +84,7 @@ public final class DocumentationAnnotations
 	 */
 	@Retention(RetentionPolicy.SOURCE)
 	@Documented
-	public @interface Temprorary
+	public @interface Temporary
 	{
 		String versionToBeRemoved() default "Soon!";
 	}

@@ -94,7 +94,7 @@ public class BlockRedstoneWireBase extends BlockWireBase implements BlockDirecti
 	public void onPower() {}
 
 //#########################################################################################
-//##########################Methods overriden from vanilla ################################
+//##########################Methods overridden from vanilla ################################
 //#########################################################################################
 	
 	@Override

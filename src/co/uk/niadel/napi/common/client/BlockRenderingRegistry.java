@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.common.client;
 
-import co.uk.niadel.napi.annotations.DocumentationAnnotations.Temprorary;
+import co.uk.niadel.napi.annotations.DocumentationAnnotations.Temporary;
 import net.minecraft.block.Block;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Niadel
  */
-@Temprorary(versionToBeRemoved = "1.8, when you can use Block Model JSON formatting instead")
+@Temporary(versionToBeRemoved = "1.8, when you can use Block Model JSON formatting instead")
 public class BlockRenderingRegistry
 {
 	public static final List<IBlockRenderer> blockRenderers = new ArrayList<>();

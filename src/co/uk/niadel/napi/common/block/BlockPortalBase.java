@@ -39,8 +39,8 @@ public class BlockPortalBase extends Block
 	 * @param id
 	 * @return
 	 */
-	@Dangerous(reason = "Compatability breaking.")
-	protected Block setDimesionId(int id)
+	@Dangerous(reason = "Compatibility breaking.")
+	protected Block setDimensionId(int id)
 	{
 		this.dimensionToTravelTo = id;
 		return this;

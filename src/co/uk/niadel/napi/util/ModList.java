@@ -83,7 +83,7 @@ public class ModList implements Iterable<IModContainer>
 		return true;
 	}
 
-	public boolean checkVersions(IModContainer containerToCheck, String minVersionForSucess)
+	public boolean checkVersions(IModContainer containerToCheck, String minVersionForSuccess)
 	{
 		int[] version1 = ParseUtils.parseVersionNumber(containerToCheck.getVersion());
 		int[] version2 = ParseUtils.parseVersionNumber(minVersionForSucess);

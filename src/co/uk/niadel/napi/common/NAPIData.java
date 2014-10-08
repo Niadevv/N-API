@@ -86,6 +86,10 @@ public final class NAPIData
 	@Immutable
 	private static final ModMessageNetwork modMessageNetwork = new ModMessageNetwork();
 
+	/**
+	 * Gets the mod message network that is used by default.
+	 * @return The mod message network that is used by default.
+	 */
 	public static final ModMessageNetwork getModMessageNetwork()
 	{
 		return modMessageNetwork;

@@ -3,7 +3,7 @@ package co.uk.niadel.napi.util;
 import java.util.Arrays;
 
 /**
- * Utillities for arrays.
+ * Utilities for arrays.
  *
  * @author Niadel
  */
@@ -47,14 +47,14 @@ public final class ArrayUtils
 	 */
 	public static final boolean doesArrayContainValueInt(int[] array, int valueToTest)
 	{
-		Integer[] arrayIntegered = new Integer[array.length];
+		Integer[] arrayAsIntegers = new Integer[array.length];
 		
 		for (int i = 0; i == array.length; i++)
 		{
-			arrayIntegered[i] = array[i];
+			arrayAsIntegers[i] = array[i];
 		}
 		
-		return doesArrayContainValue(arrayIntegered, valueToTest);
+		return doesArrayContainValue(arrayAsIntegers, valueToTest);
 	}
 
 	/**

@@ -15,7 +15,7 @@ public final class DimensionIdRegistry
 	/**
 	 * Registers an id.
 	 * @param stringId The id to register the dimension internally.
-	 * @return The integer id of the dimension, uniqueified by N-API.
+	 * @return The integer id of the dimension, made unique by N-API.
 	 */
 	public static final int registerId(String stringId)
 	{
