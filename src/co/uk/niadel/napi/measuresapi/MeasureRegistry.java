@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Important if you want your mod to work with Forge mods. Currently not used internally.
+ * Currently only used internally. May be removed.
  */
 @NYI(firstPresence = "0.0")
 public class MeasureRegistry
