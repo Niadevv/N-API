@@ -1,7 +1,7 @@
-package co.uk.niadel.napi.measuresmpi;
+package co.uk.niadel.napi.measuresapi;
 
 /**
- * The actual Measure itself. The ModMeasure classes handle these internally.
+ * The actual independent Measure itself. The ModMeasure classes handle these internally.
  * @author Niadel
  *
  */
@@ -24,7 +24,7 @@ public final class Measure
 	
 	public Measure(long defaultValue, String name, long cutOffPointMax)
 	{
-		this.value = value;
+		this.value = defaultValue;
 		this.name = name;
 		this.cutOffPointMax = cutOffPointMax;
 	}

@@ -1,6 +1,6 @@
-package co.uk.niadel.napi.common.block;
+package co.uk.niadel.napi.measuresapi.blocks;
 
-import co.uk.niadel.napi.measuresmpi.ModMeasureBase;
+import co.uk.niadel.napi.measuresapi.ModMeasureBase;
 import net.minecraft.block.material.Material;
 
 /**

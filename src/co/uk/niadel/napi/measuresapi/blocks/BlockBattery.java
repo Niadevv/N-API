@@ -1,6 +1,6 @@
-package co.uk.niadel.napi.measuresmpi;
+package co.uk.niadel.napi.measuresapi.blocks;
 
-import co.uk.niadel.napi.common.block.BlockHasEnergy;
+import co.uk.niadel.napi.measuresapi.ModEnergyMeasure;
 import net.minecraft.block.material.Material;
 
 /**

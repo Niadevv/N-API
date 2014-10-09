@@ -1,4 +1,4 @@
-package co.uk.niadel.napi.measuresmpi;
+package co.uk.niadel.napi.measuresapi;
 
 import net.minecraft.block.Block;
 

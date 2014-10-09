@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.entity.tileentity;
 
-import co.uk.niadel.napi.common.block.BlockHasMeasure;
+import co.uk.niadel.napi.measuresapi.blocks.BlockHasMeasure;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 

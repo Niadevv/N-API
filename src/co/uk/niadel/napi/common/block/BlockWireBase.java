@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import co.uk.niadel.napi.entity.tileentity.TileEntityWire;
-import co.uk.niadel.napi.measuresmpi.ModMeasureBase;
+import co.uk.niadel.napi.measuresapi.ModMeasureBase;
 import co.uk.niadel.napi.util.BlockDirectionsMod;
 import co.uk.niadel.napi.util.MCUtils;
 

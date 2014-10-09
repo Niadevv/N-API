@@ -1,8 +1,11 @@
-package co.uk.niadel.napi.measuresmpi;
+package co.uk.niadel.napi.measuresapi.blocks;
 
 import co.uk.niadel.napi.entity.tileentity.TileEntityMeasureStorer;
+import co.uk.niadel.napi.measuresapi.EnumLiquidTypes;
+import co.uk.niadel.napi.measuresapi.Measure;
+import co.uk.niadel.napi.measuresapi.ModFluidMeasure;
 import net.minecraft.block.material.Material;
-import co.uk.niadel.napi.common.block.BlockHasFluid;
+import co.uk.niadel.napi.measuresapi.blocks.BlockHasFluid;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

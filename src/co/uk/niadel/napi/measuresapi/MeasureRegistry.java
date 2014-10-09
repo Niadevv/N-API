@@ -1,4 +1,4 @@
-package co.uk.niadel.napi.measuresmpi;
+package co.uk.niadel.napi.measuresapi;
 
 import co.uk.niadel.napi.annotations.DocumentationAnnotations.NYI;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Important if you want your mod to work with Forge mods.
+ * Important if you want your mod to work with Forge mods. Currently not used internally.
  */
 @NYI(firstPresence = "0.0")
 public class MeasureRegistry

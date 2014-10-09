@@ -1,4 +1,4 @@
-package co.uk.niadel.napi.measuresmpi;
+package co.uk.niadel.napi.measuresapi;
 
 /**
  * The type of liquid this is. Only applies to measures and not actual blocks.

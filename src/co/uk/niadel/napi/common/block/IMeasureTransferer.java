@@ -1,7 +1,7 @@
 package co.uk.niadel.napi.common.block;
 
 import net.minecraft.block.Block;
-import co.uk.niadel.napi.measuresmpi.ModMeasureBase;
+import co.uk.niadel.napi.measuresapi.ModMeasureBase;
 
 public interface IMeasureTransferer
 {

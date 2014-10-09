@@ -7,7 +7,7 @@ import java.util.Map;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import co.uk.niadel.napi.measuresmpi.ModFluidMeasure;
+import co.uk.niadel.napi.measuresapi.ModFluidMeasure;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
 /**
