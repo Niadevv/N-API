@@ -38,7 +38,8 @@ public class BlockWireBase extends Block implements ITileEntityProvider, IMeasur
 	public ModMeasureBase theMeasure;
 	
 	/**
-	 * Can be used by other blocks to easily get what blocks are surrounding this wire block.
+	 * Can be used by other blocks to easily get what blocks are surrounding this wire block. TODO replace the String param
+	 * with EnumFacing in 1.8.
 	 */
 	public Map<String, Block> blocksSurrounding = new HashMap<>();
 	
@@ -58,6 +59,7 @@ public class BlockWireBase extends Block implements ITileEntityProvider, IMeasur
 	/**
 	 * Can be overridden to add or reduce the wire types it can connect to.
 	 * @param block
+	 * @param direction The direction this block is charged from. TODO Change to use EnumFacing in 1.8.
 	 * @return
 	 */
 	public boolean canTransferToBlock(Block block, int direction)
