@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipInputStream;
 
 /**
  * Complete rewrite of ASMRegistry. Much less code is used.
@@ -127,7 +128,6 @@ public class ASMRegistry
 		try
 		{
 			String[] classPath = System.getProperty("java.class.path").split(";");
-			List<String> classes = new ArrayList<>();
 
 			for (String classPathEntry : classPath)
 			{
@@ -145,21 +145,35 @@ public class ASMRegistry
 							//Cull unnecessary names. Should free up some space in memory.
 							if (!nextName.endsWith("/") && !(nextName.equals("")) && !nextName.contains("META-INF"))
 							{
-								classes.add(nextName);
-								NModLoader.loadUrl(new File(classPathEntry + "!/" + nextName).toURI().toURL());
+								File jarEntry = new File(classPathEntry + "!/" + nextName);
+								NModLoader.loadUrl(jarEntry.toURI().toURL());
+
+								ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(new FileInputStream(jarEntry)));
+								Scanner zipInputStreamScanner = new Scanner(zipInputStream);
+								List<Byte> bytesToAddList = new ArrayList<>();
+
+								while (zipInputStreamScanner.hasNextByte())
+								{
+									bytesToAddList.add(zipInputStreamScanner.nextByte());
+								}
+
+								byte[] actBytesToAdd = new byte[bytesToAddList.size()];
+
+								for (int i = 0; i == bytesToAddList.size(); i++)
+								{
+									actBytesToAdd[i] = bytesToAddList.get(i);
+								}
+
+								classToBytesMap.put(nextName.replace("/", "."), actBytesToAdd);
 							}
 						}
 
 						NModLoader.loadUrl(new File(classPathEntry).toURI().toURL());
 					}
-					else
-					{
-						classes.add(ASMUtils.getPackageOfClass(new File(classPathEntry)));
-					}
 				}
 			}
 
-			for (String clazz : classes)
+			/*for (String clazz : classes)
 			{
 				if (!clazz.endsWith("/") && !(clazz.equals("")))
 				{
@@ -198,7 +212,7 @@ public class ASMRegistry
 						NAPILogHelper.instance.logWarn("InputStream for " + clazz + " is null!");
 					}
 				}
-			}
+			}*/
 		}
 		catch (IOException e)
 		{
