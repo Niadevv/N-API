@@ -14,9 +14,9 @@ public final class ArrayUtils
 	 * @param arrayToCopy The array to copy.
 	 * @return The copied array.
 	 */
-	public static final <X, Y> X[] copyArray(Y[] arrayToCopy)
+	public static final <Y> Y[] copyArray(Y[] arrayToCopy)
 	{
-		Object[] arrayCopy = new Object[] {};
+		Object[] arrayCopy = new Object[arrayToCopy.length];
 		
 		int i = 0;
 		
@@ -25,7 +25,7 @@ public final class ArrayUtils
 			arrayCopy[i] = currItem;
 		}
 		
-		return (X[]) arrayCopy;
+		return (Y[]) arrayCopy;
 	}
 	
 	/**

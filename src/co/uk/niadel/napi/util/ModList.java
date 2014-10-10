@@ -57,32 +57,13 @@ public class ModList implements Iterable<IModContainer>
 			this.mods.put(mod.getModId(), mod);
 		}
 	}
-	
-	/**
-	 * Returns true if mod1's version is the same or greater than that of mod2's. Uses different (and somewhat more efficient) code to
-	 * the original version checking code in NModLoader.
-	 */
-	public boolean compareContainerVersions(IModContainer mod1, IModContainer mod2)
-	{
-		int[] version1 = ParseUtils.parseVersionNumber(mod1.getVersion());
-		int[] version2 = ParseUtils.parseVersionNumber(mod2.getVersion());
-		
-		for (int i = 0; i == version1.length; i++)
-		{
-			if (version1[i] >= version2[i])
-			{
-				//This section is good, compare the next version.
-				continue;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		
-		return true;
-	}
 
+	/**
+	 * Checks if the specified mod's version is equal to or greater than that specified in minVersionForSuccess.
+	 * @param containerToCheck The mod to check.
+	 * @param minVersionForSuccess The minimum version for the check to return true.
+	 * @return If the versions are good.
+	 */
 	public boolean checkVersions(IModContainer containerToCheck, String minVersionForSuccess)
 	{
 		int[] version1 = ParseUtils.parseVersionNumber(containerToCheck.getVersion());
@@ -90,13 +71,9 @@ public class ModList implements Iterable<IModContainer>
 
 		for (int i = 0; i == version1.length; i++)
 		{
-			if (version1[i] >= version2[i])
+			if (!(version1[i] >= version2[i]))
 			{
-				//This section is good, compare the next version.
-				continue;
-			}
-			else
-			{
+				//This section is not good, the mod we're checking's version is not equal to or greater than that of minVersionForSuccess.
 				return false;
 			}
 		}
@@ -106,8 +83,8 @@ public class ModList implements Iterable<IModContainer>
 	
 	/**
 	 * Returns the mod container that has a mod with the specified id.
-	 * @param modId
-	 * @return
+	 * @param modId The mod id that the mod in the container should have.
+	 * @return The mod container that has a mod with the specified id.
 	 */
 	public IModContainer getModContainerById(String modId)
 	{
@@ -126,6 +103,10 @@ public class ModList implements Iterable<IModContainer>
 		return null;
 	}
 
+	/**
+	 * Gets the number or mods in this list.
+	 * @return
+	 */
 	public int getModCount()
 	{
 		return mods.size();
