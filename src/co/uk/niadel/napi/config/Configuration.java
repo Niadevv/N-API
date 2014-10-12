@@ -128,6 +128,8 @@ public class Configuration
 	 */
 	public final void updateConfig()
 	{
+		NAPILogHelper.instance.log("Updating config " + this.theConfig.getPath() + ".");
+
 		try
 		{
 			if (this.theConfig.exists())

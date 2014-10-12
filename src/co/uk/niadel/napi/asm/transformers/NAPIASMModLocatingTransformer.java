@@ -53,7 +53,6 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 					version = modRegisterAnnotation.version();
 					library = modRegisterAnnotation.isLibrary();
 					dependencies = Arrays.asList(modRegisterAnnotation.dependencies());
-					DependenciesRegistry.addDependencies(mod, modRegisterAnnotation.dependencies());
 				}
 				else if (annotationNode.desc.contains("co/uk/niadel/napi/annotations/UnstableMod"))
 				{
@@ -71,6 +70,7 @@ public class NAPIASMModLocatingTransformer implements IASMTransformer, Opcodes
 
 				//NModLoader.loadMod(new ModContainer(mod, modid, version, dependencies.toArray(new String[dependencies.size()]), library));
 				ASMRegistry.callASMTransformerForClass(modParser, className);
+				DependenciesRegistry.addDependencies(mod, dependencies);
 			}
 		}
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)

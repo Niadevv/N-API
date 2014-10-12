@@ -270,7 +270,7 @@ public class NModLoader extends URLClassLoader
 	private static final void initNAPIRegister()
 	{
 		ASMRegistry.callASMTransformerForClass(modLocatingTransformer, "co.uk.niadel.napi.modhandler.NAPIModRegister");
-		NModLoader.loadMod(new NAPIModContainer(new NAPIModRegister()));
+		loadMod(new NAPIModContainer(new NAPIModRegister()));
 	}
 	
 	/**
