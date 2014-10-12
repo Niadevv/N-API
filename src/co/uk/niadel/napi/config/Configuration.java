@@ -245,7 +245,7 @@ public class Configuration
 					writer.println("#" + comment);
 				}
 
-				writer.println(valueName + " = " + defaultValue);
+				writer.println(valueName + "=" + defaultValue);
 
 				this.data.put(valueName, defaultValue);
 
