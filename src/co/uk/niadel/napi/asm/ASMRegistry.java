@@ -5,6 +5,7 @@ import co.uk.niadel.napi.nml.NModLoader;
 import co.uk.niadel.napi.util.NAPILogHelper;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.jar.JarEntry;
@@ -148,8 +149,8 @@ public class ASMRegistry
 							//Cull unnecessary names. Should free up some space in memory.
 							if (!nextName.endsWith("/") && !(nextName.equals("")) && !nextName.contains("META-INF"))
 							{
-								File jarEntryFile = new File(classPathEntry + "!/" + nextName);
-								NModLoader.loadUrl(jarEntryFile.toURI().toURL());
+								URL jarEntryUrl = new URL("jar:file:" + classPathEntry + "!/" + nextName);
+								NModLoader.loadUrl(jarEntryUrl);
 
 								InputStream zipInputStream = jarFile.getInputStream(jarEntry);
 								Scanner zipInputStreamScanner = new Scanner(zipInputStream);
