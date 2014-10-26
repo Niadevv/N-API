@@ -9,6 +9,8 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -140,15 +142,16 @@ public class ASMRegistry
 
 						while (jarFileEnumeration.hasMoreElements())
 						{
-							String nextName = jarFileEnumeration.nextElement().getName();
+							JarEntry jarEntry = jarFileEnumeration.nextElement();
+							String nextName = jarEntry.getName();
 
 							//Cull unnecessary names. Should free up some space in memory.
 							if (!nextName.endsWith("/") && !(nextName.equals("")) && !nextName.contains("META-INF"))
 							{
-								File jarEntry = new File(classPathEntry + "!/" + nextName);
-								NModLoader.loadUrl(jarEntry.toURI().toURL());
+								File jarEntryFile = new File(classPathEntry + "!/" + nextName);
+								NModLoader.loadUrl(jarEntryFile.toURI().toURL());
 
-								ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(new FileInputStream(jarEntry)));
+								InputStream zipInputStream = jarFile.getInputStream(jarEntry);
 								Scanner zipInputStreamScanner = new Scanner(zipInputStream);
 								List<Byte> bytesToAddList = new ArrayList<>();
 
