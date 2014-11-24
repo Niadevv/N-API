@@ -19,9 +19,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
@@ -165,6 +163,13 @@ public class NModLoader extends URLClassLoader
 	 */
 	public static final void loadUrl(URL url)
 	{
+		List<String> classPath = Arrays.asList(System.getProperty("java.class.path").split(";"));
+
+		if (classPath.contains(url.getFile()))
+		{
+			return;
+		}
+
 		INSTANCE.addURL(url);
 	}
 
