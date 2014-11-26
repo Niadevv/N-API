@@ -152,7 +152,7 @@ public class NModLoader extends URLClassLoader
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.instance.logError(e);
+			NAPILogHelper.logError(e);
 			return null;
 		}
 	}
@@ -195,7 +195,7 @@ public class NModLoader extends URLClassLoader
 				if (!mcModsDir.exists())
 				{
 					mcModsDir.mkdir();
-					NAPILogHelper.instance.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
+					NAPILogHelper.log("Created mods folder at " + mcModsDir.toPath().toString() + "!");
 				}
 
 				initNAPIRegister();
@@ -259,7 +259,7 @@ public class NModLoader extends URLClassLoader
 			catch (IOException | SecurityException | IllegalArgumentException e)
 			{
 				e.printStackTrace();
-				NAPILogHelper.instance.logError(e);
+				NAPILogHelper.logError(e);
 			}
 		}
 		else
@@ -290,8 +290,8 @@ public class NModLoader extends URLClassLoader
 		}
 		catch (MalformedURLException e)
 		{
-			NAPILogHelper.instance.logError("Unable to load the classes for jar file " + dir.getName() + "!");
-			NAPILogHelper.instance.logError(e);
+			NAPILogHelper.logError("Unable to load the classes for jar file " + dir.getName() + "!");
+			NAPILogHelper.logError(e);
 		}
 	}
 	
@@ -325,7 +325,7 @@ public class NModLoader extends URLClassLoader
 			}
 		}
 
-		NAPILogHelper.instance.log("Finished processing annotations for the mod " + mods.getContainerFromRegister(mod) + "!");
+		NAPILogHelper.log("Finished processing annotations for the mod " + mods.getContainerFromRegister(mod) + "!");
 	}
 	
 	/**
@@ -336,7 +336,7 @@ public class NModLoader extends URLClassLoader
 	{
 		mods.addMod(mod);
 		MCHooks.addResourcePacksToDefault(new NMLResourcePack(mod));
-		NAPILogHelper.instance.log("Loaded mod " + mod.getModId() + "!");
+		NAPILogHelper.log("Loaded mod " + mod.getModId() + "!");
 	}
 	
 	/**
@@ -365,7 +365,7 @@ public class NModLoader extends URLClassLoader
 					}
 					catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 					{
-						NAPILogHelper.instance.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
+						NAPILogHelper.logError("There was an error invoking " + currMethod.getValue().getName() + "! If it required parameters, please remove them!");
 						e.printStackTrace();
 					}
 				}
@@ -377,7 +377,7 @@ public class NModLoader extends URLClassLoader
 			}
 
 			ProxyRegistry.executeProxies();
-			NAPILogHelper.instance.log("Called all mod's modPreInit methods!");
+			NAPILogHelper.log("Called all mod's modPreInit methods!");
 		}
 	}
 	
@@ -402,19 +402,16 @@ public class NModLoader extends URLClassLoader
 
 			try
 			{
-				Iterator<Entry<String, Method>> methodsIterator = initMethods.entrySet().iterator();
-
-				while (methodsIterator.hasNext())
+				for (Entry<String, Method> nextMethod : initMethods.entrySet())
 				{
-					Entry<String, Method> nextMethod = methodsIterator.next();
 					nextMethod.getValue().invoke(Class.forName(nextMethod.getKey()).newInstance(), new Object[]{});
 				}
 
-				NAPILogHelper.instance.log("Called all mod's modInit methods!");
+				NAPILogHelper.log("Called all mod's modInit methods!");
 			}
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException e1)
 			{
-				NAPILogHelper.instance.logError(e1);
+				NAPILogHelper.logError(e1);
 			}
 		}
 	}
@@ -430,19 +427,16 @@ public class NModLoader extends URLClassLoader
 
 			try
 			{
-				Iterator<Entry<String, Method>> methodsIterator = postInitMethods.entrySet().iterator();
-
-				while (methodsIterator.hasNext())
+				for (Entry<String, Method> nextMethod : postInitMethods.entrySet())
 				{
-					Entry<String, Method> nextMethod = methodsIterator.next();
 					nextMethod.getValue().invoke(Class.forName(nextMethod.getKey()).newInstance(), new Object[] {});
 				}
 
-				NAPILogHelper.instance.log("Called all mod's postInit methods!");
+				NAPILogHelper.log("Called all mod's postInit methods!");
 			}
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException e1)
 			{
-				NAPILogHelper.instance.logError(e1);
+				NAPILogHelper.logError(e1);
 			}
 
 			//Does the work of adding the potions to the Potion.potionTypes array. You know, just in case.

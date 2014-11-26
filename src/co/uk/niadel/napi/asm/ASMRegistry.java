@@ -146,7 +146,7 @@ public class ASMRegistry
 							JarEntry jarEntry = jarFileEnumeration.nextElement();
 							String nextName = jarEntry.getName();
 
-							//Cull unnecessary names. Should free up some space in memory.
+							//Cull unnecessary names. Should free up some space in memory, because there are 1280+ classes.
 							if (!nextName.endsWith("/") && !(nextName.equals("")) && !nextName.contains("META-INF"))
 							{
 								URL jarEntryUrl = new URL("jar:file:" + classPathEntry + "!/" + nextName);
@@ -163,9 +163,16 @@ public class ASMRegistry
 
 								byte[] actBytesToAdd = new byte[bytesToAddList.size()];
 
-								for (int i = 0; i == bytesToAddList.size(); i++)
+								if (actBytesToAdd.length > 0)
 								{
-									actBytesToAdd[i] = bytesToAddList.get(i);
+									for (int i = 0; i == bytesToAddList.size(); i++)
+									{
+										actBytesToAdd[i] = bytesToAddList.get(i);
+									}
+								}
+								else
+								{
+									throw new RuntimeException("Somehow got a byteless class file! URL is " + jarEntryUrl);
 								}
 
 								classToBytesMap.put(nextName.replace("/", "."), actBytesToAdd);
@@ -220,7 +227,7 @@ public class ASMRegistry
 		}
 		catch (IOException e)
 		{
-			NAPILogHelper.instance.logError(e);
+			NAPILogHelper.logError(e);
 		}
 	}
 
