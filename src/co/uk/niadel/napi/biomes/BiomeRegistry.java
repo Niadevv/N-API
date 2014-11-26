@@ -5,7 +5,7 @@ import co.uk.niadel.napi.annotations.Immutable;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayerBiome;
 import co.uk.niadel.napi.annotations.Internal;
-import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
+import co.uk.niadel.napi.util.reflection.ReflectionManipulateValues;
 
 import java.util.ArrayList;
 import java.util.List;

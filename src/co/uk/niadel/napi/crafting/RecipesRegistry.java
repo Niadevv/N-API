@@ -13,7 +13,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.napioredict.NAPIOreDict;
 import co.uk.niadel.napi.util.ArrayUtils;
-import co.uk.niadel.commons.datamanagement.DoubleMap;
+import co.uk.niadel.napi.util.DoubleMap;
 
 /**
  * Where to register your crafting and smelting recipes.

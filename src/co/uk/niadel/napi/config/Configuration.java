@@ -11,8 +11,8 @@ import java.util.Scanner;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.annotations.DocumentationAnnotations.Experimental;
 import co.uk.niadel.napi.nml.NModLoader;
-import co.uk.niadel.commons.io.FileUtils;
 import co.uk.niadel.napi.util.NAPILogHelper;
+import co.uk.niadel.napi.util.FileUtils;
 
 /**
  * Base for Config files, these are relatively Forge-esque, down to the fact they're

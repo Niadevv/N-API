@@ -1,11 +1,10 @@
 package co.uk.niadel.napi.asm.transformers;
 
-import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
+import co.uk.niadel.napi.util.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.asm.ASMUtils;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.util.ModCrashReport;
-import co.uk.niadel.napi.util.NAPILogHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;

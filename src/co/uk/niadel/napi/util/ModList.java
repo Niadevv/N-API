@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import co.uk.niadel.commons.datamanagement.DoubleMap;
+import co.uk.niadel.napi.util.DoubleMap;
 import co.uk.niadel.napi.nml.*;
 
 /**

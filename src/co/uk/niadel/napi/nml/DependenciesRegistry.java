@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.nml;
 
-import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
+import co.uk.niadel.napi.util.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Internal;
 
 import java.util.Arrays;

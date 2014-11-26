@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.asm.transformers;
 
-import co.uk.niadel.commons.datamanagement.ValueExpandableMap;
+import co.uk.niadel.napi.util.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.util.NAPILogHelper;

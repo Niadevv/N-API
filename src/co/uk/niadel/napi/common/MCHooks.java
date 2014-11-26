@@ -1,6 +1,6 @@
 package co.uk.niadel.napi.common;
 
-import co.uk.niadel.commons.reflection.ReflectionManipulateValues;
+import co.uk.niadel.napi.util.reflection.ReflectionManipulateValues;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.util.MCData;
 import net.minecraft.client.Minecraft;

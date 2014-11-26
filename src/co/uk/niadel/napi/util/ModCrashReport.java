@@ -1,17 +1,20 @@
 package co.uk.niadel.napi.util;
 
-import co.uk.niadel.commons.crash.CrashReport;
-import co.uk.niadel.commons.logging.Logger;
 import co.uk.niadel.napi.common.NAPIData;
 import co.uk.niadel.napi.nml.IModContainer;
 import co.uk.niadel.napi.nml.NModLoader;
-import co.uk.niadel.commons.reflection.ReflectionCallMethods;
+import co.uk.niadel.napi.util.reflection.ReflectionCallMethods;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ModCrashReport extends CrashReport
+public class ModCrashReport
 {
 	public static final File crashesDir = new File(NModLoader.mcMainDir.toPath().toString() + "mod-crash-logs/");
 
@@ -113,29 +116,88 @@ public class ModCrashReport extends CrashReport
 	 */
 	public List<String> log = new ArrayList<>();
 
-	/**
-	 * @see co.uk.niadel.commons.crash.CrashReport#CrashReport(Throwable, boolean)
-	 */
+	public List<String> report = new ArrayList<>();
+
+	public Throwable exception;
+
 	private ModCrashReport(Throwable e, boolean crash)
 	{
-		super(e, "N-API", crash);
+		this.exception = e;
+		this.logReport(NAPILogHelper.logger);
+		this.writeLogToFile();
+
+		if (crash)
+		{
+			System.exit(1);
+		}
+	}
+
+	public void writeLogToFile()
+	{
+		try
+		{
+			File logFile = new File("CrashReport-" + System.nanoTime() + ".txt");
+			logFile.createNewFile();
+			PrintStream logPrintStream = new PrintStream(logFile);
+
+			for (String logEntry : this.report)
+			{
+				logPrintStream.println(logEntry);
+			}
+		}
+		catch (IOException e)
+		{
+			NAPILogHelper.logError(e);
+		}
 	}
 
 	public static final ModCrashReport generateCrashReport(Throwable e, boolean crash)
 	{
 		return new ModCrashReport(e, crash);
 	}
+
 	
 	public String[] getLogText()
 	{
 		return this.log.toArray(new String[this.log.size()]);
 	}
 
-	@Override
+	public void initialiseLog()
+	{
+		StackTraceElement[] stackTraceElements = this.exception.getStackTrace();
+		this.report.add("Time: " + (new SimpleDateFormat()).format(new Date()));
+		this.report.add("Java version: " + System.getProperty("java.version"));
+		this.report.add("OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version"));
+		this.report.add("VM Info: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor"));
+		this.report.add("VM Args: ");
+		//Borrowed from http://stackoverflow.com/questions/1490869/how-to-get-vm-arguments-from-inside-of-java-application
+		RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+		List<String> arguments = runtimeMxBean.getInputArguments();
+
+		for (String arg : arguments)
+		{
+			this.report.add("	" + arg);
+		}
+
+		this.report.add("Stacktrace: ");
+
+		for (StackTraceElement element : stackTraceElements)
+		{
+			this.report.add("	" + element.toString());
+		}
+
+	}
+
 	public void logReport(Logger logger)
 	{
+		this.initialiseLog();
+
+		for (String reportElement : this.report)
+		{
+			logger.error(reportElement);
+		}
+
 		this.report.add(SILLIES[new Random().nextInt(SILLIES.length)]);
-		super.logReport(logger);
 		this.log.add("Minecraft Version: " + NAPIData.FULL_VERSION);
 		this.log.add("Running N-API Mods: ");
 
