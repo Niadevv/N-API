@@ -29,7 +29,7 @@ Adding Features to N-API:
 
 Again, it's somewhat simple. Just make a pull request, explaining all of your changes and the feature. Of course, you will have to realise that, if I do accept it, I may make changes to your code if I feel it's untidy or could be optimised. I also may fix it's formatting to suit my personal style. BTW, it's this:
 
-- Don't use external libraries. By external library I mean a library that isn't included in N-API or is not ASM.
+- Don't use external libraries. By external library I mean a library that isn't included in Minecraft or is not ASM.
 - Tab indents. It makes awkward indenting easier (looks at both Eclipse AND IntelliJ) to fix. It's bad enough when I have to fix my
 indenting on the Minecraft Forums when I'm helping someone with an issue >:|.
 - Descriptive parameters and variable names, sometimes too descriptive :P.
