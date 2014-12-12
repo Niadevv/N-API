@@ -1,9 +1,10 @@
 package co.uk.niadel.napi.asm.transformers;
 
-import co.uk.niadel.napi.util.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Immutable;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.util.NAPILogHelper;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -23,7 +24,7 @@ public class NAPIASMImmutableTransformer implements IASMTransformer, Opcodes
 	 * field in itself.
 	 */
 	@Immutable
-	static final ValueExpandableMap<String, FieldNode> immutableFields = new ValueExpandableMap<>();
+	static final Multimap<String, FieldNode> immutableFields = ArrayListMultimap.create();
 
 	@Immutable
 	private static final NAPIASMModObjectHolderTransformer modObjectHolderTransformer = new NAPIASMModObjectHolderTransformer();

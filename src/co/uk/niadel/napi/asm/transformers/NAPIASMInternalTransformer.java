@@ -1,10 +1,11 @@
 package co.uk.niadel.napi.asm.transformers;
 
-import co.uk.niadel.napi.util.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Internal;
 import co.uk.niadel.napi.asm.ASMUtils;
 import co.uk.niadel.napi.asm.IASMTransformer;
 import co.uk.niadel.napi.util.ModCrashReport;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -23,7 +24,7 @@ public class NAPIASMInternalTransformer implements IASMTransformer, Opcodes
 	 * Map of fields/methods/classes/etc with the @Internal annotation. Keyed by class name that the f/m/c/etc is owned by.
 	 * Valued by the Field/Method/ClassNode that has the @Internal annotation.
 	 */
-	private static final ValueExpandableMap<String, Object> internalFields = new ValueExpandableMap<>();
+	private static final Multimap<String, Object> internalFields = ArrayListMultimap.create();
 
 	@Override
 	public byte[] manipulateBytecodes(String className, byte[] bytes)

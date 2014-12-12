@@ -1,7 +1,8 @@
 package co.uk.niadel.napi.nml;
 
-import co.uk.niadel.napi.util.ValueExpandableMap;
 import co.uk.niadel.napi.annotations.Internal;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,14 +18,14 @@ public final class DependenciesRegistry
 	 * The dependencies that have been registered. Key is the register, value is the list of modid dependencies for the key.
 	 *
 	 */
-	public static ValueExpandableMap<Object, String> dependenciesMap = new ValueExpandableMap<>();
+	public static Multimap<Object, String> dependenciesMap = ArrayListMultimap.create();
 
 	/**
 	 * Library dependencies. The external map is keyed by the mod object, and valued by the second map.
 	 * The second map is keyed by library id, and valued by the minimum version of the library.
 	 *
 	 */
-	public static ValueExpandableMap<Object, Map<String, String>> libDependenciesMap = new ValueExpandableMap<>();
+	public static Multimap<Object, Map<String, String>> libDependenciesMap = ArrayListMultimap.create();
 
 	/**
 	 * Adds a single dependency.
@@ -120,7 +121,7 @@ public final class DependenciesRegistry
 			{
 				for (Object dependencyKey : libDependenciesMap.keySet())
 				{
-					List<Map<String, String>> libDependencies = libDependenciesMap.get(dependencyKey);
+					List<Map<String, String>> libDependencies = (List<Map<String, String>>) libDependenciesMap.get(dependencyKey);
 
 					for (Map<String, String> libDependency : libDependencies)
 					{
